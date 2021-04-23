@@ -3,7 +3,11 @@ package com.ifcbrusque.app;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.stacked.sigaa_ifc.PacoteSessao;
+import com.stacked.sigaa_ifc.Sessao;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -12,54 +16,28 @@ public class MainActivity extends AppCompatActivity {
 
     boolean inicializado = false;
 
+    int requestCodeLogin = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if(!inicializado) {
             Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            MainActivity.this.startActivity(intentLogin);
+            MainActivity.this.startActivityForResult(intentLogin, requestCodeLogin);
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-
-
-        /*
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        if (requestCode == requestCodeLogin) {
+            if(resultCode == RESULT_OK) {
+                PacoteSessao pacote = (PacoteSessao) data.getSerializableExtra("pacote");
+                Sessao sessao = new Sessao(pacote);
+                System.out.println("Debug API: (main actv.) " + sessao.getUsuario().getNome());
             }
-        });*/
-    }
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
-
-        return super.onOptionsItemSelected(item);
     }
-    */
 }

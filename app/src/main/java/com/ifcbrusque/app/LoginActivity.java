@@ -1,5 +1,6 @@
 package com.ifcbrusque.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.stacked.sigaa_ifc.*;
 
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -32,47 +34,54 @@ public class LoginActivity extends AppCompatActivity {
         btEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logarSessao(etUsuario.getText().toString(), etSenha.getText().toString());
+                login(etUsuario.getText().toString(), etSenha.getText().toString());
             }
         });
     }
-
+    ///////////////////////////////////////////////////////////////////////////////
     Sessao sessao = new Sessao("https://sig.ifc.edu.br/");
+    boolean retornoLogin = false;
 
-    private void logarSessao(String usuario, String senha) {
-        Observable.fromCallable(new Callable<Usuario>() {
-            @Override
-            public Usuario call() throws ExcecaoAPI, ExcecaoSessaoExpirada, ExcecaoSIGAA {
-                // RxJava does not accept null return value. Null will be treated as a failure.
-                // So just make it return true.
-                return sessao.login(usuario, senha);
-            }
-        }) // Execute in IO thread, i.e. background thread.
+    private void login(String usuario, String senha) {
+        Observable.defer(() -> {
+            return Observable.just(sessao.login(usuario, senha));
+        })
                 .subscribeOn(Schedulers.io())
-                // report or post the result to main thread.
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new Observer<Usuario>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+                .doOnError(throwable -> {
+                    handleLoginError(throwable);
+                })
+                .doOnNext(logado -> {
+                    retornoLogin = logado;
+                })
+                .doOnComplete(() -> {
+                    handleLoginReturn();
+                }).subscribe();
+    }
 
-                    }
+    private void handleLoginError(Throwable e) {
+        System.out.println("Debug API: " + e.getMessage());
 
-                    @Override
-                    public void onNext(Usuario arrayList) {
-                        //handling the result
-                        ((TextView) findViewById(R.id.txNome)).setText(arrayList.getNome());
-                    }
+        if(e.getClass() == ExcecaoSIGAA.class) {
+            //SIGAA em manutenção, provavelmente
+            System.out.println("Debug API: sig manutencao");
+        } else if(e.getClass() == ExcecaoAPI.class) {
+            //Problema na API
+            System.out.println("Debug API: problema api");
+        }
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        //error handling made simple
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        //cleaning up tasks
-                    }
-                });
+    private void handleLoginReturn() {
+        if(retornoLogin) {
+            Intent intent = new Intent();
+            intent.putExtra("pacote", sessao.empacotarSessao());
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            //Usuário ou senha incorretos
+            System.out.println("Debug API: usuario ou senha inc");
+        }
     }
 
 }
+

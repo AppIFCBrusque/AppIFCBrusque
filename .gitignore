@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/sigaa_ifc/.git
+/sigaa_ifc/build
