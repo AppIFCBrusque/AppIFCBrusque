@@ -1,7 +1,7 @@
-package com.ifcbrusque.app;
+package com.ifcbrusque.app.activity;
 
+import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.PreferencesHelper;
-import com.ifcbrusque.app.data.*;
 
 import android.content.Intent;
 import android.os.Bundle;
