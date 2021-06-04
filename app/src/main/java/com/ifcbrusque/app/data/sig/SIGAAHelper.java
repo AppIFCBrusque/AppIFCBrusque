@@ -30,6 +30,8 @@ public class SIGAAHelper {
                 .subscribeOn(Schedulers.io());
     }
 
+    Sessao s = new Sessao("https://sig.ifc.edu.br/");
+
     /*
 
     Esse código tá horrível, mas as conexões com o SIGAA funcionariam tipo assim

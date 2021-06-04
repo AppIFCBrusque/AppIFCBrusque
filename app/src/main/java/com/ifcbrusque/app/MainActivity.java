@@ -2,17 +2,16 @@ package com.ifcbrusque.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ifcbrusque.app.data.PreferencesHelper;
 import com.ifcbrusque.app.activity.LoginActivity;
-import com.ifcbrusque.app.data.db.DatabaseManager;
-import com.ifcbrusque.app.data.sig.SIGAAHelper;
-import com.stacked.sigaa_ifc.PacoteSessao;
-import com.stacked.sigaa_ifc.Tarefa;
+import com.ifcbrusque.app.data.noticias.NoticiasHelper;
+import com.ifcbrusque.app.data.noticias.classe.Preview;
+import com.stacked.sigaa_ifc.*;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +31,25 @@ public class MainActivity extends AppCompatActivity {
 
             //TODO: Inicializar caso não tenha
 
-            SIGAAHelper sigaa = new SIGAAHelper(this.getApplicationContext());
-            DatabaseManager db = new DatabaseManager(this.getApplicationContext());
+            //SIGAAHelper sigaa = new SIGAAHelper(this.getApplicationContext());
+            //DatabaseManager db = new DatabaseManager(this.getApplicationContext());
 
-            /*
+            //(DELETAR DEPOIS) TESTE NOTICIAS
+            NoticiasHelper noticias = new NoticiasHelper();
+            noticias.getPaginaNoticias(14)
+                    .doOnNext(previews -> {
+                        for(Preview p : previews) {
+                            System.out.println("NOTICIAS PREVIEW: " + p.getTitulo());
+                        }
+                        noticias.getNoticia(previews.get(1))
+                        .doOnNext(noticia -> {
+                            System.out.println("NOTICIAS NOTICIA: " + noticia.getTitulo() + "\n" + noticia.getHtml());
+                        })
+                        .subscribe();
+                    })
+                    .subscribe();
+
+            /*(DELETAR DEEPOIS) TESTE SIGAA
             sigaa.getTodasAtividades()
                     .doOnNext(atv -> {
                         for(Tarefa t : atv.getTarefas()) {
@@ -43,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     })
                     .subscribe();*/
+
         } else {
             //Nunca logado/sessão encerrada (ir para o login)
             Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);

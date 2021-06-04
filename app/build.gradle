@@ -45,4 +45,13 @@ dependencies {
 
     //API SIGAA
     implementation project(path: ':sigaa_ifc')
+
+    //OKHttp
+    final okhttp_version = '4.3.1'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation 'com.squareup.okio:okio:2.4.3'
+
+    //JSOUP
+    implementation 'org.jsoup:jsoup:1.12.1'
 }
