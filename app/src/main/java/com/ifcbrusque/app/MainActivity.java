@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ifcbrusque.app.data.PreferencesHelper;
-import com.ifcbrusque.app.activity.LoginActivity;
 import com.ifcbrusque.app.data.noticias.NoticiasHelper;
 import com.ifcbrusque.app.data.noticias.classe.Preview;
 import com.stacked.sigaa_ifc.*;
@@ -27,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(pref.getLoginSIGAA() != "" && pref.getSenhaSIGAA() != "") {
             //Já logado uma vez (ir para a home)
+            Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
+            MainActivity.this.startActivity(intentHome);
+
             //TODO
 
             //TODO: Inicializar caso não tenha
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
             //DatabaseManager db = new DatabaseManager(this.getApplicationContext());
 
             //(DELETAR DEPOIS) TESTE NOTICIAS
+            /*
             NoticiasHelper noticias = new NoticiasHelper();
             noticias.getPaginaNoticias(14)
                     .doOnNext(previews -> {
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .subscribe();
                     })
-                    .subscribe();
+                    .subscribe();*/
 
             /*(DELETAR DEEPOIS) TESTE SIGAA
             sigaa.getTodasAtividades()

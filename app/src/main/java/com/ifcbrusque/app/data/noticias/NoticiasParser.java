@@ -8,11 +8,10 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import okhttp3.Response;
 
-public class NoticiasParser {
+class NoticiasParser {
     /*
     Transforma uma página como
     http://noticias.brusque.ifc.edu.br/category/noticias/page/14/
@@ -36,8 +35,8 @@ public class NoticiasParser {
 
             for(Element info : preview.getElementsByClass("info")) {
                 data = info.getElementsByClass("text-muted").get(0).text();
-                Element info_sem_data = info.removeClass("text-muted");
-                descricao = info.removeClass("text-muted").text();
+                info.getElementsByClass("text-muted").get(0).remove();
+                descricao = info.text();
             }
             l.add(new Preview(titulo, descricao, urlImagem, urlNoticia, data));
         }
@@ -49,18 +48,17 @@ public class NoticiasParser {
     http://noticias.brusque.ifc.edu.br/2021/03/16/graduacao-em-redes-de-computadores-inscreva-se/
     em um objeto Noticia
      */
-    /*TODO:
-    Arrumar isso (e a classe Noticia) quando for fazer a activity que mostra a notícia.
-    - Algumas imagens redirecionam para outros links.
-    - Há elementos a no meio do texto que levam para algum link.
-    - Há imagens no meio do texto.
-    - Negrito, itálico, etc...
-    - Há imagens que não levam pra link algum.
-    http://noticias.brusque.ifc.edu.br/2019/05/20/alunos-e-servidores-do-ifc-brusque-participam-do-curso-de-brigada-de-incendio/
-    http://noticias.brusque.ifc.edu.br/2021/04/07/recepcao-dos-estudantes-dos-cursos-noturnos-licenciatura-em-quimica-cst-redes-e-cervejaria/
-    http://noticias.brusque.ifc.edu.br/2019/04/30/1971/
-    http://noticias.brusque.ifc.edu.br/2021/03/16/graduacao-em-redes-de-computadores-inscreva-se/
-     */
+    //TODO:
+    // Arrumar isso (e a classe Noticia) quando for fazer a activity que mostra a notícia.
+    // - Algumas imagens redirecionam para outros links.
+    // - Há elementos a no meio do texto que levam para algum link.
+    // - Há imagens no meio do texto.
+    // - Negrito, itálico, etc...
+    // - Há imagens que não levam pra link algum.
+    // http://noticias.brusque.ifc.edu.br/2019/05/20/alunos-e-servidores-do-ifc-brusque-participam-do-curso-de-brigada-de-incendio/
+    // http://noticias.brusque.ifc.edu.br/2021/04/07/recepcao-dos-estudantes-dos-cursos-noturnos-licenciatura-em-quimica-cst-redes-e-cervejaria/
+    // http://noticias.brusque.ifc.edu.br/2019/04/30/1971/
+    // http://noticias.brusque.ifc.edu.br/2021/03/16/graduacao-em-redes-de-computadores-inscreva-se/
     static Noticia objetoNoticia(Response r, Preview p) throws IOException {
         Document d = Jsoup.parse(r.body().string());
 

@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.activity;
+package com.ifcbrusque.app;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.PreferencesHelper;
