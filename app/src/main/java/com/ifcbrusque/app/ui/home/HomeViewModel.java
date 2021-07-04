@@ -8,12 +8,24 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    /*public HomeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
-    }
+    }*/
 
     public LiveData<String> getText() {
+        if (mText == null) {
+            mText = new MutableLiveData<>();
+            mText.setValue("This is home fragment");
+        }
+
         return mText;
+    }
+    public void setmText(String mText) {
+        if (this.mText == null) {
+            this.mText = new MutableLiveData<>();
+            //this.mText.setValue("This is home fragment");
+        }
+        this.mText.setValue(mText);
     }
 }

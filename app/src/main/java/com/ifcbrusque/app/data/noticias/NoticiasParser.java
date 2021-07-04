@@ -72,6 +72,6 @@ class NoticiasParser {
             html = content.html();
         }
 
-        return new Noticia(titulo, html, p.getData());
+        return new Noticia(titulo, html, p.getDataNoticia());
     }
 }

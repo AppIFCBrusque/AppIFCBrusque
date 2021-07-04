@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Database.db";
 
     ///////////////////////////////////////////////////////
-    //TODO: anexo, aula, participante
+    //TODO: deletar a pasta db inteira. passei a usar a room
 
     private static final String SQL_CREATE_ENTRIES =
             UsuarioTable.CRIAR_TABELA +

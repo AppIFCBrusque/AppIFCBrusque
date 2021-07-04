@@ -14,15 +14,16 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.noticias.classe.Preview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
 
-    ArrayList<Preview> previews;
+    List<Preview> previews;
     Context context;
 
-    public NoticiasAdapter(Context context, ArrayList<Preview> previews) {
+    public NoticiasAdapter(Context context, List<Preview> previews) {
         this.context = context;
         this.previews = previews;
     }
