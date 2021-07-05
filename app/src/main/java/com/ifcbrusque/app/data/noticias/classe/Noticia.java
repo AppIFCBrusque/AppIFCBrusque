@@ -1,6 +1,6 @@
 package com.ifcbrusque.app.data.noticias.classe;
 
-public class Noticia  {
+public class Noticia {
     String titulo, html, data;
 
     public Noticia(String titulo, String html, String data) {
