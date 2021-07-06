@@ -64,7 +64,7 @@ public class NoticiasHelper {
     /*
     Salvar as imagens de preview no armazenamento interno
      */
-    public Observable<Boolean> salvarImagens(List<Preview> previews) {
+    public Observable<String> salvarImagens(List<Preview> previews) {
         return Observable.just(previews.stream().map(o -> o.getUrlImagemPreview()).collect(toList()))
                 .flatMapIterable(x -> x)
                 .map(url -> {

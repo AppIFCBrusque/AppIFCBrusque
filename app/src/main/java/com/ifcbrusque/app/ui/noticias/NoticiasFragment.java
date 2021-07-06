@@ -152,11 +152,13 @@ public class NoticiasFragment extends Fragment {
 
     void salvarImagens(List<Preview> previewsRetornados) {
         noticias.salvarImagens(previewsRetornados)
-                .doOnNext(novaImagemBaixada -> {
-                    System.out.println("MAIS UMA BAIXADA: " + novaImagemBaixada);
-                    if(novaImagemBaixada) noticiasAdapter.notifyItemInserted(previewsSalvos.size() - 1);
-                    //TODO: Isso aqui só atualiza quando ele sai da tela
-                    //noticiasAdapter.notifyItemChanged(); <- acho que dá pra fazer assim, aí eu faço uma função pra encontrar a posicao
+                .doOnNext(urlImagemBaixada -> {
+                    //Atualizar a recycler view com a imagem
+                    if(urlImagemBaixada.length() > 0) {
+                        System.out.println("[NoticiasFragment] Atualizando: " + urlImagemBaixada);
+                        int indexAtualizado = previewsSalvos.indexOf(previewsSalvos.stream().filter(o -> o.getUrlImagemPreview().equals(urlImagemBaixada)).findFirst().get());
+                        if(noticiasAdapter.previews.size() > indexAtualizado) noticiasAdapter.notifyItemChanged(indexAtualizado);
+                    }
                 })
                 .subscribe();
     }
