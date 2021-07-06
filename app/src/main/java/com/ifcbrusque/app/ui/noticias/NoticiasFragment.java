@@ -1,6 +1,7 @@
 package com.ifcbrusque.app.ui.noticias;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.PreferencesHelper;
+import com.ifcbrusque.app.data.noticias.ImagemHelper;
 import com.ifcbrusque.app.data.noticias.NoticiasHelper;
 import com.ifcbrusque.app.data.noticias.classe.Preview;
 import com.ifcbrusque.app.data.room.AppDatabase;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+
+import static java.util.stream.Collectors.toList;
 
 public class NoticiasFragment extends Fragment {
     //TODO: - ordenar a recycler view baseado na data
@@ -95,7 +103,7 @@ public class NoticiasFragment extends Fragment {
                 }).subscribe();
 
         ///Inicializar helper de notícias
-        noticias = new NoticiasHelper();
+        noticias = new NoticiasHelper(this.getContext());
 
 
         return root;
@@ -103,10 +111,11 @@ public class NoticiasFragment extends Fragment {
 
     //TODO: Reorganizar estas funções em algo tipo um presenter
     void obterPaginaDeNoticias(int numeroPagina) {
-        //System.out.println("[NOTÍCIAS] Carregando página " + numeroPagina);
+        System.out.println("[NoticiasFragment] Carregando página " + numeroPagina);
         noticias.getPaginaNoticias(numeroPagina)
                 .doOnNext(previewsRetornados -> {
-                    adicionarNoticiasNovasDatabase(previewsRetornados);
+                    adicionarNoticiasNovasDatabase(previewsRetornados); //Adicionar pro banco de dados
+                    salvarImagens(previewsRetornados); //Salvar as imagens
                 })
                 .doOnComplete(() -> {
                     carregandoPagina = false;
@@ -137,6 +146,17 @@ public class NoticiasFragment extends Fragment {
                     //Atualizar a recycler view
                     noticiasAdapter.previews = previewsSalvos;
                     noticiasAdapter.notifyItemInserted(previewsSalvos.size() - 1);
+                })
+                .subscribe();
+    }
+
+    void salvarImagens(List<Preview> previewsRetornados) {
+        noticias.salvarImagens(previewsRetornados)
+                .doOnNext(novaImagemBaixada -> {
+                    System.out.println("MAIS UMA BAIXADA: " + novaImagemBaixada);
+                    if(novaImagemBaixada) noticiasAdapter.notifyItemInserted(previewsSalvos.size() - 1);
+                    //TODO: Isso aqui só atualiza quando ele sai da tela
+                    //noticiasAdapter.notifyItemChanged(); <- acho que dá pra fazer assim, aí eu faço uma função pra encontrar a posicao
                 })
                 .subscribe();
     }
