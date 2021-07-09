@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.ui.noticias;
+package com.ifcbrusque.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,15 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ifcbrusque.app.R;
-import com.ifcbrusque.app.data.noticias.classe.Preview;
+import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;
 
-import static com.ifcbrusque.app.data.noticias.ImagemHelper.*;
+import static com.ifcbrusque.app.helpers.noticias.ImagemHelper.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
 
-    List<Preview> previews;
+    public List<Preview> previews; ///TODO: fazer uma função pra isso
     Context context;
 
     public NoticiasAdapter(Context context, List<Preview> previews) {

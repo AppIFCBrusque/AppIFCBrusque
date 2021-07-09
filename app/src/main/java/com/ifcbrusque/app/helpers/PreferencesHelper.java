@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data;
+package com.ifcbrusque.app.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,7 +13,7 @@ public class PreferencesHelper {
     }
 
     public void setUsuarioSIGAA(String login, String senha) { //TODO: https://github.com/sveinungkb/encrypted-userprefs
-        editor.putString("sig_login", login);
+        editor.putString("sig_login", login); //TODO: padronizar valores em outro arquivo
         editor.putString("sig_pass", senha);
         editor.commit();
     }

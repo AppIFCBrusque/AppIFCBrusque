@@ -1,10 +1,10 @@
-package com.ifcbrusque.app.data.sig;
+package com.ifcbrusque.app.helpers;
 
 import android.content.Context;
 
-import com.ifcbrusque.app.data.PreferencesHelper;
+import com.ifcbrusque.app.helpers.PreferencesHelper;
+import com.ifcbrusque.app.models.Atividades;
 import com.stacked.sigaa_ifc.*;
-import com.ifcbrusque.app.data.sig.classe.*;
 
 import java.util.ArrayList;
 

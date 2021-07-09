@@ -1,8 +1,7 @@
-package com.ifcbrusque.app.data.noticias;
+package com.ifcbrusque.app.helpers.noticias;
 
-import android.content.Context;
-
-import com.ifcbrusque.app.data.noticias.classe.*;
+import com.ifcbrusque.app.models.Noticia;
+import com.ifcbrusque.app.models.Preview;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,7 +10,6 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 class NoticiasParser {

@@ -1,7 +1,6 @@
-package com.ifcbrusque.app.ui.noticias;
+package com.ifcbrusque.app.fragments;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ifcbrusque.app.R;
-import com.ifcbrusque.app.data.PreferencesHelper;
-import com.ifcbrusque.app.data.noticias.ImagemHelper;
-import com.ifcbrusque.app.data.noticias.NoticiasHelper;
-import com.ifcbrusque.app.data.noticias.classe.Preview;
-import com.ifcbrusque.app.data.room.AppDatabase;
+import com.ifcbrusque.app.adapters.NoticiasAdapter;
+import com.ifcbrusque.app.helpers.PreferencesHelper;
+import com.ifcbrusque.app.helpers.noticias.NoticiasHelper;
+import com.ifcbrusque.app.models.Preview;
+import com.ifcbrusque.app.data.AppDatabase;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +24,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static java.util.stream.Collectors.toList;
-
 public class NoticiasFragment extends Fragment {
-    //TODO: - ordenar a recycler view baseado na data
-    //      - manter um numero de ultima pagina visitada (como as noticias vao para tras, se conferir essa, nao tem como ter uma noticia ainda nao vista)
+    //TODO: - ordenar a recycler view baseado na data?
     //      - salvar a posicao do scroll
     //      -> lembrar de dps deletar a pasta db inteira (nao to mais usando)
 
@@ -66,7 +58,7 @@ public class NoticiasFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recyclerView_noticias);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        Observable.defer(() -> { //Eu preciso usar a DB aqui, então fiz isso em um observable
+        Observable.defer(() -> { //Eu preciso usar a DB aqui, então fiz isso em um observable TODO: Acho que dá pra usar só o .just mesmo
             return Observable.just(db.previewDao().getAll()); //Realizar o login da sessão
         })
                 .subscribeOn(Schedulers.io())
@@ -105,7 +97,6 @@ public class NoticiasFragment extends Fragment {
         ///Inicializar helper de notícias
         noticias = new NoticiasHelper(this.getContext());
 
-
         return root;
     }
 
@@ -115,7 +106,7 @@ public class NoticiasFragment extends Fragment {
         noticias.getPaginaNoticias(numeroPagina)
                 .doOnNext(previewsRetornados -> {
                     adicionarNoticiasNovasDatabase(previewsRetornados); //Adicionar pro banco de dados
-                    salvarImagens(previewsRetornados); //Salvar as imagens
+                    salvarImagensNovas(previewsRetornados); //Salvar as imagens
                 })
                 .doOnComplete(() -> {
                     carregandoPagina = false;
@@ -150,14 +141,14 @@ public class NoticiasFragment extends Fragment {
                 .subscribe();
     }
 
-    void salvarImagens(List<Preview> previewsRetornados) {
-        noticias.salvarImagens(previewsRetornados)
+    void salvarImagensNovas(List<Preview> previewsRetornados) {
+        noticias.salvarImagens(previewsRetornados, false)
                 .doOnNext(urlImagemBaixada -> {
                     //Atualizar a recycler view com a imagem
                     if(urlImagemBaixada.length() > 0) {
                         System.out.println("[NoticiasFragment] Atualizando: " + urlImagemBaixada);
                         int indexAtualizado = previewsSalvos.indexOf(previewsSalvos.stream().filter(o -> o.getUrlImagemPreview().equals(urlImagemBaixada)).findFirst().get());
-                        if(noticiasAdapter.previews.size() > indexAtualizado) noticiasAdapter.notifyItemChanged(indexAtualizado);
+                        if(noticiasAdapter.previews.size() > indexAtualizado) noticiasAdapter.notifyItemChanged(indexAtualizado); //Sem esse if, ele pode tentar atualizar um item que ainda não foi inserido na recycler view, crashando o aplicativo
                     }
                 })
                 .subscribe();

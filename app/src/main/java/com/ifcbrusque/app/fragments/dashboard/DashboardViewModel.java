@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.ui.dashboard;
+package com.ifcbrusque.app.fragments.dashboard;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

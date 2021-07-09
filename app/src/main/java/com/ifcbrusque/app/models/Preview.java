@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data.noticias.classe;
+package com.ifcbrusque.app.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

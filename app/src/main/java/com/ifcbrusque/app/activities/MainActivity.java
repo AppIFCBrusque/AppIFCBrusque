@@ -1,4 +1,4 @@
-package com.ifcbrusque.app;
+package com.ifcbrusque.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ifcbrusque.app.data.PreferencesHelper;
-import com.ifcbrusque.app.data.noticias.NoticiasHelper;
-import com.ifcbrusque.app.data.noticias.classe.Preview;
+import com.ifcbrusque.app.helpers.PreferencesHelper;
 import com.stacked.sigaa_ifc.*;
 
 

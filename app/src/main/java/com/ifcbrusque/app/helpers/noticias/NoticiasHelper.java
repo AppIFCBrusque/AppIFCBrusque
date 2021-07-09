@@ -1,10 +1,11 @@
-package com.ifcbrusque.app.data.noticias;
+package com.ifcbrusque.app.helpers.noticias;
 
 import android.content.Context;
 
-import com.ifcbrusque.app.data.PreferencesHelper;
-import com.ifcbrusque.app.data.noticias.classe.*;
-import static com.ifcbrusque.app.data.noticias.NoticiasParser.*;
+import com.ifcbrusque.app.models.Noticia;
+import com.ifcbrusque.app.models.Preview;
+
+import static com.ifcbrusque.app.helpers.noticias.NoticiasParser.*;
 import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
@@ -64,11 +65,11 @@ public class NoticiasHelper {
     /*
     Salvar as imagens de preview no armazenamento interno
      */
-    public Observable<String> salvarImagens(List<Preview> previews) {
+    public Observable<String> salvarImagens(List<Preview> previews, boolean overwrite) {
         return Observable.just(previews.stream().map(o -> o.getUrlImagemPreview()).collect(toList()))
                 .flatMapIterable(x -> x)
                 .map(url -> {
-                    return ImagemHelper.salvarImagemUrl(url, client, context);
+                    return ImagemHelper.salvarImagemUrl(url, client, context, overwrite);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data.sig.classe;
+package com.ifcbrusque.app.models;
 
 import com.stacked.sigaa_ifc.*;
 

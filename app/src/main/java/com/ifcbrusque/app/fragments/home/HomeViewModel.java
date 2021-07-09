@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.ui.home;
+package com.ifcbrusque.app.fragments.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data.room;
+package com.ifcbrusque.app.data;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.ifcbrusque.app.data.noticias.classe.Preview;
+import com.ifcbrusque.app.models.Preview;
 
 @Database(entities = {Preview.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {

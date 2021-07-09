@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data.room;
+package com.ifcbrusque.app.data;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -8,7 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import com.ifcbrusque.app.data.noticias.classe.Preview;
+import com.ifcbrusque.app.models.Preview;
 
 @Dao
 public interface PreviewDao {

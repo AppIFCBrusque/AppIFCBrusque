@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data.noticias;
+package com.ifcbrusque.app.helpers.noticias;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,22 +11,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 /*
-Classe com métodos para salvar e abrir imagens no diretório interno
+Classe com métodos para salvar e encontrar imagens no diretório interno
  */
 public class ImagemHelper {
     static private String[] formatosAceitos = new String[]{"jpeg", "jpg", "png"};
     static private String diretorio = "/img/";
 
-    static public String salvarImagemUrl(String i, OkHttpClient cliente, Context context) throws IOException {
+    static public String salvarImagemUrl(String i, OkHttpClient cliente, Context context, boolean overwrite) throws IOException {
         System.out.println("[ImagemHelper] Conferindo: " + i);
         String[] _i = i.split("\\.");
         if (!Arrays.asList(formatosAceitos).contains(_i[_i.length - 1])) { //Conferir se a extensão do arquivo em questão está na lista de formatos aceitos
@@ -35,8 +33,12 @@ public class ImagemHelper {
 
         String nome = getNomeArmazenamentoImagem(i);
         File arquivo = new File(context.getExternalFilesDir(diretorio), nome);
-        if (arquivo.exists()) { //Se o arquivo já existir, ir pra próxima imagem
-            return "";
+        if (arquivo.exists()) {
+            if(!overwrite) { //Se o arquivo já existir e não for pra escrever por cima, pular
+                return "";
+            } else {
+                //TODO: Apagar o arquivo
+            }
         }
 
         //Obter imagem da internet
@@ -50,7 +52,7 @@ public class ImagemHelper {
         //Compressão
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-        int widthNova = 200;
+        int widthNova = 300;
         double proporcao = (double) widthNova / (bitmap.getWidth());
         int heightNova = (int) Math.ceil(bitmap.getHeight() * proporcao);
         bitmap = bitmap.createScaledBitmap(bitmap, widthNova, heightNova, true); //Diminuir o tamanho. Imagens muito grande resultam em queda de frame
