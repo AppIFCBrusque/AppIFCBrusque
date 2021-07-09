@@ -61,8 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             //Nunca logado/sessão encerrada (ir para o login)
-            Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
-            MainActivity.this.startActivityForResult(intentLogin, requestCodeLogin);
+            Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
+            MainActivity.this.startActivity(intentHome);
+
+            //Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
+            //MainActivity.this.startActivityForResult(intentLogin, requestCodeLogin);
         }
     }
 

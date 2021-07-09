@@ -15,7 +15,7 @@ import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;
 
-import static com.ifcbrusque.app.helpers.noticias.ImagemHelper.*;
+import static com.ifcbrusque.app.helpers.ImagemHelper.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
 

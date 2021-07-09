@@ -24,8 +24,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static com.ifcbrusque.app.helpers.ImagemHelper.*;
+
 public class NoticiasFragment extends Fragment {
-    //TODO: - ordenar a recycler view baseado na data?
+    //TODO: - ordenar a recycler view baseado na data  -> os novos estão indo pro final da lista
     //      - salvar a posicao do scroll
     //      -> lembrar de dps deletar a pasta db inteira (nao to mais usando)
 
@@ -143,11 +145,11 @@ public class NoticiasFragment extends Fragment {
 
     void salvarImagensNovas(List<Preview> previewsRetornados) {
         noticias.salvarImagens(previewsRetornados, false)
-                .doOnNext(urlImagemBaixada -> {
+                .doOnNext(nomeImagemArmazenada -> {
                     //Atualizar a recycler view com a imagem
-                    if(urlImagemBaixada.length() > 0) {
-                        System.out.println("[NoticiasFragment] Atualizando: " + urlImagemBaixada);
-                        int indexAtualizado = previewsSalvos.indexOf(previewsSalvos.stream().filter(o -> o.getUrlImagemPreview().equals(urlImagemBaixada)).findFirst().get());
+                    if(nomeImagemArmazenada.length() > 0) {
+                        System.out.println("[NoticiasFragment] Atualizando: " + nomeImagemArmazenada);
+                        int indexAtualizado = previewsSalvos.indexOf(previewsSalvos.stream().filter(o -> getNomeArmazenamentoImagem(o.getUrlImagemPreview()).equals(nomeImagemArmazenada)).findFirst().get());
                         if(noticiasAdapter.previews.size() > indexAtualizado) noticiasAdapter.notifyItemChanged(indexAtualizado); //Sem esse if, ele pode tentar atualizar um item que ainda não foi inserido na recycler view, crashando o aplicativo
                     }
                 })
