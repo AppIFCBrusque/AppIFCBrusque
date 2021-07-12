@@ -3,9 +3,9 @@ package com.ifcbrusque.app.fragments.noticias;
 import android.graphics.Bitmap;
 
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.data.ImagemManager;
+import com.ifcbrusque.app.helpers.image.ImageManager;
 import com.ifcbrusque.app.helpers.PreferencesHelper;
-import com.ifcbrusque.app.network.LeitorPaginaCampus;
+import com.ifcbrusque.app.helpers.noticia.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
 
 import java.util.ArrayList;
@@ -16,15 +16,15 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static com.ifcbrusque.app.helpers.ImagemHelper.*;
-import static com.ifcbrusque.app.helpers.ImagemHelper.redimensionarBitmap;
+import static com.ifcbrusque.app.helpers.image.ImageHelper.*;
+import static com.ifcbrusque.app.helpers.image.ImageHelper.redimensionarBitmap;
 import static java.util.stream.Collectors.toList;
 
 public class NoticiasPresenter {
     private View view;
 
-    private LeitorPaginaCampus campus;
-    private ImagemManager im;
+    private PaginaNoticias campus;
+    private ImageManager im;
     private AppDatabase db;
     private PreferencesHelper pref;
 
@@ -32,12 +32,12 @@ public class NoticiasPresenter {
     private Integer ultimaPaginaAcessada;
     private boolean isCarregandoPagina;
 
-    public NoticiasPresenter(View view, ImagemManager im, PreferencesHelper pref, AppDatabase db) {
+    public NoticiasPresenter(View view, ImageManager im, PreferencesHelper pref, AppDatabase db) {
         this.view = view;
         this.im = im;
         this.pref = pref;
         this.db = db;
-        this.campus = new LeitorPaginaCampus();
+        this.campus = new PaginaNoticias();
 
         isCarregandoPagina = false;
         previewsArmazenados = new ArrayList<>();
@@ -50,6 +50,8 @@ public class NoticiasPresenter {
                 .doOnError(e -> {
             //TODO
             }).doOnComplete(() -> {
+            view.atualizarRecyclerView(previewsArmazenados);
+
             //Carregar primeira página
             if (previewsArmazenados.size() == 0) {
                 //Carregar pela primeira vez
@@ -62,17 +64,17 @@ public class NoticiasPresenter {
             }).subscribe();
     }
 
-    public boolean isCarregandoPagina() {
+    boolean isCarregandoPagina() {
         return isCarregandoPagina;
     }
 
-    public List<Preview> getPreviewsArmazenados() {
+    List<Preview> getPreviewsArmazenados() {
         return previewsArmazenados;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
-    Utilizado pelo view
+    Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
      */
     void getProximaPaginaNoticias() {
         ultimaPaginaAcessada++;
@@ -97,7 +99,7 @@ public class NoticiasPresenter {
     /*
     Utilizada para adicionar os previews NOVOS no banco de dados
      */
-    void armazenarPreviewsNovos(List<Preview> previews) {
+    private void armazenarPreviewsNovos(List<Preview> previews) {
         Completable.fromRunnable(() -> {
             previewsArmazenados = db.previewDao().getAll(); //Atualizar para o mais recente
 
@@ -128,7 +130,7 @@ public class NoticiasPresenter {
     Se armazenar corretamente, o nome da imagem armazenada
     Se não armazenar, retorna uma string vazia
     */
-    public void salvarImagensInternet(List<Preview> previews, boolean overwrite) {
+    private void salvarImagensInternet(List<Preview> previews, boolean overwrite) {
         Observable.just(previews.stream().map(o -> o.getUrlImagemPreview()).collect(toList()))
                 .flatMapIterable(x -> x)
                 .map(url -> {

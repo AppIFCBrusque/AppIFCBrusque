@@ -1,15 +1,10 @@
-package com.ifcbrusque.app.helpers;
+package com.ifcbrusque.app.helpers.image;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,11 +13,11 @@ import okhttp3.Response;
 /*
 Classe com métodos para manipular imagens (baixar, comprimir, redimensionar...)
  */
-public class ImagemHelper {
+public class ImageHelper {
     /*
     Construtor privado para não permitir instanciação
      */
-    private ImagemHelper() {}
+    private ImageHelper() {}
 
     /*
     Converte byte[] para Bitmap

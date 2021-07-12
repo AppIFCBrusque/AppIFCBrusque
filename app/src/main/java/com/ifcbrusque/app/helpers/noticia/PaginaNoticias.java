@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.network;
+package com.ifcbrusque.app.helpers.noticia;
 
 import com.ifcbrusque.app.models.Preview;
 
@@ -12,14 +12,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.ifcbrusque.app.helpers.NoticiasParser.*;
+import static com.ifcbrusque.app.helpers.noticia.NoticiasParser.*;
 
-public class LeitorPaginaCampus {
+/*
+Funções para obter as notícias da página de internet do campus
+ */
+public class PaginaNoticias {
     private final String urlBase = "http://noticias.brusque.ifc.edu.br/category/noticias/page/";
 
     private OkHttpClient client;
 
-    public LeitorPaginaCampus() {
+    public PaginaNoticias() {
         client = new OkHttpClient();
     }
 

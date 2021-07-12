@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.data.ImagemManager;
+import com.ifcbrusque.app.helpers.image.ImageManager;
 import com.ifcbrusque.app.helpers.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
 
@@ -29,7 +29,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        presenter = new NoticiasPresenter(this, new ImagemManager(this.getContext()), new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()));
+        presenter = new NoticiasPresenter(this, new ImageManager(this.getContext()), new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()));
 
         //Inflar este fragmento
         View root = inflater.inflate(R.layout.fragment_noticias, container, false);

@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data;
+package com.ifcbrusque.app.helpers.image;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,12 +11,12 @@ import java.util.Arrays;
 /*
 Funções que envolvem o armazenamento de imagens no dispositivo e dependem de contexto
  */
-public class ImagemManager {
+public class ImageManager {
     static private String diretorio = "/img/";
     static private String[] formatosAceitos = new String[]{"jpeg", "jpg", "png"};
     private Context context;
 
-    public ImagemManager(Context context) {
+    public ImageManager(Context context) {
         this.context = context;
     }
 
