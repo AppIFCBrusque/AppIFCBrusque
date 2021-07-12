@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SIGAAHelper {
+public class SIGAAHelper { //TODO: Arrumar, comentar, static
     private Sessao sessao = new Sessao("https://sig.ifc.edu.br/");
     private Context context;
 

@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_noticias"
-        android:name="com.ifcbrusque.app.fragments.NoticiasFragment"
+        android:name="com.ifcbrusque.app.fragments.noticias.NoticiasFragment"
         android:label="@string/title_noticias"
         tools:layout="@layout/fragment_noticias" />
 

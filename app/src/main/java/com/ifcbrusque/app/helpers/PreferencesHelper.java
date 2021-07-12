@@ -3,7 +3,7 @@ package com.ifcbrusque.app.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class PreferencesHelper {
+public class PreferencesHelper { //TODO: Arrumar, comentar, static
     private SharedPreferences pref;
     SharedPreferences.Editor editor;
 

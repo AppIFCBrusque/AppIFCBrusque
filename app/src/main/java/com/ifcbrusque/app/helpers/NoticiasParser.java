@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.helpers.noticias;
+package com.ifcbrusque.app.helpers;
 
 import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
@@ -12,13 +12,14 @@ import java.util.ArrayList;
 
 import okhttp3.Response;
 
-class NoticiasParser {
+public class NoticiasParser {
+    private NoticiasParser() {}
     /*
     Transforma uma página como
     http://noticias.brusque.ifc.edu.br/category/noticias/page/14/
     em um ArrayList<Preview>
      */
-    static ArrayList<Preview> objetosPreview(Response r) throws IOException {
+    public static ArrayList<Preview> objetosPreview(Response r) throws IOException {
         Document d = Jsoup.parse(r.body().string());
 
         ArrayList<Preview> l = new ArrayList<>();
@@ -60,7 +61,7 @@ class NoticiasParser {
     // http://noticias.brusque.ifc.edu.br/2021/04/07/recepcao-dos-estudantes-dos-cursos-noturnos-licenciatura-em-quimica-cst-redes-e-cervejaria/
     // http://noticias.brusque.ifc.edu.br/2019/04/30/1971/
     // http://noticias.brusque.ifc.edu.br/2021/03/16/graduacao-em-redes-de-computadores-inscreva-se/
-    static Noticia objetoNoticia(Response r, Preview p) throws IOException {
+    public static Noticia objetoNoticia(Response r, Preview p) throws IOException {
         Document d = Jsoup.parse(r.body().string());
 
         String titulo = "", html = "";
