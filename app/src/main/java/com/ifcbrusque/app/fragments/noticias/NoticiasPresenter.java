@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.image.ImageManager;
-import com.ifcbrusque.app.helpers.PreferencesHelper;
+import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.helpers.noticia.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
 
@@ -16,10 +16,13 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static com.ifcbrusque.app.helpers.image.ImageHelper.*;
-import static com.ifcbrusque.app.helpers.image.ImageHelper.redimensionarBitmap;
+import static com.ifcbrusque.app.helpers.image.ImageUtil.*;
+import static com.ifcbrusque.app.helpers.image.ImageUtil.redimensionarBitmap;
 import static java.util.stream.Collectors.toList;
 
+/*
+Presenter dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
+ */
 public class NoticiasPresenter {
     private View view;
 
@@ -51,6 +54,7 @@ public class NoticiasPresenter {
             //TODO
             }).doOnComplete(() -> {
             view.atualizarRecyclerView(previewsArmazenados);
+            view.setRecyclerViewPosition(pref.getPreviewTopo());
 
             //Carregar primeira página
             if (previewsArmazenados.size() == 0) {
@@ -81,6 +85,23 @@ public class NoticiasPresenter {
         getPaginaNoticias(ultimaPaginaAcessada);
     }
 
+    /*
+    Quando sai do fragmento (manter posição atual)
+     */
+    void onPause(int indexPreviewTopo) {
+        pref.setPreviewTopo(indexPreviewTopo);
+    }
+
+    /*
+    Quando clica novamente já neste fragmento (voltar ao topo)
+     */
+    void onDestroyView() {
+        pref.setPreviewTopo(0);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Utilizado por este presenter para obter alguma página específica de notícias
+     */
     private void getPaginaNoticias(int pagina) {
         isCarregandoPagina = true;
         campus.getPaginaNoticias(pagina)
@@ -135,7 +156,7 @@ public class NoticiasPresenter {
                 .flatMapIterable(x -> x)
                 .map(url -> {
                     if (im.imagemFormatoAceito(url)) {
-                        long tamanhoImagemArmazenada = im.tamanhoImagemArmazenada(url); //Se a imagem não existir, o valor é 0
+                        long tamanhoImagemArmazenada = im.getTamanhoImagemArmazenada(url); //Se a imagem não existir, o valor é 0
 
                         if (tamanhoImagemArmazenada == 0 || overwrite) {
                             System.out.println("[NoticiasFragment] Baixando imagem: " + url);
@@ -174,5 +195,7 @@ public class NoticiasPresenter {
         void atualizarRecyclerView(List<Preview> preview);
 
         void atualizarImagemRecyclerView(int index);
+
+        void setRecyclerViewPosition(int index);
     }
 }

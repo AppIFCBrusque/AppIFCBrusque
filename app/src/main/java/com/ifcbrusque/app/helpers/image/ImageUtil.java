@@ -11,13 +11,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /*
-Classe com métodos para manipular imagens (baixar, comprimir, redimensionar...)
+Classe com funções para manipular imagens (baixar, comprimir, redimensionar...)
  */
-public class ImageHelper {
+public class ImageUtil {
     /*
     Construtor privado para não permitir instanciação
      */
-    private ImageHelper() {}
+    private ImageUtil() {}
 
     /*
     Converte byte[] para Bitmap

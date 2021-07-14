@@ -1,6 +1,7 @@
 package com.ifcbrusque.app.fragments.noticias;
 
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,14 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.image.ImageManager;
-import com.ifcbrusque.app.helpers.PreferencesHelper;
+import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;
 
+/*
+View dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
+ */
 public class NoticiasFragment extends Fragment implements NoticiasPresenter.View {
     private Integer carregarQuandoFaltar = 5; //Quando estiver este número de notícias abaixo da atual, será carregada a próxima página
 
@@ -26,6 +30,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
     private RecyclerView recyclerView;
     private NoticiasAdapter noticiasAdapter;
+    private LinearLayoutManager layoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
         //Configuração do recycler view
         recyclerView = root.findViewById(R.id.recyclerView_noticias);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         noticiasAdapter = new NoticiasAdapter(this.getContext(), presenter.getPreviewsArmazenados());
@@ -53,6 +58,25 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
         return root;
     }
 
+    /*
+    Quando sai do fragmento (manter posição atual)
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onDestroyView();
+    }
+
+    /*
+    Quando clica novamente já neste fragmento (voltar ao topo)
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onPause(layoutManager.findFirstVisibleItemPosition());
+
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void atualizarRecyclerView(List<Preview> previews) {
         noticiasAdapter.previews = previews;
@@ -62,5 +86,10 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     @Override
     public void atualizarImagemRecyclerView(int index) {
         if (noticiasAdapter.previews.size() > index) noticiasAdapter.notifyItemChanged(index); //Sem esse if, ele pode tentar atualizar um item que ainda não foi inserido na recycler view, crashando o aplicativo
+    }
+
+    @Override
+    public void setRecyclerViewPosition(int index) {
+        layoutManager.scrollToPosition(index);
     }
 }

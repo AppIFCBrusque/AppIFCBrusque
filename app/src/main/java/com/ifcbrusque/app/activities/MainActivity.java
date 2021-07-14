@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ifcbrusque.app.helpers.PreferencesHelper;
+import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.stacked.sigaa_ifc.*;
 
 

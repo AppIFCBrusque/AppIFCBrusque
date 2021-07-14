@@ -2,7 +2,7 @@ package com.ifcbrusque.app.helpers;
 
 import android.content.Context;
 
-import com.ifcbrusque.app.helpers.PreferencesHelper;
+import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Atividades;
 import com.stacked.sigaa_ifc.*;
 
