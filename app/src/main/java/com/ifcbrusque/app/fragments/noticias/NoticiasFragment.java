@@ -1,7 +1,7 @@
 package com.ifcbrusque.app.fragments.noticias;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ifcbrusque.app.R;
+import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.image.ImageManager;
@@ -20,10 +21,13 @@ import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;
 
+import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
+import static com.ifcbrusque.app.data.Converters.*;
+
 /*
 View dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
  */
-public class NoticiasFragment extends Fragment implements NoticiasPresenter.View {
+public class NoticiasFragment extends Fragment implements NoticiasPresenter.View, NoticiasAdapter.OnPreviewListener {
     private Integer carregarQuandoFaltar = 5; //Quando estiver este número de notícias abaixo da atual, será carregada a próxima página
 
     private NoticiasPresenter presenter;
@@ -44,7 +48,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        noticiasAdapter = new NoticiasAdapter(this.getContext(), presenter.getPreviewsArmazenados());
+        noticiasAdapter = new NoticiasAdapter(this.getContext(), presenter.getPreviewsArmazenados(), this);
         recyclerView.setAdapter(noticiasAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() { //Adicionar listener para solicitar nova página caso se aproxime do final
             @Override
@@ -75,6 +79,25 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
         super.onDestroyView();
         presenter.onDestroyView(layoutManager.findFirstVisibleItemPosition());
 
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Utilizado pelo NoticiasAdapter para abrir a activity da notícia
+     */
+    @Override
+    public void onPreviewClick(int position) {
+
+
+        Preview preview = presenter.getPreviewsArmazenados().get(position);
+
+        Intent intentNoticia = new Intent(getActivity(), NoticiaActivity.class);
+
+        intentNoticia.putExtra(NOTICIA_TITULO, preview.getTitulo());
+        intentNoticia.putExtra(NOTICIA_DATA, dateToTimestamp(preview.getDataNoticia()));
+        intentNoticia.putExtra(NOTICIA_URL, preview.getUrlNoticia());
+        intentNoticia.putExtra(NOTICIA_URL_IMAGEM_PREVIEW, preview.getUrlImagemPreview());
+
+        startActivity(intentNoticia);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override

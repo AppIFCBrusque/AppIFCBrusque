@@ -78,14 +78,6 @@ public class NoticiasPresenter {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
-    Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
-     */
-    void getProximaPaginaNoticias() {
-        ultimaPaginaAcessada++;
-        getPaginaNoticias(ultimaPaginaAcessada);
-    }
-
-    /*
     Quando sai do fragmento (manter posição atual)
      */
     void onDestroyView(int indexPreviewTopo) {
@@ -97,6 +89,14 @@ public class NoticiasPresenter {
      */
     void onPause() {
         pref.setPreviewTopo(0);
+    }
+
+    /*
+    Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
+     */
+    void getProximaPaginaNoticias() {
+        ultimaPaginaAcessada++;
+        getPaginaNoticias(ultimaPaginaAcessada);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
@@ -116,7 +116,6 @@ public class NoticiasPresenter {
                     isCarregandoPagina = false;
                 }).subscribe();
     }
-
     /*
     Utilizada para adicionar os previews NOVOS no banco de dados
      */
