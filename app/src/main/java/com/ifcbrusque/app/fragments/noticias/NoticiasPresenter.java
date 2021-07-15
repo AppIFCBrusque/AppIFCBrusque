@@ -88,14 +88,14 @@ public class NoticiasPresenter {
     /*
     Quando sai do fragmento (manter posição atual)
      */
-    void onPause(int indexPreviewTopo) {
+    void onDestroyView(int indexPreviewTopo) {
         pref.setPreviewTopo(indexPreviewTopo);
     }
 
     /*
     Quando clica novamente já neste fragmento (voltar ao topo)
      */
-    void onDestroyView() {
+    void onPause() {
         pref.setPreviewTopo(0);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////

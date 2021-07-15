@@ -8,23 +8,29 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import okhttp3.Response;
 
 public class NoticiasParser {
+    public static SimpleDateFormat FORMATO_DATA = new SimpleDateFormat("dd/MM/yyyy");
+
     private NoticiasParser() {}
     /*
     Transforma uma página como
     http://noticias.brusque.ifc.edu.br/category/noticias/page/14/
     em um ArrayList<Preview>
      */
-    public static ArrayList<Preview> objetosPreview(Response r) throws IOException {
+    public static ArrayList<Preview> objetosPreview(Response r) throws IOException, ParseException {
         Document d = Jsoup.parse(r.body().string());
 
         ArrayList<Preview> l = new ArrayList<>();
         for(Element preview : d.getElementsByClass("media")) { //Cada classe media é um preview
-            String titulo = "", descricao = "", urlImagem = "", data = "", urlNoticia = "";
+            String titulo = "", descricao = "", urlImagem = "", urlNoticia = "";
+            Date data = new Date();
 
             for(Element imagem : preview.getElementsByTag("img")) {
                 urlImagem = imagem.attr("src");
@@ -36,7 +42,11 @@ public class NoticiasParser {
             }
 
             for(Element info : preview.getElementsByClass("info")) {
-                data = info.getElementsByClass("text-muted").get(0).text();
+                try {
+                    data = FORMATO_DATA.parse(info.getElementsByClass("text-muted").get(0).text().replace("[", "").replace("]", ""));
+                } catch (ParseException e) {
+                    data = FORMATO_DATA.parse("01/01/2999"); //Para garantir que não vai dar erro
+                }
                 info.getElementsByClass("text-muted").get(0).remove();
                 descricao = info.text();
             }

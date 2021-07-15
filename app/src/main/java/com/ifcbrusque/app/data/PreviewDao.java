@@ -12,7 +12,7 @@ import com.ifcbrusque.app.models.Preview;
 
 @Dao
 public interface PreviewDao {
-    @Query("SELECT * FROM preview_table ORDER BY id ASC")
+    @Query("SELECT * FROM preview_table ORDER BY data_noticia DESC")
     List<Preview> getAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

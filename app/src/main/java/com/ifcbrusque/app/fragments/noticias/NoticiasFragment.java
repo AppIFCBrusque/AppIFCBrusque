@@ -64,7 +64,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     @Override
     public void onPause() {
         super.onPause();
-        presenter.onDestroyView();
+        presenter.onPause();
     }
 
     /*
@@ -73,7 +73,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        presenter.onPause(layoutManager.findFirstVisibleItemPosition());
+        presenter.onDestroyView(layoutManager.findFirstVisibleItemPosition());
 
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////

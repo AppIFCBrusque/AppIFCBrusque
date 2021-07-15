@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "preview_table")
 public class Preview {
     @PrimaryKey(autoGenerate =  true)
@@ -12,13 +14,13 @@ public class Preview {
     private String titulo;
     private String descricao;
     @ColumnInfo(name = "data_noticia")
-    private String dataNoticia;
+    private Date dataNoticia;
     @ColumnInfo(name = "url_noticia")
     private String urlNoticia;
     @ColumnInfo(name = "url_imagem_preview")
     private String urlImagemPreview;
 
-    public Preview(String titulo, String descricao, String urlImagemPreview, String urlNoticia, String dataNoticia) {
+    public Preview(String titulo, String descricao, String urlImagemPreview, String urlNoticia, Date dataNoticia) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.urlImagemPreview = urlImagemPreview;
@@ -32,6 +34,6 @@ public class Preview {
     public String getTitulo() {return titulo;}
     public String getDescricao() {return descricao;}
     public String getUrlImagemPreview() {return urlImagemPreview;}
-    public String getDataNoticia() {return dataNoticia;}
+    public Date getDataNoticia() {return dataNoticia;}
     public String getUrlNoticia() {return urlNoticia;}
 }

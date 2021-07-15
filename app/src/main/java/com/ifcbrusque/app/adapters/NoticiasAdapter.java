@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ifcbrusque.app.R;
+import com.ifcbrusque.app.helpers.noticia.NoticiasParser;
 import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull NoticiasAdapter.ViewHolder holder, int position) {
         if(previews.get(position).getTitulo().length() > 0) holder.tvTitulo.setText(previews.get(position).getTitulo());
-        if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(previews.get(position).getDescricao() + " [...]");
+        if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(previews.get(position).getDescricao() + " [...]\n" + NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
         if(previews.get(position).getUrlImagemPreview().length() > 0) {
             holder.ivPreview.setImageURI(getUriArmazenamentoImagem(previews.get(position).getUrlImagemPreview(), context));
         }
