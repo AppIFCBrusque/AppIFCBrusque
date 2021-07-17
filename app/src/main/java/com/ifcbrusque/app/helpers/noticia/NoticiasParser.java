@@ -74,16 +74,16 @@ public class NoticiasParser {
     public static Noticia objetoNoticia(Response r, Preview p) throws IOException {
         Document d = Jsoup.parse(r.body().string());
 
-        String titulo = "", html = "";
+        String titulo = "", htmlConteudo = "";
 
         for(Element subheader : d.getElementsByClass("page-subheader")) {
             titulo = subheader.text();
         }
 
         for(Element content : d.getElementsByClass("entry-content")) {
-            html = content.html();
+            htmlConteudo = content.html();
         }
 
-        return new Noticia(titulo, html, p.getDataNoticia());
+        return new Noticia(p.getUrlNoticia(), titulo, htmlConteudo, p.getDataNoticia());
     }
 }

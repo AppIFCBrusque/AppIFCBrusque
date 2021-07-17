@@ -1,5 +1,6 @@
 package com.ifcbrusque.app.helpers.noticia;
 
+import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
 
 import java.io.IOException;
@@ -45,6 +46,17 @@ public class PaginaNoticias {
     public Observable<ArrayList<Preview>> getPaginaNoticias(int numeroPagina) {
         return Observable.defer(() -> {
             return Observable.just(objetosPreview(GET(urlBase + numeroPagina, client)));
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /*
+    Cria um observable para obter uma notícia do site do campus
+     */
+    public Observable<Noticia> getNoticia(Preview preview) {
+        return Observable.defer(() -> {
+            return Observable.just(objetoNoticia(GET(preview.getUrlNoticia(), client), preview));
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

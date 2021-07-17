@@ -31,7 +31,6 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
 
         //Ativar botão de voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
 
         //Presenter
         presenter = new NoticiaPresenter(this, getIntent().getExtras());
@@ -49,7 +48,7 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void carregarWebView(String url) {
-        wv.loadUrl(url);
+    public void carregarHtmlWebView(String html) {
+        wv.loadData(html, "text/html", "UTF-8");
     }
 }
