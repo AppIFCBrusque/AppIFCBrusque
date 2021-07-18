@@ -1,3 +1,4 @@
 include ':sigaa_ifc'
 include ':app'
 rootProject.name = "IFC Brusque"
+include ':sigaa_ifc'
