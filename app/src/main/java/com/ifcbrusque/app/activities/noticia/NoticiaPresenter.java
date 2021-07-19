@@ -17,11 +17,12 @@ import java.util.regex.Pattern;
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.Converters.*;
 
-public class NoticiaPresenter  {
-    final private String TAG = "[DEBUGA]";
+import static com.ifcbrusque.app.activities.MainActivity.TAG;
 
+public class NoticiaPresenter  {
     //Regex para encontrar imagens redimensionadas
-    final private Pattern pattern = Pattern.compile("-[0-9]{1,4}x[0-9]{1,4}");
+    final private Pattern patternRedimensionamento = Pattern.compile("-[0-9]{1,4}x[0-9]{1,4}");
+    final private Pattern patternCaminho = Pattern.compile("wp-content/uploads/sites/[0-9]{1,2}/");
 
     private View view;
 
@@ -69,11 +70,9 @@ public class NoticiaPresenter  {
             }
 
             //Conferir se já tem o preview no meio da notícia
-            String srcSemExtensao = pattern.matcher(img.attr("src")).replaceFirst("").replace(".jpeg", "").replace(".png", "").replace(".jpg", "");
-            String previewSemExtensao = preview.getUrlImagemPreview().replace(".jpeg", "").replace(".png", "").replace(".jpg", "");
-
-            if(srcSemExtensao.contains(previewSemExtensao) || previewSemExtensao.contains(srcSemExtensao)) contemPreview = true;
-            //Log.d(TAG, "formatarCorpoNoticia: " + src + "\n" + preview.getUrlImagemPreview() + "\n" + src.contains(preview.getUrlImagemPreview().replace(".jpeg", "").replace(".png", "").replace(".jpg", "")) + "\n" + );
+            String srcImagem = getCaminhoImagem(img.attr("src"));
+            String srcPreview = getCaminhoImagem(preview.getUrlImagemPreview());
+            if(srcImagem.contains(srcPreview) || srcPreview.contains(srcImagem)) contemPreview = true;
             //TODO: Também dava para usar o regex pra limpar o url do preview em si
         }
 
@@ -85,6 +84,14 @@ public class NoticiaPresenter  {
 
 
         return doc.toString();
+    }
+
+    private String getCaminhoImagem(String src) {
+        String srcSemSite = src.replace("http://noticias.brusque.ifc.edu.br/", "").replace("http://noticias.ifc.edu.br/", "");
+        String srcSemRedimensionamentoEFormato = patternRedimensionamento.matcher(srcSemSite).replaceFirst("").replace(".jpeg", "").replace(".png", "").replace(".jpg", "");
+        String srcSemCaminho = patternCaminho.matcher(srcSemRedimensionamentoEFormato).replaceFirst("");
+        Log.d(TAG, "getCaminhoImagem: " + srcSemCaminho);
+        return srcSemCaminho;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public interface View {

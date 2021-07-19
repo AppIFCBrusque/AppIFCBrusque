@@ -68,7 +68,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         TextView tvTitulo, tvPrevia;
         ImageView ivPreview;
         OnPreviewListener onPreviewListener;
-        ValueAnimator colorAnimation, colorAnimationReversa;
+        ValueAnimator colorAnimation;
 
         public ViewHolder(@NonNull View itemView, OnPreviewListener onPreviewListener) {
             super(itemView);

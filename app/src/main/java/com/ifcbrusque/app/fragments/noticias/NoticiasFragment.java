@@ -47,6 +47,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
         recyclerView = root.findViewById(R.id.recyclerView_noticias);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
 
         noticiasAdapter = new NoticiasAdapter(this.getContext(), presenter.getPreviewsArmazenados(), this);
         recyclerView.setAdapter(noticiasAdapter);
