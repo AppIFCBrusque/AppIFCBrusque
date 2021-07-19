@@ -54,7 +54,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(layoutManager.findLastCompletelyVisibleItemPosition() >= noticiasAdapter.previews.size() - carregarQuandoFaltar && !presenter.isCarregandoPagina()){
+                if(layoutManager.findLastCompletelyVisibleItemPosition() >= noticiasAdapter.previews.size() - carregarQuandoFaltar && !presenter.isCarregandoPagina() && !presenter.atingiuPaginaFinal()){
                     presenter.getProximaPaginaNoticias();
                 }
             }
@@ -103,7 +103,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     @Override
     public void atualizarRecyclerView(List<Preview> previews) {
         noticiasAdapter.previews = previews;
-        noticiasAdapter.notifyItemInserted(previews.size() - 1);
+        noticiasAdapter.notifyDataSetChanged();
     }
 
     @Override

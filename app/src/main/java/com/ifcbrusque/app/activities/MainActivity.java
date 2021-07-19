@@ -11,6 +11,7 @@ import com.stacked.sigaa_ifc.*;
 
 
 public class MainActivity extends AppCompatActivity {
+    final static public String TAG = "[APPIF]";
 
     boolean inicializado = false;
 

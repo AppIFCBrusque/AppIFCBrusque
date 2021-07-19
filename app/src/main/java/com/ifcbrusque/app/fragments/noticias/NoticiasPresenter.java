@@ -20,6 +20,8 @@ import static com.ifcbrusque.app.helpers.image.ImageUtil.*;
 import static com.ifcbrusque.app.helpers.image.ImageUtil.redimensionarBitmap;
 import static java.util.stream.Collectors.toList;
 
+import static com.ifcbrusque.app.activities.MainActivity.TAG;
+
 /*
 Presenter dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
  */
@@ -34,6 +36,7 @@ public class NoticiasPresenter {
     private List<Preview> previewsArmazenados;
     private Integer ultimaPaginaAcessada;
     private boolean isCarregandoPagina;
+    private boolean atingiuPaginaFinal;
 
     public NoticiasPresenter(View view, ImageManager im, PreferencesHelper pref, AppDatabase db) {
         this.view = view;
@@ -43,6 +46,7 @@ public class NoticiasPresenter {
         this.campus = new PaginaNoticias();
 
         isCarregandoPagina = false;
+        atingiuPaginaFinal = false;
         previewsArmazenados = new ArrayList<>();
         ultimaPaginaAcessada = pref.getUltimaPaginaNoticias();
 
@@ -70,6 +74,10 @@ public class NoticiasPresenter {
 
     boolean isCarregandoPagina() {
         return isCarregandoPagina;
+    }
+
+    boolean atingiuPaginaFinal() {
+        return atingiuPaginaFinal;
     }
 
     List<Preview> getPreviewsArmazenados() {
@@ -110,8 +118,13 @@ public class NoticiasPresenter {
                 })
                 .doOnNext(previews -> {
                     isCarregandoPagina = false;
-                    armazenarPreviewsNovos(previews);
-                    salvarImagensInternet(previews, false);
+                    if(previews.size() > 0) {
+                        armazenarPreviewsNovos(previews);
+                        salvarImagensInternet(previews, false);
+                    } else { //Cheogou na última página
+                        ultimaPaginaAcessada--;
+                        atingiuPaginaFinal = true;
+                    }
                 }).subscribe();
     }
     /*
