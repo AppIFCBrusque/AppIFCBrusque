@@ -8,11 +8,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.noticia.NoticiasParser;
 import com.ifcbrusque.app.helpers.noticia.PaginaNoticias;
+import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.Converters.*;
@@ -27,33 +34,49 @@ public class NoticiaPresenter  {
     private View view;
 
     private Preview preview;
+    private Noticia noticia;
 
     private PaginaNoticias campus;
+    private AppDatabase db;
 
-    public NoticiaPresenter(NoticiaPresenter.View view, Bundle bundle) {
+    public NoticiaPresenter(NoticiaPresenter.View view, Bundle bundle, AppDatabase db) {
         this.view = view;
+        this.db = db;
         campus = new PaginaNoticias();
 
         preview = new Preview(bundle.getString(NOTICIA_TITULO), "", bundle.getString(NOTICIA_URL_IMAGEM_PREVIEW), bundle.getString(NOTICIA_URL), fromTimestamp(bundle.getLong(NOTICIA_DATA)));
 
-        getNoticia();
+        carregarNoticia();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void getNoticia() {
+    private void carregarNoticia() { //TODO: Talvez dê para organizar isso melhor
         view.mostrarProgressBar();
-        campus.getNoticia(preview)
+        Completable.fromRunnable(() -> {
+            noticia = db.noticiaDao().getNoticia(preview.getUrlNoticia()); //Consultar no banco de dados
+
+            if(noticia == null) { //Não armazenada anteriormente -> obter da internet
+                try {
+                    noticia = campus.getNoticia(preview);
+                } catch (IOException e) {
+                    ////
+                }
+                db.noticiaDao().insert(noticia); //Armazenar
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(e -> {
                     //TODO
                 })
-                .doOnNext(noticia -> {
-                    //TODO: armazenar a noticia
-                    //armazenarPreviewsNovos(previews);
-                    //salvarImagensInternet(previews, false);
-                    view.esconderProgressBar();
+                .doOnComplete(() -> {
                     view.carregarHtmlWebView(formatarCorpoNoticia(noticia.getHtmlConteudo()));
-                }).subscribe();
+                    view.esconderProgressBar();
+                })
+                .subscribe();
     }
 
+    /*
+    Utilizado para formatar o conteúdo em HTML da notícia obtido do site do campus a um formato que se adeque melhor ao aplicativo
+     */
     private String formatarCorpoNoticia(String html) { //TODO: Deixar isso mais bonitinho
         Document doc = Jsoup.parse(html);
 
@@ -84,10 +107,12 @@ public class NoticiaPresenter  {
         //Preview abaixo da data (adiciona somente se já não está no texto)
         if(!contemPreview && !preview.getUrlImagemPreview().equals("")) doc.getElementsByClass("barra_horizontal").get(0).after("<br><img class=\"preview\" src=\"" + preview.getUrlImagemPreview() + "\" style=\"width: 100%; height: auto;\">");
 
-
         return doc.toString();
     }
 
+    /*
+    Utilizado para encontrar o "caminho" de uma imagem (tentar identificar se elas são iguais somente pelo link)
+     */
     private String getCaminhoImagem(String src) {
         String srcSemSite = src.replace("http://noticias.brusque.ifc.edu.br/", "").replace("http://noticias.ifc.edu.br/", "");
         String srcSemRedimensionamentoEFormato = patternRedimensionamento.matcher(srcSemSite).replaceFirst("").replace(".jpeg", "").replace(".png", "").replace(".jpg", "");

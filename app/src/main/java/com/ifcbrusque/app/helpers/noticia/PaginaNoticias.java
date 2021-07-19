@@ -52,13 +52,9 @@ public class PaginaNoticias {
     }
 
     /*
-    Cria um observable para obter uma notícia do site do campus
+    Obtém uma notícia do site do campus
      */
-    public Observable<Noticia> getNoticia(Preview preview) {
-        return Observable.defer(() -> {
-            return Observable.just(objetoNoticia(GET(preview.getUrlNoticia(), client), preview));
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public Noticia getNoticia(Preview preview) throws IOException {
+        return objetoNoticia(GET(preview.getUrlNoticia(), client), preview);
     }
 }

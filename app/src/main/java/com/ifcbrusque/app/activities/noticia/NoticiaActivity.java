@@ -9,6 +9,7 @@ import android.webkit.WebView;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.ifcbrusque.app.R;
+import com.ifcbrusque.app.data.AppDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +39,7 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Presenter
-        presenter = new NoticiaPresenter(this, getIntent().getExtras());
+        presenter = new NoticiaPresenter(this, getIntent().getExtras(), AppDatabase.getDbInstance(this.getApplicationContext()));
     }
 
     @Override
