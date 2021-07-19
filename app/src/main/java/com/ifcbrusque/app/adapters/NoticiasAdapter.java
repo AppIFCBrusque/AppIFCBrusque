@@ -52,6 +52,9 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(previews.get(position).getDescricao() + " [...]\n" + NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
         if(previews.get(position).getUrlImagemPreview().length() > 0) {
             holder.ivPreview.setImageURI(getUriArmazenamentoImagem(previews.get(position).getUrlImagemPreview(), context));
+        } else {
+            //Sem imagem, definir imagem padrão
+            holder.ivPreview.setImageResource(R.drawable.ic_launcher_background);
         }
     }
 

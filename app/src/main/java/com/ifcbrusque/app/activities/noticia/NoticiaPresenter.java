@@ -19,7 +19,9 @@ import static com.ifcbrusque.app.data.Converters.*;
 
 public class NoticiaPresenter  {
     final private String TAG = "[DEBUGA]";
-    final private Pattern pattern = Pattern.compile("-[0-9]{1,4}x[0-9]{1,4}"); //Regex para encontrar imagens redimensionadas
+
+    //Regex para encontrar imagens redimensionadas
+    final private Pattern pattern = Pattern.compile("-[0-9]{1,4}x[0-9]{1,4}");
 
     private View view;
 
@@ -57,19 +59,30 @@ public class NoticiaPresenter  {
         boolean contemPreview = false;
         //Ajustar imagens
         Elements imgs = doc.getElementsByTag("img");
-        imgs.attr("style", "width: 100%; height: auto;"); //Ocupar o espaço horizontal inteiro
         imgs.after("<br>"); //Espaçamento
         for(Element img : imgs) {
+            //Tamanho das imagens
+            if(!img.className().equals("CToWUd")) { //As imagens com essa classe precisam permanecer no tamanho original -> imagens pequenas do "Graduação em Química Licenciatura, inscreva-se!"
+                img.attr("style", "width: 100%; height: auto;"); //Ocupar o espaço horizontal inteiro
+            } else {
+                img.before("<br>");
+            }
+
             //Conferir se já tem o preview no meio da notícia
-            String src = pattern.matcher(img.attr("src")).replaceFirst("");
-            if(src.equals(preview.getUrlImagemPreview())) contemPreview = true;
+            String srcSemExtensao = pattern.matcher(img.attr("src")).replaceFirst("").replace(".jpeg", "").replace(".png", "").replace(".jpg", "");
+            String previewSemExtensao = preview.getUrlImagemPreview().replace(".jpeg", "").replace(".png", "").replace(".jpg", "");
+
+            if(srcSemExtensao.contains(previewSemExtensao) || previewSemExtensao.contains(srcSemExtensao)) contemPreview = true;
+            //Log.d(TAG, "formatarCorpoNoticia: " + src + "\n" + preview.getUrlImagemPreview() + "\n" + src.contains(preview.getUrlImagemPreview().replace(".jpeg", "").replace(".png", "").replace(".jpg", "")) + "\n" + );
             //TODO: Também dava para usar o regex pra limpar o url do preview em si
         }
 
         doc.getElementsByTag("body").first().before("<h3 class=\"titulo\">" + preview.getTitulo() + "</h3>"); //Título no topo
         doc.getElementsByClass("titulo").get(0).after("<p class=\"data\">" + NoticiasParser.FORMATO_DATA.format(preview.getDataNoticia()) + "</p>"); //Data abaixo do título TODO: formatar bonitinho isso também
+        doc.getElementsByClass("data").get(0).after("<hr class=\"barra_horizontal\"></hr>");
         //Preview abaixo da data (adiciona somente se já não está no texto)
-        if(!contemPreview && !preview.getUrlImagemPreview().equals("")) doc.getElementsByClass("data").get(0).after("<img class=\"preview\" src=\"" + preview.getUrlImagemPreview() + "\" style=\"width: 100%; height: auto;\">");
+        if(!contemPreview && !preview.getUrlImagemPreview().equals("")) doc.getElementsByClass("barra_horizontal").get(0).after("<br><img class=\"preview\" src=\"" + preview.getUrlImagemPreview() + "\" style=\"width: 100%; height: auto;\">");
+
 
         return doc.toString();
     }

@@ -109,11 +109,9 @@ public class NoticiasPresenter {
                     //TODO
                 })
                 .doOnNext(previews -> {
+                    isCarregandoPagina = false;
                     armazenarPreviewsNovos(previews);
                     salvarImagensInternet(previews, false);
-                })
-                .doOnComplete(() -> {
-                    isCarregandoPagina = false;
                 }).subscribe();
     }
     /*
