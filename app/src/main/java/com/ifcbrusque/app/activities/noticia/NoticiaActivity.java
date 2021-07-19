@@ -4,15 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.ifcbrusque.app.R;
 
 import org.jetbrains.annotations.NotNull;
 
 public class NoticiaActivity extends AppCompatActivity implements NoticiaPresenter.View {
     private NoticiaPresenter presenter;
+
     private WebView wv;
+    private CircularProgressIndicator pb;
 
     /*
     Chaves do Bundle
@@ -28,6 +32,7 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
         setContentView(R.layout.activity_noticia);
 
         wv = findViewById(R.id.wvNoticia);
+        pb = findViewById(R.id.pbCircularNoticia);
 
         //Ativar botão de voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,5 +55,15 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
     @Override
     public void carregarHtmlWebView(String html) {
         wv.loadData(html, "text/html", "UTF-8");
+    }
+
+    @Override
+    public void esconderProgressBar() {
+        pb.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void mostrarProgressBar() {
+        pb.setVisibility(View.VISIBLE);
     }
 }

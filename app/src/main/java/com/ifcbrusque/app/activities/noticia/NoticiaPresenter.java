@@ -40,6 +40,7 @@ public class NoticiaPresenter  {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private void getNoticia() {
+        view.mostrarProgressBar();
         campus.getNoticia(preview)
                 .doOnError(e -> {
                     //TODO
@@ -48,6 +49,7 @@ public class NoticiaPresenter  {
                     //TODO: armazenar a noticia
                     //armazenarPreviewsNovos(previews);
                     //salvarImagensInternet(previews, false);
+                    view.esconderProgressBar();
                     view.carregarHtmlWebView(formatarCorpoNoticia(noticia.getHtmlConteudo()));
                 }).subscribe();
     }
@@ -99,5 +101,9 @@ public class NoticiaPresenter  {
         Métodos utilizados aqui para atualizar a view
          */
         void carregarHtmlWebView(String html);
+
+        void esconderProgressBar();
+
+        void mostrarProgressBar();
     }
 }

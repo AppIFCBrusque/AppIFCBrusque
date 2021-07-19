@@ -112,12 +112,14 @@ public class NoticiasPresenter {
      */
     private void getPaginaNoticias(int pagina) {
         isCarregandoPagina = true;
+        view.mostrarProgressBar();
         campus.getPaginaNoticias(pagina)
                 .doOnError(e -> {
                     //TODO
                 })
                 .doOnNext(previews -> {
                     isCarregandoPagina = false;
+                    view.esconderProgressBar();
                     if(previews.size() > 0) {
                         armazenarPreviewsNovos(previews);
                         salvarImagensInternet(previews, false);
@@ -207,5 +209,9 @@ public class NoticiasPresenter {
         void atualizarImagemRecyclerView(int index);
 
         void setRecyclerViewPosition(int index);
+
+        void esconderProgressBar();
+
+        void mostrarProgressBar();
     }
 }

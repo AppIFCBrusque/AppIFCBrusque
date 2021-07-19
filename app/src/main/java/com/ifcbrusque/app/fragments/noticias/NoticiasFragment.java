@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,8 @@ import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;
+
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.Converters.*;
@@ -36,8 +39,12 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     private NoticiasAdapter noticiasAdapter;
     private LinearLayoutManager layoutManager;
 
+    private MaterialProgressBar pb;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        pb = getActivity().findViewById(R.id.pbHorizontalHome);
+
         presenter = new NoticiasPresenter(this, new ImageManager(this.getContext()), new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()));
 
         //Inflar este fragmento
@@ -65,7 +72,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
     /*
     Quando sai do fragmento (manter posição atual)
-     */
+    */
     @Override
     public void onPause() {
         super.onPause();
@@ -87,8 +94,6 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
      */
     @Override
     public void onPreviewClick(int position) {
-
-
         Preview preview = presenter.getPreviewsArmazenados().get(position);
 
         Intent intentNoticia = new Intent(getActivity(), NoticiaActivity.class);
@@ -115,5 +120,15 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     @Override
     public void setRecyclerViewPosition(int index) {
         layoutManager.scrollToPosition(index);
+    }
+
+    @Override
+    public void esconderProgressBar() {
+        pb.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void mostrarProgressBar() {
+        pb.setVisibility(View.VISIBLE);
     }
 }

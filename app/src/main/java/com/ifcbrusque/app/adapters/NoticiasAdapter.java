@@ -3,7 +3,9 @@ package com.ifcbrusque.app.adapters;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.color.MaterialColors;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.helpers.noticia.NoticiasParser;
 import com.ifcbrusque.app.models.Preview;
@@ -28,13 +31,15 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
     private OnPreviewListener mOnPreviewListener;
     Context context;
 
-    private final int colorFrom = Color.WHITE;
+    private int colorFrom;
     private final int colorTo = Color.BLUE;
 
     public NoticiasAdapter(Context context, List<Preview> previews, OnPreviewListener onPreviewListener) {
         this.context = context;
         this.previews = previews;
         this.mOnPreviewListener = onPreviewListener;
+
+        colorFrom = MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE);
     }
 
     @NonNull
@@ -113,7 +118,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
                 colorAnimation.start();
             } else if(event.getAction() == MotionEvent.ACTION_CANCEL) { //Reseta a animação
                 colorAnimation.end();
-                v.setBackgroundColor(Color.WHITE);
+                v.setBackgroundColor(colorFrom);
             }
             return false;
         }
