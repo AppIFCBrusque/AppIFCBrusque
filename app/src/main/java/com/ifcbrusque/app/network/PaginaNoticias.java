@@ -1,19 +1,19 @@
-package com.ifcbrusque.app.helpers.noticia;
+package com.ifcbrusque.app.network;
+
+import android.content.Context;
 
 import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.ifcbrusque.app.helpers.noticia.NoticiasParser.*;
+import static com.ifcbrusque.app.helpers.NoticiasParser.*;
 
 /*
 Funções para obter as notícias da página de internet do campus
@@ -23,8 +23,10 @@ public class PaginaNoticias {
 
     private OkHttpClient client;
 
-    public PaginaNoticias() {
-        client = new OkHttpClient();
+    public PaginaNoticias(Context context) {
+        client = new OkHttpClient.Builder()
+        .addInterceptor(new NetworkInterceptor(context))
+        .build();
     }
 
     public OkHttpClient getClient() {return client;}
@@ -41,20 +43,29 @@ public class PaginaNoticias {
     }
 
     /*
-    Cria um observable para obter a lista de notícias (previews) do site do campus
+    Obtém a lista de notícias (previews) do site do campus
+
+    Retorna null se acontecer algum erro
      */
-    public Observable<ArrayList<Preview>> getPaginaNoticias(int numeroPagina) {
-        return Observable.defer(() -> {
-            return Observable.just(objetosPreview(GET(urlBase + numeroPagina, client)));
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public ArrayList<Preview> getPaginaNoticias(int numeroPagina) throws IOException, ParseException {
+        Response r = null;
+
+        r = GET(urlBase + numeroPagina, client);
+
+        return (r != null) ? objetosPreview(r) : null;
     }
+
 
     /*
     Obtém uma notícia do site do campus
+
+    Retorna null se acontecer algum erro
      */
     public Noticia getNoticia(Preview preview) throws IOException {
-        return objetoNoticia(GET(preview.getUrlNoticia(), client), preview);
+        Response r = null;
+
+        r = GET(preview.getUrlNoticia(), client);
+
+        return (r != null) ? objetoNoticia(r, preview) : null;
     }
 }

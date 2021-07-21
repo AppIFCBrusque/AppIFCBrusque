@@ -3,9 +3,7 @@ package com.ifcbrusque.app.adapters;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.color.MaterialColors;
 import com.ifcbrusque.app.R;
-import com.ifcbrusque.app.helpers.noticia.NoticiasParser;
+import com.ifcbrusque.app.helpers.NoticiasParser;
 import com.ifcbrusque.app.models.Preview;
 
 import java.util.List;

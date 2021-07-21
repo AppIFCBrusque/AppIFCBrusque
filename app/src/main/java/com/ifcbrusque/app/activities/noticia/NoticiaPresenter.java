@@ -1,7 +1,6 @@
 package com.ifcbrusque.app.activities.noticia;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,8 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.helpers.noticia.NoticiasParser;
-import com.ifcbrusque.app.helpers.noticia.PaginaNoticias;
+import com.ifcbrusque.app.helpers.NoticiasParser;
+import com.ifcbrusque.app.network.PaginaNoticias;
 import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
 
@@ -18,19 +17,13 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.Converters.*;
 
-import static com.ifcbrusque.app.activities.MainActivity.TAG;
-
 public class NoticiaPresenter  {
-    //Regex para encontrar imagens redimensionadas
-    final private Pattern patternRedimensionamento = Pattern.compile("-[0-9]{1,4}x[0-9]{1,4}");
-    final private Pattern patternCaminho = Pattern.compile("wp-content/uploads/sites/[0-9]{1,2}/");
-
     private View view;
 
     private Preview preview;
@@ -39,45 +32,63 @@ public class NoticiaPresenter  {
     private PaginaNoticias campus;
     private AppDatabase db;
 
-    public NoticiaPresenter(NoticiaPresenter.View view, Bundle bundle, AppDatabase db) {
+    /*
+    Regex utilizado no getCaminhoImagem para limpar o caminho das imaegns
+     */
+    final private Pattern patternRedimensionamento = Pattern.compile("-[0-9]{1,4}x[0-9]{1,4}");
+    final private Pattern patternCaminho = Pattern.compile("wp-content/uploads/sites/[0-9]{1,2}/");
+
+    public NoticiaPresenter(NoticiaPresenter.View view, Bundle bundle, AppDatabase db, PaginaNoticias campus) {
         this.view = view;
         this.db = db;
-        campus = new PaginaNoticias();
+        this.campus = campus;
+        this.noticia = null;
 
         preview = new Preview(bundle.getString(NOTICIA_TITULO), "", bundle.getString(NOTICIA_URL_IMAGEM_PREVIEW), bundle.getString(NOTICIA_URL), fromTimestamp(bundle.getLong(NOTICIA_DATA)));
 
         carregarNoticia();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void carregarNoticia() { //TODO: Talvez dê para organizar isso melhor
+    /*
+    Utilizado para carregar uma notícia (do banco de dados ou da internet), armazenar e mostrar na view
+     */
+    private void carregarNoticia() {
         view.mostrarProgressBar();
-        Completable.fromRunnable(() -> {
+
+        Observable.defer(() -> {
             noticia = db.noticiaDao().getNoticia(preview.getUrlNoticia()); //Consultar no banco de dados
 
             if(noticia == null) { //Não armazenada anteriormente -> obter da internet
                 try {
                     noticia = campus.getNoticia(preview);
                 } catch (IOException e) {
-                    ////
+                    /*
+                    Se acontecer algum erro, o noticia vai ser null
+                    */
                 }
-                db.noticiaDao().insert(noticia); //Armazenar
+                if(noticia != null) db.noticiaDao().insert(noticia); //Armazenar a notícia da internet
             }
-        }).subscribeOn(Schedulers.io())
+
+            return (noticia != null) ? Observable.just(true) : Observable.just(false);
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(e -> {
-                    //TODO
-                })
-                .doOnComplete(() -> {
-                    view.carregarHtmlWebView(formatarCorpoNoticia(noticia.getHtmlConteudo()));
+                .doOnNext(carregou -> {
                     view.esconderProgressBar();
-                })
-                .subscribe();
+
+                    if(carregou) { //Carregou normalmente
+                        view.carregarHtmlWebView(formatarCorpoNoticia(noticia.getHtmlConteudo()));
+                        view.esconderProgressBar();
+                    } else { //Erro de conexão
+                        view.mostrarToast("ERRO DE CONEXÃO NOTICIAPRESENTER"); //////////////////////////////////////////
+                    }
+                }).subscribe();
     }
 
     /*
     Utilizado para formatar o conteúdo em HTML da notícia obtido do site do campus a um formato que se adeque melhor ao aplicativo
      */
-    private String formatarCorpoNoticia(String html) { //TODO: Deixar isso mais bonitinho
+    private String formatarCorpoNoticia(String html) { //TODO: Tenho que organizar isso melhor alguma hora
         Document doc = Jsoup.parse(html);
 
         doc.getElementsByTag("body").attr("style", "overflow-x: hidden; overflow-wrap: break-word;");
@@ -85,20 +96,19 @@ public class NoticiaPresenter  {
         boolean contemPreview = false;
         //Ajustar imagens
         Elements imgs = doc.getElementsByTag("img");
-        imgs.after("<br>"); //Espaçamento
+        imgs.after("<br>"); //Espaçamento depois das imagens
         for(Element img : imgs) {
             //Tamanho das imagens
             if(!img.className().equals("CToWUd")) { //As imagens com essa classe precisam permanecer no tamanho original -> imagens pequenas do "Graduação em Química Licenciatura, inscreva-se!"
                 img.attr("style", "width: 100%; height: auto;"); //Ocupar o espaço horizontal inteiro
             } else {
-                img.before("<br>");
+                img.before("<br>"); //Espaçamento antes nas imagens menores
             }
 
             //Conferir se já tem o preview no meio da notícia
             String srcImagem = getCaminhoImagem(img.attr("src"));
             String srcPreview = getCaminhoImagem(preview.getUrlImagemPreview());
             if(srcImagem.contains(srcPreview) || srcPreview.contains(srcImagem)) contemPreview = true;
-            //TODO: Também dava para usar o regex pra limpar o url do preview em si
         }
 
         doc.getElementsByTag("body").first().before("<h3 class=\"titulo\">" + preview.getTitulo() + "</h3>"); //Título no topo
@@ -111,13 +121,15 @@ public class NoticiaPresenter  {
     }
 
     /*
-    Utilizado para encontrar o "caminho" de uma imagem (tentar identificar se elas são iguais somente pelo link)
+    Utilizado para encontrar o "caminho" de uma imagem (usado para tentar identificar se elas são iguais somente pelo link)
+
+    Exemplo:
+    http://brusque.ifc.edu.br/wp-content/uploads/sites/2/2021/07/PNAEImagemBrusque.png -> 2021/07/PNAEImagemBrusque
      */
     private String getCaminhoImagem(String src) {
         String srcSemSite = src.replace("http://noticias.brusque.ifc.edu.br/", "").replace("http://noticias.ifc.edu.br/", "");
         String srcSemRedimensionamentoEFormato = patternRedimensionamento.matcher(srcSemSite).replaceFirst("").replace(".jpeg", "").replace(".png", "").replace(".jpg", "");
         String srcSemCaminho = patternCaminho.matcher(srcSemRedimensionamentoEFormato).replaceFirst("");
-        Log.d(TAG, "getCaminhoImagem: " + srcSemCaminho);
         return srcSemCaminho;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,5 +142,7 @@ public class NoticiaPresenter  {
         void esconderProgressBar();
 
         void mostrarProgressBar();
+
+        void mostrarToast(String texto);
     }
 }

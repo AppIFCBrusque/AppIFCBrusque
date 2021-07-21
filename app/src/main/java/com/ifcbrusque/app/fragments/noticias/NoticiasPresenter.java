@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.image.ImageManager;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
-import com.ifcbrusque.app.helpers.noticia.PaginaNoticias;
+import com.ifcbrusque.app.network.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +21,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import static com.ifcbrusque.app.helpers.image.ImageUtil.*;
 import static com.ifcbrusque.app.helpers.image.ImageUtil.redimensionarBitmap;
 import static java.util.stream.Collectors.toList;
-
-import static com.ifcbrusque.app.activities.MainActivity.TAG;
 
 /*
 Presenter dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
@@ -38,17 +38,21 @@ public class NoticiasPresenter {
     private boolean isCarregandoPagina;
     private boolean atingiuPaginaFinal;
 
-    public NoticiasPresenter(View view, ImageManager im, PreferencesHelper pref, AppDatabase db) {
+    private ArrayList<Preview> ultimosPreviewsCarregados;
+
+    public NoticiasPresenter(View view, ImageManager im, PreferencesHelper pref, AppDatabase db, PaginaNoticias campus) {
         this.view = view;
         this.im = im;
         this.pref = pref;
         this.db = db;
-        this.campus = new PaginaNoticias();
+        this.campus = campus;
 
         isCarregandoPagina = false;
         atingiuPaginaFinal = false;
         previewsArmazenados = new ArrayList<>();
         ultimaPaginaAcessada = pref.getUltimaPaginaNoticias();
+
+        ultimosPreviewsCarregados = null;
 
         Completable.fromRunnable(() -> {
             previewsArmazenados = db.previewDao().getAll();
@@ -112,23 +116,45 @@ public class NoticiasPresenter {
      */
     private void getPaginaNoticias(int pagina) {
         isCarregandoPagina = true;
+        ultimosPreviewsCarregados = null;
         view.mostrarProgressBar();
-        campus.getPaginaNoticias(pagina)
-                .doOnError(e -> {
-                    //TODO
-                })
-                .doOnNext(previews -> {
+
+        Observable.defer(() -> {
+            try {
+                ultimosPreviewsCarregados = campus.getPaginaNoticias(pagina);
+            } catch (IOException e) {
+                /*
+                Se acontecer algum erro, o ultimosPreviewsCarregados vai ser null
+                 */
+            } catch (ParseException e) {
+                ////////////////////////
+            }
+
+            return (ultimosPreviewsCarregados != null) ? Observable.just(true) : Observable.just(false);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(carregou -> {
                     isCarregandoPagina = false;
                     view.esconderProgressBar();
-                    if(previews.size() > 0) {
-                        armazenarPreviewsNovos(previews);
-                        salvarImagensInternet(previews, false);
-                    } else { //Cheogou na última página
-                        ultimaPaginaAcessada--;
-                        atingiuPaginaFinal = true;
+
+                    if(carregou) {
+                        if(ultimosPreviewsCarregados.size() > 0) { //Carregou previews
+                            view.esconderProgressBar();
+                            armazenarPreviewsNovos(ultimosPreviewsCarregados);
+                            salvarImagensInternet(ultimosPreviewsCarregados, false);
+                        } else { //Chegou na última página
+                            ultimaPaginaAcessada--;
+                            atingiuPaginaFinal = true;
+
+                            view.mostrarToast("ULTIMA PÁGINA"); //////////////////////////////////////////
+                        }
+                    } else { //Erro de conexão
+                        view.mostrarToast("ERRO DE CONEXÃO NOTICIASPRESENTER"); //////////////////////////////////////////
                     }
                 }).subscribe();
     }
+
     /*
     Utilizada para adicionar os previews NOVOS no banco de dados
      */
@@ -152,7 +178,7 @@ public class NoticiasPresenter {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(e -> {
-                    //TODO
+                    //TODO?
                 }).doOnComplete(() -> view.atualizarRecyclerView(previewsArmazenados))
                 .subscribe();
     }
@@ -213,5 +239,7 @@ public class NoticiasPresenter {
         void esconderProgressBar();
 
         void mostrarProgressBar();
+
+        void mostrarToast(String texto);
     }
 }

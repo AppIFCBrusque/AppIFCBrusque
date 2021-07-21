@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.AppDatabase;
+import com.ifcbrusque.app.network.PaginaNoticias;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +41,7 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Presenter
-        presenter = new NoticiaPresenter(this, getIntent().getExtras(), AppDatabase.getDbInstance(this.getApplicationContext()));
+        presenter = new NoticiaPresenter(this, getIntent().getExtras(), AppDatabase.getDbInstance(this.getApplicationContext()), new PaginaNoticias(getApplicationContext()));
     }
 
     @Override
@@ -66,5 +68,10 @@ public class NoticiaActivity extends AppCompatActivity implements NoticiaPresent
     @Override
     public void mostrarProgressBar() {
         pb.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void mostrarToast(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 }
