@@ -16,7 +16,6 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.helpers.image.ImageManager;
 import com.ifcbrusque.app.network.PaginaNoticias;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
@@ -46,7 +45,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
                              ViewGroup container, Bundle savedInstanceState) {
         pb = getActivity().findViewById(R.id.pbHorizontalHome);
 
-        presenter = new NoticiasPresenter(this, new ImageManager(this.getContext()), new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()), new PaginaNoticias(this.getContext()));
+        presenter = new NoticiasPresenter(this, new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()), new PaginaNoticias(this.getContext()));
 
         //Inflar este fragmento
         View root = inflater.inflate(R.layout.fragment_noticias, container, false);
@@ -111,11 +110,6 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     public void atualizarRecyclerView(List<Preview> previews) {
         noticiasAdapter.previews = previews;
         noticiasAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void atualizarImagemRecyclerView(int index) {
-        if (noticiasAdapter.previews.size() > index) noticiasAdapter.notifyItemChanged(index); //Sem esse if, ele pode tentar atualizar um item que ainda não foi inserido na recycler view, crashando o aplicativo
     }
 
     @Override

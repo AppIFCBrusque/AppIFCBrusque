@@ -18,10 +18,9 @@ import com.google.android.material.color.MaterialColors;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.helpers.NoticiasParser;
 import com.ifcbrusque.app.models.Preview;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import static com.ifcbrusque.app.helpers.image.ImageManager.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
 
@@ -54,10 +53,16 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         if(previews.get(position).getTitulo().length() > 0) holder.tvTitulo.setText(previews.get(position).getTitulo());
         if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(previews.get(position).getDescricao() + " [...]\n" + NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
         if(previews.get(position).getUrlImagemPreview().length() > 0) {
-            holder.ivPreview.setImageURI(getUriArmazenamentoImagem(previews.get(position).getUrlImagemPreview(), context));
+            Picasso.get()
+                    .load(previews.get(position).getUrlImagemPreview())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(holder.ivPreview);
         } else {
             //Sem imagem, definir imagem padrão
-            holder.ivPreview.setImageResource(R.drawable.ic_launcher_background);
+            Picasso.get()
+                    .load(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(holder.ivPreview);
         }
     }
 
