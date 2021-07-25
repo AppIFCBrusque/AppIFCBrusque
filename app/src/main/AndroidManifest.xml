@@ -18,6 +18,8 @@
             android:name=".activities.noticia.NoticiaActivity"
             android:label=""
             android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
             ></activity>
         <activity
             android:name=".activities.HomeActivity"
@@ -30,7 +32,6 @@
             android:theme="@style/Theme.IFCBrusque.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

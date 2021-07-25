@@ -10,4 +10,6 @@ public class PreferenceValues {
     public static String NOTICIAS_ULTIMA_PAGINA_ACESSADA = "NOTICIAS_ULTIMA_PAGINA_ACESSADA";
 
     public static String NOTICIAS_PREVIEW_NO_TOPO = "NOTICIAS_PREVIEW_NO_TOPO";
+
+    public static String NOTIFICACOES_ULTIMO_ID = "NOTIFICACOES_ULTIMO_ID";
 }

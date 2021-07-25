@@ -1,13 +1,20 @@
 package com.ifcbrusque.app.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.stacked.sigaa_ifc.*;
+
+import static com.ifcbrusque.app.helpers.NotificationsHelper.criarCanalNotificacoes;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -17,49 +24,27 @@ public class MainActivity extends AppCompatActivity {
 
     int requestCodeLogin = 1;
 
+    private Sessao sessao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        criarCanalNotificacoes(this);
+
         PreferencesHelper pref = new PreferencesHelper(this.getApplicationContext());
 
-        if(pref.getLoginSIGAA() != "" && pref.getSenhaSIGAA() != "") {
+        Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
+        MainActivity.this.startActivity(intentHome);
+
+        //
+
+        /*if(pref.getLoginSIGAA() != "" && pref.getSenhaSIGAA() != "") {
             //Já logado uma vez (ir para a home)
             Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
             MainActivity.this.startActivity(intentHome);
 
-            //TODO
-
             //TODO: Inicializar caso não tenha
-
-            //SIGAAHelper sigaa = new SIGAAHelper(this.getApplicationContext());
-            //DatabaseManager db = new DatabaseManager(this.getApplicationContext());
-
-            //(DELETAR DEPOIS) TESTE NOTICIAS
-            /*
-            NoticiasHelper noticias = new NoticiasHelper();
-            noticias.getPaginaNoticias(14)
-                    .doOnNext(previews -> {
-                        for(Preview p : previews) {
-                            System.out.println("NOTICIAS PREVIEW: " + p.getTitulo());
-                        }
-                        noticias.getNoticia(previews.get(1))
-                        .doOnNext(noticia -> {
-                            System.out.println("NOTICIAS NOTICIA: " + noticia.getTitulo() + "\n" + noticia.getHtml());
-                        })
-                        .subscribe();
-                    })
-                    .subscribe();*/
-
-            /*(DELETAR DEEPOIS) TESTE SIGAA
-            sigaa.getTodasAtividades()
-                    .doOnNext(atv -> {
-                        for(Tarefa t : atv.getTarefas()) {
-                            System.out.println("Debug API: " + t.getTitulo());
-                        }
-                    })
-                    .subscribe();*/
-
         } else {
             //Nunca logado/sessão encerrada (ir para o login)
             Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
@@ -67,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
             //Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
             //MainActivity.this.startActivityForResult(intentLogin, requestCodeLogin);
-        }
+        }*/
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ifcbrusque.app.fragments.noticias;
 
 import com.ifcbrusque.app.data.AppDatabase;
+import com.ifcbrusque.app.helpers.NotificationsHelper;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.network.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
@@ -24,6 +25,7 @@ public class NoticiasPresenter {
     private PaginaNoticias campus;
     private AppDatabase db;
     private PreferencesHelper pref;
+    private NotificationsHelper notf;
 
     private List<Preview> previewsArmazenados;
     private Integer ultimaPaginaAcessada;
@@ -32,11 +34,12 @@ public class NoticiasPresenter {
 
     private ArrayList<Preview> ultimosPreviewsCarregados;
 
-    public NoticiasPresenter(View view, PreferencesHelper pref, AppDatabase db, PaginaNoticias campus) {
+    public NoticiasPresenter(View view, PreferencesHelper pref, AppDatabase db, PaginaNoticias campus, NotificationsHelper notf) {
         this.view = view;
         this.pref = pref;
         this.db = db;
         this.campus = campus;
+        this.notf = notf;
 
         isCarregandoPagina = false;
         atingiuPaginaFinal = false;
@@ -133,6 +136,8 @@ public class NoticiasPresenter {
                         if(ultimosPreviewsCarregados.size() > 0) { //Carregou previews
                             view.esconderProgressBar();
                             armazenarPreviewsNovos(ultimosPreviewsCarregados);
+
+                            notf.notificarPreview(ultimosPreviewsCarregados.get(0));///////////////
                         } else { //Chegou na última página
                             ultimaPaginaAcessada--;
                             atingiuPaginaFinal = true;

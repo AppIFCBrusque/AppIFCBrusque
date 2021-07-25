@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SIGAAHelper { //TODO: Arrumar, comentar, static
-    private Sessao sessao = new Sessao("https://sig.ifc.edu.br/");
+    /*private Sessao sessao = new Sessao(context.getApplicationContext());
     private Context context;
 
     boolean conectado = false;
@@ -37,6 +37,7 @@ public class SIGAAHelper { //TODO: Arrumar, comentar, static
     Esse código tá horrível, mas as conexões com o SIGAA funcionariam tipo assim
 
      */
+    /*
     public Observable<Atividades> getTodasAtividades() {
         //TODO: Arrumar isso e o login. Acho que seria melhor ir retornando vários menores em vez de tudo de uma vez
         return Observable.fromCallable(() -> {
@@ -76,5 +77,5 @@ public class SIGAAHelper { //TODO: Arrumar, comentar, static
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()); //TODO Definir o erro na activity
-    }
+    }*/
 }

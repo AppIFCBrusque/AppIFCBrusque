@@ -42,4 +42,16 @@ public class PreferencesHelper {
     public Integer getPreviewTopo() {
         return pref.getInt(NOTICIAS_PREVIEW_NO_TOPO, 0);
     }
+
+    /**
+     * Retorna e automaticamente incrementa um id para as notificações
+     */
+    public Integer getUltimoIdNotificacoes() {
+        final int id = pref.getInt(NOTIFICACOES_ULTIMO_ID, 0);
+
+        editor.putInt(NOTIFICACOES_ULTIMO_ID, id+1);
+        editor.commit();
+
+        return id;
+    }
 }

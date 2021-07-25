@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     ///////////////////////////////////////////////////////////////////////////////
-    Sessao sessao = new Sessao("https://sig.ifc.edu.br/");
+    Sessao sessao = new Sessao(getApplicationContext());
     boolean retornoLogin = false;
 
 
@@ -60,13 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private void handleLoginError(Throwable e) {
         System.out.println("Debug API: " + e.getMessage());
 
-        if(e.getClass() == ExcecaoSIGAA.class) {
-            //SIGAA em manutenção, provavelmente
-            System.out.println("Debug API: sig manutencao");
-        } else if(e.getClass() == ExcecaoAPI.class) {
-            //Problema na API
-            System.out.println("Debug API: problema api");
-        }
+
     }
 
     private void handleLoginReturn() {
