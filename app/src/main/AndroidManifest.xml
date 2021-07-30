@@ -40,6 +40,17 @@
             android:label="LOGIN"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.IFCBrusque.NoActionBar" />
+
+        <service
+            android:name=".network.synchronization.SynchronizationService"
+            android:exported="false"/>
+
+        <receiver android:name=".network.synchronization.SynchronizationBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.ifcbrusque.app.ATUALIZAR_NOTICIAS"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

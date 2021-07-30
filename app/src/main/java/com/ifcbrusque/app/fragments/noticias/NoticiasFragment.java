@@ -1,24 +1,13 @@
 package com.ifcbrusque.app.fragments.noticias;
 
-import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,13 +20,9 @@ import com.ifcbrusque.app.helpers.NotificationsHelper;
 import com.ifcbrusque.app.network.PaginaNoticias;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
@@ -61,7 +46,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
                              ViewGroup container, Bundle savedInstanceState) {
         pb = getActivity().findViewById(R.id.pbHorizontalHome);
 
-        presenter = new NoticiasPresenter(this, new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()), new PaginaNoticias(this.getContext()), new NotificationsHelper(this.getContext()));
+        presenter = new NoticiasPresenter(this, new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()), new PaginaNoticias(this.getContext()));
 
         //Inflar este fragmento
         View root = inflater.inflate(R.layout.fragment_noticias, container, false);
@@ -149,5 +134,10 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     @Override
     public void mostrarToast(String texto) {
         Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void definirSincronizacaoPeriodicaNoticias() {
+        NotificationsHelper.definirSincronizacaoPeriodicaNoticias(this.getContext());
     }
 }

@@ -2,7 +2,9 @@ package com.ifcbrusque.app.helpers.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import static com.ifcbrusque.app.activities.MainActivity.TAG;
 import static com.ifcbrusque.app.helpers.preferences.PreferenceValues.*;
 
 public class PreferencesHelper {
@@ -47,11 +49,22 @@ public class PreferencesHelper {
      * Retorna e automaticamente incrementa um id para as notificações
      */
     public Integer getUltimoIdNotificacoes() {
-        final int id = pref.getInt(NOTIFICACOES_ULTIMO_ID, 0);
+        final int id = pref.getInt(NOTIFICACOES_ULTIMO_ID, 100);
 
         editor.putInt(NOTIFICACOES_ULTIMO_ID, id+1);
         editor.commit();
 
         return id;
+    }
+
+    /*
+    Utilizado para testes
+     */
+    public void incrementarVezesServico() {
+        final int vezes = pref.getInt(NOTIFICACOES_ULTIMO_ID, 0);
+        editor.putInt(NOTIFICACOES_ULTIMO_ID, vezes+1);
+        editor.commit();
+
+        Log.d(TAG, "incrementarVezesServico: serviço incrementado");
     }
 }

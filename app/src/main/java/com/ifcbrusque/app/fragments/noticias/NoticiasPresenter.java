@@ -1,19 +1,20 @@
 package com.ifcbrusque.app.fragments.noticias;
 
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.helpers.NotificationsHelper;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
+import com.ifcbrusque.app.network.synchronization.SynchronizationService;
 import com.ifcbrusque.app.network.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /*
@@ -25,36 +26,36 @@ public class NoticiasPresenter {
     private PaginaNoticias campus;
     private AppDatabase db;
     private PreferencesHelper pref;
-    private NotificationsHelper notf;
 
     private List<Preview> previewsArmazenados;
     private Integer ultimaPaginaAcessada;
+    private ArrayList<Preview> ultimosPreviewsCarregados;
     private boolean isCarregandoPagina;
     private boolean atingiuPaginaFinal;
 
-    private ArrayList<Preview> ultimosPreviewsCarregados;
+    private Disposable disposable;
 
-    public NoticiasPresenter(View view, PreferencesHelper pref, AppDatabase db, PaginaNoticias campus, NotificationsHelper notf) {
+    public NoticiasPresenter(View view, PreferencesHelper pref, AppDatabase db, PaginaNoticias campus) {
+        //Inicializar variáveis
         this.view = view;
         this.pref = pref;
         this.db = db;
         this.campus = campus;
-        this.notf = notf;
 
         isCarregandoPagina = false;
         atingiuPaginaFinal = false;
         previewsArmazenados = new ArrayList<>();
         ultimaPaginaAcessada = pref.getUltimaPaginaNoticias();
-
         ultimosPreviewsCarregados = null;
 
+        //Carregar previews salvos no BD e conferir primeira página de notícias
         Completable.fromRunnable(() -> {
             previewsArmazenados = db.previewDao().getAll();
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(e -> {
-            //TODO
-            }).doOnComplete(() -> {
+                    //TODO
+                }).doOnComplete(() -> {
             view.atualizarRecyclerView(previewsArmazenados);
             view.setRecyclerViewPosition(pref.getPreviewTopo());
 
@@ -67,7 +68,36 @@ public class NoticiasPresenter {
                 //Carregar primeira página para ver se tem algo novo
                 getPaginaNoticias(1);
             }
-            }).subscribe();
+
+            view.definirSincronizacaoPeriodicaNoticias();
+        }).subscribe();
+
+        //Se o serviço de sincronização estiver rodando e carregar novos previews, ele pode notificar este presenter para atualizar a recycler view
+        SynchronizationService.getObservable().subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                //Utilizado para não acumular observer (disposed quando a view é destruída)
+                disposable = d;
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                if(integer == SynchronizationService.OBSERVABLE_PREVIEWS_NOVOS) {
+                    //Atualizar a recycler view
+                    armazenarPreviewsNovos(new ArrayList<Preview>());
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                //////////////////////////
+            }
+
+            @Override
+            public void onComplete() {
+                //////////////////////////
+            }
+        });
     }
 
     boolean isCarregandoPagina() {
@@ -81,33 +111,40 @@ public class NoticiasPresenter {
     List<Preview> getPreviewsArmazenados() {
         return previewsArmazenados;
     }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    Quando sai do fragmento (manter posição atual)
+    /**
+    Quando sai do fragmento -> manter posição atual da recycler view, dar dispose no disposable do serviço de sincronização
      */
     void onDestroyView(int indexPreviewTopo) {
         pref.setPreviewTopo(indexPreviewTopo);
+
+        //Dar dispose no disposable que observa o serviço de sincronização
+        if(disposable != null) {
+            disposable.dispose();
+        }
     }
 
-    /*
-    Quando clica novamente já neste fragmento (voltar ao topo)
+    /**
+    Quando clica novamente já neste fragmento -> voltar ao topo da recycler view
      */
     void onPause() {
         pref.setPreviewTopo(0);
     }
 
-    /*
+    /**
     Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
      */
     void getProximaPaginaNoticias() {
         ultimaPaginaAcessada++;
         getPaginaNoticias(ultimaPaginaAcessada);
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
+    /**
     Utilizado por este presenter para obter alguma página específica de notícias
+     No fim, armazena os previews novos e atualiza a recycler view
      */
+    //TODO: Acho que dá para transformar a função do synchronizationservice em um observable static e utilizar no lugar disso (mesma coisa para o armazenarPreviewsNovos)
     private void getPaginaNoticias(int pagina) {
         isCarregandoPagina = true;
         ultimosPreviewsCarregados = null;
@@ -132,12 +169,10 @@ public class NoticiasPresenter {
                     isCarregandoPagina = false;
                     view.esconderProgressBar();
 
-                    if(carregou) {
-                        if(ultimosPreviewsCarregados.size() > 0) { //Carregou previews
+                    if (carregou) {
+                        if (ultimosPreviewsCarregados.size() > 0) { //Carregou previews
                             view.esconderProgressBar();
                             armazenarPreviewsNovos(ultimosPreviewsCarregados);
-
-                            notf.notificarPreview(ultimosPreviewsCarregados.get(0));///////////////
                         } else { //Chegou na última página
                             ultimaPaginaAcessada--;
                             atingiuPaginaFinal = true;
@@ -150,34 +185,21 @@ public class NoticiasPresenter {
                 }).subscribe();
     }
 
-    /*
+    /**
     Utilizada para adicionar os previews NOVOS no banco de dados
+     No fim, atualiza a recycler view com os previews no armazenamento
      */
     private void armazenarPreviewsNovos(List<Preview> previews) {
-        Completable.fromRunnable(() -> {
-            previewsArmazenados = db.previewDao().getAll(); //Atualizar para o mais recente
-
-            List<Preview> previewsNovos = new ArrayList<>();
-            for (Preview p : previews) { //Procurar os previews não armazenados
-                if (!previewsArmazenados.stream().filter(_p -> _p.getUrlNoticia().equals(p.getUrlNoticia())).findFirst().isPresent()) {
-                    previewsNovos.add(p);
-                }
-            }
-
-            if (previewsNovos.size() > 0) {
-                db.previewDao().insertAll(previewsNovos);
-                previewsArmazenados = db.previewDao().getAll();
-            }
-
-            pref.setUltimaPagina(ultimaPaginaAcessada); //Isso aqui é desnecessário pra quando carrega a primeira página além da primeira vez, mas não atrapalha
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(e -> {
-                    //TODO: Conferir se há algum erro que pode ocorrer no runnable, como não ter acesso ao banco de dados (?)
-                }).doOnComplete(() -> view.atualizarRecyclerView(previewsArmazenados))
-                .subscribe();
+        db.armazenarPreviewsNovos(previews, false)
+                .doOnNext(previewsNoArmazenamento -> {
+                    previewsArmazenados = previewsNoArmazenamento;
+                })
+                .doOnComplete(() -> {
+                    pref.setUltimaPagina(ultimaPaginaAcessada); //Isso aqui é desnecessário pra quando carrega a primeira página além da primeira vez, mas não atrapalha
+                    view.atualizarRecyclerView(previewsArmazenados);
+                }).subscribe();
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     public interface View {
         /*
         Métodos utilizados aqui para atualizar a view
@@ -191,5 +213,7 @@ public class NoticiasPresenter {
         void mostrarProgressBar();
 
         void mostrarToast(String texto);
+
+        void definirSincronizacaoPeriodicaNoticias();
     }
 }
