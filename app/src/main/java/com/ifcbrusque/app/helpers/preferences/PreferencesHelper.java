@@ -61,8 +61,8 @@ public class PreferencesHelper {
     Utilizado para testes
      */
     public void incrementarVezesServico() {
-        final int vezes = pref.getInt(NOTIFICACOES_ULTIMO_ID, 0);
-        editor.putInt(NOTIFICACOES_ULTIMO_ID, vezes+1);
+        final int vezes = pref.getInt(TESTE_SERVICO_VEZES, 0);
+        editor.putInt(TESTE_SERVICO_VEZES, vezes+1);
         editor.commit();
 
         Log.d(TAG, "incrementarVezesServico: serviço incrementado");
