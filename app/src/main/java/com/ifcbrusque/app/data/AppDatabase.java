@@ -10,6 +10,7 @@ import androidx.room.TypeConverters;
 import com.ifcbrusque.app.data.dao.LembreteDao;
 import com.ifcbrusque.app.data.dao.NoticiaDao;
 import com.ifcbrusque.app.data.dao.PreviewDao;
+import com.ifcbrusque.app.models.Lembrete;
 import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
 
@@ -20,7 +21,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-@Database(entities = {Preview.class, Noticia.class}, version = 2, exportSchema = false)
+@Database(entities = {Preview.class, Noticia.class, Lembrete.class}, version = 3, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PreviewDao previewDao();

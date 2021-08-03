@@ -25,7 +25,7 @@ public class Lembrete {
 
     private int estado;
     public final static int ESTADO_INCOMPLETO = 1;
-    public final static int COMPLETO = 2;
+    public final static int ESTADO_COMPLETO = 2;
 
     public Lembrete(int tipo, String titulo, String descricao, Date dataLembrete, long tempoRepeticao, int estado) {
         this.tipo = tipo;
@@ -38,4 +38,11 @@ public class Lembrete {
 
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
+
+    public int getTipo() {return tipo;}
+    public String getTitulo() {return titulo;}
+    public String getDescricao() {return descricao;}
+    public Date getDataLembrete() {return dataLembrete;}
+    public long getTempoRepeticao() {return tempoRepeticao;}
+    public int getEstado() {return estado;}
 }
