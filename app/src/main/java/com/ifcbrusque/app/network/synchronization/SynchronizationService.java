@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
-import com.ifcbrusque.app.network.PaginaNoticias;
+import com.ifcbrusque.app.models.PaginaNoticias;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;

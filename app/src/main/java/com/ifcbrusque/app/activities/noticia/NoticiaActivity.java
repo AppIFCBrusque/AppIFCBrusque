@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.network.PaginaNoticias;
+import com.ifcbrusque.app.models.PaginaNoticias;
 
 import org.jetbrains.annotations.NotNull;
 

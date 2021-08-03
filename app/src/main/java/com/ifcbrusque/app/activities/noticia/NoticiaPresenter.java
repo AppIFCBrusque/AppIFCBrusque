@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.NoticiasParser;
-import com.ifcbrusque.app.network.PaginaNoticias;
+import com.ifcbrusque.app.models.PaginaNoticias;
 import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;
 
@@ -85,6 +85,7 @@ public class NoticiaPresenter  {
                 }).subscribe();
     }
 
+    //TODO: Mover isto para outro lugar
     /*
     Utilizado para formatar o conteúdo em HTML da notícia obtido do site do campus a um formato que se adeque melhor ao aplicativo
      */

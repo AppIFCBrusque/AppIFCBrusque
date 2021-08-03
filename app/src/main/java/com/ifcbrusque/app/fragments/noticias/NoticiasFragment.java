@@ -17,7 +17,7 @@ import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.NotificationsHelper;
-import com.ifcbrusque.app.network.PaginaNoticias;
+import com.ifcbrusque.app.models.PaginaNoticias;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
 

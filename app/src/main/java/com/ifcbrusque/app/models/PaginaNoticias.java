@@ -1,9 +1,8 @@
-package com.ifcbrusque.app.network;
+package com.ifcbrusque.app.models;
 
 import android.content.Context;
 
-import com.ifcbrusque.app.models.Noticia;
-import com.ifcbrusque.app.models.Preview;
+import com.ifcbrusque.app.network.NetworkInterceptor;
 
 import java.io.IOException;
 import java.text.ParseException;

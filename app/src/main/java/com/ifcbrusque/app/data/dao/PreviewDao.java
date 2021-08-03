@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.data;
+package com.ifcbrusque.app.data.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
