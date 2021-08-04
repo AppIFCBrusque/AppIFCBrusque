@@ -20,8 +20,10 @@ public class Lembrete {
     private String descricao;
     @ColumnInfo(name = "data_lembrete")
     private Date dataLembrete;
+
     @ColumnInfo(name = "tempo_repeticao")
     private long tempoRepeticao;
+    public final static int REPETICAO_NAO_REPETIR = -1;
 
     private int estado;
     public final static int ESTADO_INCOMPLETO = 1;

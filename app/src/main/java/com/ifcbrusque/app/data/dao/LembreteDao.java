@@ -8,8 +8,13 @@ import androidx.room.Query;
 
 import com.ifcbrusque.app.models.Lembrete;
 
+import java.util.List;
+
 @Dao
 public interface LembreteDao {
+    @Query("SELECT * FROM lembrete_table ORDER BY data_lembrete ASC")
+    List<Lembrete> getAll();
+
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
     Lembrete getLembrete(int id);
 

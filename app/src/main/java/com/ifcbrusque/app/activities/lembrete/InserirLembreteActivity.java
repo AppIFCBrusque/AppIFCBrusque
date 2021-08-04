@@ -2,22 +2,29 @@ package com.ifcbrusque.app.activities.lembrete;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.ifcbrusque.app.R;
+import com.ifcbrusque.app.data.AppDatabase;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class InserirLembreteActivity extends AppCompatActivity implements InserirLembretePresenter.View, View.OnClickListener {
     private InserirLembretePresenter presenter;
 
+    TextInputLayout tiTitulo, tiDescricao;
     Button btnDatePicker, btnTimePicker;
+    FloatingActionButton fabCompleto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +33,25 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        tiTitulo = findViewById(R.id.tiTitulo);
+        tiDescricao = findViewById(R.id.tiDescricao);
         btnDatePicker = findViewById(R.id.btData);
         btnTimePicker = findViewById(R.id.btHora);
+        fabCompleto = findViewById(R.id.fabInserir);
 
-        presenter = new InserirLembretePresenter(this);
+        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()));
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+        fabCompleto.setOnClickListener(this);
 
-        //TODO 1: Salvar lembretes
-        //TODO 2: Abrir esta activity para editar um lembrete salvo
+        //TODO 1: Abrir esta activity para editar um lembrete salvo
     }
 
     @Override
     public void onClick(View v) {
         //Clique no botão da data
-        if (v == btnDatePicker) {
+        if(v == btnDatePicker) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -53,7 +63,7 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         }
 
         //Clique no botão da hora
-        if (v == btnTimePicker) {
+        if(v == btnTimePicker) {
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                     new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -62,6 +72,13 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
                         }
                     }, presenter.getHora(), presenter.getMinuto(), true);
             timePickerDialog.show();
+        }
+
+        //Clique no botão de inserir
+        if(v == fabCompleto) {
+            String titulo = tiTitulo.getEditText().getText().toString();
+            String descricao = tiDescricao.getEditText().getText().toString();
+            presenter.onCliqueInserir(titulo, descricao);
         }
     }
 
@@ -87,5 +104,16 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     public void mudarTextoBotaoHora(int hora, int minuto) {
         String texto = String.format("%02d", hora) + ":" + String.format("%02d", minuto);
         btnTimePicker.setText(texto);
+    }
+
+    @Override
+    public void mostrarToast(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void fecharActivity(boolean lembreteNovoInserido) {
+        finish();
+        //TODO: Atualizar o HomeFragment
     }
 }

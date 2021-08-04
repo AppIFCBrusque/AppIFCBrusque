@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -58,6 +59,14 @@ public abstract class AppDatabase extends RoomDatabase {
             }
 
             if(retornarPreviewsNovos) return Observable.just(previewsNovos); else return Observable.just(previewsNoArmazenamento);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable armazenarLembrete(Lembrete lembrete) {
+        return Completable.fromRunnable(() -> {
+            lembreteDao().insert(lembrete);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

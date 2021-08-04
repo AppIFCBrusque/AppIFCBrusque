@@ -1,14 +1,21 @@
 package com.ifcbrusque.app.activities.lembrete;
 
+import com.ifcbrusque.app.data.AppDatabase;
+import com.ifcbrusque.app.models.Lembrete;
+
 import java.util.Calendar;
+
+import static com.ifcbrusque.app.activities.MainActivity.TAG;
 
 public class InserirLembretePresenter {
     private View view;
+    private AppDatabase db;
 
     private int ano, mes, dia, hora, minuto;
 
-    public InserirLembretePresenter(View view) {
+    public InserirLembretePresenter(View view, AppDatabase db) {
         this.view = view;
+        this.db = db;
 
         final Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR, 1);
@@ -42,6 +49,13 @@ public class InserirLembretePresenter {
         return minuto;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void armazenarLembrete(Lembrete lembrete) {
+        db.armazenarLembrete(lembrete)
+                .doOnComplete(() -> {
+                    view.fecharActivity(true);
+                }).subscribe();
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     public void onDataSelecionada(int ano, int mes, int dia) {
         this.ano = ano;
         this.mes = mes;
@@ -55,6 +69,22 @@ public class InserirLembretePresenter {
         view.mudarTextoBotaoHora(this.hora, this.minuto);
     }
 
+    public void onCliqueInserir(String titulo, String descricao) {
+        if(titulo.length() > 0) {
+            if(!(descricao.length() > 0)) {
+                descricao = "";
+            }
+
+            final Calendar c = Calendar.getInstance();
+            c.set(ano, mes, dia, hora, minuto);
+
+            Lembrete lembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, titulo, descricao, c.getTime(), Lembrete.REPETICAO_NAO_REPETIR, Lembrete.ESTADO_INCOMPLETO);
+            armazenarLembrete(lembrete);
+        } else {
+            view.mostrarToast("Informe um título ao lembrete");
+        }
+    }
+
     public interface View {
         /*
         Métodos utilizados aqui para atualizar a view
@@ -62,5 +92,9 @@ public class InserirLembretePresenter {
         void mudarTextoBotaoData(int ano, int mes, int dia);
 
         void mudarTextoBotaoHora(int hora, int minuto);
+
+        void mostrarToast(String texto);
+
+        void fecharActivity(boolean lembreteNovoInserido);
     }
 }
