@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,29 +27,34 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.ifcbrusque.app.activities.MainActivity.TAG;
 
-public class HomeFragment extends Fragment {
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+public class HomeFragment extends Fragment implements HomePresenter.View, View.OnClickListener {
+    private HomePresenter presenter;
+
+    private FloatingActionButton fabNovoLembrete;
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        FloatingActionButton inserir = root.findViewById(R.id.fabCompleto);
-        inserir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Acho melhor fazer a inserção de lembretes em outra activity
-                Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
-                startActivity(intentLembrete);
 
-                /*
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.nav_host_fragment,new InsereTarefas())
-                        .commit();*/
-            }
-        });
+        fabNovoLembrete = root.findViewById(R.id.fabNovoLembrete);
 
-        exibirLembretesSalvos();
+        presenter = new HomePresenter(this, AppDatabase.getDbInstance(getContext().getApplicationContext()));
+
+        fabNovoLembrete.setOnClickListener(this);
+
+        //exibirLembretesSalvos();
 
         return root;
+    }
+
+    //Implementar as funções de on click
+    @Override
+    public void onClick(View v) {
+        //Clique no botão de inserir lembrete
+        if(v == fabNovoLembrete) {
+            //Abrir a activity para inserir um lembrete
+            Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
+            startActivity(intentLembrete);
+        }
     }
 
     void exibirLembretesSalvos() {
@@ -63,6 +69,11 @@ public class HomeFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+    }
+
+    @Override
+    public void mostrarToast(String texto) {
+        Toast.makeText(getContext(), texto, Toast.LENGTH_SHORT).show();
     }
 }
 

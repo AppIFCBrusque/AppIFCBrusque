@@ -48,6 +48,7 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         //TODO 1: Abrir esta activity para editar um lembrete salvo
     }
 
+    //Implementar as funções de on click
     @Override
     public void onClick(View v) {
         //Clique no botão da data

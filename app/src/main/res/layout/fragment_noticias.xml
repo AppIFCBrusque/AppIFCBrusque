@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary"
+    android:background="?android:attr/colorBackground"
     tools:context=".fragments.noticias.NoticiasFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="always"
+        android:paddingTop="@dimen/padding_views_dobro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="80dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

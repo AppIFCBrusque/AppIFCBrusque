@@ -2,10 +2,7 @@ package com.ifcbrusque.app.activities.lembrete;
 
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.models.Lembrete;
-
 import java.util.Calendar;
-
-import static com.ifcbrusque.app.activities.MainActivity.TAG;
 
 public class InserirLembretePresenter {
     private View view;

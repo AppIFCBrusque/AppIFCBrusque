@@ -4,11 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="3dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginEnd="3dp"
-    android:layout_marginBottom="1dp"
-    android:background="?attr/colorOnPrimary">
+    android:paddingHorizontal="@dimen/padding_views"
+    android:background="?attr/colorOnPrimary"><![CDATA[
 
 
     android:id="@+id/cardView"
@@ -18,48 +15,49 @@
     app:layout_constraintTop_toTopOf="parent"
     tools:layout_editor_absoluteX="3dp">
 
+
+
+
+
+    ]]>
+
     <TextView
         android:id="@+id/noticia_titulo"
+        style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="15dp"
-        android:paddingTop="15dp"
-        android:paddingEnd="15dp"
-        android:paddingBottom="7dp"
+        android:paddingTop="@dimen/padding_views"
+        android:paddingHorizontal="@dimen/padding_views"
         android:text="@string/noticia_titulo_padrao"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="26sp"
-        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/noticia_imagem"
+        app:layout_constraintTop_toTopOf="@+id/noticia_imagem"
+        tools:text="Título não disponível Título não disponível Título não disponível Título não disponível Título não disponível Título não disponível " />
 
     <TextView
         android:id="@+id/noticia_previa"
+        style="@style/TextAppearance.Secundario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity=""
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:paddingBottom="15dp"
+        android:paddingHorizontal="@dimen/padding_views"
+        android:paddingBottom="@dimen/padding_views"
         android:text="@string/noticia_descricao_padrao"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp"
-        android:textStyle="normal"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noticia_titulo"></TextView>
+        app:layout_constraintStart_toEndOf="@+id/noticia_imagem"
+        app:layout_constraintTop_toBottomOf="@+id/noticia_titulo"
+        tools:text="Descrição não disponível Descrição não disponível Descrição não disponível Descrição não disponível "></TextView>
 
     <ImageView
         android:id="@+id/noticia_imagem"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noticia_previa"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background"
-        tools:srcCompat="@drawable/ic_launcher_background" />
+        tools:srcCompat="@drawable/ic_launcher_background"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

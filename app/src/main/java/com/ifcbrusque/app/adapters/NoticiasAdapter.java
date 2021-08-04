@@ -51,7 +51,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull NoticiasAdapter.ViewHolder holder, int position) {
         if(previews.get(position).getTitulo().length() > 0) holder.tvTitulo.setText(previews.get(position).getTitulo());
-        if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(previews.get(position).getDescricao() + " [...]\n" + NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
+        if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
         if(previews.get(position).getUrlImagemPreview().length() > 0) {
             Picasso.get()
                     .load(previews.get(position).getUrlImagemPreview())
