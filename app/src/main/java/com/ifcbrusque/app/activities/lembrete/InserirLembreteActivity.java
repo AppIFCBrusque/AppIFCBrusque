@@ -26,6 +26,8 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     Button btnDatePicker, btnTimePicker;
     FloatingActionButton fabCompleto;
 
+    public static final String EXTRAS_LEMBRETE_ADICIONADO = "EXTRAS_LEMBRETE_ADICIONADO";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +116,9 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
 
     @Override
     public void fecharActivity(boolean lembreteNovoInserido) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRAS_LEMBRETE_ADICIONADO, lembreteNovoInserido);
+        setResult(RESULT_OK, intent);
         finish();
-        //TODO: Atualizar o HomeFragment
     }
 }

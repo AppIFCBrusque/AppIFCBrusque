@@ -43,8 +43,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
     private MaterialProgressBar pb;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         pb = getActivity().findViewById(R.id.pbHorizontalHome);
 
         presenter = new NoticiasPresenter(this, new PreferencesHelper(this.getContext()), AppDatabase.getDbInstance(this.getContext().getApplicationContext()), new PaginaNoticias(this.getContext()));

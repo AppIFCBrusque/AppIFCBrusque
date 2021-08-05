@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/padding_views"
         android:paddingBottom="@dimen/padding_views"
-        android:text="@string/noticia_data_padrao"
+        android:text="00/00/00"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/noticia_imagem"
