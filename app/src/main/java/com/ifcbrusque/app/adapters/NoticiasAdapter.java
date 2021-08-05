@@ -50,8 +50,16 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull NoticiasAdapter.ViewHolder holder, int position) {
+        if(position == 0) {
+            //Adicionar o espaçamento extra em cima
+            int padding_views = (int) context.getResources().getDimension(R.dimen.padding_views);
+            int padding_views_dobro = (int) context.getResources().getDimension(R.dimen.padding_views_dobro);
+            holder.itemView.setPadding(padding_views, padding_views_dobro, padding_views, 0);
+        }
+
         if(previews.get(position).getTitulo().length() > 0) holder.tvTitulo.setText(previews.get(position).getTitulo());
-        if(previews.get(position).getDescricao().length() > 0) holder.tvPrevia.setText(NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
+        holder.tvData.setText(NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
+
         if(previews.get(position).getUrlImagemPreview().length() > 0) {
             Picasso.get()
                     .load(previews.get(position).getUrlImagemPreview())
@@ -72,7 +80,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
-        TextView tvTitulo, tvPrevia;
+        TextView tvTitulo, tvData;
         ImageView ivPreview;
         OnPreviewListener onPreviewListener;
         ValueAnimator colorAnimation;
@@ -80,7 +88,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         public ViewHolder(@NonNull View itemView, OnPreviewListener onPreviewListener) {
             super(itemView);
             tvTitulo = itemView.findViewById(R.id.noticia_titulo);
-            tvPrevia = itemView.findViewById(R.id.noticia_previa);
+            tvData = itemView.findViewById(R.id.noticia_data);
             ivPreview = itemView.findViewById(R.id.noticia_imagem);
             this.onPreviewListener = onPreviewListener;
 

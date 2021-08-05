@@ -16,7 +16,7 @@
     <string name="title_noticias">Notícias</string>
 
     <string name="noticia_titulo_padrao">Título não disponível</string>
-    <string name="noticia_descricao_padrao">Descrição não disponível.</string>
+    <string name="noticia_data_padrao">00/00/0000.</string>
 
     <string name="channel_title">APP IFC Brusuque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>

@@ -1,5 +1,7 @@
 package com.ifcbrusque.app.fragments.noticias;
 
+import android.util.Log;
+
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.network.synchronization.SynchronizationService;
@@ -180,6 +182,7 @@ public class NoticiasPresenter {
                             view.mostrarToast("ULTIMA PÁGINA"); //////////////////////////////////////////
                         }
                     } else { //Erro de conexão
+                        ultimaPaginaAcessada--;
                         view.mostrarToast("ERRO DE CONEXÃO NOTICIASPRESENTER"); //////////////////////////////////////////
                     }
                 }).subscribe();
