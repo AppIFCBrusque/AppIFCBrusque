@@ -5,13 +5,14 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
 import com.ifcbrusque.app.models.Lembrete;
-
 import java.util.List;
 
 @Dao
 public interface LembreteDao {
+    /*
+    Funções para utilizar os lembretes no banco de dados
+     */
     @Query("SELECT * FROM lembrete_table ORDER BY data_lembrete ASC")
     List<Lembrete> getAll();
 

@@ -5,11 +5,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
 import com.ifcbrusque.app.models.Noticia;
 
 @Dao
 public interface NoticiaDao {
+    /*
+    Funções para utilizar as notícias no banco de dados
+     */
     @Query("SELECT * FROM noticia_table WHERE url = :url")
     Noticia getNoticia(String url);
 

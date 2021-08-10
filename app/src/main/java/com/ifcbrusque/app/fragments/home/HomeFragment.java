@@ -2,7 +2,6 @@ package com.ifcbrusque.app.fragments.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     private LinearLayoutManager layoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //Iniciar variáveis
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         fabNovoLembrete = root.findViewById(R.id.fabNovoLembrete);
@@ -50,14 +50,15 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
         noticiasAdapter = new HomeAdapter(this.getContext(), presenter.getLembretesArmazenados(), this);
         recyclerView.setAdapter(noticiasAdapter);
 
         return root;
     }
 
-    //Implementar as funções de onClick dos itens neste fragmento
+    /*
+    Implementar as funções de on click para os listeners que são definidos como this (como em fabNovoLembrete.setOnClickListener(this))
+     */
     @Override
     public void onClick(View v) {
         //Clique no botão de inserir lembrete
@@ -68,6 +69,11 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         }
     }
 
+    /*
+    Executado quando uma activity aberta através do startActivityForResult é fechada
+
+    Identifica o item e realiza os procedimentos correspondentes
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -84,6 +90,15 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções declaradas no presenter para serem definidas por esta view
+     */
+
+    /**
+     * Utilizado para mudar os itens da recycler view
+     * Define os lembretes do adapter e o notifica para atualizar
+     * @param lembretes lembretes para serem exibidos pela recycler view
+     */
     @Override
     public void atualizarRecyclerView(List<Lembrete> lembretes) {
         noticiasAdapter.setLembretes(lembretes);
@@ -94,7 +109,11 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     public void onPreviewClick(int position) {
         //TODO
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Utilizado para exibir um texto na tela através do toast
+     * @param texto texto a ser exibido no toast
+     */
     @Override
     public void mostrarToast(String texto) {
         Toast.makeText(getContext(), texto, Toast.LENGTH_SHORT).show();

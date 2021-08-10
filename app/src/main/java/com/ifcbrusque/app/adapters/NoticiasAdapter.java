@@ -10,21 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.color.MaterialColors;
 import com.ifcbrusque.app.R;
-import com.ifcbrusque.app.helpers.NoticiasParser;
 import com.ifcbrusque.app.models.Preview;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
+
+import static com.ifcbrusque.app.helpers.PaginaNoticiasHelper.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
 
-    public List<Preview> previews; ///TODO: fazer uma função de set pra isso
+    private List<Preview> previews;
     private OnPreviewListener mOnPreviewListener;
     Context context;
 
@@ -39,6 +37,21 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         colorFrom = MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções que podem ser utilizadas pela view
+     */
+    public List<Preview> getPreviews() {
+        return previews;
+    }
+
+    public void setPreviews(List<Preview> previews) {
+        this.previews = previews;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Função obrigatória do recycler view
+     */
     @NonNull
     @Override
     public NoticiasAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,6 +61,19 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         return viewHolder;
     }
 
+    /**
+     * Função obrigatória do recycler view
+     */
+    @Override
+    public int getItemCount() {
+        return previews.size();
+    }
+
+    /**
+     * Função obrigatória do recycler view
+     * Executada para ao colocar um item_noticia no recycler view
+     * É aqui que você define as propriedades do item em questão, como o que vai estar escrito em cada parte
+     */
     @Override
     public void onBindViewHolder(@NonNull NoticiasAdapter.ViewHolder holder, int position) {
         if(position == 0) {
@@ -58,7 +84,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         }
 
         if(previews.get(position).getTitulo().length() > 0) holder.tvTitulo.setText(previews.get(position).getTitulo());
-        holder.tvData.setText(NoticiasParser.FORMATO_DATA.format(previews.get(position).getDataNoticia()));
+        holder.tvData.setText(FORMATO_DATA.format(previews.get(position).getDataNoticia()));
 
         if(previews.get(position).getUrlImagemPreview().length() > 0) {
             Picasso.get()
@@ -74,11 +100,12 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return previews.size();
-    }
+    /*
+    Utilizado para declarar a estrutura do ViewHolder (item_noticia)
 
+    Essencialmente, serve pra transformar o item em uma view
+    Você configura ele quase da mesma forma que uma view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
         TextView tvTitulo, tvData;
         ImageView ivPreview;
@@ -106,8 +133,10 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
             itemView.setOnTouchListener(this);
         }
 
-        /*
-        Abrir notícia e retornar a cor do fundo
+        /**
+         * Definir funçõa de onClick para o itemView.setOnClickListener(this);
+         *
+         * Executa a animação da mudança de cor ao contrário (da cor destacada ao fundo original) e chama a função para abrir a notícia
          */
         @Override
         public void onClick(View v) {
@@ -118,8 +147,12 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
             onPreviewListener.onPreviewClick(getAdapterPosition());
         }
 
-        /*
-        Mudar a cor do fundo para destacar
+        /**
+         * Definir função de onTouch para o itemView.setOnTouchListener(this);
+         *
+         * Muda a cor do fundo para destacar
+         * Quando pressiona, começa a animação
+         * Quando move, cancela a animação e retorna instantaneamente à cor original
          */
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -134,7 +167,10 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         }
 
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções utilizadas neste adapter que são definidas na view (comunica a view com o adapter)
+     */
     public interface OnPreviewListener {
         void onPreviewClick(int position);
     }

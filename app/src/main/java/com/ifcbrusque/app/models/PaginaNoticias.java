@@ -1,18 +1,15 @@
 package com.ifcbrusque.app.models;
 
 import android.content.Context;
-
 import com.ifcbrusque.app.network.NetworkInterceptor;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.ifcbrusque.app.helpers.NoticiasParser.*;
+import static com.ifcbrusque.app.helpers.PaginaNoticiasHelper.*;
 
 /*
 Funções para obter as notícias da página de internet do campus
@@ -51,7 +48,7 @@ public class PaginaNoticias {
 
         r = GET(urlBase + numeroPagina, client);
 
-        return (r != null) ? objetosPreview(r) : null;
+        return (r != null) ? getObjetosPreview(r) : null;
     }
 
 
@@ -65,6 +62,6 @@ public class PaginaNoticias {
 
         r = GET(preview.getUrlNoticia(), client);
 
-        return (r != null) ? objetoNoticia(r, preview) : null;
+        return (r != null) ? getObjetoNoticia(r, preview) : null;
     }
 }

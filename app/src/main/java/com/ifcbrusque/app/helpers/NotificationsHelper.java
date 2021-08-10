@@ -17,6 +17,9 @@ import java.util.Calendar;
 import static android.content.Context.ALARM_SERVICE;
 import static com.ifcbrusque.app.activities.MainActivity.TAG;
 
+/*
+Classe com funções relacionadas às notificações
+ */
 public class NotificationsHelper {
     public static String CHANNEL_ID = "ifcbrusque_notificacoes";
 

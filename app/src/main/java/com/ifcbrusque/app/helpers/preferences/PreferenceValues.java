@@ -1,5 +1,8 @@
 package com.ifcbrusque.app.helpers.preferences;
 
+/*
+Chaves do SharedPreferences
+ */
 public class PreferenceValues {
     private PreferenceValues() {
     }

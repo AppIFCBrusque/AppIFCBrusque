@@ -9,14 +9,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.color.MaterialColors;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.models.Lembrete;
-
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -25,19 +22,30 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private HomeAdapter.OnPreviewListener mOnPreviewListener;
     Context context;
 
-    public static SimpleDateFormat FORMATO_DATA = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public static SimpleDateFormat FORMATO_DATA = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //TODO: Passar isto para outro lugar
 
     private int colorFrom;
     private final int colorTo = Color.BLUE;
 
     public HomeAdapter(Context context, List<Lembrete> lembretes, HomeAdapter.OnPreviewListener onPreviewListener) {
+        //Iniciar variáveis
         this.context = context;
         this.lembretes = lembretes;
         this.mOnPreviewListener = onPreviewListener;
 
         colorFrom = MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE);
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções que podem ser utilizadas pela view
+     */
+    public void setLembretes(List<Lembrete> lembretes) {
+        this.lembretes = lembretes;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Função obrigatória do recycler view
+     */
     @NonNull
     @Override
     public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,6 +55,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return viewHolder;
     }
 
+    /**
+     * Função obrigatória do recycler view
+     */
+    @Override
+    public int getItemCount() {
+        return lembretes.size();
+    }
+
+    /**
+     * Função obrigatória do recycler view
+     * Executada para ao colocar um item_lemnbrete no recycler view
+     * É aqui que você define as propriedades do item em questão, como o que vai estar escrito em cada parte
+     */
     @Override
     public void onBindViewHolder(@NonNull HomeAdapter.ViewHolder holder, int position) {
         if(position == 0) {
@@ -70,15 +91,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.tvHora.setText(data[1]);
     }
 
-    @Override
-    public int getItemCount() {
-        return lembretes.size();
-    }
+    /*
+    Utilizado para declarar a estrutura do ViewHolder (item_lembrete)
 
-    public void setLembretes(List<Lembrete> lembretes) {
-        this.lembretes = lembretes;
-    }
-
+    Essencialmente, serve pra transformar o item em uma view
+    Você configura ele quase da mesma forma que uma view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
         TextView tvTitulo, tvDescricao, tvData, tvHora;
         HomeAdapter.OnPreviewListener onPreviewListener;
@@ -106,8 +124,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             itemView.setOnTouchListener(this);
         }
 
-        /*
-        Abrir notícia e retornar a cor do fundo
+        /**
+         * Definir funçõa de onClick para o itemView.setOnClickListener(this);
+         *
+         * Executa a animação da mudança de cor ao contrário (da cor destacada ao fundo original) e chama a função para abrir o lembrete
          */
         @Override
         public void onClick(View v) {
@@ -118,8 +138,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             onPreviewListener.onPreviewClick(getAdapterPosition());
         }
 
-        /*
-        Mudar a cor do fundo para destacar
+        /**
+         * Definir função de onTouch para o itemView.setOnTouchListener(this);
+         *
+         * Muda a cor do fundo para destacar
+         * Quando pressiona, começa a animação
+         * Quando move, cancela a animação e retorna instantaneamente à cor original
          */
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -134,7 +158,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
 
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções utilizadas neste adapter que são definidas na view (comunica a view com o adapter)
+     */
     public interface OnPreviewListener {
         void onPreviewClick(int position);
     }

@@ -11,9 +11,12 @@ public class InserirLembretePresenter {
     private int ano, mes, dia, hora, minuto;
 
     public InserirLembretePresenter(View view, AppDatabase db) {
+        //Iniciar variáveis
         this.view = view;
         this.db = db;
 
+        //Definir a data e hora padrão dos botões de data e hora
+        //A hora é arredondada para cima. Exemplo: 17:23 -> 18::00; 02:00 -> 03:00
         final Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR, 1);
         ano = c.get(Calendar.YEAR);
@@ -26,6 +29,23 @@ public class InserirLembretePresenter {
         view.mudarTextoBotaoHora(hora, minuto);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções utilizadas somente por este presenter
+     */
+
+    /**
+     * Armazena o lembrete inserido e fecha a activity
+     */
+    private void armazenarLembrete(Lembrete lembrete) {
+        db.armazenarLembrete(lembrete)
+                .doOnComplete(() -> {
+                    view.fecharActivity(true);
+                }).subscribe();
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções deste presenter que podem ser utilizadas pela view
+     */
     public int getAno() {
         return ano;
     }
@@ -45,14 +65,13 @@ public class InserirLembretePresenter {
     public int getMinuto() {
         return minuto;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void armazenarLembrete(Lembrete lembrete) {
-        db.armazenarLembrete(lembrete)
-                .doOnComplete(() -> {
-                    view.fecharActivity(true);
-                }).subscribe();
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Executado quando o usuário seleciona uma data no diálogo que aparece ao clicar no botão de data e clica em "OK"
+     * Insira as variáveis diretamente obtidas pelo dialogo
+     *
+     * Armazena os valores e muda o texto do botão
+     */
     public void onDataSelecionada(int ano, int mes, int dia) {
         this.ano = ano;
         this.mes = mes;
@@ -60,12 +79,27 @@ public class InserirLembretePresenter {
         view.mudarTextoBotaoData(this.ano, this.mes, this.dia);
     }
 
+    /**
+     * Executado quando o usuário seleciona uma hora no diálogo que aparece ao clicar no botão de hora e clica em "OK"
+     * Insira as variáveis diretamente obtidas pelo dialogo
+     *
+     * Armazena os valores e muda o texto do botão
+     */
     public void onTempoSelecionado(int hora, int minuto) {
         this.hora = hora;
         this.minuto = minuto;
         view.mudarTextoBotaoHora(this.hora, this.minuto);
     }
 
+    /**
+     * Executado quando o usuário clica no botão de inserir lembrete (botão redondo no canto inferior direito)
+     * A data e a hora já estão salvas neste presenter, então é necessário inserir apenas o título e a descrição do lembrete, que são salvas nas views
+     *
+     * Confere se o lembrete possui um título válido. Se possuir, chama a função para armazenar o lembrete. Senão, exibe uma mensagem através do toast
+     *
+     * @param titulo título do lembrete
+     * @param descricao descrição do lembrete
+     */
     public void onCliqueInserir(String titulo, String descricao) {
         if(titulo.length() > 0) {
             if(!(descricao.length() > 0)) {
@@ -81,11 +115,11 @@ public class InserirLembretePresenter {
             view.mostrarToast("Informe um título ao lembrete");
         }
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Declarar métodos que serão utilizados por este presenter e definidos na view
+     */
     public interface View {
-        /*
-        Métodos utilizados aqui para atualizar a view
-         */
         void mudarTextoBotaoData(int ano, int mes, int dia);
 
         void mudarTextoBotaoHora(int hora, int minuto);

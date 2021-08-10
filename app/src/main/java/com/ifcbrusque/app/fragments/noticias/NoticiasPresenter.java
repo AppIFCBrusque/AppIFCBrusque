@@ -1,7 +1,5 @@
 package com.ifcbrusque.app.fragments.noticias;
 
-import android.util.Log;
-
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.network.synchronization.SynchronizationService;
@@ -38,7 +36,7 @@ public class NoticiasPresenter {
     private Disposable disposable;
 
     public NoticiasPresenter(View view, PreferencesHelper pref, AppDatabase db, PaginaNoticias campus) {
-        //Inicializar variáveis
+        //Iniciar variáveis
         this.view = view;
         this.pref = pref;
         this.db = db;
@@ -101,47 +99,11 @@ public class NoticiasPresenter {
             }
         });
     }
-
-    boolean isCarregandoPagina() {
-        return isCarregandoPagina;
-    }
-
-    boolean atingiuPaginaFinal() {
-        return atingiuPaginaFinal;
-    }
-
-    List<Preview> getPreviewsArmazenados() {
-        return previewsArmazenados;
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-    Quando sai do fragmento -> manter posição atual da recycler view, dar dispose no disposable do serviço de sincronização
+    /*
+    Funções utilizadas somente por este presenter
      */
-    void onDestroyView(int indexPreviewTopo) {
-        pref.setPreviewTopo(indexPreviewTopo);
 
-        //Dar dispose no disposable que observa o serviço de sincronização
-        if(disposable != null) {
-            disposable.dispose();
-        }
-    }
-
-    /**
-    Quando clica novamente já neste fragmento -> voltar ao topo da recycler view
-     */
-    void onPause() {
-        pref.setPreviewTopo(0);
-    }
-
-    /**
-    Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
-     */
-    void getProximaPaginaNoticias() {
-        ultimaPaginaAcessada++;
-        getPaginaNoticias(ultimaPaginaAcessada);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     /**
     Utilizado por este presenter para obter alguma página específica de notícias
      No fim, armazena os previews novos e atualiza a recycler view
@@ -203,10 +165,54 @@ public class NoticiasPresenter {
                 }).subscribe();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções deste presenter que podem ser utilizadas pela view
+     */
+    public boolean isCarregandoPagina() {
+        return isCarregandoPagina;
+    }
+
+    public boolean atingiuPaginaFinal() {
+        return atingiuPaginaFinal;
+    }
+
+    public List<Preview> getPreviewsArmazenados() {
+        return previewsArmazenados;
+    }
+
+    /**
+     Quando sai do fragmento -> manter posição atual da recycler view, dar dispose no disposable do serviço de sincronização
+     */
+    void onDestroyView(int indexPreviewTopo) {
+        pref.setPreviewTopo(indexPreviewTopo);
+
+        //Dar dispose no disposable que observa o serviço de sincronização
+        if(disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    /**
+     Quando clica novamente já neste fragmento -> voltar ao topo da recycler view
+     */
+    void onPause() {
+        pref.setPreviewTopo(0);
+    }
+
+    /**
+     Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
+     */
+    void getProximaPaginaNoticias() {
+        ultimaPaginaAcessada++;
+        getPaginaNoticias(ultimaPaginaAcessada);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Declarar métodos que serão utilizados por este presenter e definidos na view
+     */
     public interface View {
-        /*
-        Métodos utilizados aqui para atualizar a view
-         */
+        void definirSincronizacaoPeriodicaNoticias();
+
         void atualizarRecyclerView(List<Preview> preview);
 
         void setRecyclerViewPosition(int index);
@@ -216,7 +222,5 @@ public class NoticiasPresenter {
         void mostrarProgressBar();
 
         void mostrarToast(String texto);
-
-        void definirSincronizacaoPeriodicaNoticias();
     }
 }

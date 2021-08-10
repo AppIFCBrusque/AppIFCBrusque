@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
@@ -21,11 +19,8 @@ import com.ifcbrusque.app.helpers.NotificationsHelper;
 import com.ifcbrusque.app.models.PaginaNoticias;
 import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
-
 import java.util.List;
-
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.Converters.*;
 
@@ -65,7 +60,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (layoutManager.findLastCompletelyVisibleItemPosition() >= noticiasAdapter.previews.size() - carregarQuandoFaltar && !presenter.isCarregandoPagina() && !presenter.atingiuPaginaFinal()) {
+                if (layoutManager.findLastCompletelyVisibleItemPosition() >= noticiasAdapter.getPreviews().size() - carregarQuandoFaltar && !presenter.isCarregandoPagina() && !presenter.atingiuPaginaFinal()) {
                     presenter.getProximaPaginaNoticias();
                 }
             }
@@ -74,7 +69,8 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     }
 
     /*
-    Quando sai do fragmento (manter posição atual)
+    Executado quando sai do fragmento (manter posição atual)
+    Chama a função do presenter
     */
     @Override
     public void onPause() {
@@ -83,7 +79,8 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     }
 
     /*
-    Quando clica novamente já neste fragmento (voltar ao topo)
+    Executado quando clica novamente já neste fragmento (voltar ao topo)
+    Chama a função do presenter
      */
     @Override
     public void onDestroyView() {
@@ -94,7 +91,12 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
-    Utilizado pelo NoticiasAdapter para abrir a activity da notícia
+    Funções declaradas no NoticiasAdapter para serem definidas por esta view
+     */
+
+    /**
+    * Utilizado no NoticiasAdapter para abrir a activity da notícia
+     * Prepara um bundle com o preview e inicia uma NoticiaActivity
      */
     @Override
     public void onPreviewClick(int position) {
@@ -109,36 +111,61 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
 
         startActivity(intentNoticia);
     }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções declaradas no presenter para serem definidas por esta view
+     */
+
+    /**
+     * Define um alarme que executa o serviço de fundo que atualiza carrega a página de notícias, salva e notifica as novas
+     */
+    @Override
+    public void definirSincronizacaoPeriodicaNoticias() {
+        NotificationsHelper.definirSincronizacaoPeriodicaNoticias(this.getContext());
+    }
+
+    /**
+     * Utilizado para mudar os itens da recycler view
+     * Define os previews do adapter e o notifica para atualizar
+     * @param previews previews para serem exibidos pela recycler view
+     */
     @Override
     public void atualizarRecyclerView(List<Preview> previews) {
-        noticiasAdapter.previews = previews;
+        noticiasAdapter.setPreviews(previews);
         noticiasAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Utilizado para mudar a posição do recycler view
+     * @param index posição do preview no topo
+     */
     @Override
     public void setRecyclerViewPosition(int index) {
         layoutManager.scrollToPosition(index);
     }
 
+    /**
+     * Esconde a progress bar (começou a carregar)
+     */
     @Override
     public void esconderProgressBar() {
         pb.setVisibility(View.GONE);
     }
 
+    /**
+     * Mostra a progress bar (começou a carregar)
+     */
     @Override
     public void mostrarProgressBar() {
         pb.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Utilizado para exibir um texto na tela através do toast
+     * @param texto texto a ser exibido no toast
+     */
     @Override
     public void mostrarToast(String texto) {
         Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void definirSincronizacaoPeriodicaNoticias() {
-        NotificationsHelper.definirSincronizacaoPeriodicaNoticias(this.getContext());
     }
 }

@@ -15,7 +15,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-
 public class NetworkInterceptor implements Interceptor {
     private Context context;
 
@@ -35,8 +34,8 @@ public class NetworkInterceptor implements Interceptor {
         return response;
     }
 
-    /*
-    Utilizado para conferir se a internet está ligada (ativada)
+    /**
+     * Utilizado para conferir se a internet está ligada (ativada)
      */
     private boolean isConnectionOn() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -47,8 +46,8 @@ public class NetworkInterceptor implements Interceptor {
         return (connection != null) && (connection.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || connection.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
     }
 
-    /*
-    Utilizado para conferir se é possível conectar com a internet (pode estar ativada, mas não conseguir conectar)
+    /**
+     * Utilizado para conferir se é possível conectar com a internet (pode estar ativada, mas não conseguir conectar)
      */
     private boolean isInternetAvailable() {
         try {

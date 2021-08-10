@@ -3,7 +3,6 @@ package com.ifcbrusque.app.network.synchronization;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import com.ifcbrusque.app.data.AppDatabase;
@@ -93,7 +92,6 @@ public class SynchronizationService extends Service {
 
             if (previewsNaPagina != null && previewsNaPagina.size() > 0) {
                 armazenarPreviewsNovos(previewsNaPagina);
-                Log.d(TAG, "carregarPreviews: " + previewsNaPagina.get(0).getTitulo());
             }
 
         })

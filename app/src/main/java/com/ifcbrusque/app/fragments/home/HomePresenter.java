@@ -15,17 +15,25 @@ public class HomePresenter {
     private List<Lembrete> lembretesArmazenados;
 
     public HomePresenter(View view, AppDatabase db) {
+        //Iniciar variáveis
         this.view = view;
         this.db = db;
 
         lembretesArmazenados = new ArrayList<>();
         carregarLembretesArmazenados();
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções deste presenter que podem ser utilizadas pela view
+     */
     public List<Lembrete> getLembretesArmazenados() {
         return lembretesArmazenados;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Utilizado pelo view para carregar os lembretes do banco de dados
+     * Após carregar, atualiza a recycler view com os lembretes retornados
+     */
     public void carregarLembretesArmazenados() {
         Completable.fromRunnable(() -> {
             lembretesArmazenados = db.lembreteDao().getAll();
@@ -36,12 +44,12 @@ public class HomePresenter {
                 }).subscribe();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Declarar métodos que serão utilizados por este presenter e definidos na view
+     */
     public interface View {
-        /*
-        Métodos utilizados aqui para atualizar a view
-         */
-        void mostrarToast(String texto);
-
         void atualizarRecyclerView(List<Lembrete> lembretes);
+
+        void mostrarToast(String texto);
     }
 }

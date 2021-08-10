@@ -2,11 +2,11 @@ package com.ifcbrusque.app.helpers.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import static com.ifcbrusque.app.activities.MainActivity.TAG;
 import static com.ifcbrusque.app.helpers.preferences.PreferenceValues.*;
 
+/*
+Classe com funções para utilizar o SharedPreferences
+ */
 public class PreferencesHelper {
     private SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -64,7 +64,5 @@ public class PreferencesHelper {
         final int vezes = pref.getInt(TESTE_SERVICO_VEZES, 0);
         editor.putInt(TESTE_SERVICO_VEZES, vezes+1);
         editor.commit();
-
-        Log.d(TAG, "incrementarVezesServico: serviço incrementado");
     }
 }

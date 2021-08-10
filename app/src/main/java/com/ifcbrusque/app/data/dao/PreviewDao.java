@@ -5,14 +5,15 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ifcbrusque.app.models.Preview;
 
 @Dao
 public interface PreviewDao {
+    /*
+    Funções para utilizar os previews no banco de dados
+     */
     @Query("SELECT * FROM preview_table ORDER BY data_noticia DESC")
     List<Preview> getAll();
 

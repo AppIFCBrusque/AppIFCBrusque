@@ -1,17 +1,5 @@
 package com.ifcbrusque.app.helpers;
 
-import android.content.Context;
-
-import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
-import com.ifcbrusque.app.models.Atividades;
-import com.stacked.sigaa_ifc.*;
-
-import java.util.ArrayList;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
 public class SIGAAHelper { //TODO: Arrumar, comentar, static
     /*private Sessao sessao = new Sessao(context.getApplicationContext());
     private Context context;

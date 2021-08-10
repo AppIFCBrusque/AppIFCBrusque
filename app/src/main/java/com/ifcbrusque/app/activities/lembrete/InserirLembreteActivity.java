@@ -50,7 +50,9 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         //TODO 1: Abrir esta activity para editar um lembrete salvo
     }
 
-    //Implementar as funções de on click
+    /*
+    Implementar as funções de on click para os listeners que são definidos como this (como em btnTimePicker.setOnClickListener(this))
+     */
     @Override
     public void onClick(View v) {
         //Clique no botão da data
@@ -85,6 +87,11 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         }
     }
 
+    /*
+    Executado quando algum item da barra de cima é selecionado
+
+    Identifica o item e realiza os procedimentos correspondentes
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -96,24 +103,48 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
 
         return super.onOptionsItemSelected(item);
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções declaradas no presenter para serem definidas por esta view
+     */
 
+    /**
+     * Utilizado para mudar o texto do botão que abre o dialogo para selecionar a data
+     * Exemplo:
+     * ano = 1, mes = 1, dia = 1
+     * Texto do botão -> 01/02/0001
+     *
+     * O mês é incrementado em um pois o Calendar utiliza números de 0 a 11 para identificá-lo
+     */
     @Override
     public void mudarTextoBotaoData(int ano, int mes, int dia) {
         String texto = String.format("%02d", dia) + "/" + String.format("%02d", (mes+1)) + "/" + String.format("%04d", ano);
         btnDatePicker.setText(texto);
     }
 
+    /**
+     * Utilizado para mudar o texto do botão que abre o dialogo para selecionar a hora
+     */
     @Override
     public void mudarTextoBotaoHora(int hora, int minuto) {
         String texto = String.format("%02d", hora) + ":" + String.format("%02d", minuto);
         btnTimePicker.setText(texto);
     }
 
+    /**
+     * Utilizado para exibir um texto na tela através do toast
+     * @param texto texto a ser exibido no toast
+     */
     @Override
     public void mostrarToast(String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Utilizado para fechar esta activity e atualizar o recycler view do HomeFragment
+     * Esta função adiciona um valor no bundle de resultado que indica se o HomeFragment deve atualizar os itens do recycler view (carregar o que está salvo no banco de dados)
+     * @param lembreteNovoInserido boolean que indica se foi armazenado algum lembrete novo. Caso seja true, o HomeFragment atualizará o recycler view de lembretes
+     */
     @Override
     public void fecharActivity(boolean lembreteNovoInserido) {
         Intent intent = new Intent();
