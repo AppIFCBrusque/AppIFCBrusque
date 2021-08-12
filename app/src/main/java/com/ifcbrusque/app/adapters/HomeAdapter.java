@@ -135,7 +135,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             colorAnimation.setStartDelay(0);
             colorAnimation.reverse();
 
-            onPreviewListener.onPreviewClick(getAdapterPosition());
+            onPreviewListener.onLembreteClick(getAdapterPosition());
         }
 
         /**
@@ -163,6 +163,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     Funções utilizadas neste adapter que são definidas na view (comunica a view com o adapter)
      */
     public interface OnPreviewListener {
-        void onPreviewClick(int position);
+        void onLembreteClick(int position);
     }
 }

@@ -5,10 +5,12 @@ import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
 import com.ifcbrusque.app.network.synchronization.SynchronizationService;
 import com.ifcbrusque.app.models.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
@@ -82,7 +84,7 @@ public class NoticiasPresenter {
 
             @Override
             public void onNext(@NonNull Integer integer) {
-                if(integer == SynchronizationService.OBSERVABLE_PREVIEWS_NOVOS) {
+                if (integer == SynchronizationService.OBSERVABLE_PREVIEWS_NOVOS) {
                     //Atualizar a recycler view
                     armazenarPreviewsNovos(new ArrayList<Preview>());
                 }
@@ -105,8 +107,8 @@ public class NoticiasPresenter {
      */
 
     /**
-    Utilizado por este presenter para obter alguma página específica de notícias
-     No fim, armazena os previews novos e atualiza a recycler view
+     * Utilizado por este presenter para obter alguma página específica de notícias
+     * No fim, armazena os previews novos e atualiza a recycler view
      */
     //TODO: Acho que dá para transformar a função do synchronizationservice em um observable static e utilizar no lugar disso (mesma coisa para o armazenarPreviewsNovos)
     private void getPaginaNoticias(int pagina) {
@@ -151,8 +153,8 @@ public class NoticiasPresenter {
     }
 
     /**
-    Utilizada para adicionar os previews NOVOS no banco de dados
-     No fim, atualiza a recycler view com os previews no armazenamento
+     * Utilizada para adicionar os previews NOVOS no banco de dados
+     * No fim, atualiza a recycler view com os previews no armazenamento
      */
     private void armazenarPreviewsNovos(List<Preview> previews) {
         db.armazenarPreviewsNovos(previews, false)
@@ -164,6 +166,7 @@ public class NoticiasPresenter {
                     view.atualizarRecyclerView(previewsArmazenados);
                 }).subscribe();
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Funções deste presenter que podem ser utilizadas pela view
@@ -181,31 +184,32 @@ public class NoticiasPresenter {
     }
 
     /**
-     Quando sai do fragmento -> manter posição atual da recycler view, dar dispose no disposable do serviço de sincronização
+     * Quando sai do fragmento -> manter posição atual da recycler view, dar dispose no disposable do serviço de sincronização
      */
     void onDestroyView(int indexPreviewTopo) {
         pref.setPreviewTopo(indexPreviewTopo);
 
         //Dar dispose no disposable que observa o serviço de sincronização
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
 
     /**
-     Quando clica novamente já neste fragmento -> voltar ao topo da recycler view
+     * Quando clica novamente já neste fragmento -> voltar ao topo da recycler view
      */
     void onPause() {
         pref.setPreviewTopo(0);
     }
 
     /**
-     Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
+     * Utilizado pelo view para obter a próxima página quando chega no fim da recycler view ou próximo
      */
     void getProximaPaginaNoticias() {
         ultimaPaginaAcessada++;
         getPaginaNoticias(ultimaPaginaAcessada);
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Declarar métodos que serão utilizados por este presenter e definidos na view

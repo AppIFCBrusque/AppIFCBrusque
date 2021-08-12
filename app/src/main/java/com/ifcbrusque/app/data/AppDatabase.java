@@ -63,12 +63,4 @@ public abstract class AppDatabase extends RoomDatabase {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
-    public Completable armazenarLembrete(Lembrete lembrete) {
-        return Completable.fromRunnable(() -> {
-            lembreteDao().insert(lembrete);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
 }

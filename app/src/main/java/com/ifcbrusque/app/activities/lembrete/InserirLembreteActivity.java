@@ -26,6 +26,7 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     Button btnDatePicker, btnTimePicker;
     FloatingActionButton fabCompleto;
 
+    public static final String EXTRAS_LEMBRETE_ID = "EXTRAS_LEMBRETE_ID";
     public static final String EXTRAS_LEMBRETE_ADICIONADO = "EXTRAS_LEMBRETE_ADICIONADO";
 
     @Override
@@ -41,14 +42,21 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         btnTimePicker = findViewById(R.id.btHora);
         fabCompleto = findViewById(R.id.fabInserir);
 
-        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()));
+        int idLembrete;
+        if(getIntent().getExtras() != null) {
+            idLembrete = getIntent().getExtras().getInt(EXTRAS_LEMBRETE_ID, -1);
+        } else {
+            idLembrete = -1;
+        }
+
+        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()), idLembrete);
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
         fabCompleto.setOnClickListener(this);
-
-        //TODO 1: Abrir esta activity para editar um lembrete salvo
     }
+
+
 
     /*
     Implementar as funções de on click para os listeners que são definidos como this (como em btnTimePicker.setOnClickListener(this))
@@ -129,6 +137,22 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     public void mudarTextoBotaoHora(int hora, int minuto) {
         String texto = String.format("%02d", hora) + ":" + String.format("%02d", minuto);
         btnTimePicker.setText(texto);
+    }
+
+    /**
+     * Muda o texto do input do título
+     */
+    @Override
+    public void setTitulo(String titulo) {
+        tiTitulo.getEditText().setText(titulo);
+    }
+
+    /**
+     * Muda o texto do input da descrição
+     */
+    @Override
+    public void setDescricao(String descricao) {
+        tiDescricao.getEditText().setText(descricao);
     }
 
     /**

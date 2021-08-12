@@ -21,6 +21,7 @@ import com.ifcbrusque.app.models.Lembrete;
 import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ADICIONADO;
+import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
 
 public class HomeFragment extends Fragment implements HomePresenter.View, View.OnClickListener, HomeAdapter.OnPreviewListener {
     int REQUEST_CODE_LEMBRETE = 100;
@@ -105,9 +106,17 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         noticiasAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Método executado quando é clicado em um dos lembretes
+     * Abre um InserirLembreteActivity para editar o lembrete selecionado
+     *
+     * O lembrete é identificado pelo id colocado no bundle
+     */
     @Override
-    public void onPreviewClick(int position) {
-        //TODO
+    public void onLembreteClick(int position) {
+        Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
+        intentLembrete.putExtra(EXTRAS_LEMBRETE_ID, presenter.getLembretesArmazenados().get(position).getId());
+        startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
     }
 
     /**
