@@ -43,6 +43,38 @@ public class HomePresenter {
                     view.atualizarRecyclerView(lembretesArmazenados);
                 }).subscribe();
     }
+
+    /**
+     * Utilizado pela view para definir um lembrete como completo
+     * Depois de definir, atualiza a recycler view
+     * @param lembrete lembrete para definir completo
+     */
+    public void completarLembrete(Lembrete lembrete) {
+        Completable.fromRunnable(() -> {
+            db.lembreteDao().alterarEstadoLembrete(lembrete.getId(), Lembrete.ESTADO_COMPLETO);
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> {
+                    carregarLembretesArmazenados();
+                })
+                .subscribe();
+    }
+
+    /**
+     * Utilizado pela view para excluir um lembrete
+     * Depois de definir, atualiza a recycler view
+     * @param lembrete lembrete para excluir
+     */
+    public void excluirLembrete(Lembrete lembrete) {
+        Completable.fromRunnable(() -> {
+            db.lembreteDao().delete(lembrete);
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> {
+                    carregarLembretesArmazenados();
+                })
+                .subscribe();
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Declarar métodos que serão utilizados por este presenter e definidos na view

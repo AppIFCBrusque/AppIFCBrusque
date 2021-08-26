@@ -21,15 +21,18 @@ public interface LembreteDao {
     @Delete
     void delete(Lembrete lembrete);
 
+    @Query("DELETE FROM lembrete_table")
+    void deleteAll();
+
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
     Lembrete getLembrete(int id);
-
-    @Update
-    void updateLembrete(Lembrete lembrete);
 
     @Query("SELECT * FROM lembrete_table ORDER BY data_lembrete ASC")
     List<Lembrete> getAll();
 
-    @Query("DELETE FROM lembrete_table")
-    void deleteAll();
+    @Update
+    void updateLembrete(Lembrete lembrete);
+
+    @Query("UPDATE lembrete_table SET estado = :estado WHERE id = :id")
+    void alterarEstadoLembrete(int id, int estado);
 }

@@ -19,11 +19,13 @@ import com.ifcbrusque.app.adapters.HomeAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.models.Lembrete;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ADICIONADO;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
 
-public class HomeFragment extends Fragment implements HomePresenter.View, View.OnClickListener, HomeAdapter.OnPreviewListener {
+public class HomeFragment extends Fragment implements HomePresenter.View, View.OnClickListener, HomeAdapter.OnLembreteListener {
     int REQUEST_CODE_LEMBRETE = 100;
 
     private HomePresenter presenter;
@@ -50,7 +52,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); //TODO: Arrumar isto aqui. O problema está descrito na parte da interface.
         noticiasAdapter = new HomeAdapter(this.getContext(), presenter.getLembretesArmazenados(), this);
         recyclerView.setAdapter(noticiasAdapter);
 
@@ -97,6 +99,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
 
     /**
      * Utilizado para mudar os itens da recycler view
+     * Exibe somente os lembretes incompletos
      * Define os lembretes do adapter e o notifica para atualizar
      * @param lembretes lembretes para serem exibidos pela recycler view
      */
@@ -117,6 +120,16 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
         intentLembrete.putExtra(EXTRAS_LEMBRETE_ID, presenter.getLembretesArmazenados().get(position).getId());
         startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
+    }
+
+    @Override
+    public void onCompletarClick(int position) {
+        presenter.completarLembrete(presenter.getLembretesArmazenados().get(position));
+    }
+
+    @Override
+    public void onExcluirClick(int position) {
+        presenter.excluirLembrete(presenter.getLembretesArmazenados().get(position));
     }
 
     /**
