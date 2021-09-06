@@ -1,7 +1,7 @@
 package com.ifcbrusque.app.models;
 
 import android.content.Context;
-import com.ifcbrusque.app.network.NetworkInterceptor;
+import com.ifcbrusque.app.util.network.NetworkInterceptor;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.ifcbrusque.app.helpers.PaginaNoticiasHelper.*;
+import static com.ifcbrusque.app.util.PaginaNoticiasHelper.*;
 
 /*
 Funções para obter as notícias da página de internet do campus

@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.helpers.preferences;
+package com.ifcbrusque.app.util.preferences;
 
 /*
 Chaves do SharedPreferences

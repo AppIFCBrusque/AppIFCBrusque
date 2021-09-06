@@ -15,9 +15,9 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.helpers.NotificationsHelper;
+import com.ifcbrusque.app.util.NotificationHelper;
 import com.ifcbrusque.app.models.PaginaNoticias;
-import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
 import java.util.List;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -121,7 +121,7 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
      */
     @Override
     public void definirSincronizacaoPeriodicaNoticias() {
-        NotificationsHelper.definirSincronizacaoPeriodicaNoticias(this.getContext());
+        NotificationHelper.definirSincronizacaoPeriodicaNoticias(this.getContext());
     }
 
     /**

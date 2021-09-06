@@ -20,7 +20,7 @@ public class HomePresenter {
         this.db = db;
 
         lembretesArmazenados = new ArrayList<>();
-        carregarLembretesArmazenados();
+        carregarLembretesArmazenados(true);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
@@ -33,14 +33,15 @@ public class HomePresenter {
     /**
      * Utilizado pelo view para carregar os lembretes do banco de dados
      * Após carregar, atualiza a recycler view com os lembretes retornados
+     * @param agendarNotificacoes indica se vai pedir para a view agendar a notificação dos lembretes da lista
      */
-    public void carregarLembretesArmazenados() {
+    public void carregarLembretesArmazenados(boolean agendarNotificacoes) {
         Completable.fromRunnable(() -> {
             lembretesArmazenados = db.lembreteDao().getAll();
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    view.atualizarRecyclerView(lembretesArmazenados);
+                    view.atualizarRecyclerView(lembretesArmazenados, agendarNotificacoes);
                 }).subscribe();
     }
 
@@ -55,7 +56,7 @@ public class HomePresenter {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    carregarLembretesArmazenados();
+                    carregarLembretesArmazenados(false);
                 })
                 .subscribe();
     }
@@ -71,7 +72,7 @@ public class HomePresenter {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    carregarLembretesArmazenados();
+                    carregarLembretesArmazenados(false);
                 })
                 .subscribe();
     }
@@ -80,7 +81,7 @@ public class HomePresenter {
     Declarar métodos que serão utilizados por este presenter e definidos na view
      */
     public interface View {
-        void atualizarRecyclerView(List<Lembrete> lembretes);
+        void atualizarRecyclerView(List<Lembrete> lembretes, boolean agendarNotificacoes);
 
         void mostrarToast(String texto);
     }

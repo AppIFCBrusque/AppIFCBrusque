@@ -6,8 +6,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.AppDatabase;
+import com.ifcbrusque.app.util.NotificationHelper;
+import com.ifcbrusque.app.models.Lembrete;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -20,14 +22,17 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class InserirLembreteActivity extends AppCompatActivity implements InserirLembretePresenter.View, View.OnClickListener {
+    public static final String EXTRAS_LEMBRETE_ID = "EXTRAS_LEMBRETE_ID";
+    public static final String EXTRAS_LEMBRETE_ID_NOTIFICACAO = "EXTRAS_LEMBRETE_ID_NOTIFICACAO";
+    public static final String EXTRAS_LEMBRETE_TITULO = "EXTRAS_LEMBRETE_TITULO";
+    public static final String EXTRAS_LEMBRETE_DESCRICAO = "EXTRAS_LEMBRETE_DESCRICAO";
+    public static final String EXTRAS_LEMBRETE_ADICIONADO = "EXTRAS_LEMBRETE_ADICIONADO";
+
     private InserirLembretePresenter presenter;
 
     TextInputLayout tiTitulo, tiDescricao;
     Button btnDatePicker, btnTimePicker;
     FloatingActionButton fabCompleto;
-
-    public static final String EXTRAS_LEMBRETE_ID = "EXTRAS_LEMBRETE_ID";
-    public static final String EXTRAS_LEMBRETE_ADICIONADO = "EXTRAS_LEMBRETE_ADICIONADO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +47,16 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         btnTimePicker = findViewById(R.id.btHora);
         fabCompleto = findViewById(R.id.fabInserir);
 
-        int idLembrete;
+        long idLembrete, idNotificacaoLembrete;
         if(getIntent().getExtras() != null) {
-            idLembrete = getIntent().getExtras().getInt(EXTRAS_LEMBRETE_ID, -1);
+            idLembrete = getIntent().getExtras().getLong(EXTRAS_LEMBRETE_ID, -1);
+            idNotificacaoLembrete = getIntent().getExtras().getLong(EXTRAS_LEMBRETE_ID_NOTIFICACAO, -1);
         } else {
             idLembrete = -1;
+            idNotificacaoLembrete = -1;
         }
 
-        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()), idLembrete);
+        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()), new PreferencesHelper(this), idLembrete, idNotificacaoLembrete);
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
@@ -153,6 +160,15 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     @Override
     public void setDescricao(String descricao) {
         tiDescricao.getEditText().setText(descricao);
+    }
+
+    /**
+     * Agenda a notificação do lembrete inserido
+     * @param lembrete lembrete a ser agendado
+     */
+    @Override
+    public void agendarNotificacaoLembrete(Lembrete lembrete) {
+        NotificationHelper.agendarNotificacaoLembrete(this, lembrete);
     }
 
     /**

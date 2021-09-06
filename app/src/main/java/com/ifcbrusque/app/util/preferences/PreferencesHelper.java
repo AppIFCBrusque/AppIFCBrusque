@@ -1,8 +1,8 @@
-package com.ifcbrusque.app.helpers.preferences;
+package com.ifcbrusque.app.util.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import static com.ifcbrusque.app.helpers.preferences.PreferenceValues.*;
+import static com.ifcbrusque.app.util.preferences.PreferenceValues.*;
 
 /*
 Classe com funções para utilizar o SharedPreferences

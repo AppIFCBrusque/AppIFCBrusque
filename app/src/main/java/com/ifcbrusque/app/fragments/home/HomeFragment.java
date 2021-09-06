@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,13 +16,17 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.adapters.HomeAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
+import com.ifcbrusque.app.util.NotificationHelper;
 import com.ifcbrusque.app.models.Lembrete;
+
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ADICIONADO;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
+import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
 
 public class HomeFragment extends Fragment implements HomePresenter.View, View.OnClickListener, HomeAdapter.OnLembreteListener {
     int REQUEST_CODE_LEMBRETE = 100;
@@ -86,7 +89,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
             if(resultCode == RESULT_OK) {
                 boolean adicionado = data.getBooleanExtra(EXTRAS_LEMBRETE_ADICIONADO, false);
                 if(adicionado) {
-                    presenter.carregarLembretesArmazenados();
+                    presenter.carregarLembretesArmazenados(false);
                 }
             }
         }
@@ -97,16 +100,26 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     Funções declaradas no presenter para serem definidas por esta view
      */
 
+
     /**
      * Utilizado para mudar os itens da recycler view
      * Exibe somente os lembretes incompletos
      * Define os lembretes do adapter e o notifica para atualizar
      * @param lembretes lembretes para serem exibidos pela recycler view
+     * @param agendarNotificacoes indica se vai agendar as notificações dos lembretes incompletos
      */
     @Override
-    public void atualizarRecyclerView(List<Lembrete> lembretes) {
+    public void atualizarRecyclerView(List<Lembrete> lembretes, boolean agendarNotificacoes) {
         noticiasAdapter.setLembretes(lembretes);
         noticiasAdapter.notifyDataSetChanged();
+
+        //Agendar as notificações futuras e incompletas
+        if(agendarNotificacoes) {
+            List<Lembrete> lembretesFuturosIncompletos = lembretes.stream().filter(l  -> l.getEstado() == Lembrete.ESTADO_INCOMPLETO && new Date().before(l.getDataLembrete())).collect(Collectors.toList());
+            for(Lembrete l : lembretesFuturosIncompletos) {
+                NotificationHelper.agendarNotificacaoLembrete(getContext(), l);
+            }
+        }
     }
 
     /**
@@ -119,6 +132,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     public void onLembreteClick(int position) {
         Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
         intentLembrete.putExtra(EXTRAS_LEMBRETE_ID, presenter.getLembretesArmazenados().get(position).getId());
+        intentLembrete.putExtra(EXTRAS_LEMBRETE_ID_NOTIFICACAO, presenter.getLembretesArmazenados().get(position).getIdNotificacao());
         startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
     }
 

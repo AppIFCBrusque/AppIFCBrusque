@@ -1,8 +1,8 @@
 package com.ifcbrusque.app.fragments.noticias;
 
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
-import com.ifcbrusque.app.network.synchronization.SynchronizationService;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
+import com.ifcbrusque.app.util.service.SynchronizationService;
 import com.ifcbrusque.app.models.PaginaNoticias;
 import com.ifcbrusque.app.models.Preview;
 

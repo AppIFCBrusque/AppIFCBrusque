@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.network.synchronization;
+package com.ifcbrusque.app.util.service;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
-import com.ifcbrusque.app.helpers.preferences.PreferencesHelper;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
 import com.squareup.picasso.Picasso;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -20,8 +20,8 @@ import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.NOTICIA_TITU
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.NOTICIA_URL;
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.NOTICIA_URL_IMAGEM_PREVIEW;
 import static com.ifcbrusque.app.data.Converters.dateToTimestamp;
-import static com.ifcbrusque.app.helpers.NotificationsHelper.CHANNEL_ID;
-import static com.ifcbrusque.app.helpers.NotificationsHelper.criarCanalNotificacoes;
+import static com.ifcbrusque.app.util.NotificationHelper.CHANNEL_ID;
+import static com.ifcbrusque.app.util.NotificationHelper.criarCanalNotificacoes;
 
 public class SynchronizationNotification {
     final private int ID_NOTICIA_SERVICO = 1;

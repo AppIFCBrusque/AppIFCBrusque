@@ -1,13 +1,12 @@
 package com.ifcbrusque.app.activities;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.stacked.sigaa_ifc.*;
 
-import static com.ifcbrusque.app.helpers.NotificationsHelper.criarCanalNotificacoes;
+import static com.ifcbrusque.app.util.NotificationHelper.criarCanalNotificacoes;
 
 
 public class MainActivity extends AppCompatActivity {

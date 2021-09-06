@@ -9,7 +9,10 @@ import java.util.Date;
 @Entity(tableName = "lembrete_table")
 public class Lembrete {
     @PrimaryKey(autoGenerate =  true)
-    private int id;
+    private long id;
+
+    @ColumnInfo(name = "id_notificacao")
+    private long idNotificacao;
 
     private int tipo;
     public final static int LEMBRETE_PESSOAL = 1;
@@ -38,8 +41,11 @@ public class Lembrete {
         this.estado = estado;
     }
 
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+    public long getId() {return id;}
+    public void setId(long id) {this.id = id;}
+
+    public long getIdNotificacao() {return idNotificacao;}
+    public void setIdNotificacao(long idNotificacao) {this.idNotificacao = idNotificacao;}
 
     public int getTipo() {return tipo;}
     public String getTitulo() {return titulo;}

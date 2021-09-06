@@ -48,11 +48,12 @@
             android:theme="@style/Theme.IFCBrusque.NoActionBar" />
 
         <service
-            android:name=".network.synchronization.SynchronizationService"
+            android:name=".util.service.SynchronizationService"
             android:exported="false" />
 
-        <receiver android:name=".network.synchronization.SynchronizationBroadcastReceiver">
+        <receiver android:name=".util.AppBroadcastReceiver">
             <intent-filter>
+                <action android:name="com.ifcbrusque.app.NOTIFICAR_LEMBRETE" />
                 <action android:name="com.ifcbrusque.app.ATUALIZAR_NOTICIAS" />
             </intent-filter>
         </receiver>

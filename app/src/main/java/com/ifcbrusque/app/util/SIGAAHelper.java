@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.helpers;
+package com.ifcbrusque.app.util;
 
 public class SIGAAHelper { //TODO: Arrumar, comentar, static
     /*private Sessao sessao = new Sessao(context.getApplicationContext());

@@ -15,8 +15,8 @@ public interface LembreteDao {
     /*
     Funções para utilizar os lembretes no banco de dados
      */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Lembrete lembrete);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(Lembrete lembrete);
 
     @Delete
     void delete(Lembrete lembrete);
@@ -25,7 +25,7 @@ public interface LembreteDao {
     void deleteAll();
 
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
-    Lembrete getLembrete(int id);
+    Lembrete getLembrete(long id);
 
     @Query("SELECT * FROM lembrete_table ORDER BY data_lembrete ASC")
     List<Lembrete> getAll();
@@ -34,5 +34,8 @@ public interface LembreteDao {
     void updateLembrete(Lembrete lembrete);
 
     @Query("UPDATE lembrete_table SET estado = :estado WHERE id = :id")
-    void alterarEstadoLembrete(int id, int estado);
+    void alterarEstadoLembrete(long id, int estado);
+
+    //@Query("UPDATE lembrete_table SET notificado = :notificado WHERE id = :id")
+    //void alterarEstadoNotificacaoLembrete(int id, boolean notificado);
 }

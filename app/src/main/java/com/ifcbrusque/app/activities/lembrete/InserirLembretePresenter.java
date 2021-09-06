@@ -1,27 +1,39 @@
 package com.ifcbrusque.app.activities.lembrete;
 
+import android.util.Log;
+
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.models.Lembrete;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static com.ifcbrusque.app.activities.MainActivity.TAG;
+
 public class InserirLembretePresenter {
     private View view;
     private AppDatabase db;
+    private PreferencesHelper pref;
 
-    private int idLembrete, ano, mes, dia, hora, minuto;
+    //TODO: Armazenar as variáveis em um lembrete
+    private long idLembrete;
+    private long idNotificacaoLembrete;
+    private int ano, mes, dia, hora, minuto;
     private String titulo, descricao;
 
-    public InserirLembretePresenter(View view, AppDatabase db, int idLembrete) {
+    public InserirLembretePresenter(View view, AppDatabase db, PreferencesHelper pref, long idLembrete, long idNotificacaoLembrete) {
         //Iniciar variáveis
         this.view = view;
         this.db = db;
+        this.pref = pref;
         this.idLembrete = idLembrete;
+        this.idNotificacaoLembrete = idNotificacaoLembrete;
 
         //Inicializar lembrete
         final Calendar c = Calendar.getInstance();
@@ -77,7 +89,7 @@ public class InserirLembretePresenter {
                 descricao = "";
             }
             final Calendar c = Calendar.getInstance();
-            c.set(ano, mes, dia, hora, minuto);
+            c.set(ano, mes, dia, hora, minuto, 0);
             Lembrete lembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, titulo, descricao, c.getTime(), Lembrete.REPETICAO_NAO_REPETIR, Lembrete.ESTADO_INCOMPLETO);
 
             //Completable para salvar o lembrete
@@ -85,10 +97,19 @@ public class InserirLembretePresenter {
                 if (idLembrete != -1) {
                     //Atualizar lembrete existente
                     lembrete.setId(idLembrete);
+                    lembrete.setIdNotificacao(idNotificacaoLembrete);
                     db.lembreteDao().updateLembrete(lembrete);
                 } else {
                     //Salvar lembrete novo
-                    db.lembreteDao().insert(lembrete);
+                    idNotificacaoLembrete = pref.getUltimoIdNotificacoes();
+                    lembrete.setIdNotificacao(idNotificacaoLembrete);
+                    idLembrete = db.lembreteDao().insert(lembrete);
+                    lembrete.setId(idLembrete);
+                }
+
+                //Agendar notificação
+                if(lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO && new Date().before(lembrete.getDataLembrete())) {
+                    view.agendarNotificacaoLembrete(lembrete);
                 }
             })
                     .subscribeOn(Schedulers.io())
@@ -178,6 +199,8 @@ public class InserirLembretePresenter {
         void setTitulo(String titulo);
 
         void setDescricao(String descricao);
+
+        void agendarNotificacaoLembrete(Lembrete lembrete);
 
         void mostrarToast(String texto);
 

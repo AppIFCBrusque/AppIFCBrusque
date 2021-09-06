@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.network;
+package com.ifcbrusque.app.util.network;
 
 import java.io.IOException;
 

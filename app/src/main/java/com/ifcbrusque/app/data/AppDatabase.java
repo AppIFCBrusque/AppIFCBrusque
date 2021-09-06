@@ -22,7 +22,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-@Database(entities = {Preview.class, Noticia.class, Lembrete.class}, version = 3, exportSchema = false)
+@Database(entities = {Preview.class, Noticia.class, Lembrete.class}, version = 4, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PreviewDao previewDao();

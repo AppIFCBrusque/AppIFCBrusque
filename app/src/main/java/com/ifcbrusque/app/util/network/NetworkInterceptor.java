@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.network;
+package com.ifcbrusque.app.util.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
