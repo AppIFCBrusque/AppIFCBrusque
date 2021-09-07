@@ -88,6 +88,8 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         //Imagem
         Picasso.get()
                 .load(((previews.get(position).getUrlImagemPreview().equals("") || previews.get(position).getUrlImagemPreview().length() == 0)) ? URL_SEM_IMAGEM : previews.get(position).getUrlImagemPreview())
+                .fit()
+                .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.ivPreview);
 
