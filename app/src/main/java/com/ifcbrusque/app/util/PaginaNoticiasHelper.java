@@ -41,6 +41,13 @@ public class PaginaNoticiasHelper {
 
             for(Element imagem : preview.getElementsByTag("img")) {
                 urlImagem = imagem.attr("src");
+
+                //Utilizar a versão com maior qualidade das imagens que são frequentemente reutilizadas
+                if(urlImagem.equals("http://noticias.brusque.ifc.edu.br/wp-content/uploads/sites/2/2018/07/East-Shore-1-e1592944304903.png")) {
+                    urlImagem = "http://noticias.brusque.ifc.edu.br/wp-content/uploads/sites/2/2018/07/East-Shore-1.png";
+                } else if(urlImagem.equals("http://noticias.brusque.ifc.edu.br/wp-content/uploads/sites/2/2020/06/resultado-e1592521217969.png")) {
+                    urlImagem = "http://noticias.brusque.ifc.edu.br/wp-content/uploads/sites/2/2020/06/resultado.png";
+                }
             }
 
             for(Element heading : preview.getElementsByClass("media-heading")) {
