@@ -21,11 +21,11 @@ import java.util.List;
 import static com.ifcbrusque.app.util.PaginaNoticiasHelper.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
-
     private List<Preview> previews;
     private OnPreviewListener mOnPreviewListener;
     Context context;
 
+    private final String URL_SEM_IMAGEM = "http://noticias.brusque.ifc.edu.br/wp-content/themes/ifc-v2/assets/images/sem_imagem.jpg";
     private int colorFrom;
     private final int colorTo = Color.BLUE;
 
@@ -76,8 +76,8 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
      */
     @Override
     public void onBindViewHolder(@NonNull NoticiasAdapter.ViewHolder holder, int position) {
+        //Adicionar o espaçamento extra em cima do primeiro preview
         if(position == 0) {
-            //Adicionar o espaçamento extra em cima
             int padding_views = (int) context.getResources().getDimension(R.dimen.padding_views);
             int padding_views_dobro = (int) context.getResources().getDimension(R.dimen.padding_views_dobro);
             holder.itemView.setPadding(padding_views, padding_views_dobro, padding_views, 0);
@@ -85,19 +85,12 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
 
         if(previews.get(position).getTitulo().length() > 0) holder.tvTitulo.setText(previews.get(position).getTitulo());
         holder.tvData.setText(FORMATO_DATA.format(previews.get(position).getDataNoticia()));
+        //Imagem
+        Picasso.get()
+                .load(((previews.get(position).getUrlImagemPreview().equals("") || previews.get(position).getUrlImagemPreview().length() == 0)) ? URL_SEM_IMAGEM : previews.get(position).getUrlImagemPreview())
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(holder.ivPreview);
 
-        if(previews.get(position).getUrlImagemPreview().length() > 0) {
-            Picasso.get()
-                    .load(previews.get(position).getUrlImagemPreview())
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(holder.ivPreview);
-        } else {
-            //Sem imagem, definir imagem padrão
-            Picasso.get()
-                    .load(R.drawable.ic_launcher_background)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(holder.ivPreview);
-        }
     }
 
     /*
