@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,12 +23,14 @@ import com.ifcbrusque.app.adapters.HomeAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.util.helpers.NotificationHelper;
 import com.ifcbrusque.app.models.Lembrete;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ifcbrusque.app.activities.MainActivity.TAG;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ADICIONADO;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
@@ -51,7 +54,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         fabNovoLembrete = root.findViewById(R.id.fabNovoLembrete);
         btCategorias = root.findViewById(R.id.btCategorias);
 
-        presenter = new HomePresenter(this, AppDatabase.getDbInstance(getContext().getApplicationContext()));
+        presenter = new HomePresenter(this, AppDatabase.getDbInstance(getContext().getApplicationContext()), new PreferencesHelper(getContext()));
 
         fabNovoLembrete.setOnClickListener(this);
         btCategorias.setOnClickListener(this);
@@ -63,7 +66,9 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); //TODO: Arrumar isto aqui. O problema está descrito na parte da interface.
-        noticiasAdapter = new HomeAdapter(this.getContext(), presenter.getLembretesArmazenados(), this);
+        int categoria = presenter.getUltimaCategoriaAcessadaHome();
+        definirCategoria(categoria); //Para atualizar o texto do botão. Como o adapter ainda não existe, ele não vai alterar a recycler view ou o valor do última categoria acessada
+        noticiasAdapter = new HomeAdapter(this.getContext(), presenter.getLembretesArmazenados(), categoria, this);
         recyclerView.setAdapter(noticiasAdapter);
 
         return root;
@@ -94,24 +99,21 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
             tvIncompletos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    noticiasAdapter.setCategoria(Lembrete.ESTADO_INCOMPLETO);
-                    btCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
+                    definirCategoria(Lembrete.ESTADO_INCOMPLETO);
                     bottomSheetDialog.dismiss();
                 }
             });
             tvCompletos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    noticiasAdapter.setCategoria(Lembrete.ESTADO_COMPLETO);
-                    btCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
+                    definirCategoria(Lembrete.ESTADO_COMPLETO);
                     bottomSheetDialog.dismiss();
                 }
             });
             tvTodos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    noticiasAdapter.setCategoria(0);
-                    btCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
+                    definirCategoria(0);
                     bottomSheetDialog.dismiss();
                 }
             });
@@ -138,9 +140,40 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         }
     }
 
+    /**
+     * Define a categoria de lembretes a ser exibida pelo recycler view
+     * Atualiza o recycler view e o texto do botão
+     * 0 a 2: categorias padrão
+     * @param categoria
+     */
+    private void definirCategoria(int categoria) {
+        //Texto do botão
+        switch(categoria) {
+            case 0:
+                btCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
+                break;
+
+            case 1:
+                btCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
+                break;
+
+            case 2:
+                btCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
+                break;
+
+            default:
+                //TODO: Categorias personalizadas
+                break;
+        }
+        //Atualizar o recycler view e a última categoria acessada
+        if(noticiasAdapter != null) {
+            noticiasAdapter.setCategoria(categoria);
+            presenter.setUltimaCategoriaAcessadaHome(categoria);
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
-    Funções declaradas no presenter para serem definidas por esta view
+    Funções declaradas no presenter ou no adapter para serem definidas por esta view
      */
 
     /**

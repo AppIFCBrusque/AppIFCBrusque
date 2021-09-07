@@ -33,11 +33,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private int colorFrom;
     private final int colorTo = Color.BLUE;
 
-    public HomeAdapter(Context context, List<Lembrete> lembretes, OnLembreteListener onLembreteListener) {
+    public HomeAdapter(Context context, List<Lembrete> lembretes, int categoria, OnLembreteListener onLembreteListener) {
         //Iniciar variáveis
         this.context = context;
         this.lembretes = lembretes;
-        categoria = Lembrete.ESTADO_INCOMPLETO;
+        this.categoria = categoria;
         this.mOnLembreteListener = onLembreteListener;
 
         colorFrom = MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE);
@@ -52,8 +52,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public void setCategoria(int categoria) {
-        this.categoria = categoria;
-        notifyDataSetChanged();
+        if(this.categoria != categoria) {
+            this.categoria = categoria;
+            notifyDataSetChanged();
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /**

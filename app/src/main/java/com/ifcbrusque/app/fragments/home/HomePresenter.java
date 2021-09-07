@@ -2,6 +2,8 @@ package com.ifcbrusque.app.fragments.home;
 
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.models.Lembrete;
+import com.ifcbrusque.app.util.preferences.PreferencesHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -11,13 +13,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class HomePresenter {
     private View view;
     private AppDatabase db;
+    private PreferencesHelper pref;
 
     private List<Lembrete> lembretesArmazenados;
 
-    public HomePresenter(View view, AppDatabase db) {
+    public HomePresenter(View view, AppDatabase db, PreferencesHelper pref) {
         //Iniciar variáveis
         this.view = view;
         this.db = db;
+        this.pref = pref;
 
         lembretesArmazenados = new ArrayList<>();
         carregarLembretesArmazenados(true);
@@ -28,6 +32,14 @@ public class HomePresenter {
      */
     public List<Lembrete> getLembretesArmazenados() {
         return lembretesArmazenados;
+    }
+
+    public int getUltimaCategoriaAcessadaHome() {
+        return pref.getUltimaCategoriaAcessadaHome();
+    }
+
+    public void setUltimaCategoriaAcessadaHome(int categoria) {
+        pref.setUltimaCategoriaAcessadaHome(categoria);
     }
 
     /**

@@ -17,5 +17,7 @@ public class PreferenceValues {
 
     public static String NOTIFICACOES_ULTIMO_ID = "NOTIFICACOES_ULTIMO_ID";
 
+    public static String HOME_ULTIMA_CATEGORIA_ACESSADA_ID = "HOME_ULTIMA_CATEGORIA_ACESSADA_ID";
+
     public static String TESTE_SERVICO_VEZES = "SERVICO_VEZES";
 }

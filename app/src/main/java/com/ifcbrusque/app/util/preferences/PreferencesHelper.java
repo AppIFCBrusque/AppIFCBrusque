@@ -2,6 +2,9 @@ package com.ifcbrusque.app.util.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.ifcbrusque.app.models.Lembrete;
+
 import static com.ifcbrusque.app.util.preferences.PreferenceValues.*;
 
 /*
@@ -56,6 +59,17 @@ public class PreferencesHelper {
 
         return id;
     }
+
+    public Integer getUltimaCategoriaAcessadaHome() {
+        return pref.getInt(HOME_ULTIMA_CATEGORIA_ACESSADA_ID, Lembrete.ESTADO_INCOMPLETO);
+    }
+
+    public void setUltimaCategoriaAcessadaHome(int categoria) {
+        editor.putInt(HOME_ULTIMA_CATEGORIA_ACESSADA_ID, categoria);
+        editor.commit();
+    }
+
+
 
     /*
     Utilizado para testes
