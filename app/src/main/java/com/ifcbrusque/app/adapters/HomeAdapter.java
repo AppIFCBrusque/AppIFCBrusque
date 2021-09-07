@@ -21,9 +21,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+    private Context context;
+
     private List<Lembrete> lembretes;
+    private int categoria;
+
     private OnLembreteListener mOnLembreteListener;
-    Context context;
 
     public static SimpleDateFormat FORMATO_DATA = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //TODO: Passar isto para outro lugar
 
@@ -34,6 +37,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         //Iniciar variáveis
         this.context = context;
         this.lembretes = lembretes;
+        categoria = Lembrete.ESTADO_INCOMPLETO;
         this.mOnLembreteListener = onLembreteListener;
 
         colorFrom = MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE);
@@ -44,6 +48,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
      */
     public void setLembretes(List<Lembrete> lembretes) {
         this.lembretes = lembretes;
+        notifyDataSetChanged();
+    }
+
+    public void setCategoria(int categoria) {
+        this.categoria = categoria;
+        notifyDataSetChanged();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -93,12 +103,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.tvData.setText(data[0]);
         holder.tvHora.setText(data[1]);
 
-        if(lembretes.get(position).getEstado() == Lembrete.ESTADO_COMPLETO) {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        if(categoria >= 10) {
+            //TODO: Categorias personalizadas
         } else {
-            holder.itemView.setVisibility(View.VISIBLE);
-            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            //Categorias padrão (incompleto, completo, todos)
+            if(lembretes.get(position).getEstado() == categoria || categoria == 0) {
+                //Mostrar o item
+                holder.itemView.setVisibility(View.VISIBLE);
+                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            } else {
+                //Esconder o item
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
         }
     }
 
@@ -148,7 +165,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             if(v == ibOpcoes) {
                 //Clique nas opções (mostrar diálogo para escolher o que fazer)
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
-                bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_lembrete);
+                bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_opcoes_lembrete);
 
                 TextView tvCompletar = bottomSheetDialog.findViewById(R.id.tvCompletar);
                 TextView tvExcluir = bottomSheetDialog.findViewById(R.id.tvExcluir);

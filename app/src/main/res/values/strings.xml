@@ -21,6 +21,10 @@
     <string name="lembrete_completar">Marcar como completo</string>
     <string name="lembrete_excluir">Excluir lembrete</string>
 
+    <string name="categoria_lembretes_todos">Todos os lembretes</string>
+    <string name="categoria_lembretes_completos">Completos</string>
+    <string name="categoria_lembretes_incompletos">Incompletos</string>
+
     <string name="channel_title">APP IFC Brusuque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>
     <!-- TODO: Remove or change this placeholder text -->
