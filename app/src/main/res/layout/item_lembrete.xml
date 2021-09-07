@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_views"
+    android:background="?attr/colorOnPrimary"><![CDATA[
+
+
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:layout_editor_absoluteX="3dp">
+
+
+
+
+
+    ]]>
+
+    <TextView
+        android:id="@+id/lembrete_titulo"
+        style="@style/TextAppearance.TituloItemLista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:paddingHorizontal="@dimen/padding_views"
+        android:paddingTop="@dimen/padding_views"
+        android:text="@string/noticia_titulo_padrao"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/lembrete_opcoes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lembrete_descricao"
+        style="@style/TextAppearance.Secundario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingHorizontal="@dimen/padding_views"
+        android:paddingTop="@dimen/padding_views"
+        android:text="@string/noticia_descricao_padrao"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/lembrete_opcoes"
+        app:layout_constraintStart_toStartOf="@+id/lembrete_titulo"
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_titulo" />
+    <TextView
+        android:id="@+id/lembrete_data"
+        style="@style/TextAppearance.Secundario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_views"
+        android:text="00/00/0000"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="@+id/lembrete_titulo"
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
+        android:drawableLeft="@drawable/outline_event_black_20"
+        android:drawablePadding="@dimen/padding_views"></TextView>
+    <TextView
+        android:id="@+id/lembrete_hora"
+        style="@style/TextAppearance.Secundario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_views"
+        android:text="00:00"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@+id/lembrete_data"
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
+        android:drawableLeft="@drawable/outline_schedule_black_20"
+        android:drawablePadding="@dimen/padding_views"></TextView>
+    <ImageButton
+        android:id="@+id/lembrete_opcoes"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:backgroundTint="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/outline_more_vert_black_36" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
