@@ -18,7 +18,7 @@ import com.ifcbrusque.app.models.Preview;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-import static com.ifcbrusque.app.util.PaginaNoticiasHelper.*;
+import static com.ifcbrusque.app.util.helpers.PaginaNoticiasHelper.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
     private List<Preview> previews;

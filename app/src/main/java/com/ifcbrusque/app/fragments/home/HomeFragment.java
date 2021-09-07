@@ -16,7 +16,7 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.adapters.HomeAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.util.NotificationHelper;
+import com.ifcbrusque.app.util.helpers.NotificationHelper;
 import com.ifcbrusque.app.models.Lembrete;
 
 import java.util.Date;

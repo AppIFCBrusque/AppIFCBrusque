@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.stacked.sigaa_ifc.*;
 
-import static com.ifcbrusque.app.util.NotificationHelper.criarCanalNotificacoes;
+import static com.ifcbrusque.app.util.helpers.NotificationHelper.criarCanalNotificacoes;
 
 
 public class MainActivity extends AppCompatActivity {

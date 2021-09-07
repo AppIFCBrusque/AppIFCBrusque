@@ -1,4 +1,4 @@
-package com.ifcbrusque.app.util;
+package com.ifcbrusque.app.util.helpers;
 
 import com.ifcbrusque.app.models.Noticia;
 import com.ifcbrusque.app.models.Preview;

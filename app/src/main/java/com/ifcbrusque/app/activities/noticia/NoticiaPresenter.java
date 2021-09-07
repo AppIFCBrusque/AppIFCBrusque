@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.Converters.*;
-import static com.ifcbrusque.app.util.PaginaNoticiasHelper.*;
+import static com.ifcbrusque.app.util.helpers.PaginaNoticiasHelper.*;
 
 public class NoticiaPresenter  {
     private View view;

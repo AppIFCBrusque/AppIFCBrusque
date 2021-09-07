@@ -1,5 +1,7 @@
 package com.ifcbrusque.app.fragments.noticias;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,10 +17,12 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.noticia.NoticiaActivity;
 import com.ifcbrusque.app.adapters.NoticiasAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.util.NotificationHelper;
+import com.ifcbrusque.app.util.AppBroadcastReceiver;
 import com.ifcbrusque.app.models.PaginaNoticias;
 import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
+
+import java.util.Calendar;
 import java.util.List;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import static com.ifcbrusque.app.activities.noticia.NoticiaActivity.*;
@@ -115,13 +119,22 @@ public class NoticiasFragment extends Fragment implements NoticiasPresenter.View
     /*
     Funções declaradas no presenter para serem definidas por esta view
      */
-
     /**
      * Define um alarme que executa o serviço de fundo que atualiza carrega a página de notícias, salva e notifica as novas
      */
     @Override
     public void definirSincronizacaoPeriodicaNoticias() {
-        NotificationHelper.definirSincronizacaoPeriodicaNoticias(this.getContext());
+        Intent intent = new Intent(this.getContext(), AppBroadcastReceiver.class);
+        intent.setAction(AppBroadcastReceiver.ATUALIZAR_NOTICIAS);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.SECOND, 0);
+
+        AlarmManager alarm = (AlarmManager) this.getContext().getSystemService(ALARM_SERVICE);
+        alarm.cancel(pendingIntent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
     }
 
     /**

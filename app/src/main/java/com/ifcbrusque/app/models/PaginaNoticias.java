@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.ifcbrusque.app.util.PaginaNoticiasHelper.*;
+import static com.ifcbrusque.app.util.helpers.PaginaNoticiasHelper.*;
 
 /*
 Funções para obter as notícias da página de internet do campus

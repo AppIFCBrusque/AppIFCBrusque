@@ -6,7 +6,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.AppDatabase;
-import com.ifcbrusque.app.util.NotificationHelper;
+import com.ifcbrusque.app.util.helpers.NotificationHelper;
 import com.ifcbrusque.app.models.Lembrete;
 import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 

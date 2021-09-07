@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import com.ifcbrusque.app.util.service.SynchronizationService;
 
-import static com.ifcbrusque.app.util.NotificationHelper.notificarLembrete;
+import static com.ifcbrusque.app.util.helpers.NotificationHelper.notificarLembrete;
 
 /*
 Utilizado para receber comandos (enquanto o aplicativo está aberto ou fechado) e executar algo

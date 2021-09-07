@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+
 import com.ifcbrusque.app.data.AppDatabase;
 import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 import com.ifcbrusque.app.models.Preview;
@@ -19,6 +20,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
+import static com.ifcbrusque.app.util.helpers.NotificationHelper.notificarNoticia;
+import static com.ifcbrusque.app.util.helpers.NotificationHelper.notificarSincronizacao;
+
 /*
 Serviço utilizado para obter informações da internet (notícias, SIGAA) no fundo e processá-las
  */
@@ -28,7 +32,6 @@ public class SynchronizationService extends Service {
 
     private PaginaNoticias campus;
     private AppDatabase db;
-    private SynchronizationNotification notf;
 
     @Override
     public void onCreate() {
@@ -44,10 +47,9 @@ public class SynchronizationService extends Service {
 
         campus = new PaginaNoticias(this);
         db = AppDatabase.getDbInstance(getApplicationContext());
-        notf = new SynchronizationNotification(this);
 
         if (atualizarNoticias) {
-            notf.notificarSincronizacaoNoticias();
+            notificarSincronizacao(this);
             carregarPreviews(pagina)
                     .doOnComplete(() -> {
                         stopSelf();
@@ -107,7 +109,7 @@ public class SynchronizationService extends Service {
                     if (previewsNovos.size() > 0) {
                         //Notificar previews novos
                         for (Preview p : previewsNovos) {
-                            notf.notificarPreview(p);
+                            notificarNoticia(this, p);
                         }
                         //Notificar no observable
                         data.onNext(OBSERVABLE_PREVIEWS_NOVOS);
