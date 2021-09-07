@@ -49,8 +49,11 @@ public class Lembrete {
 
     public int getTipo() {return tipo;}
     public String getTitulo() {return titulo;}
+    public void setTitulo(String titulo) {this.titulo = titulo;}
     public String getDescricao() {return descricao;}
+    public void setDescricao(String descricao) {this.descricao = descricao;}
     public Date getDataLembrete() {return dataLembrete;}
+    public void setDataLembrete(Date dataLembrete) {this.dataLembrete = dataLembrete;}
     public long getTempoRepeticao() {return tempoRepeticao;}
     public int getEstado() {return estado;}
 }

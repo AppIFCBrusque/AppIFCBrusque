@@ -56,7 +56,7 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
             idNotificacaoLembrete = -1;
         }
 
-        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()), new PreferencesHelper(this), idLembrete, idNotificacaoLembrete);
+        presenter = new InserirLembretePresenter(this, AppDatabase.getDbInstance(this.getApplicationContext()), new PreferencesHelper(this), idLembrete);
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
