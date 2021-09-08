@@ -60,15 +60,16 @@ public class HomePresenter {
     /**
      * Utilizado pela view para definir um lembrete como completo
      * Depois de definir, atualiza a recycler view
-     * @param lembrete lembrete para definir completo
+     * @param position posição na lista de lembretes do lembrete para definir completo
      */
-    public void completarLembrete(Lembrete lembrete) {
+    public void completarLembrete(int position) {
         Completable.fromRunnable(() -> {
-            db.lembreteDao().alterarEstadoLembrete(lembrete.getId(), Lembrete.ESTADO_COMPLETO);
+            db.lembreteDao().alterarEstadoLembrete(lembretesArmazenados.get(position).getId(), Lembrete.ESTADO_COMPLETO);
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    carregarLembretesArmazenados(false);
+                    lembretesArmazenados.get(position).setEstado(Lembrete.ESTADO_COMPLETO);
+                    view.atualizarRecyclerView(lembretesArmazenados, position, false, false);
                 })
                 .subscribe();
     }
@@ -76,15 +77,16 @@ public class HomePresenter {
     /**
      * Utilizado pela view para excluir um lembrete
      * Depois de definir, atualiza a recycler view
-     * @param lembrete lembrete para excluir
+     * @param position posição na lista de lembretes do lembrete para excluir
      */
-    public void excluirLembrete(Lembrete lembrete) {
+    public void excluirLembrete(int position) {
         Completable.fromRunnable(() -> {
-            db.lembreteDao().delete(lembrete);
+            db.lembreteDao().delete(lembretesArmazenados.get(position));
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    carregarLembretesArmazenados(false);
+                    lembretesArmazenados.remove(position);
+                    view.atualizarRecyclerView(lembretesArmazenados, position, false, true);
                 })
                 .subscribe();
     }
@@ -94,6 +96,8 @@ public class HomePresenter {
      */
     public interface View {
         void atualizarRecyclerView(List<Lembrete> lembretes, boolean agendarNotificacoes);
+
+        void atualizarRecyclerView(List<Lembrete> lembretes, int position, boolean agendarNotificacao, boolean removido);
 
         void mostrarToast(String texto);
     }

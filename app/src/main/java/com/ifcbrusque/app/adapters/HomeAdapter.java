@@ -46,11 +46,36 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     /*
     Funções que podem ser utilizadas pela view
      */
+
+    /**
+     * Utilizado para atualizar a lista de lembretes. Atualiza todos os itens de uma vez (mais pesado)
+     * @param lembretes lista de lembretes
+     */
     public void setLembretes(List<Lembrete> lembretes) {
         this.lembretes = lembretes;
         notifyDataSetChanged();
     }
 
+    /**
+     * Utilizado para atualizar a lista de lembretes. Atualiza um só item de uma vez (mais leve)
+     * @param lembretes lista com todos os lembretes
+     * @param position posição do item alterado
+     * @param removido indica se o item foi removido
+     */
+    public void setLembretes(List<Lembrete> lembretes, int position, boolean removido) {
+        this.lembretes = lembretes;
+
+        if(removido) {
+            notifyItemRemoved(position);
+        } else {
+            notifyItemChanged(position);
+        }
+    }
+
+    /**
+     * Altera a categoria de lembretes exibida. Utilizada para filtrá-los
+     * @param categoria categoria a exibir
+     */
     public void setCategoria(int categoria) {
         if(this.categoria != categoria) {
             this.categoria = categoria;

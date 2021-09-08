@@ -56,4 +56,5 @@ public class Lembrete {
     public void setDataLembrete(Date dataLembrete) {this.dataLembrete = dataLembrete;}
     public long getTempoRepeticao() {return tempoRepeticao;}
     public int getEstado() {return estado;}
+    public void setEstado(int estado) {this.estado = estado;}
 }

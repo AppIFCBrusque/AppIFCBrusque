@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ifcbrusque.app.activities.MainActivity.TAG;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ADICIONADO;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
@@ -44,7 +43,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     private Button btCategorias;
 
     private RecyclerView recyclerView;
-    private HomeAdapter noticiasAdapter;
+    private HomeAdapter homeAdapter;
     private LinearLayoutManager layoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,8 +67,8 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); //TODO: Arrumar isto aqui. O problema está descrito na parte da interface.
         int categoria = presenter.getUltimaCategoriaAcessadaHome();
         definirCategoria(categoria); //Para atualizar o texto do botão. Como o adapter ainda não existe, ele não vai alterar a recycler view ou o valor do última categoria acessada
-        noticiasAdapter = new HomeAdapter(this.getContext(), presenter.getLembretesArmazenados(), categoria, this);
-        recyclerView.setAdapter(noticiasAdapter);
+        homeAdapter = new HomeAdapter(this.getContext(), presenter.getLembretesArmazenados(), categoria, this);
+        recyclerView.setAdapter(homeAdapter);
 
         return root;
     }
@@ -166,8 +165,8 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
                 break;
         }
         //Atualizar o recycler view e a última categoria acessada
-        if(noticiasAdapter != null) {
-            noticiasAdapter.setCategoria(categoria);
+        if(homeAdapter != null) {
+            homeAdapter.setCategoria(categoria);
             presenter.setUltimaCategoriaAcessadaHome(categoria);
         }
     }
@@ -177,7 +176,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
      */
 
     /**
-     * Utilizado para mudar os itens da recycler view
+     * Utilizado para mudar os itens da recycler view. Atualiza todos os itens de uma vez (mais pesado)
      * Exibe somente os lembretes incompletos
      * Define os lembretes do adapter e o notifica para atualizar
      * @param lembretes lembretes para serem exibidos pela recycler view
@@ -185,7 +184,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
      */
     @Override
     public void atualizarRecyclerView(List<Lembrete> lembretes, boolean agendarNotificacoes) {
-        noticiasAdapter.setLembretes(lembretes);
+        homeAdapter.setLembretes(lembretes);
 
         //Agendar as notificações futuras e incompletas
         if(agendarNotificacoes) {
@@ -193,6 +192,23 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
             for(Lembrete l : lembretesFuturosIncompletos) {
                 NotificationHelper.agendarNotificacaoLembrete(getContext(), l);
             }
+        }
+    }
+
+    /**
+     * Utilizado para mudar os itens da recycler view. Atualiza um só item de uma vez (mais leve)
+     * @param lembretes lista com todos os lembretes
+     * @param position posição do item atualizado/removido
+     * @param agendarNotificacao boolean indicando se a notificação para o item alterado vai ser agendada
+     * @param removido indica se o item foi removido
+     */
+    @Override
+    public void atualizarRecyclerView(List<Lembrete> lembretes, int position, boolean agendarNotificacao, boolean removido) {
+        homeAdapter.setLembretes(lembretes, position, removido);
+
+        //Agendar notificação do lembrete em questão
+        if(!removido && agendarNotificacao && lembretes.get(position).getEstado() == Lembrete.ESTADO_INCOMPLETO && new Date().before(lembretes.get(position).getDataLembrete())) {
+            NotificationHelper.agendarNotificacaoLembrete(getContext(), lembretes.get(position));
         }
     }
 
@@ -217,7 +233,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     @Override
     public void onCompletarClick(int position) {
         NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
-        presenter.completarLembrete(presenter.getLembretesArmazenados().get(position));
+        presenter.completarLembrete(position);
     }
 
     /**
@@ -227,7 +243,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     @Override
     public void onExcluirClick(int position) {
         NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
-        presenter.excluirLembrete(presenter.getLembretesArmazenados().get(position));
+        presenter.excluirLembrete(position);
     }
 
     /**
