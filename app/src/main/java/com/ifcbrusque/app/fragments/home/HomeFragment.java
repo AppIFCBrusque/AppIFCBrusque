@@ -210,13 +210,23 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
         startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
     }
 
+    /**
+     * Executado ao clicar em "marcar como completo" das opções de um lembrete
+     * Desagenda a notificação e troca o estado do lembrete armazenado para completo
+     */
     @Override
     public void onCompletarClick(int position) {
+        NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
         presenter.completarLembrete(presenter.getLembretesArmazenados().get(position));
     }
 
+    /**
+     * Executado ao clicar em "excluir" das opções de um lembrete
+     * Desagenda a notificação e exclui o lembrete do banco de dados
+     */
     @Override
     public void onExcluirClick(int position) {
+        NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
         presenter.excluirLembrete(presenter.getLembretesArmazenados().get(position));
     }
 

@@ -96,6 +96,27 @@ public class NotificationHelper {
 
         Log.d(TAG, "definirNotificacaoLembrete: alarme do lembrete definido. ID=" + lembrete.getId() + ", ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
     }
+
+    /**
+     * Desagenda a notificação de um lembrete
+     * @param lembrete lembrete a ser desagendado
+     */
+    public static void desagendarNotificacaoLembrete(Context context, Lembrete lembrete) {
+        Intent intent = new Intent(context, AppBroadcastReceiver.class);
+        intent.setAction(AppBroadcastReceiver.NOTIFICAR_LEMBRETE);
+
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, lembrete.getId());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TITULO, lembrete.getTitulo());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO, lembrete.getDescricao());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Math.toIntExact(lembrete.getIdNotificacao()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarm = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        alarm.cancel(pendingIntent);
+
+        Log.d(TAG, "desagendarNotificacaoLembrete: alarme cancelado. ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
