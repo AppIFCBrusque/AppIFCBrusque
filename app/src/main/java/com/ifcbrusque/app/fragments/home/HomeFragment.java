@@ -227,13 +227,24 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     }
 
     /**
-     * Executado ao clicar em "marcar como completo" das opções de um lembrete
-     * Desagenda a notificação e troca o estado do lembrete armazenado para completo
+     * Executado ao clicar em "marcar como completo/incompleto" das opções de um lembrete
+     * Desagenda/agenda a notificação e troca o estado do lembrete armazenado para o oposto
      */
     @Override
-    public void onCompletarClick(int position) {
-        NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
-        presenter.completarLembrete(position);
+    public void onAlternarEstadoClick(int position) {
+        //Alterar o estado no banco de dados
+        presenter.alternarEstadoLembrete(position);
+
+        //Agendar/desagendar
+        if(presenter.getLembretesArmazenados().get(position).getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+            //Marcar como completo
+            NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
+        } else {
+            //Marcar como incompleto
+            if(new Date().before(presenter.getLembretesArmazenados().get(position).getDataLembrete())) {
+                NotificationHelper.agendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
+            }
+        }
     }
 
     /**

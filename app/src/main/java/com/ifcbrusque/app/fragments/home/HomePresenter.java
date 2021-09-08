@@ -58,17 +58,19 @@ public class HomePresenter {
     }
 
     /**
-     * Utilizado pela view para definir um lembrete como completo
+     * Utilizado pela view para definir um lembrete como completo/incompleto
      * Depois de definir, atualiza a recycler view
-     * @param position posição na lista de lembretes do lembrete para definir completo
+     * @param position posição na lista de lembretes do lembrete para alternar o estado
      */
-    public void completarLembrete(int position) {
+    public void alternarEstadoLembrete(int position) {
+        int novoEstado = (lembretesArmazenados.get(position).getEstado() == Lembrete.ESTADO_INCOMPLETO) ? Lembrete.ESTADO_COMPLETO : Lembrete.ESTADO_INCOMPLETO;
+
         Completable.fromRunnable(() -> {
-            db.lembreteDao().alterarEstadoLembrete(lembretesArmazenados.get(position).getId(), Lembrete.ESTADO_COMPLETO);
+            db.lembreteDao().alterarEstadoLembrete(lembretesArmazenados.get(position).getId(), novoEstado);
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    lembretesArmazenados.get(position).setEstado(Lembrete.ESTADO_COMPLETO);
+                    lembretesArmazenados.get(position).setEstado(novoEstado);
                     view.atualizarRecyclerView(lembretesArmazenados, position, false, false);
                 })
                 .subscribe();

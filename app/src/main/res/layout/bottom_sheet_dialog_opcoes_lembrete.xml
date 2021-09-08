@@ -6,7 +6,7 @@
     android:layout_height="250dp">
 
     <TextView
-        android:id="@+id/tvCompletar"
+        android:id="@+id/tvAlterarEstado"
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +26,6 @@
         android:text="@string/lembrete_excluir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCompletar"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/tvAlterarEstado"></TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

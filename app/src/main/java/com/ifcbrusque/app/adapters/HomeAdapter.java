@@ -194,19 +194,30 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
                 bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_opcoes_lembrete);
 
-                TextView tvCompletar = bottomSheetDialog.findViewById(R.id.tvCompletar);
-                TextView tvExcluir = bottomSheetDialog.findViewById(R.id.tvExcluir);
+                //Opção de alterar INCOMPLETO/COMPLETO
+                TextView tvAlternarEstado = bottomSheetDialog.findViewById(R.id.tvAlterarEstado);
+                //Ajustar texto e ícone
+                switch(lembretes.get(getAdapterPosition()).getEstado()) {
+                    case Lembrete.ESTADO_INCOMPLETO:
+                        tvAlternarEstado.setText(R.string.lembrete_completar);
+                        tvAlternarEstado.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);
+                        break;
 
-                bottomSheetDialog.show();
-
-                //Definir o que acontece quando é clicado em alguma das opções
-                tvCompletar.setOnClickListener(new View.OnClickListener() {
+                        case Lembrete.ESTADO_COMPLETO:
+                            tvAlternarEstado.setText(R.string.lembrete_descompletar);
+                            tvAlternarEstado.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.outline_clear_black_24, 0, 0, 0);
+                            break;
+                }
+                tvAlternarEstado.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onLembreteListener.onCompletarClick(getAdapterPosition());
+                        onLembreteListener.onAlternarEstadoClick(getAdapterPosition());
                         bottomSheetDialog.dismiss();
                     }
                 });
+
+                //Opção de excluir
+                TextView tvExcluir = bottomSheetDialog.findViewById(R.id.tvExcluir);
                 tvExcluir.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -214,6 +225,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                         bottomSheetDialog.dismiss();
                     }
                 });
+
+                bottomSheetDialog.show();
             } else {
                 //Clique fora das opções
                 colorAnimation.end();
@@ -250,7 +263,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
      */
     public interface OnLembreteListener {
         void onLembreteClick(int position);
-        void onCompletarClick(int position);
+        void onAlternarEstadoClick(int position);
         void onExcluirClick(int position);
     }
 }

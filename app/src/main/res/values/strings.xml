@@ -19,6 +19,7 @@
     <string name="noticia_descricao_padrao">Descrição não disponível</string>
 
     <string name="lembrete_completar">Marcar como completo</string>
+    <string name="lembrete_descompletar">Marcar como incompleto</string>
     <string name="lembrete_excluir">Excluir lembrete</string>
 
     <string name="categoria_lembretes_todos">Todos os lembretes</string>
