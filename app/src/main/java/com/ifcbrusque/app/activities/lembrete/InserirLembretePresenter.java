@@ -41,6 +41,7 @@ public class InserirLembretePresenter {
                         c.setTime(lembrete.getDataLembrete());
                         view.mudarTextoBotaoData(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                         view.mudarTextoBotaoHora(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+                        view.mudarTextoBotaoRepeticao(lembrete.getTipoRepeticao());
                     }).subscribe();
         } else {
             //Definir a data e hora padrão dos botões de data e hora
@@ -49,10 +50,11 @@ public class InserirLembretePresenter {
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
 
-            lembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", c.getTime(), Lembrete.REPETICAO_NAO_REPETIR, Lembrete.ESTADO_INCOMPLETO);
+            lembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", c.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO);
 
             view.mudarTextoBotaoData(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
             view.mudarTextoBotaoHora(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+            view.mudarTextoBotaoRepeticao(Lembrete.REPETICAO_SEM);
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,6 +156,18 @@ public class InserirLembretePresenter {
     }
 
     /**
+     * Executado quando o usuário seleciona uma opção de repetição
+     * Define os valores do lembrete e muda o texto do botão
+     * @param tipoRepeticao tipo de repetição (utilize os valores definidos na classe Lembrete)
+     * @param tempoRepeticaoPersonalizada (intervalo utilizado para a repetição personalizada)
+     */
+    public void onRepeticaoSelecionada(int tipoRepeticao, long tempoRepeticaoPersonalizada) {
+        lembrete.setTipoRepeticao(tipoRepeticao);
+        lembrete.setTempoRepeticaoPersonalizada(tempoRepeticaoPersonalizada);
+        view.mudarTextoBotaoRepeticao(tipoRepeticao);
+    }
+
+    /**
      * Executado quando o usuário clica no botão de inserir lembrete (botão redondo no canto inferior direito)
      * Atualiza o título e a descrição salvos no presenter
      * <p>
@@ -176,6 +190,8 @@ public class InserirLembretePresenter {
         void mudarTextoBotaoData(int ano, int mes, int dia);
 
         void mudarTextoBotaoHora(int hora, int minuto);
+
+        void mudarTextoBotaoRepeticao(int tipoRepeticao);
 
         void setTitulo(String titulo);
 

@@ -85,6 +85,8 @@ public class NotificationHelper {
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TITULO, lembrete.getTitulo());
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO, lembrete.getDescricao());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TIPO_REPETICAO, lembrete.getTipo());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TEMPO_REPETICAO_PERSONALIZADA, lembrete.getTempoRepeticaoPersonalizada());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Math.toIntExact(lembrete.getIdNotificacao()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -109,6 +111,8 @@ public class NotificationHelper {
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TITULO, lembrete.getTitulo());
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO, lembrete.getDescricao());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TIPO_REPETICAO, lembrete.getTipo());
+        intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_TEMPO_REPETICAO_PERSONALIZADA, lembrete.getTempoRepeticaoPersonalizada());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Math.toIntExact(lembrete.getIdNotificacao()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

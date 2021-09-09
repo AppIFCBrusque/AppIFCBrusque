@@ -24,20 +24,28 @@ public class Lembrete {
     @ColumnInfo(name = "data_lembrete")
     private Date dataLembrete;
 
-    @ColumnInfo(name = "tempo_repeticao")
-    private long tempoRepeticao;
-    public final static int REPETICAO_NAO_REPETIR = -1;
+    @ColumnInfo(name = "tipo_repeticao")
+    private int tipoRepeticao;
+    public final static int REPETICAO_SEM = 0;
+    public final static int REPETICAO_HORA = 1;
+    public final static int REPETICAO_DIA = 2;
+    public final static int REPETICAO_SEMANA = 3;
+    public final static int REPETICAO_MES = 4;
+    public final static int REPETICAO_ANO = 5;
+    @ColumnInfo(name = "tempo_repeticao_personalizada")
+    private long tempoRepeticaoPersonalizada;
 
     private int estado;
     public final static int ESTADO_INCOMPLETO = 1;
     public final static int ESTADO_COMPLETO = 2;
 
-    public Lembrete(int tipo, String titulo, String descricao, Date dataLembrete, long tempoRepeticao, int estado) {
+    public Lembrete(int tipo, String titulo, String descricao, Date dataLembrete, int tipoRepeticao, long tempoRepeticaoPersonalizada, int estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descricao = descricao;
         this.dataLembrete = dataLembrete;
-        this.tempoRepeticao = tempoRepeticao;
+        this.tipoRepeticao = tipoRepeticao;
+        this.tempoRepeticaoPersonalizada = tempoRepeticaoPersonalizada;
         this.estado = estado;
     }
 
@@ -54,7 +62,10 @@ public class Lembrete {
     public void setDescricao(String descricao) {this.descricao = descricao;}
     public Date getDataLembrete() {return dataLembrete;}
     public void setDataLembrete(Date dataLembrete) {this.dataLembrete = dataLembrete;}
-    public long getTempoRepeticao() {return tempoRepeticao;}
+    public int getTipoRepeticao() {return tipoRepeticao;}
+    public void setTipoRepeticao(int tipoRepeticao) {this.tipoRepeticao = tipoRepeticao;}
+    public long getTempoRepeticaoPersonalizada() {return tempoRepeticaoPersonalizada;}
+    public void setTempoRepeticaoPersonalizada(long tempoRepeticaoPersonalizada) {this.tempoRepeticaoPersonalizada = tempoRepeticaoPersonalizada;}
     public int getEstado() {return estado;}
     public void setEstado(int estado) {this.estado = estado;}
 }

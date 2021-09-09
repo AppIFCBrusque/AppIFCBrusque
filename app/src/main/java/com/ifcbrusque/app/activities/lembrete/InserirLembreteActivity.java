@@ -2,6 +2,7 @@ package com.ifcbrusque.app.activities.lembrete;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ifcbrusque.app.R;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -26,12 +28,14 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     public static final String EXTRAS_LEMBRETE_ID_NOTIFICACAO = "EXTRAS_LEMBRETE_ID_NOTIFICACAO";
     public static final String EXTRAS_LEMBRETE_TITULO = "EXTRAS_LEMBRETE_TITULO";
     public static final String EXTRAS_LEMBRETE_DESCRICAO = "EXTRAS_LEMBRETE_DESCRICAO";
+    public static final String EXTRAS_LEMBRETE_TIPO_REPETICAO = "EXTRAS_LEMBRETE_TIPO_REPETICAO";
+    public static final String EXTRAS_LEMBRETE_TEMPO_REPETICAO_PERSONALIZADA = "EXTRAS_LEMBRETE_TEMPO_REPETICAO_PERSONALIZADA";
     public static final String EXTRAS_LEMBRETE_ADICIONADO = "EXTRAS_LEMBRETE_ADICIONADO";
 
     private InserirLembretePresenter presenter;
 
     TextInputLayout tiTitulo, tiDescricao;
-    Button btnDatePicker, btnTimePicker;
+    Button btnDatePicker, btnTimePicker, btnRepeticao;
     FloatingActionButton fabCompleto;
 
     @Override
@@ -45,6 +49,7 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
         tiDescricao = findViewById(R.id.tiDescricao);
         btnDatePicker = findViewById(R.id.btData);
         btnTimePicker = findViewById(R.id.btHora);
+        btnRepeticao = findViewById(R.id.btRepeticao);
         fabCompleto = findViewById(R.id.fabInserir);
 
         long idLembrete, idNotificacaoLembrete;
@@ -60,6 +65,7 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+        btnRepeticao.setOnClickListener(this);
         fabCompleto.setOnClickListener(this);
     }
 
@@ -92,6 +98,49 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
                         }
                     }, presenter.getHora(), presenter.getMinuto(), true);
             timePickerDialog.show();
+        }
+
+        //Clique no botão de repetição
+        if(v == btnRepeticao) {
+            //mostrar diálogo para escolher a repetição
+            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_repeticao_lembrete);
+
+            TextView tvHora = bottomSheetDialog.findViewById(R.id.tvHora);
+            TextView tvDia = bottomSheetDialog.findViewById(R.id.tvDia);
+            TextView tvSemana = bottomSheetDialog.findViewById(R.id.tvSemana);
+            TextView tvMes = bottomSheetDialog.findViewById(R.id.tvMes);
+            TextView tvAno = bottomSheetDialog.findViewById(R.id.tvAno);
+            TextView tvNaoRepetir = bottomSheetDialog.findViewById(R.id.tvNaoRepetir);
+
+            //Definir o que acontece quando é clicado em alguma opção
+            final View.OnClickListener onRepeticaoClick = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(v == tvHora) {
+                        presenter.onRepeticaoSelecionada(Lembrete.REPETICAO_HORA, 0);
+                    } else if(v == tvDia) {
+                        presenter.onRepeticaoSelecionada(Lembrete.REPETICAO_DIA, 0);
+                    } else if(v == tvSemana) {
+                        presenter.onRepeticaoSelecionada(Lembrete.REPETICAO_SEMANA, 0);
+                    } else if(v == tvMes) {
+                        presenter.onRepeticaoSelecionada(Lembrete.REPETICAO_MES, 0);
+                    } else if(v == tvAno) {
+                        presenter.onRepeticaoSelecionada(Lembrete.REPETICAO_ANO, 0);
+                    } else if(v == tvNaoRepetir) {
+                        presenter.onRepeticaoSelecionada(Lembrete.REPETICAO_SEM, 0);
+                    }
+                    bottomSheetDialog.dismiss();
+                }
+            };
+            tvHora.setOnClickListener(onRepeticaoClick);
+            tvDia.setOnClickListener(onRepeticaoClick);
+            tvSemana.setOnClickListener(onRepeticaoClick);
+            tvMes.setOnClickListener(onRepeticaoClick);
+            tvAno.setOnClickListener(onRepeticaoClick);
+            tvNaoRepetir.setOnClickListener(onRepeticaoClick);
+
+            bottomSheetDialog.show();
         }
 
         //Clique no botão de inserir
@@ -144,6 +193,40 @@ public class InserirLembreteActivity extends AppCompatActivity implements Inseri
     public void mudarTextoBotaoHora(int hora, int minuto) {
         String texto = String.format("%02d", hora) + ":" + String.format("%02d", minuto);
         btnTimePicker.setText(texto);
+    }
+
+    /**
+     * Utilizado para mudar o texto do botão que abre o dialogo para selecionar a repetição
+     */
+    @Override
+    public void mudarTextoBotaoRepeticao(int tipoRepeticao) {
+        String texto = "";
+        switch(tipoRepeticao) {
+            case Lembrete.REPETICAO_SEM:
+                texto = getString(R.string.repeticao_lembretes_nao_repetir);
+                break;
+
+            case Lembrete.REPETICAO_HORA:
+                texto = getString(R.string.repeticao_lembretes_hora);
+                break;
+
+            case Lembrete.REPETICAO_DIA:
+                texto = getString(R.string.repeticao_lembretes_dia);
+                break;
+
+            case Lembrete.REPETICAO_SEMANA:
+                texto = getString(R.string.repeticao_lembretes_semana);
+                break;
+
+            case Lembrete.REPETICAO_MES:
+                texto = getString(R.string.repeticao_lembretes_mes);
+                break;
+
+            case Lembrete.REPETICAO_ANO:
+                texto = getString(R.string.repeticao_lembretes_ano);
+                break;
+        }
+        btnRepeticao.setText(texto);
     }
 
     /**
