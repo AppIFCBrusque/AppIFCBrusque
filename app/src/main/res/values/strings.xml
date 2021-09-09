@@ -27,11 +27,11 @@
     <string name="lembrete_repetiir_ate">Repetir até</string>
 
     <string name="repeticao_lembretes_nao_repetir">Não repetir</string>
-    <string name="repeticao_lembretes_hora">A cada hora</string>
-    <string name="repeticao_lembretes_dia">A cada dia</string>
-    <string name="repeticao_lembretes_semana">A cada semana</string>
-    <string name="repeticao_lembretes_mes">A cada mês</string>
-    <string name="repeticao_lembretes_ano">A cada ano</string>
+    <string name="repeticao_lembretes_hora">Toda hora</string>
+    <string name="repeticao_lembretes_dia">Todo dia</string>
+    <string name="repeticao_lembretes_semana">Toda semana</string>
+    <string name="repeticao_lembretes_mes">Todo mês</string>
+    <string name="repeticao_lembretes_ano">Todo ano</string>
 
     <string name="lembrete_completar">Marcar como completo</string>
     <string name="lembrete_descompletar">Marcar como incompleto</string>
