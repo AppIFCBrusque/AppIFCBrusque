@@ -33,6 +33,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static android.content.Context.ALARM_SERVICE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.ifcbrusque.app.activities.MainActivity.TAG;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
@@ -93,6 +94,7 @@ public class NotificationHelper {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
+        //Agendar a notificação
         AlarmManager alarm = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarm.setExact(AlarmManager.RTC_WAKEUP, Converters.dateToTimestamp(lembrete.getDataLembrete()), pendingIntent);
 
@@ -116,8 +118,12 @@ public class NotificationHelper {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Math.toIntExact(lembrete.getIdNotificacao()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        //Cancelar a notificação agendada
         AlarmManager alarm = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarm.cancel(pendingIntent);
+        //Remover a notificação (já notificado)
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(Math.toIntExact(lembrete.getIdNotificacao()));
 
         Log.d(TAG, "desagendarNotificacaoLembrete: alarme cancelado. ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
     }
