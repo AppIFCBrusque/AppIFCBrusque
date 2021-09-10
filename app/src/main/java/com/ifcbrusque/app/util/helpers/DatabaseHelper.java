@@ -21,10 +21,10 @@ public class DatabaseHelper {
     /**
      * Atualiza a data de notificação para um lembrete com repetição
      * Se a repetição for de hora em hora, atualiza a data de notificação do lembrete para 1 hora depois da primeira notificação
-     * Não atualiza para um momento antes da hora atual. Em vez disso, continua adicionando o intervalo até resultar em um momento posterior ao atual
+     * Não atualiza para um momento antes ou igual a hora atual. Em vez disso, continua adicionando o intervalo até resultar em um momento posterior ao atual
      * @return observable com o lembrete armazenado (com a data nova)
      */
-    public static Observable<Lembrete> atualizarDataLembreteComRepeticao(Context context, long idLembrete) {
+    public static Observable<Lembrete> atualizarParaProximaDataLembreteComRepeticao(Context context, long idLembrete) {
         final AppDatabase db = AppDatabase.getDbInstance(context.getApplicationContext());
         final Calendar c = Calendar.getInstance();
 
@@ -33,7 +33,7 @@ public class DatabaseHelper {
 
             c.setTime(lembrete.getDataLembrete());
             //Para evitar spammar um monte de notificação de lembretes com a data antes, apenas prossegue quando a data nova é maior que a atual
-            while(c.getTime().before(new Date())) {
+            while(c.getTime().compareTo(lembrete.getDataLembrete()) == 0 || c.getTime().before(new Date())) {
                 switch(lembrete.getTipoRepeticao()) {
                     case Lembrete.REPETICAO_HORA:
                         c.add(Calendar.HOUR_OF_DAY, 1);

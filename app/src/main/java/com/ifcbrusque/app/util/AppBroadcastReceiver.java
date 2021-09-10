@@ -35,7 +35,7 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
             if(tipoRepeticao != Lembrete.REPETICAO_SEM) {
                 long idLembrete = intent.getExtras().getLong(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, -1);
                 //Atualizar a data do lembrete salvo
-                DatabaseHelper.atualizarDataLembreteComRepeticao(context.getApplicationContext(), idLembrete)
+                DatabaseHelper.atualizarParaProximaDataLembreteComRepeticao(context.getApplicationContext(), idLembrete)
                 .doOnNext(lembrete -> {
                     //Agendar nova notificação
                     agendarNotificacaoLembrete(context, lembrete);

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.adapters.HomeAdapter;
 import com.ifcbrusque.app.data.AppDatabase;
+import com.ifcbrusque.app.util.helpers.DatabaseHelper;
 import com.ifcbrusque.app.util.helpers.NotificationHelper;
 import com.ifcbrusque.app.models.Lembrete;
 import com.ifcbrusque.app.util.preferences.PreferencesHelper;
@@ -28,6 +30,8 @@ import com.ifcbrusque.app.util.preferences.PreferencesHelper;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import io.reactivex.rxjava3.core.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.activities.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ADICIONADO;
@@ -213,6 +217,31 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
     }
 
     /**
+     * Agenda a notificação de um lembrete
+     */
+    @Override
+    public void agendarNotificacaoLembrete(Lembrete lembrete) {
+        NotificationHelper.agendarNotificacaoLembrete(getContext(), lembrete);
+    }
+
+    /**
+     * Desagenda e exclui a notificação de um lembrete
+     */
+    @Override
+    public void desagendarNotificacaoLembrete(Lembrete lembrete) {
+        NotificationHelper.desagendarNotificacaoLembrete(getContext(), lembrete);
+    }
+
+    /**
+     * Pula um lembrete com repetição para a próxima data
+     * @return observable com o lembrete atualizado
+     */
+    @Override
+    public Observable<Lembrete> atualizarParaProximaDataLembreteComRepeticao(long idLembrete) {
+        return DatabaseHelper.atualizarParaProximaDataLembreteComRepeticao(getContext().getApplicationContext(), idLembrete);
+    }
+
+    /**
      * Método executado quando é clicado em um dos lembretes
      * Abre um InserirLembreteActivity para editar o lembrete selecionado
      *
@@ -228,32 +257,17 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
 
     /**
      * Executado ao clicar em "marcar como completo/incompleto" das opções de um lembrete
-     * Desagenda/agenda a notificação e troca o estado do lembrete armazenado para o oposto
      */
     @Override
     public void onAlternarEstadoClick(int position) {
-        //Alterar o estado no banco de dados
         presenter.alternarEstadoLembrete(position);
-
-        //Agendar/desagendar
-        if(presenter.getLembretesArmazenados().get(position).getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-            //Marcar como completo
-            NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
-        } else {
-            //Marcar como incompleto
-            if(new Date().before(presenter.getLembretesArmazenados().get(position).getDataLembrete())) {
-                NotificationHelper.agendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
-            }
-        }
     }
 
     /**
      * Executado ao clicar em "excluir" das opções de um lembrete
-     * Desagenda a notificação e exclui o lembrete do banco de dados
      */
     @Override
     public void onExcluirClick(int position) {
-        NotificationHelper.desagendarNotificacaoLembrete(getContext(), presenter.getLembretesArmazenados().get(position));
         presenter.excluirLembrete(position);
     }
 
