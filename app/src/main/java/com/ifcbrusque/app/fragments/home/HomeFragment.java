@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,31 +94,25 @@ public class HomeFragment extends Fragment implements HomePresenter.View, View.O
             TextView tvIncompletos = bottomSheetDialog.findViewById(R.id.tvIncompletos);
             TextView tvCompletos = bottomSheetDialog.findViewById(R.id.tvCompletos);
             TextView tvTodos = bottomSheetDialog.findViewById(R.id.tvTodos);
+            //Definir o que acontece quando é clicado em alguma das categorias
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(v == tvIncompletos) {
+                        definirCategoria(Lembrete.ESTADO_INCOMPLETO);
+                    } else if(v == tvCompletos) {
+                        definirCategoria(Lembrete.ESTADO_COMPLETO);
+                    } else if(v == tvTodos) {
+                        definirCategoria(0);
+                    }
+                    bottomSheetDialog.dismiss();
+                }
+            };
+            tvIncompletos.setOnClickListener(onClickListener);
+            tvCompletos.setOnClickListener(onClickListener);
+            tvTodos.setOnClickListener(onClickListener);
 
             bottomSheetDialog.show();
-
-            //Definir o que acontece quando é clicado em alguma das categorias
-            tvIncompletos.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    definirCategoria(Lembrete.ESTADO_INCOMPLETO);
-                    bottomSheetDialog.dismiss();
-                }
-            });
-            tvCompletos.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    definirCategoria(Lembrete.ESTADO_COMPLETO);
-                    bottomSheetDialog.dismiss();
-                }
-            });
-            tvTodos.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    definirCategoria(0);
-                    bottomSheetDialog.dismiss();
-                }
-            });
         }
     }
 
