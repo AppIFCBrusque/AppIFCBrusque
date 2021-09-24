@@ -59,7 +59,7 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
                         getMvpView().onError(R.string.erro_sem_internet);
                     } else {
                         //Página inexistente
-                        getMvpView().onError(R.string.erro_ultima_pagina_noticias);
+                        getMvpView().onError(R.string.erro_carregar_pagina);
                     }
                 }));
     }

@@ -8,9 +8,8 @@
     <!-- ERROS -->
     <string name="some_error">Erro</string>
     <string name="erro_sem_internet">Internet não disponível</string>
-    <string name="erro_ultima_pagina_noticias">Atingiu a última página</string>
     <string name="erro_titulo_lembrete_vazio">Informe um título ao lembrete</string>
-    <string name="erro_carregar_noticia">Não foi possível carregar a notícia</string>
+    <string name="erro_carregar_pagina">Não foi possível carregar a página</string>
 
     <string name="title_home">Home</string>
     <!-- NOTÍCIAS -->

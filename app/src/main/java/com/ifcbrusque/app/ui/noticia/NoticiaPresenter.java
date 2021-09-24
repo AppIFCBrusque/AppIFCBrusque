@@ -57,7 +57,7 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
                             if (erro.getClass() == NoInternetException.class) {
                                 getMvpView().onError(R.string.erro_sem_internet);
                             } else {
-                                getMvpView().onError(R.string.erro_ultima_pagina_noticias);
+                                getMvpView().onError(R.string.erro_carregar_pagina);
                             }
                         }));
     }

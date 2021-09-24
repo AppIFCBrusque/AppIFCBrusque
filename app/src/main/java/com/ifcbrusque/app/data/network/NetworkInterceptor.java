@@ -12,7 +12,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.ifcbrusque.app.utils.NetworkUtils.isInternetAvailable;
 import static com.ifcbrusque.app.utils.NetworkUtils.isNetworkConnected;
 
 public class NetworkInterceptor implements Interceptor {
@@ -26,7 +25,7 @@ public class NetworkInterceptor implements Interceptor {
     @Override
     public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
-        if(!isNetworkConnected(mContext) || !isInternetAvailable()) throw new NoInternetException();
+        if(!isNetworkConnected(mContext)) throw new NoInternetException();
 
         Response response = chain.proceed(request);
         if(!response.isSuccessful()) throw new IOException("Não foi possível obter a página");

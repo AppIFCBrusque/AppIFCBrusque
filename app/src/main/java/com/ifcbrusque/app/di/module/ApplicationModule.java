@@ -24,6 +24,8 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoProvider;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -90,6 +92,9 @@ public class ApplicationModule {
     OkHttpClient provideOkHttpClient(Application app) {
         return new OkHttpClient.Builder()
                 .addInterceptor(new NetworkInterceptor(app))
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
                 .build();
     }
 
