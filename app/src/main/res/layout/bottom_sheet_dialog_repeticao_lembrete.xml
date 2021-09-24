@@ -13,6 +13,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_hora"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></TextView>
@@ -24,6 +26,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_dia"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHora"></TextView>
@@ -35,6 +39,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_semana"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDia"></TextView>
@@ -46,6 +52,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_mes"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSemana"></TextView>
@@ -57,6 +65,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_ano"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMes"></TextView>
@@ -68,6 +78,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_nao_repetir"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAno"></TextView>

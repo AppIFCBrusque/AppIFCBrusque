@@ -13,9 +13,12 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/categoria_lembretes_incompletos"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent"
+        ></TextView>
     <TextView
         android:id="@+id/tvCompletos"
         style="@style/TextAppearance.TituloItemLista"
@@ -24,6 +27,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/categoria_lembretes_completos"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvIncompletos"></TextView>
@@ -35,6 +40,8 @@
         android:drawableLeft="@drawable/ic_dashboard_black_24dp"
         android:padding="@dimen/padding_views"
         android:text="@string/categoria_lembretes_todos"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvCompletos"></TextView>

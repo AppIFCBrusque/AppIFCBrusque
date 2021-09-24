@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding_views"
+    android:foreground="?attr/selectableItemBackground"
     android:background="?attr/colorOnPrimary"><![CDATA[
 
 
@@ -81,7 +82,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/outline_more_vert_black_36" />
+        android:background="@null"
+        app:srcCompat="@drawable/outline_more_vert_black_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
