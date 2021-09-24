@@ -46,11 +46,14 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
 
         getCompositeDisposable().add(getDataManager()
                 .getNoticiaWeb(preview)
-                .subscribe(noticia -> {
-                            exibirNoticiaNaView(preview, noticia);
-                            getMvpView().esconderLoading();
+                .flatMap(noticia -> {
+                    exibirNoticiaNaView(preview, noticia);
+                    getMvpView().esconderLoading();
 
-                            getCompositeDisposable().add(getDataManager().inserirNoticia(noticia).subscribe());
+                    return getDataManager().inserirNoticia(noticia);
+                })
+                .subscribe(id -> {
+
                         },
                         erro -> {
                             getMvpView().esconderLoading();
