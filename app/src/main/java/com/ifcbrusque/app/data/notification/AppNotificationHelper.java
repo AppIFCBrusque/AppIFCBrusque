@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.ApplicationContext;
@@ -44,11 +43,6 @@ import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMB
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_TITULO;
-import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_DATA;
-import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_TITULO;
-import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_URL;
-import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_URL_IMAGEM_PREVIEW;
-import static com.ifcbrusque.app.data.db.Converters.dateToTimestamp;
 import static com.ifcbrusque.app.utils.AppConstants.NOTF_CHANNEL_ID;
 
 /*

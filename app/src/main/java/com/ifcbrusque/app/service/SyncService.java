@@ -68,6 +68,7 @@ public class SyncService extends Service {
     }
 
     private void iniciarSincronizacao(Bundle bundle) {
+        mDataManager.notificarSincronizacao(this);
         boolean atualizarNoticias = bundle.getBoolean(EXTRA_ATUALIZAR_NOTICIAS, false);
 
         if (atualizarNoticias) {
