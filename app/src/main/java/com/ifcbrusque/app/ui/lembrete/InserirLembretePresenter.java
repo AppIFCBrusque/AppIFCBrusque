@@ -33,6 +33,8 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
 
             if (mLembrete.getId() != 0) {
                 //Atualizar lembrete existente
+                mLembrete.setEstado(Lembrete.ESTADO_INCOMPLETO);
+
                 getDataManager().agendarNotificacaoLembreteSeFuturo(mLembrete);
 
                 getCompositeDisposable().add(getDataManager()
