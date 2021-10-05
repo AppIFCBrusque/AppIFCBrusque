@@ -229,33 +229,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
     @Override
     public void setTextoBotaoRepeticao(int tipoRepeticao) {
-        String texto = "";
-        switch (tipoRepeticao) {
-            case Lembrete.REPETICAO_SEM:
-                texto = getString(R.string.repeticao_lembretes_nao_repetir);
-                break;
-
-            case Lembrete.REPETICAO_HORA:
-                texto = getString(R.string.repeticao_lembretes_hora);
-                break;
-
-            case Lembrete.REPETICAO_DIA:
-                texto = getString(R.string.repeticao_lembretes_dia);
-                break;
-
-            case Lembrete.REPETICAO_SEMANA:
-                texto = getString(R.string.repeticao_lembretes_semana);
-                break;
-
-            case Lembrete.REPETICAO_MES:
-                texto = getString(R.string.repeticao_lembretes_mes);
-                break;
-
-            case Lembrete.REPETICAO_ANO:
-                texto = getString(R.string.repeticao_lembretes_ano);
-                break;
-        }
-        mBtnRepeticao.setText(texto);
+        mBtnRepeticao.setText(Lembrete.getIdDaStringRepeticao(tipoRepeticao));
     }
 
     /**

@@ -91,6 +91,13 @@ public class LembretesAdapter extends RecyclerView.Adapter<LembretesAdapter.View
         holder.mTvData.setText(data[0]);
         holder.mTvHora.setText(data[1]);
 
+        if(lembrete.getTipoRepeticao() != Lembrete.REPETICAO_SEM) {
+            holder.mTvRepeticao.setVisibility(View.VISIBLE);
+            holder.mTvRepeticao.setText(Lembrete.getIdDaStringRepeticao(lembrete.getTipoRepeticao()));
+        } else {
+            holder.mTvRepeticao.setVisibility(View.GONE);
+        }
+
         //Categorias
         if(mCategoria >= 10) {
             //TODO: Categorias personalizadas
@@ -115,7 +122,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<LembretesAdapter.View
     Você configura ele quase da mesma forma que uma view
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTvTitulo, mTvDescricao, mTvData, mTvHora;
+        TextView mTvTitulo, mTvDescricao, mTvData, mTvHora, mTvRepeticao;
         ImageButton mIbOpcoes;
 
         public ViewHolder(@NonNull View itemView) {
@@ -125,6 +132,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<LembretesAdapter.View
             mTvData = itemView.findViewById(R.id.lembrete_data);
             mTvHora = itemView.findViewById(R.id.lembrete_hora);
             mIbOpcoes = itemView.findViewById(R.id.lembrete_opcoes);
+            mTvRepeticao = itemView.findViewById(R.id.lembrete_repeticao);
 
             itemView.setOnClickListener(v -> mItemListener.onLembreteClick(getAdapterPosition()));
             mIbOpcoes.setOnClickListener(v -> mItemListener.onOpcoesClick(getAdapterPosition()));

@@ -74,6 +74,18 @@
         app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
         android:drawableLeft="@drawable/outline_schedule_black_20"
         android:drawablePadding="@dimen/padding_views"></TextView>
+    <TextView
+        android:id="@+id/lembrete_repeticao"
+        style="@style/TextAppearance.Secundario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_views"
+        android:text="@string/repeticao_lembretes_nao_repetir"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@+id/lembrete_hora"
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
+        android:drawableLeft="@drawable/outline_repeat_one_black_24"
+        android:drawablePadding="@dimen/padding_views"></TextView>
     <ImageButton
         android:id="@+id/lembrete_opcoes"
         android:layout_width="wrap_content"

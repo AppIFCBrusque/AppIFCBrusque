@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.ifcbrusque.app.R;
+
 import java.util.Date;
 
 @Entity(tableName = "lembrete_table")
@@ -34,6 +36,28 @@ public class Lembrete {
     public final static int REPETICAO_ANO = 5;
     @ColumnInfo(name = "tempo_repeticao_personalizada")
     private long tempoRepeticaoPersonalizada;
+
+    public static int getIdDaStringRepeticao(int tipoRepeticao) {
+        switch (tipoRepeticao) {
+            case Lembrete.REPETICAO_HORA:
+                return R.string.repeticao_lembretes_hora;
+
+            case Lembrete.REPETICAO_DIA:
+                return R.string.repeticao_lembretes_dia;
+
+            case Lembrete.REPETICAO_SEMANA:
+                return R.string.repeticao_lembretes_semana;
+
+            case Lembrete.REPETICAO_MES:
+                return R.string.repeticao_lembretes_mes;
+
+            case Lembrete.REPETICAO_ANO:
+                return R.string.repeticao_lembretes_ano;
+
+            default:
+                return R.string.repeticao_lembretes_nao_repetir;
+        }
+    }
 
     private int estado;
     public final static int ESTADO_INCOMPLETO = 1;
