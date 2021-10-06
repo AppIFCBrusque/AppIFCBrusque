@@ -74,7 +74,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         getMvpView().setDescricao(mLembrete.getDescricao());
                         getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
                         getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
-                        getMvpView().setTextoBotaoRepeticao(Lembrete.REPETICAO_SEM);
+                        getMvpView().setTextoBotaoRepeticao(mLembrete.getTipoRepeticao());
                     })
                     .subscribe());
         } else {
