@@ -12,6 +12,8 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
@@ -26,6 +28,11 @@ public class LembretesAdapter extends RecyclerView.Adapter<LembretesAdapter.View
         mCategoria = categoria;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    private static List<Lembrete> ordenarLembretesPelaData(List<Lembrete> lembretes) {
+        Collections.sort(lembretes, (o1, o2) -> o1.getDataLembrete().compareTo(o2.getDataLembrete()));
+        return lembretes;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Funções que podem ser utilizadas pela view
      */
@@ -38,7 +45,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<LembretesAdapter.View
     }
 
     public void setLembretes(List<Lembrete> lembretes) {
-        mLembretes = lembretes;
+        mLembretes = ordenarLembretesPelaData(lembretes);
         notifyDataSetChanged();
     }
 

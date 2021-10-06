@@ -27,7 +27,7 @@ public interface LembreteDao {
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
     Lembrete getLembrete(long id);
 
-    @Query("SELECT * FROM lembrete_table ORDER BY data_lembrete ASC")
+    @Query("SELECT * FROM lembrete_table")
     List<Lembrete> getAll();
 
     @Update
