@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorActivatedHighlight"
+    android:background="?android:attr/colorAccent"
     tools:context=".ui.home.lembretes.LembretesFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,35 +15,27 @@
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
+        app:layout_constraintVertical_bias="0.95" />
 
-    <androidx.core.widget.NestedScrollView
+    <Button
+        android:id="@+id/btCategorias"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria_lembretes_incompletos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:layout_editor_absoluteX="385dp"
-        tools:layout_editor_absoluteY="333dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/btCategorias"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/categoria_lembretes_incompletos" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHome"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="always"
-                android:nestedScrollingEnabled="false"/>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="always"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btCategorias" />
 </androidx.constraintlayout.widget.ConstraintLayout>

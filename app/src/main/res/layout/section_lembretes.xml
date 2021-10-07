@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_views"
-    android:foreground="?attr/selectableItemBackground"
-    android:background="?attr/colorAccent"><![CDATA[
+    android:layout_height="wrap_content"><![CDATA[
 
 
     android:id="@+id/cardView"
@@ -22,18 +19,29 @@
 
     ]]>
 
-    <TextView
-        android:id="@+id/secao_lembretes_titulo"
-        style="@style/TextAppearance.TituloPagina"
+    <LinearLayout
+        android:id="@+id/secao_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:paddingHorizontal="@dimen/padding_views"
-        android:paddingTop="@dimen/padding_views"
-        android:text="@string/noticia_titulo_padrao"
-        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?attr/colorAccent"
+        android:padding="@dimen/padding_views">
+
+        <TextView
+            android:id="@+id/secao_lembretes_titulo"
+            style="@style/TextAppearance.TituloPagina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_views"
+            android:paddingTop="@dimen/padding_views"
+            android:text="@string/noticia_titulo_padrao"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

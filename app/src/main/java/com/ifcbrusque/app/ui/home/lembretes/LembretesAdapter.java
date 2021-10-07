@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,7 @@ import java.util.List;
 
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
-public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderDecoration.StickyHeaderInterface {
     public static final String TITULO_ATRASADO = "ATRASADO";
     public static final String TITULO_HOJE = "HOJE";
     public static final String TITULO_AMANHA = "AMANHA";
@@ -27,7 +28,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public static final String TITULO_UM_MES = "UM_MES";
 
     public static final int TIPO_LEMBRETE = 0;
-    public static final int TIPO_CABECALHO = 1;
+    public static final int TIPO_HEADER = 1;
 
     private List<Object> mDados;
     private ItemListener mItemListener;
@@ -87,7 +88,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public boolean isItemVisivel(Lembrete lembrete) {
         if (mCategoria >= 10) {
-            //TODO: Categorias personalizadas (arrumar também na hora de esconder o cabeçalho)
+            //TODO: Categorias personalizadas
             return false;
         } else {
             //Categorias padrão (incompleto, completo, todos)
@@ -96,6 +97,33 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             } else {
                 return false;
             }
+        }
+    }
+
+    public boolean itemVisivelNaFrenteDoHeader(int position) {
+        int i = position + 1;
+        while (i < mDados.size() && mDados.get(i) instanceof Lembrete) {
+            if (isItemVisivel((Lembrete) mDados.get(i))) {
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
+
+    public int getIdTextoHeader(String data) {
+        if (TITULO_ATRASADO.equals(data)) {
+            return R.string.secao_atrasado;
+        } else if (TITULO_HOJE.equals(data)) {
+            return R.string.secao_hoje;
+        } else if (TITULO_AMANHA.equals(data)) {
+            return R.string.secao_amanha;
+        } else if (TITULO_NESTA_SEMANA.equals(data)) {
+            return R.string.secao_nesta_semana;
+        } else if (TITULO_UM_MES.equals(data)) {
+            return R.string.secao_em_um_mes;
+        } else {
+            return -1;
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,9 +138,9 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewType == TIPO_LEMBRETE) {
             View view = layoutInflater.inflate(R.layout.item_lembrete, parent, false);
             return new LembretesAdapter.ViewHolderItem(view);
-        } else if (viewType == TIPO_CABECALHO) {
+        } else if (viewType == TIPO_HEADER) {
             View view = layoutInflater.inflate(R.layout.section_lembretes, parent, false);
-            return new LembretesAdapter.ViewHolderCabecalho(view);
+            return new ViewHolderHeader(view);
         }
 
         throw new RuntimeException(viewType + " não é um tipo válido");
@@ -131,7 +159,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if ((mDados.get(position) instanceof Lembrete)) {
             return TIPO_LEMBRETE;
         } else {
-            return TIPO_CABECALHO;
+            return TIPO_HEADER;
         }
     }
 
@@ -168,7 +196,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             //Categorias
-            if(isItemVisivel(lembrete)) {
+            if (isItemVisivel(lembrete)) {
                 itemHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 itemHolder.itemView.setVisibility(View.VISIBLE);
             } else {
@@ -176,41 +204,26 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
             }
 
-        } else if (holder instanceof ViewHolderCabecalho) {
+        } else if (holder instanceof ViewHolderHeader) {
 
-            ViewHolderCabecalho cabecalhoHolder = (ViewHolderCabecalho) holder;
+            ViewHolderHeader headerHolder = (ViewHolderHeader) holder;
 
             //Esconder caso não tenha um lembrete vísivel na frente
-            int i = position+1;
-            boolean itemVisivelNaFrente = false;
-            while(i < mDados.size() && mDados.get(i) instanceof Lembrete && !itemVisivelNaFrente) {
-                if(isItemVisivel((Lembrete) mDados.get(i))) {
-                    itemVisivelNaFrente = true;
-                }
-                i++;
-            }
-
-            if(itemVisivelNaFrente) {
+            if (itemVisivelNaFrenteDoHeader(position)) {
+                //Texto
                 String data = (String) mDados.get(position);
-                if (TITULO_ATRASADO.equals(data)) {
-                    cabecalhoHolder.mTitulo.setText(R.string.secao_atrasado);
-                } else if (TITULO_HOJE.equals(data)) {
-                    cabecalhoHolder.mTitulo.setText(R.string.secao_hoje);
-                } else if (TITULO_AMANHA.equals(data)) {
-                    cabecalhoHolder.mTitulo.setText(R.string.secao_amanha);
-                } else if (TITULO_NESTA_SEMANA.equals(data)) {
-                    cabecalhoHolder.mTitulo.setText(R.string.secao_nesta_semana);
-                } else if (TITULO_UM_MES.equals(data)) {
-                    cabecalhoHolder.mTitulo.setText(R.string.secao_em_um_mes);
+                int textoHeader = getIdTextoHeader(data);
+                if (textoHeader != -1) {
+                    headerHolder.mTitulo.setText(textoHeader);
                 } else {
-                    cabecalhoHolder.mTitulo.setText(data);
+                    headerHolder.mTitulo.setText(data);
                 }
 
-                cabecalhoHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                cabecalhoHolder.itemView.setVisibility(View.VISIBLE);
+                headerHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                headerHolder.itemView.setVisibility(View.VISIBLE);
             } else {
-                cabecalhoHolder.itemView.setVisibility(View.GONE);
-                cabecalhoHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                headerHolder.itemView.setVisibility(View.GONE);
+                headerHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
             }
 
         }
@@ -240,10 +253,10 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public class ViewHolderCabecalho extends RecyclerView.ViewHolder {
+    public class ViewHolderHeader extends RecyclerView.ViewHolder {
         TextView mTitulo;
 
-        public ViewHolderCabecalho(@NonNull View itemView) {
+        public ViewHolderHeader(@NonNull View itemView) {
             super(itemView);
             mTitulo = itemView.findViewById(R.id.secao_lembretes_titulo);
         }
@@ -251,7 +264,54 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
-    Funções utilizadas neste adapter que são definidas na view (comunica a view com o adapter)
+    Funções do StickyHeaderDecoration
+     */
+    @Override
+    public boolean isHeader(int itemPosition) {
+        return (mDados.get(itemPosition) instanceof String);
+    }
+
+    @Override
+    public int getHeaderLayout(int headerPosition) {
+        return R.layout.section_lembretes;
+    }
+
+    @Override
+    public int getHeaderPositionForItem(int itemPosition) {
+        int headerPosition = 0;
+        do {
+            if (this.isHeader(itemPosition)) {
+                headerPosition = itemPosition;
+                break;
+            }
+            itemPosition -= 1;
+        } while (itemPosition >= 0);
+        return headerPosition;
+    }
+
+    @Override
+    public void bindHeaderData(View header, int headerPosition) {
+        LinearLayout layout = header.findViewById(R.id.secao_layout);
+        TextView mTitulo = header.findViewById(R.id.secao_lembretes_titulo);
+
+        if (itemVisivelNaFrenteDoHeader(headerPosition)) {
+            String data = (String) mDados.get(headerPosition);
+            int idTextoHeader = getIdTextoHeader(data);
+            if (idTextoHeader != -1) {
+                mTitulo.setText(idTextoHeader);
+            } else {
+                mTitulo.setText(data);
+            }
+
+            layout.setAlpha(1);
+        } else {
+            layout.setAlpha(0);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
+    Funções chamadas pelos itens que são definidas na view
      */
     public interface ItemListener {
         void onLembreteClick(int position);

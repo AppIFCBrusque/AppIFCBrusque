@@ -190,6 +190,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemViewCacheSize(20);
         mRecyclerView.setAdapter(mHomeAdapter);
+        mRecyclerView.addItemDecoration(new StickyHeaderDecoration(mHomeAdapter));
 
         LembretesAdapter.ItemListener itemListener = new LembretesAdapter.ItemListener() {
             @Override

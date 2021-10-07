@@ -49,7 +49,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
     /**
      * Pega somente os lembretes dos dados da recycler view e adiciona os cabeçalhos
      */
-    private void inserirCabecalhosNaLista() {
+    private void inserirHeadersNaLista() {
         /*
         Esse código tá bem feio, mas eu não encontrei uma maneira melhor para fazer
          */
@@ -121,7 +121,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
 
     @Override
     public void onLembretesAtualizados() {
-        inserirCabecalhosNaLista();
+        inserirHeadersNaLista();
     }
 
     @Override
