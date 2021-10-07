@@ -83,7 +83,7 @@ public class ActivityModule {
 
     @Provides
     LembretesAdapter provideLembretesAdapter() {
-        return new LembretesAdapter(new ArrayList<Lembrete>(), Lembrete.ESTADO_INCOMPLETO);
+        return new LembretesAdapter(new ArrayList<Object>(), Lembrete.ESTADO_INCOMPLETO);
     }
 
     @Provides

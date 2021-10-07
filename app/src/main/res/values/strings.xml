@@ -39,6 +39,12 @@
     <string name="categoria_lembretes_completos">Completos</string>
     <string name="categoria_lembretes_incompletos">Incompletos</string>
 
+    <string name="secao_atrasado">Atrasado</string>
+    <string name="secao_hoje">Hoje</string>
+    <string name="secao_amanha">Amanhã</string>
+    <string name="secao_nesta_semana">Nesta semana</string>
+    <string name="secao_em_um_mes">Em um mês</string>
+
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>

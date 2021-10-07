@@ -2,7 +2,6 @@ package com.ifcbrusque.app.ui.home.lembretes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,12 +86,25 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     Funções declaradas para serem definidas por esta view
      */
 
-    /**
-     * Utilizado para mudar os itens da recycler view
-     */
     @Override
-    public void atualizarRecyclerView(List<Lembrete> lembretes) {
+    public List<Lembrete> getLembretesNaView() {
+        return mHomeAdapter.getLembretes();
+    }
+
+    @Override
+    public void setLembretesNaView(List<Lembrete> lembretes) {
         mHomeAdapter.setLembretes(lembretes);
+        mPresenter.onLembretesAtualizados();
+    }
+
+    @Override
+    public List<Object> getDadosNaView() {
+        return mHomeAdapter.getDados();
+    }
+
+    @Override
+    public void setDadosNaView(List<Object> dados) {
+        mHomeAdapter.setDados(dados);
     }
 
     /**
@@ -127,11 +139,6 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
             mHomeAdapter.setCategoria(categoria);
             mPresenter.onCategoriaAlterada(categoria);
         }
-    }
-
-    @Override
-    public List<Lembrete> getLembretesNaView() {
-        return mHomeAdapter.getLembretes();
     }
 
     @Override
@@ -188,7 +195,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
             @Override
             public void onLembreteClick(int position) {
                 //Abrir uma activity para adicionar um lembrete
-                Lembrete lembrete = (Lembrete) getLembretesNaView().get(position);
+                Lembrete lembrete = (Lembrete) getDadosNaView().get(position);
 
                 Intent intent = InserirLembreteActivity.getStartIntent(getContext(), lembrete);
 
@@ -209,7 +216,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
                 TextView tvExcluir = mBottomSheetDialog.findViewById(R.id.tvExcluir);
 
                 //Ajustar texto e ícones
-                switch (mHomeAdapter.getLembretes().get(position).getEstado()) {
+                switch (((Lembrete) getDadosNaView().get(position)).getEstado()) {
                     case Lembrete.ESTADO_INCOMPLETO:
                         tvAlternarEstado.setText(R.string.lembrete_completar);
                         tvAlternarEstado.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);
