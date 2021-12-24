@@ -92,6 +92,7 @@ public class SyncService extends Service {
                     }
                 }, erro -> {
                     Timber.d("Erro ao carregar a página inicial de notícias");
+                    stopSelf();
                 }, () -> {
                     stopSelf();
                 });
