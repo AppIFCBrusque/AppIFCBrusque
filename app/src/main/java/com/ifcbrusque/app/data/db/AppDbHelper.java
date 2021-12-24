@@ -20,6 +20,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static com.ifcbrusque.app.utils.AppConstants.TAG;
 
@@ -162,7 +163,7 @@ public class AppDbHelper implements DbHelper {
                         break;
                 }
             }
-            Log.d(TAG, "atualizarDataLembreteComRepeticao: nova data " + c.get(Calendar.HOUR_OF_DAY) + " " + c.get(Calendar.MONTH) + " " + c.get(Calendar.DAY_OF_MONTH));
+            Timber.d("Nova data " + c.get(Calendar.HOUR_OF_DAY) + " " + c.get(Calendar.MONTH) + " " + c.get(Calendar.DAY_OF_MONTH));
             lembrete.setDataLembrete(c.getTime());
 
             mAppDatabase.lembreteDao().atualizarLembrete(lembrete);

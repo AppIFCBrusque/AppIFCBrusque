@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static android.content.Context.ALARM_SERVICE;
 import static com.ifcbrusque.app.utils.AppConstants.TAG;
@@ -146,7 +147,7 @@ public class AppNotificationHelper implements NotificationHelper {
 
         mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, Converters.dateToTimestamp(lembrete.getDataLembrete()), pendingIntent);
 
-        Log.d(TAG, "definirNotificacaoLembrete: alarme do lembrete definido. ID=" + lembrete.getId() + ", ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
+        Timber.d("Alarme do lembrete definido | ID=" + lembrete.getId() + ", ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
     }
 
     @Override
@@ -180,7 +181,7 @@ public class AppNotificationHelper implements NotificationHelper {
         //Remover a notificação (quando já notificado)
         mNotificationManager.cancel(Math.toIntExact(lembrete.getIdNotificacao()));
 
-        Log.d(TAG, "desagendarNotificacaoLembrete: alarme cancelado. ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
+        Timber.d("Alarme cancelado | ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
     }
 
     private PendingIntent criarPendingIntentNotificacaoNoticia(Preview preview, int idNotificacao) {
@@ -247,7 +248,7 @@ public class AppNotificationHelper implements NotificationHelper {
 
         mAlarmManager.cancel(pendingIntent);
         mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
-        Log.d(TAG, "agendarSincronizacaoPeriodicaNoticias: serviço agendado");
+        Timber.d("Serviço agendado");
     }
 
     /**

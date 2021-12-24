@@ -10,6 +10,8 @@ import com.ifcbrusque.app.di.module.ApplicationModule;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class App extends Application {
     private ApplicationComponent mApplicationComponent;
 
@@ -27,6 +29,8 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(this)).build();
 
         mApplicationComponent.inject(this);
+
+        Timber.plant(new Timber.DebugTree());
     }
 
     public ApplicationComponent getComponent(){

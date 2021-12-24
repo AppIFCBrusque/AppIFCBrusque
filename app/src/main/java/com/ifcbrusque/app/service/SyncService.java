@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import timber.log.Timber;
 
 import static com.ifcbrusque.app.utils.AppConstants.TAG;
 
@@ -72,7 +73,7 @@ public class SyncService extends Service {
         boolean atualizarNoticias = bundle.getBoolean(EXTRA_ATUALIZAR_NOTICIAS, false);
 
         if (atualizarNoticias) {
-            Log.d(TAG, "iniciarSincronizacao: sincronizar notícias");
+            Timber.d("Sincronizar notícias");
             sincronizarNoticias();
         }
     }
@@ -81,7 +82,7 @@ public class SyncService extends Service {
         mDataManager.getPaginaNoticias(1)
                 .flatMap(previews -> mDataManager.armazenarPreviewsNovos(previews, true))
                 .subscribe(previewsNovos -> {
-                    Log.d(TAG, "sincronizarNoticias: previews novos " + previewsNovos.size());
+                    Timber.d("Previews novos " + previewsNovos.size());
                     if (previewsNovos.size() > 0) {
                         for (Preview p : previewsNovos) {
                             int idNotificacao = mDataManager.getNovoIdNotificacao();
@@ -90,7 +91,7 @@ public class SyncService extends Service {
                         data.onNext(OBSERVABLE_PREVIEWS_NOVOS);
                     }
                 }, erro -> {
-                    Log.d(TAG, "sincronizar: Erro ao carregar a página inicial de notícias");
+                    Timber.d("Erro ao carregar a página inicial de notícias");
                 }, () -> {
                     stopSelf();
                 });
