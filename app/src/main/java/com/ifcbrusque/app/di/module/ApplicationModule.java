@@ -15,6 +15,8 @@ import com.ifcbrusque.app.data.network.NetworkHelper;
 import com.ifcbrusque.app.data.network.NetworkInterceptor;
 import com.ifcbrusque.app.data.network.noticias.AppPgNoticiasHelper;
 import com.ifcbrusque.app.data.network.noticias.PgNoticiasHelper;
+import com.ifcbrusque.app.data.network.sigaa.AppSIGAAHelper;
+import com.ifcbrusque.app.data.network.sigaa.SIGAAHelper;
 import com.ifcbrusque.app.data.notification.AppNotificationHelper;
 import com.ifcbrusque.app.data.notification.NotificationHelper;
 import com.ifcbrusque.app.data.prefs.AppPreferencesHelper;
@@ -73,6 +75,12 @@ public class ApplicationModule {
     @Singleton
     PgNoticiasHelper providePgNoticiasHelper(AppPgNoticiasHelper pgNoticiasHelper) {
         return pgNoticiasHelper;
+    }
+
+    @Provides
+    @Singleton
+    SIGAAHelper provideSIGAAHelper(AppSIGAAHelper SIGAAHelper) {
+        return SIGAAHelper;
     }
 
     @Provides

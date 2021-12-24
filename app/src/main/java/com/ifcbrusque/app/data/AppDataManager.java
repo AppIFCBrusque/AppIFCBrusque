@@ -15,6 +15,9 @@ import com.ifcbrusque.app.data.notification.NotificationHelper;
 import com.ifcbrusque.app.data.prefs.AppPreferencesHelper;
 import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.service.SyncService;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Nota;
+import com.stacked.sigaa_ifc.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,5 +201,20 @@ public class AppDataManager implements DataManager {
     @Override
     public void setUltimaCategoriaAcessadaHome(int categoria) {
         mPreferencesHelper.setUltimaCategoriaAcessadaHome(categoria);
+    }
+
+    @Override
+    public Usuario getUsuarioSIGAA() {
+        return mNetworkHelper.getUsuarioSIGAA();
+    }
+
+    @Override
+    public Observable<Boolean> logarSIGAA(String usuario, String senha) {
+        return mNetworkHelper.logarSIGAA(usuario, senha);
+    }
+
+    @Override
+    public Observable<ArrayList<Nota>> getNotasDisciplina(Disciplina disciplina) {
+        return mNetworkHelper.getNotasDisciplina(disciplina);
     }
 }
