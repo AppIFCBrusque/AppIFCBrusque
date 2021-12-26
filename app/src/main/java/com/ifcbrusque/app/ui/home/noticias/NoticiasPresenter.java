@@ -51,14 +51,15 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
                     getMvpView().esconderProgressBar();
 
                     getMvpView().atualizarRecyclerView(previewsArmazenados);
+
+                    //Atualizar a ultima página acessada
+                    if(pagina > getDataManager().getUltimaPaginaAcessadaNoticias()) {
+                        getDataManager().setUltimaPaginaAcessadaNoticias(pagina);
+                    }
                 }, erro -> {
                     mPodeCarregar = false;
                     getMvpView().esconderProgressBar();
-
-                    //Retornar o valor da ultima página
-                    int paginaAnterior = getDataManager().getUltimaPaginaAcessadaNoticias() - 1;
-                    getDataManager().setUltimaPaginaAcessadaNoticias(paginaAnterior);
-
+                    
                     if (erro.getClass() == NoInternetException.class) {
                         //Sem internet
                         getMvpView().onError(R.string.erro_sem_internet);
@@ -128,7 +129,6 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
     public void onFimRecyclerView() {
         if (mPodeCarregar) {
             int paginaParaCarregar = getDataManager().getUltimaPaginaAcessadaNoticias() + 1;
-            getDataManager().setUltimaPaginaAcessadaNoticias(paginaParaCarregar);
             carregarPagina(paginaParaCarregar);
         }
     }
