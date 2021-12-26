@@ -3,8 +3,11 @@ package com.ifcbrusque.app.data.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ifcbrusque.app.data.db.Converters;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.di.ApplicationContext;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,6 +42,17 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public String getSenhaSIGAA() {
         return pref.getString(SIGAA_SENHA, "");
+    }
+
+    @Override
+    public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
+        long _data = Converters.dateToTimestamp(data);
+        pref.edit().putLong(NOTICIAS_ULTIMA_SINCRONIZACAO, _data).apply();
+    }
+
+    @Override
+    public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
+        return Converters.fromTimestamp(pref.getLong(NOTICIAS_ULTIMA_SINCRONIZACAO, 0));
     }
 
     @Override

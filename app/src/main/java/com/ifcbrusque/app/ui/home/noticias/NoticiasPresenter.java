@@ -6,12 +6,16 @@ import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.service.SyncService;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import timber.log.Timber;
 
 /*
 Presenter dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
@@ -37,6 +41,7 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
     private void carregarPagina(int pagina) {
         mPodeCarregar = false;
         getMvpView().mostrarProgressBar();
+        Timber.d("Carregando página: " + pagina);
 
         getCompositeDisposable().add(getDataManager()
                 .getPaginaNoticias(pagina)
@@ -96,11 +101,16 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
         mPodeCarregar = true;
 
         carregarPreviewsArmazenados();
-        carregarPagina(1);
 
         anexarDisposableDaSincronizacao();
 
-        getDataManager().agendarSincronizacaoPeriodicaNoticias();
+        long minutosDesdeUltimaSync = TimeUnit.MILLISECONDS.toMinutes(new Date().getTime() - getDataManager().getDataUltimaSincronizacaoAutomaticaNoticias().getTime());
+        Timber.d("Minutos desde a última sincronização: " + minutosDesdeUltimaSync);
+        if(minutosDesdeUltimaSync >= 10) {
+            carregarPagina(1);
+            getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
+            getDataManager().agendarSincronizacaoPeriodicaNoticias();
+        }
     }
 
     @Override

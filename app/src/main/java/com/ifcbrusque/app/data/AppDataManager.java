@@ -1,18 +1,13 @@
 package com.ifcbrusque.app.data;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import com.ifcbrusque.app.data.db.AppDbHelper;
 import com.ifcbrusque.app.data.db.DbHelper;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
-import com.ifcbrusque.app.data.network.AppNetworkHelper;
 import com.ifcbrusque.app.data.network.NetworkHelper;
-import com.ifcbrusque.app.data.notification.AppNotificationHelper;
 import com.ifcbrusque.app.data.notification.NotificationHelper;
-import com.ifcbrusque.app.data.prefs.AppPreferencesHelper;
 import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.service.SyncService;
 import com.stacked.sigaa_ifc.Disciplina;
@@ -20,6 +15,7 @@ import com.stacked.sigaa_ifc.Nota;
 import com.stacked.sigaa_ifc.Usuario;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -166,6 +162,16 @@ public class AppDataManager implements DataManager {
     @Override
     public String getSenhaSIGAA() {
         return mPreferencesHelper.getSenhaSIGAA();
+    }
+
+    @Override
+    public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
+        mPreferencesHelper.setDataUltimaSincronizacaoAutomaticaNoticias(data);
+    }
+
+    @Override
+    public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
+        return mPreferencesHelper.getDataUltimaSincronizacaoAutomaticaNoticias();
     }
 
     @Override

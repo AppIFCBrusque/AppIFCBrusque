@@ -15,6 +15,8 @@ import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -82,6 +84,7 @@ public class SyncService extends Service {
         mDataManager.getPaginaNoticias(1)
                 .flatMap(previews -> mDataManager.armazenarPreviewsNovos(previews, true))
                 .subscribe(previewsNovos -> {
+                    mDataManager.setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
                     Timber.d("Previews novos " + previewsNovos.size());
                     if (previewsNovos.size() > 0) {
                         for (Preview p : previewsNovos) {
