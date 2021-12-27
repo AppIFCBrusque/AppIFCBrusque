@@ -5,6 +5,8 @@ import com.ifcbrusque.app.ui.base.MvpView;
 
 public interface MainContract {
     interface MainView extends MvpView {
+        void abrirLogin();
+
         void abrirHome();
 
         void fecharActivity();

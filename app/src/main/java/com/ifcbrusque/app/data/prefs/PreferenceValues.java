@@ -7,6 +7,10 @@ public class PreferenceValues {
     private PreferenceValues() {
     }
 
+    public static String PRIMEIRA_INICIALIZACAO = "PRIMEIRA_INICIALIZACAO";
+
+    public static String SIGAA_CONECTADO = "SIGAA_CONECTADO";
+
     public static String SIGAA_LOGIN = "SIGAA_LOGIN";
 
     public static String SIGAA_SENHA = "SIGAA_PASS";

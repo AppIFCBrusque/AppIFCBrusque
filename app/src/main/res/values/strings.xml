@@ -48,4 +48,13 @@
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>
+
+    <!-- SIGAA  -->
+    <string name="sigaa_usuario">Usuário</string>
+    <string name="sigaa_senha">Senha</string>
+    <string name="sigaa_entrar">Entrar</string>
+    <string name="sigaa_pular">Pular</string>
+    <string name="sigaa_mensagem_conexao">Você pode conectar a sua conta do SIGAA para utilizar as funções do sistema por meio do aplicativo</string>
+    <string name="sigaa_dados_invalidos">Usuário e/ou senha inválidos</string>
+    <string name="sigaa_erro_conexao">Não foi possível se conectar ao SIGAA. Tente novamente mais tarde</string>
 </resources>

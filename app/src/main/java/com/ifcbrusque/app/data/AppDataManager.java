@@ -150,6 +150,26 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public boolean getPrimeiraInicializacao() {
+        return mPreferencesHelper.getPrimeiraInicializacao();
+    }
+
+    @Override
+    public void setPrimeiraInicializacao(boolean b) {
+        mPreferencesHelper.setPrimeiraInicializacao(b);
+    }
+
+    @Override
+    public boolean getSIGAAConectado() {
+        return mPreferencesHelper.getSIGAAConectado();
+    }
+
+    @Override
+    public void setSIGAAConectado(boolean b) {
+        mPreferencesHelper.setSIGAAConectado(b);
+    }
+
+    @Override
     public void setUsuarioSIGAA(String login, String senha) {
         mPreferencesHelper.setUsuarioSIGAA(login, senha);
     }

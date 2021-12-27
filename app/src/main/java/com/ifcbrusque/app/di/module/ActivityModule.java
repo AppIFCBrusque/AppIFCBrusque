@@ -17,6 +17,8 @@ import com.ifcbrusque.app.ui.home.noticias.NoticiasContract;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasPresenter;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteContract;
 import com.ifcbrusque.app.ui.lembrete.InserirLembretePresenter;
+import com.ifcbrusque.app.ui.login.LoginContract;
+import com.ifcbrusque.app.ui.login.LoginPresenter;
 import com.ifcbrusque.app.ui.main.MainContract;
 import com.ifcbrusque.app.ui.main.MainPresenter;
 import com.ifcbrusque.app.ui.noticia.NoticiaContract;
@@ -78,6 +80,12 @@ public class ActivityModule {
     @Provides
     @PerActivity
     NoticiaContract.NoticiaPresenter<NoticiaContract.NoticiaView> provideNoticiaPresenter(NoticiaPresenter<NoticiaContract.NoticiaView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    LoginContract.LoginPresenter<LoginContract.LoginView> provideLoginPresenter(LoginPresenter<LoginContract.LoginView> presenter) {
         return presenter;
     }
 

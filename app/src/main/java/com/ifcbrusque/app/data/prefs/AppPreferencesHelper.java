@@ -28,6 +28,26 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public boolean getPrimeiraInicializacao() {
+        return pref.getBoolean(PRIMEIRA_INICIALIZACAO, true);
+    }
+
+    @Override
+    public void setPrimeiraInicializacao(boolean b) {
+        pref.edit().putBoolean(PRIMEIRA_INICIALIZACAO, b).apply();
+    }
+
+    @Override
+    public boolean getSIGAAConectado() {
+        return pref.getBoolean(SIGAA_CONECTADO, false);
+    }
+
+    @Override
+    public void setSIGAAConectado(boolean b) {
+        pref.edit().putBoolean(SIGAA_CONECTADO, b).apply();
+    }
+
+    @Override
     public void setUsuarioSIGAA(String login, String senha) {
         pref.edit().putString(SIGAA_LOGIN, login);
         pref.edit().putString(SIGAA_SENHA, senha);

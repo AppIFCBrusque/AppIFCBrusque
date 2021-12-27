@@ -14,7 +14,7 @@ public class SyncReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (ACTION_ATUALIZAR_NOTICIAS.equals(action)) {
-            Intent serviceIntent = SyncService.getStartIntent(context, true);
+            Intent serviceIntent = SyncService.getStartIntent(context, true, false);
             ContextCompat.startForegroundService(context, serviceIntent);
         }
     }

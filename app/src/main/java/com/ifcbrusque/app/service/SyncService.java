@@ -31,7 +31,7 @@ Serviço utilizado para obter informações da internet (notícias, SIGAA) no fu
 public class SyncService extends Service {
     final public static String EXTRA_ATUALIZAR_NOTICIAS = "EXTRA_ATUALIZAR_NOTICIAS";
 
-    public static Intent getStartIntent(Context context, boolean atualizarNoticias) {
+    public static Intent getStartIntent(Context context, boolean atualizarNoticias, boolean atualizarSIGAA) {
         Intent intent = new Intent(context, SyncService.class);
 
         if(atualizarNoticias) {

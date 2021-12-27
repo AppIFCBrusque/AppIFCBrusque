@@ -17,7 +17,12 @@ public class MainPresenter<V extends MainContract.MainView> extends BasePresente
     public void onViewPronta() {
         getDataManager().criarCanalNotificacoes();
 
-        getMvpView().abrirHome();
+        boolean primeiraInicializacao = getDataManager().getPrimeiraInicializacao();
+        if(primeiraInicializacao) {
+            getMvpView().abrirLogin();
+        } else {
+            getMvpView().abrirHome();
+        }
         getMvpView().fecharActivity();
     }
 }

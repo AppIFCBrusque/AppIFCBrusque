@@ -3,6 +3,14 @@ package com.ifcbrusque.app.data.prefs;
 import java.util.Date;
 
 public interface PreferencesHelper {
+    boolean getPrimeiraInicializacao();
+
+    void setPrimeiraInicializacao(boolean b);
+
+    boolean getSIGAAConectado();
+
+    void setSIGAAConectado(boolean b);
+
     void setUsuarioSIGAA(String login, String senha);
 
     String getLoginSIGAA();
