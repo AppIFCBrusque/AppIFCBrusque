@@ -3,6 +3,9 @@ package com.ifcbrusque.app.data.db;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.List;
 
@@ -32,4 +35,24 @@ public interface DbHelper {
     Completable alterarEstadoLembrete(long id, int novoEstado);
 
     Observable<Lembrete> atualizarParaProximaDataLembreteComRepeticao(long idLembrete);
+
+    Observable<List<Disciplina>> getAllDisciplinas();
+
+    Observable<List<Disciplina>> getDisciplinas(String frontEndIdTurma);
+
+    Completable inserirDisciplinas(List<Disciplina> disciplinas);
+
+    Completable deletarDisciplina(Disciplina disciplina);
+
+    Observable<List<Tarefa>> getAllTarefas();
+
+    Completable inserirTarefas(List<Tarefa> tarefas);
+
+    Completable deletarTarefa(Tarefa tarefa);
+
+    Observable<List<Avaliacao>> getAllAvaliacoes();
+
+    Completable inserirAvaliacoes(List<Avaliacao> avaliacoes);
+
+    Completable deletarAvaliacao(Avaliacao avaliacao);
 }

@@ -48,20 +48,23 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public void setUsuarioSIGAA(String login, String senha) {
-        pref.edit().putString(SIGAA_LOGIN, login);
-        pref.edit().putString(SIGAA_SENHA, senha);
-        pref.edit().apply();
-    }
-
-    @Override
     public String getLoginSIGAA() {
         return pref.getString(SIGAA_LOGIN, "");
     }
 
     @Override
+    public void setLoginSIGAA(String login) {
+        pref.edit().putString(SIGAA_LOGIN, login).apply();
+    }
+
+    @Override
     public String getSenhaSIGAA() {
         return pref.getString(SIGAA_SENHA, "");
+    }
+
+    @Override
+    public void setSenhaSIGAA(String senha) {
+        pref.edit().putString(SIGAA_SENHA, senha).apply();
     }
 
     @Override

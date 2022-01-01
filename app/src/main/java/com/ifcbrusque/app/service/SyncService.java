@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -22,8 +21,6 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import timber.log.Timber;
-
-import static com.ifcbrusque.app.utils.AppConstants.TAG;
 
 /*
 Serviço utilizado para obter informações da internet (notícias, SIGAA) no fundo e processá-las
@@ -96,11 +93,8 @@ public class SyncService extends Service {
                 }, erro -> {
                     Timber.d("Erro ao carregar a página inicial de notícias");
                     stopSelf();
-                }, () -> {
-                    stopSelf();
-                });
+                }, this::stopSelf);
     }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Utilizado para notificar as activities quando carrega algum resultado

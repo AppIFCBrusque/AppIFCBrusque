@@ -18,7 +18,7 @@ public class MainPresenter<V extends MainContract.MainView> extends BasePresente
         getDataManager().criarCanalNotificacoes();
 
         boolean primeiraInicializacao = getDataManager().getPrimeiraInicializacao();
-        if(primeiraInicializacao) {
+        if (primeiraInicializacao) {
             getMvpView().abrirLogin();
         } else {
             getMvpView().abrirHome();

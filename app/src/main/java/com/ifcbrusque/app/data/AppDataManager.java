@@ -10,8 +10,10 @@ import com.ifcbrusque.app.data.network.NetworkHelper;
 import com.ifcbrusque.app.data.notification.NotificationHelper;
 import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.service.SyncService;
+import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
 import com.stacked.sigaa_ifc.Nota;
+import com.stacked.sigaa_ifc.Tarefa;
 import com.stacked.sigaa_ifc.Usuario;
 
 import java.util.ArrayList;
@@ -95,6 +97,56 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Completable inserirDisciplinas(List<Disciplina> disciplinas) {
+        return mDbHelper.inserirDisciplinas(disciplinas);
+    }
+
+    @Override
+    public Completable deletarDisciplina(Disciplina disciplina) {
+        return mDbHelper.deletarDisciplina(disciplina);
+    }
+
+    @Override
+    public Observable<List<Disciplina>> getDisciplinas(String frontEndIdTurma) {
+        return mDbHelper.getDisciplinas(frontEndIdTurma);
+    }
+
+    @Override
+    public Observable<List<Disciplina>> getAllDisciplinas() {
+        return mDbHelper.getAllDisciplinas();
+    }
+
+    @Override
+    public Completable inserirTarefas(List<Tarefa> tarefas) {
+        return mDbHelper.inserirTarefas(tarefas);
+    }
+
+    @Override
+    public Completable deletarTarefa(Tarefa tarefa) {
+        return mDbHelper.deletarTarefa(tarefa);
+    }
+
+    @Override
+    public Observable<List<Avaliacao>> getAllAvaliacoes() {
+        return mDbHelper.getAllAvaliacoes();
+    }
+
+    @Override
+    public Completable inserirAvaliacoes(List<Avaliacao> avaliacoes) {
+        return mDbHelper.inserirAvaliacoes(avaliacoes);
+    }
+
+    @Override
+    public Completable deletarAvaliacao(Avaliacao avaliacao) {
+        return mDbHelper.deletarAvaliacao(avaliacao);
+    }
+
+    @Override
+    public Observable<List<Tarefa>> getAllTarefas() {
+        return mDbHelper.getAllTarefas();
+    }
+
+    @Override
     public Observable<ArrayList<Preview>> getPaginaNoticias(int numeroPagina) {
         return mNetworkHelper.getPaginaNoticias(numeroPagina);
     }
@@ -170,18 +222,23 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setUsuarioSIGAA(String login, String senha) {
-        mPreferencesHelper.setUsuarioSIGAA(login, senha);
-    }
-
-    @Override
     public String getLoginSIGAA() {
         return mPreferencesHelper.getLoginSIGAA();
     }
 
     @Override
+    public void setLoginSIGAA(String login) {
+        mPreferencesHelper.setLoginSIGAA(login);
+    }
+
+    @Override
     public String getSenhaSIGAA() {
         return mPreferencesHelper.getSenhaSIGAA();
+    }
+
+    @Override
+    public void setSenhaSIGAA(String senha) {
+        mPreferencesHelper.setSenhaSIGAA(senha);
     }
 
     @Override
@@ -240,7 +297,17 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<ArrayList<Nota>> getNotasDisciplina(Disciplina disciplina) {
-        return mNetworkHelper.getNotasDisciplina(disciplina);
+    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getTarefasDisciplinaSIGAA(disciplina);
+    }
+
+    @Override
+    public Observable<ArrayList<Avaliacao>> getAvaliacoesDisciplinaSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getAvaliacoesDisciplinaSIGAA(disciplina);
+    }
+
+    @Override
+    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getNotasDisciplinaSIGAA(disciplina);
     }
 }

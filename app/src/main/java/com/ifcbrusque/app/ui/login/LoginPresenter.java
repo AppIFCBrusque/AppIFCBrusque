@@ -32,7 +32,8 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
 
                     if(logado) {
                         Timber.d("Logado como: " + getDataManager().getUsuarioSIGAA().getNome());
-                        getDataManager().setUsuarioSIGAA(usuario, senha);
+                        getDataManager().setLoginSIGAA(usuario);
+                        getDataManager().setSenhaSIGAA(senha);
                         //TODO: Iniciar o serviço da sincronização, arrumar no SyncReceiver
 
                         getDataManager().setPrimeiraInicializacao(false);

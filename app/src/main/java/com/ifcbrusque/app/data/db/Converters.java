@@ -1,6 +1,7 @@
 package com.ifcbrusque.app.data.db;
 
 import androidx.room.TypeConverter;
+
 import java.util.Date;
 
 public class Converters {

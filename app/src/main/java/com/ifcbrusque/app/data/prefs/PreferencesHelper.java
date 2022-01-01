@@ -11,11 +11,13 @@ public interface PreferencesHelper {
 
     void setSIGAAConectado(boolean b);
 
-    void setUsuarioSIGAA(String login, String senha);
-
     String getLoginSIGAA();
 
+    void setLoginSIGAA(String login);
+
     String getSenhaSIGAA();
+
+    void setSenhaSIGAA(String senha);
 
     void setDataUltimaSincronizacaoAutomaticaNoticias(Date data);
 

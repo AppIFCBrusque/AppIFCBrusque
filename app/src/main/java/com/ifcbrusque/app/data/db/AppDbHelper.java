@@ -1,12 +1,17 @@
 package com.ifcbrusque.app.data.db;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.ifcbrusque.app.data.db.model.AvaliacaoArmazenavel;
+import com.ifcbrusque.app.data.db.model.DisciplinaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.di.ApplicationContext;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,8 +26,6 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static com.ifcbrusque.app.utils.AppConstants.TAG;
 
 @Singleton
 public class AppDbHelper implements DbHelper {
@@ -103,9 +106,8 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Completable deletarLembrete(Lembrete lembrete) {
-        return Completable.fromRunnable(() -> {
-            mAppDatabase.lembreteDao().delete(lembrete);
-        }).subscribeOn(Schedulers.io())
+        return Completable.fromRunnable(() -> mAppDatabase.lembreteDao().delete(lembrete))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -118,9 +120,8 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Completable alterarEstadoLembrete(long id, int novoEstado) {
-        return Completable.fromRunnable(() -> {
-            mAppDatabase.lembreteDao().alterarEstadoLembrete(id, novoEstado);
-        }).subscribeOn(Schedulers.io())
+        return Completable.fromRunnable(() -> mAppDatabase.lembreteDao().alterarEstadoLembrete(id, novoEstado))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -169,6 +170,138 @@ public class AppDbHelper implements DbHelper {
             mAppDatabase.lembreteDao().atualizarLembrete(lembrete);
             return Observable.just(lembrete);
         })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable inserirDisciplinas(List<Disciplina> disciplinas) {
+        List<DisciplinaArmazenavel> disciplinasArmazenaveis = new ArrayList<>();
+        for (Disciplina d : disciplinas) {
+            disciplinasArmazenaveis.add(new DisciplinaArmazenavel(d));
+        }
+        Timber.d("Disciplinas a inserir: " + disciplinasArmazenaveis.size());
+
+        return Completable.fromRunnable(() -> mAppDatabase.disciplinaDao().insertAll(disciplinasArmazenaveis))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarDisciplina(Disciplina disciplina) {
+        DisciplinaArmazenavel d = new DisciplinaArmazenavel(disciplina);
+
+        return Completable.fromRunnable(() -> mAppDatabase.disciplinaDao().delete(d))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Disciplina>> getDisciplinas(String frontEndIdTurma) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getDisciplinas(frontEndIdTurma)))
+                .flatMap(list -> Observable.fromIterable(list)
+                        .map(disciplinaArmazenavel -> disciplinaArmazenavel.getDisciplina())
+                        .toList()
+                        .toObservable())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Disciplina>> getAllDisciplinas() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
+                .flatMap(list -> Observable.fromIterable(list)
+                        .map(disciplinaArmazenavel -> disciplinaArmazenavel.getDisciplina())
+                        .toList()
+                        .toObservable()
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable inserirTarefas(List<Tarefa> tarefas) {
+        Timber.d("Tarefas a inserir: " + tarefas.size());
+        List<TarefaArmazenavel> tarefasArmazenaveis = new ArrayList<>();
+        for (Tarefa t : tarefas) {
+            tarefasArmazenaveis.add(new TarefaArmazenavel(t));
+        }
+
+        return Completable.fromRunnable(() -> mAppDatabase.tarefaDao().insertAll(tarefasArmazenaveis))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarTarefa(Tarefa tarefa) {
+        TarefaArmazenavel t = new TarefaArmazenavel(tarefa);
+
+        return Completable.fromRunnable(() -> mAppDatabase.tarefaDao().delete(t))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Avaliacao>> getAllAvaliacoes() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.avaliacaoDao().getAll()))
+                .flatMap(list -> Observable.fromIterable(list)
+                        .flatMap(avaliacaoArmazenavel -> {
+                            List<DisciplinaArmazenavel> disciplinasDaAvaliacao = mAppDatabase.disciplinaDao().getDisciplinas(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma());
+                            List<Avaliacao> a = new ArrayList<>();
+
+                            if (disciplinasDaAvaliacao.size() > 0) {
+                                a.add(avaliacaoArmazenavel.getAvaliacao(disciplinasDaAvaliacao.get(0).getDisciplina()));
+                            } else {
+                                //Deletar as tarefas sem disciplina correspondente
+                                Timber.d("Avaliação sem disciplina correspondente: " + avaliacaoArmazenavel.getDescricao());
+                                mAppDatabase.avaliacaoDao().delete(avaliacaoArmazenavel);
+                            }
+                            return Observable.just(a);
+                        })
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable inserirAvaliacoes(List<Avaliacao> avaliacoes) {
+        Timber.d("Avaliações a inserir: " + avaliacoes.size());
+        List<AvaliacaoArmazenavel> avaliacoesArmazenaveis = new ArrayList<>();
+        for (Avaliacao a : avaliacoes) {
+            avaliacoesArmazenaveis.add(new AvaliacaoArmazenavel(a));
+        }
+
+        return Completable.fromRunnable(() -> mAppDatabase.avaliacaoDao().insertAll(avaliacoesArmazenaveis)).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarAvaliacao(Avaliacao avaliacao) {
+        AvaliacaoArmazenavel a = new AvaliacaoArmazenavel(avaliacao);
+
+        return Completable.fromRunnable(() -> mAppDatabase.avaliacaoDao().delete(a))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Tarefa>> getAllTarefas() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.tarefaDao().getAll()))
+                .flatMap(list -> Observable.fromIterable(list)
+                        .flatMap(tarefaArmazenavel -> {
+                            List<DisciplinaArmazenavel> disciplinasDaTarefa = mAppDatabase.disciplinaDao().getDisciplinas(tarefaArmazenavel.getDisciplinaFrontEndIdTurma());
+                            List<Tarefa> t = new ArrayList<>();
+
+                            if (disciplinasDaTarefa.size() > 0) {
+                                t.add(tarefaArmazenavel.getTarefa(disciplinasDaTarefa.get(0).getDisciplina()));
+                            } else {
+                                //Deletar as tarefas sem disciplina correspondente
+                                Timber.d("Tarefa sem disciplina correspondente: " + tarefaArmazenavel.getTitulo());
+                                mAppDatabase.tarefaDao().delete(tarefaArmazenavel);
+                            }
+                            return Observable.just(t);
+                        })
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
