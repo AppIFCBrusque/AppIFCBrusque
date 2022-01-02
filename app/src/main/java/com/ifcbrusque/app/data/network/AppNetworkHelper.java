@@ -8,6 +8,7 @@ import com.ifcbrusque.app.data.network.sigaa.SIGAAHelper;
 import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
 import com.stacked.sigaa_ifc.Nota;
+import com.stacked.sigaa_ifc.Questionario;
 import com.stacked.sigaa_ifc.Tarefa;
 import com.stacked.sigaa_ifc.Usuario;
 
@@ -50,8 +51,8 @@ public class AppNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
-        return mSIGAAHelper.getTarefasDisciplinaSIGAA(disciplina);
+    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
+        return mSIGAAHelper.getNotasDisciplinaSIGAA(disciplina);
     }
 
     @Override
@@ -60,7 +61,12 @@ public class AppNetworkHelper implements NetworkHelper {
     }
 
     @Override
-    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
-        return mSIGAAHelper.getNotasDisciplinaSIGAA(disciplina);
+    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
+        return mSIGAAHelper.getTarefasDisciplinaSIGAA(disciplina);
+    }
+
+    @Override
+    public Observable<ArrayList<Questionario>> getQuestionariosDisciplinaSIGAA(Disciplina disciplina) {
+        return mSIGAAHelper.getQuestionariosDisciplinaSIGAA(disciplina);
     }
 }

@@ -5,6 +5,7 @@ import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Questionario;
 import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.List;
@@ -44,15 +45,21 @@ public interface DbHelper {
 
     Completable deletarDisciplina(Disciplina disciplina);
 
+    Observable<List<Avaliacao>> getAllAvaliacoes();
+
+    Completable inserirAvaliacoes(List<Avaliacao> avaliacoes);
+
+    Completable deletarAvaliacao(Avaliacao avaliacao);
+
     Observable<List<Tarefa>> getAllTarefas();
 
     Completable inserirTarefas(List<Tarefa> tarefas);
 
     Completable deletarTarefa(Tarefa tarefa);
 
-    Observable<List<Avaliacao>> getAllAvaliacoes();
+    Observable<List<Questionario>> getAllQuestionarios();
 
-    Completable inserirAvaliacoes(List<Avaliacao> avaliacoes);
+    Completable inserirQuestionarios(List<Questionario> questionarios);
 
-    Completable deletarAvaliacao(Avaliacao avaliacao);
+    Completable deletarQuestionario(Questionario questionario);
 }

@@ -67,4 +67,8 @@ public class AvaliacaoArmazenavel {
     public Avaliacao getAvaliacao(Disciplina disciplina) {
         return new Avaliacao(idNoSIGAA, disciplina, data, descricao);
     }
+
+    public Avaliacao getAvaliacao(DisciplinaArmazenavel disciplina) {
+        return getAvaliacao(disciplina.getDisciplina());
+    }
 }

@@ -13,6 +13,7 @@ import com.ifcbrusque.app.service.SyncService;
 import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
 import com.stacked.sigaa_ifc.Nota;
+import com.stacked.sigaa_ifc.Questionario;
 import com.stacked.sigaa_ifc.Tarefa;
 import com.stacked.sigaa_ifc.Usuario;
 
@@ -117,16 +118,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable inserirTarefas(List<Tarefa> tarefas) {
-        return mDbHelper.inserirTarefas(tarefas);
-    }
-
-    @Override
-    public Completable deletarTarefa(Tarefa tarefa) {
-        return mDbHelper.deletarTarefa(tarefa);
-    }
-
-    @Override
     public Observable<List<Avaliacao>> getAllAvaliacoes() {
         return mDbHelper.getAllAvaliacoes();
     }
@@ -144,6 +135,31 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<List<Tarefa>> getAllTarefas() {
         return mDbHelper.getAllTarefas();
+    }
+
+    @Override
+    public Completable inserirTarefas(List<Tarefa> tarefas) {
+        return mDbHelper.inserirTarefas(tarefas);
+    }
+
+    @Override
+    public Completable deletarTarefa(Tarefa tarefa) {
+        return mDbHelper.deletarTarefa(tarefa);
+    }
+
+    @Override
+    public Observable<List<Questionario>> getAllQuestionarios() {
+        return mDbHelper.getAllQuestionarios();
+    }
+
+    @Override
+    public Completable inserirQuestionarios(List<Questionario> questionarios) {
+        return mDbHelper.inserirQuestionarios(questionarios);
+    }
+
+    @Override
+    public Completable deletarQuestionario(Questionario questionario) {
+        return deletarQuestionario(questionario);
     }
 
     @Override
@@ -297,8 +313,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
-        return mNetworkHelper.getTarefasDisciplinaSIGAA(disciplina);
+    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getNotasDisciplinaSIGAA(disciplina);
     }
 
     @Override
@@ -307,7 +323,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
-        return mNetworkHelper.getNotasDisciplinaSIGAA(disciplina);
+    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getTarefasDisciplinaSIGAA(disciplina);
+    }
+
+    @Override
+    public Observable<ArrayList<Questionario>> getQuestionariosDisciplinaSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getQuestionariosDisciplinaSIGAA(disciplina);
     }
 }

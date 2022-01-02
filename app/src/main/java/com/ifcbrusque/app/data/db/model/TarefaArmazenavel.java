@@ -167,16 +167,6 @@ public class TarefaArmazenavel {
         this.j_idVisualizar = j_idVisualizar;
     }
 
-    public Tarefa getTarefa(DisciplinaArmazenavel disciplinaArmazenavel) {
-        Tarefa t = new Tarefa(disciplinaArmazenavel.getDisciplina(), titulo, descricao, dataInicio, dataFim, envios, enviavel, enviada, corrigida);
-        t.setUrlArquivo(urlDownload);
-        t.setId(idNoSIGAA);
-        t.setJ_Id(j_id);
-        t.setIdEnvio(j_idEnviar);
-        t.setIdVisualizacao(j_idVisualizar);
-        return t;
-    }
-
     public Tarefa getTarefa(Disciplina disciplina) {
         Tarefa t = new Tarefa(disciplina, titulo, descricao, dataInicio, dataFim, envios, enviavel, enviada, corrigida);
         t.setUrlArquivo(urlDownload);
@@ -185,5 +175,9 @@ public class TarefaArmazenavel {
         t.setIdEnvio(j_idEnviar);
         t.setIdVisualizacao(j_idVisualizar);
         return t;
+    }
+
+    public Tarefa getTarefa(DisciplinaArmazenavel disciplinaArmazenavel) {
+        return getTarefa(disciplinaArmazenavel.getDisciplina());
     }
 }

@@ -6,6 +6,7 @@ import com.ifcbrusque.app.di.ApplicationContext;
 import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
 import com.stacked.sigaa_ifc.Nota;
+import com.stacked.sigaa_ifc.Questionario;
 import com.stacked.sigaa_ifc.Sessao;
 import com.stacked.sigaa_ifc.Tarefa;
 import com.stacked.sigaa_ifc.Usuario;
@@ -41,11 +42,9 @@ public class AppSIGAAHelper implements SIGAAHelper {
     }
 
     @Override
-    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
-        return Observable.defer(() -> {
-            Timber.d("Acessando a página de tarefas: " + disciplina.getNome());
-            return Observable.just(mSessao.disciplinaPegarTarefas(disciplina));
-        }).subscribeOn(Schedulers.io())
+    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
+        return Observable.defer(() -> Observable.just(mSessao.disciplinaPegarNotas(disciplina)))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -54,13 +53,28 @@ public class AppSIGAAHelper implements SIGAAHelper {
         return Observable.defer(() -> {
             Timber.d("Acessando a página de avaliações: " + disciplina.getNome());
             return Observable.just(mSessao.disciplinaPegarAvaliacoes(disciplina));
-        }).subscribeOn(Schedulers.io())
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
-        return Observable.defer(() -> Observable.just(mSessao.disciplinaPegarNotas(disciplina))).subscribeOn(Schedulers.io())
+    public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
+        return Observable.defer(() -> {
+            Timber.d("Acessando a página de tarefas: " + disciplina.getNome());
+            return Observable.just(mSessao.disciplinaPegarTarefas(disciplina));
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<ArrayList<Questionario>> getQuestionariosDisciplinaSIGAA(Disciplina disciplina) {
+        return Observable.defer(() -> {
+            Timber.d("Acessando a página de questionários: " + disciplina.getNome());
+            return Observable.just(mSessao.disciplinaPegarQuestionarios(disciplina));
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

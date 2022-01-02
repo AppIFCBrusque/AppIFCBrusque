@@ -12,18 +12,20 @@ import com.ifcbrusque.app.data.db.dao.DisciplinaDao;
 import com.ifcbrusque.app.data.db.dao.LembreteDao;
 import com.ifcbrusque.app.data.db.dao.NoticiaDao;
 import com.ifcbrusque.app.data.db.dao.PreviewDao;
+import com.ifcbrusque.app.data.db.dao.QuestionarioDao;
 import com.ifcbrusque.app.data.db.dao.TarefaDao;
 import com.ifcbrusque.app.data.db.model.AvaliacaoArmazenavel;
 import com.ifcbrusque.app.data.db.model.DisciplinaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 
 import static com.ifcbrusque.app.utils.AppConstants.DB_NAME;
 import static com.ifcbrusque.app.utils.AppConstants.DB_VERSION;
 
-@Database(entities = {Preview.class, Noticia.class, Lembrete.class, AvaliacaoArmazenavel.class, DisciplinaArmazenavel.class, TarefaArmazenavel.class}, version = DB_VERSION, exportSchema = false)
+@Database(entities = {Preview.class, Noticia.class, Lembrete.class, AvaliacaoArmazenavel.class, DisciplinaArmazenavel.class, TarefaArmazenavel.class, QuestionarioArmazenavel.class}, version = DB_VERSION, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PreviewDao previewDao();
@@ -37,6 +39,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DisciplinaDao disciplinaDao();
 
     public abstract TarefaDao tarefaDao();
+
+    public abstract QuestionarioDao questionarioDao();
 
     private static AppDatabase INSTANCE;
 
