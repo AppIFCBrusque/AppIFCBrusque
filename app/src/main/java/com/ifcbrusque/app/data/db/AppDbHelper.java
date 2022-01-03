@@ -246,15 +246,38 @@ public class AppDbHelper implements DbHelper {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     *
+     * @param avaliacoesParaInserir
+     * @return avaliações que não estavam armazenadas
+     */
     @Override
-    public Completable inserirAvaliacoes(List<Avaliacao> avaliacoes) {
-        return Observable.fromIterable(avaliacoes)
+    public Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoesParaInserir) {
+        return Observable.fromIterable(avaliacoesParaInserir)
                 .map(avaliacao -> new AvaliacaoArmazenavel(avaliacao))
                 .toList()
-                .flatMapCompletable(avaliacoesArmazenaveis -> Completable.fromRunnable(() -> {
-                    Timber.d("Avaliações a inserir: %s", avaliacoesArmazenaveis.size());
-                    mAppDatabase.avaliacaoDao().insertAll(avaliacoesArmazenaveis);
-                }))
+                .map(avaliacoesArmazenaveis -> {
+                    List<AvaliacaoArmazenavel> avaliacoesNoDB = mAppDatabase.avaliacaoDao().getAll();
+                    List<AvaliacaoArmazenavel> avaliacoesNovas = new ArrayList<>();
+
+                    for (AvaliacaoArmazenavel avaliacao : avaliacoesArmazenaveis) {
+                        if (avaliacoesNoDB.stream().anyMatch(a -> a.getIdNoSIGAA() == avaliacao.getIdNoSIGAA())) {
+                            //Avaliação já armazenada (atualizar)
+                            mAppDatabase.avaliacaoDao().atualizarAvaliacao(avaliacao);
+                        } else {
+                            //Avaliação não armazenada (inserir)
+                            mAppDatabase.avaliacaoDao().insert(avaliacao);
+                            avaliacoesNovas.add(avaliacao);
+                        }
+                    }
+
+                    return avaliacoesNovas;
+                })
+                .flatMapObservable(avaliacoesNovas -> Observable.fromIterable(avaliacoesParaInserir)
+                        .filter(avaliacao -> avaliacoesNovas.stream().anyMatch(avaliacaoNova -> avaliacaoNova.getIdNoSIGAA() == avaliacao.getId()))
+                        .toList()
+                        .toObservable()
+                ) //Essa parte serve para remover da lista inicial os itens que não são novos (isso aqui é para não precisar converter do formato do banco de dados para o formato da API)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -293,15 +316,38 @@ public class AppDbHelper implements DbHelper {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     *
+     * @param tarefasParaInserir
+     * @return tarefas que não estavam armazenadas
+     */
     @Override
-    public Completable inserirTarefas(List<Tarefa> tarefas) {
-        return Observable.fromIterable(tarefas)
+    public Observable<List<Tarefa>> inserirTarefas(List<Tarefa> tarefasParaInserir) {
+        return Observable.fromIterable(tarefasParaInserir)
                 .map(tarefa -> new TarefaArmazenavel(tarefa))
                 .toList()
-                .flatMapCompletable(tarefasArmazenaveis -> Completable.fromRunnable(() -> {
-                    Timber.d("Tarefas a inserir: %s", tarefasArmazenaveis.size());
-                    mAppDatabase.tarefaDao().insertAll(tarefasArmazenaveis);
-                }))
+                .map(tarefasArmazenaveis -> {
+                    List<TarefaArmazenavel> tarefasNoDB = mAppDatabase.tarefaDao().getAll();
+                    List<TarefaArmazenavel> tarefasNovas = new ArrayList<>();
+
+                    for (TarefaArmazenavel tarefa : tarefasArmazenaveis) {
+                        if (tarefasNoDB.stream().anyMatch(t -> t.getIdNoSIGAA().equals(tarefa.getIdNoSIGAA()))) {
+                            //Tarefa já armazenada (atualizar)
+                            mAppDatabase.tarefaDao().atualizarTarefa(tarefa);
+                        } else {
+                            //Tarefa não armazenada (inserir)
+                            mAppDatabase.tarefaDao().insert(tarefa);
+                            tarefasNovas.add(tarefa);
+                        }
+                    }
+
+                    return tarefasNovas;
+                })
+                .flatMapObservable(tarefasNovas -> Observable.fromIterable(tarefasParaInserir)
+                        .filter(tarefa -> tarefasNovas.stream().anyMatch(tarefaNova -> tarefaNova.getIdNoSIGAA().equals(tarefa.getId())))
+                        .toList()
+                        .toObservable()
+                ) //Essa parte serve para remover da lista inicial os itens que não são novos (isso aqui é para não precisar converter do formato do banco de dados para o formato da API)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -340,15 +386,38 @@ public class AppDbHelper implements DbHelper {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     *
+     * @param questionariosParaInserir
+     * @return questionários que não estavam armazenados
+     */
     @Override
-    public Completable inserirQuestionarios(List<Questionario> questionarios) {
-        return Observable.fromIterable(questionarios)
+    public Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionariosParaInserir) {
+        return Observable.fromIterable(questionariosParaInserir)
                 .map(questionario -> new QuestionarioArmazenavel(questionario))
                 .toList()
-                .flatMapCompletable(questionariosArmazenaveis -> Completable.fromRunnable(() -> {
-                    Timber.d("Questionarios a inserir: %s", questionariosArmazenaveis.size());
-                    mAppDatabase.questionarioDao().insertAll(questionariosArmazenaveis);
-                }))
+                .map(questionariosArmazenaveis -> {
+                    List<QuestionarioArmazenavel> questionariosNoDB = mAppDatabase.questionarioDao().getAll();
+                    List<QuestionarioArmazenavel> questionariosNovos = new ArrayList<>();
+
+                    for (QuestionarioArmazenavel questionario : questionariosArmazenaveis) {
+                        if (questionariosNoDB.stream().anyMatch(q -> q.getIdNoSIGAA() == questionario.getIdNoSIGAA())) {
+                            //Questionário já armazenado (atualizar)
+                            mAppDatabase.questionarioDao().atualizarQuestionario(questionario);
+                        } else {
+                            //Questionário não armazenado (inserir)
+                            mAppDatabase.questionarioDao().insert(questionario);
+                            questionariosNovos.add(questionario);
+                        }
+                    }
+
+                    return questionariosNovos;
+                })
+                .flatMapObservable(questionariosNovos -> Observable.fromIterable(questionariosParaInserir)
+                        .filter(questionario -> questionariosNovos.stream().anyMatch(questionarioNovo -> questionarioNovo.getIdNoSIGAA() == questionario.getId()))
+                        .toList()
+                        .toObservable()
+                ) //Essa parte serve para remover da lista inicial os itens que não são novos (isso aqui é para não precisar converter do formato do banco de dados para o formato da API)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

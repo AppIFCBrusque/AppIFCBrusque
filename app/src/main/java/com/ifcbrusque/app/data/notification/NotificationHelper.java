@@ -5,6 +5,10 @@ import android.os.Bundle;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.service.SyncService;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Questionario;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.List;
 
@@ -26,4 +30,14 @@ public interface NotificationHelper {
     void agendarSincronizacaoPeriodicaNoticias();
 
     void notificarSincronizacao(SyncService service);
+
+    void notificarSincronizacaoNoticias(SyncService service, int tarefaAtual, int totalTarefas);
+
+    void notificarSincronizacaoSIGAA(SyncService service, Disciplina disciplina, int tarefaAtual, int totalTarefas);
+
+    void notificarAvaliacaoNova(Avaliacao avaliacao);
+
+    void notificarTarefaNova(Tarefa tarefa);
+
+    void notificarQuestionarioNovo(Questionario questionario);
 }

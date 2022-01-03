@@ -24,6 +24,10 @@ import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.service.SyncService;
 import com.squareup.picasso.Picasso;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Questionario;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -239,7 +243,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void agendarSincronizacaoPeriodicaNoticias() {
         Intent intent = new Intent(mContext, SyncReceiver.class);
-        intent.setAction(SyncReceiver.ACTION_ATUALIZAR_NOTICIAS);
+        intent.setAction(SyncReceiver.ACTION_SINCRONIZACAO_COMPLETA);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
@@ -256,11 +260,66 @@ public class AppNotificationHelper implements NotificationHelper {
      */
     @Override
     public void notificarSincronizacao(SyncService service) {
+        Intent intentParar = new Intent(service, SyncReceiver.class);
+        intentParar.setAction(SyncReceiver.ACTION_FINALIZAR_SERVICO);
+        PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
+
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setContentTitle("Notícias")
+                .setContentTitle(service.getString(R.string.sincronizacao))
+                .setContentText(service.getString(R.string.sincronizacao_inicio))
                 .setSmallIcon(R.drawable.outline_sync_black_24)
+                .addAction(R.drawable.outline_clear_black_24, service.getText(R.string.cancel), parar)
                 .build();
 
         service.startForeground(NOTF_SINCRONIZACAO_ID, notification);
+    }
+
+    @Override
+    public void notificarSincronizacaoNoticias(SyncService service, int tarefaAtual, int totalTarefas) {
+        Intent intentParar = new Intent(service, SyncReceiver.class);
+        intentParar.setAction(SyncReceiver.ACTION_FINALIZAR_SERVICO);
+        PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
+                .setContentTitle(service.getString(R.string.sincronizacao) + " (" + tarefaAtual + "/" + totalTarefas + ")")
+                .setContentText(service.getText(R.string.title_noticias).toString().toUpperCase())
+                .setSmallIcon(R.drawable.outline_sync_black_24)
+                .setProgress(totalTarefas, tarefaAtual, false)
+                .addAction(R.drawable.outline_clear_black_24, service.getText(R.string.cancel), parar)
+                .build();
+
+        service.startForeground(NOTF_SINCRONIZACAO_ID, notification);
+    }
+
+    @Override
+    public void notificarSincronizacaoSIGAA(SyncService service, Disciplina disciplina, int tarefaAtual, int totalTarefas) {
+        Intent intentParar = new Intent(service, SyncReceiver.class);
+        intentParar.setAction(SyncReceiver.ACTION_FINALIZAR_SERVICO);
+        PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
+                .setContentTitle(service.getString(R.string.sincronizacao) + " (" + tarefaAtual + "/" + totalTarefas + ")")
+                .setContentText(disciplina.getNome())
+                .setSmallIcon(R.drawable.outline_sync_black_24)
+                .setProgress(totalTarefas, tarefaAtual, false)
+                .addAction(R.drawable.outline_clear_black_24, service.getText(R.string.cancel), parar)
+                .build();
+
+        service.startForeground(NOTF_SINCRONIZACAO_ID, notification);
+    }
+
+    @Override
+    public void notificarAvaliacaoNova(Avaliacao avaliacao) {
+
+    }
+
+    @Override
+    public void notificarTarefaNova(Tarefa tarefa) {
+
+    }
+
+    @Override
+    public void notificarQuestionarioNovo(Questionario questionario) {
+
     }
 }

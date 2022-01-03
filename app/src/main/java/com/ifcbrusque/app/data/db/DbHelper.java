@@ -47,19 +47,19 @@ public interface DbHelper {
 
     Observable<List<Avaliacao>> getAllAvaliacoes();
 
-    Completable inserirAvaliacoes(List<Avaliacao> avaliacoes);
+    Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoes);
 
     Completable deletarAvaliacao(Avaliacao avaliacao);
 
     Observable<List<Tarefa>> getAllTarefas();
 
-    Completable inserirTarefas(List<Tarefa> tarefas);
+    Observable<List<Tarefa>> inserirTarefas(List<Tarefa> tarefas);
 
     Completable deletarTarefa(Tarefa tarefa);
 
     Observable<List<Questionario>> getAllQuestionarios();
 
-    Completable inserirQuestionarios(List<Questionario> questionarios);
+    Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionarios);
 
     Completable deletarQuestionario(Questionario questionario);
 }

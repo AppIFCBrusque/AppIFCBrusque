@@ -51,7 +51,7 @@ public class AppSIGAAHelper implements SIGAAHelper {
     @Override
     public Observable<ArrayList<Avaliacao>> getAvaliacoesDisciplinaSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> {
-            Timber.d("Acessando a página de avaliações: " + disciplina.getNome());
+            Timber.d("%s | Acessando a página de avaliações", disciplina.getNome());
             return Observable.just(mSessao.disciplinaPegarAvaliacoes(disciplina));
         })
                 .subscribeOn(Schedulers.io())
@@ -61,7 +61,7 @@ public class AppSIGAAHelper implements SIGAAHelper {
     @Override
     public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> {
-            Timber.d("Acessando a página de tarefas: " + disciplina.getNome());
+            Timber.d("%s | Acessando a página de tarefas", disciplina.getNome());
             return Observable.just(mSessao.disciplinaPegarTarefas(disciplina));
         })
                 .subscribeOn(Schedulers.io())
@@ -71,7 +71,7 @@ public class AppSIGAAHelper implements SIGAAHelper {
     @Override
     public Observable<ArrayList<Questionario>> getQuestionariosDisciplinaSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> {
-            Timber.d("Acessando a página de questionários: " + disciplina.getNome());
+            Timber.d("%s | Acessando a página de questionários", disciplina.getNome());
             return Observable.just(mSessao.disciplinaPegarQuestionarios(disciplina));
         })
                 .subscribeOn(Schedulers.io())

@@ -4,12 +4,14 @@
 
     <string name="next">Próximo</string>
     <string name="previous">Anterior</string>
+    <string name="cancel">Cancelar</string>
 
     <!-- ERROS -->
     <string name="some_error">Erro</string>
     <string name="erro_sem_internet">Internet não disponível</string>
     <string name="erro_titulo_lembrete_vazio">Informe um título ao lembrete</string>
     <string name="erro_carregar_pagina">Não foi possível carregar a página</string>
+    <string name="erro_servico_sigaa_dados_invalidos">As credenciais do SIGAA salvas estão inválidas</string>
 
     <string name="title_home">Home</string>
     <!-- NOTÍCIAS -->
@@ -48,6 +50,9 @@
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>
+
+    <string name="sincronizacao">Sincronização</string>
+    <string name="sincronizacao_inicio">Iniciando sincronização...</string>
 
     <!-- SIGAA  -->
     <string name="sigaa_usuario">Usuário</string>

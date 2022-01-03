@@ -123,7 +123,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable inserirAvaliacoes(List<Avaliacao> avaliacoes) {
+    public Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoes) {
         return mDbHelper.inserirAvaliacoes(avaliacoes);
     }
 
@@ -138,7 +138,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable inserirTarefas(List<Tarefa> tarefas) {
+    public Observable<List<Tarefa>> inserirTarefas(List<Tarefa> tarefas) {
         return mDbHelper.inserirTarefas(tarefas);
     }
 
@@ -153,7 +153,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable inserirQuestionarios(List<Questionario> questionarios) {
+    public Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionarios) {
         return mDbHelper.inserirQuestionarios(questionarios);
     }
 
@@ -215,6 +215,31 @@ public class AppDataManager implements DataManager {
     @Override
     public void notificarSincronizacao(SyncService service) {
         mNotificationHelper.notificarSincronizacao(service);
+    }
+
+    @Override
+    public void notificarSincronizacaoNoticias(SyncService service, int tarefaAtual, int totalTarefas) {
+        mNotificationHelper.notificarSincronizacaoNoticias(service, tarefaAtual, totalTarefas);
+    }
+
+    @Override
+    public void notificarSincronizacaoSIGAA(SyncService service, Disciplina disciplina, int tarefaAtual, int totalTarefas) {
+        mNotificationHelper.notificarSincronizacaoSIGAA(service, disciplina, tarefaAtual, totalTarefas);
+    }
+
+    @Override
+    public void notificarAvaliacaoNova(Avaliacao avaliacao) {
+        mNotificationHelper.notificarAvaliacaoNova(avaliacao);
+    }
+
+    @Override
+    public void notificarTarefaNova(Tarefa tarefa) {
+        mNotificationHelper.notificarTarefaNova(tarefa);
+    }
+
+    @Override
+    public void notificarQuestionarioNovo(Questionario questionario) {
+        mNotificationHelper.notificarQuestionarioNovo(questionario);
     }
 
     @Override

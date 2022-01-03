@@ -8,21 +8,21 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IFCBrusque"
-        android:name=".App">
+        android:theme="@style/Theme.IFCBrusque">
         <activity
             android:name=".ui.lembrete.InserirLembreteActivity"
             android:label=""
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.noticia.NoticiaActivity"
-            android:label=""
             android:excludeFromRecents="true"
+            android:label=""
             android:screenOrientation="portrait"
             android:taskAffinity="">
             >
@@ -52,7 +52,9 @@
 
         <receiver android:name=".service.SyncReceiver">
             <intent-filter>
-                <action android:name="com.ifcbrusque.app.ACTION_ATUALIZAR_NOTICIAS" />
+                <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_COMPLETA" />
+                <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_RAPIDA" />
+                <action android:name="com.ifcbrusque.app.ACTION_FINALIZAR_SERVICO" />
             </intent-filter>
         </receiver>
 
