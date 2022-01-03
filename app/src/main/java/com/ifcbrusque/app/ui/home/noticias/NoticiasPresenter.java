@@ -45,7 +45,7 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
 
         getCompositeDisposable().add(getDataManager()
                 .getPaginaNoticias(pagina)
-                .flatMap(previews  -> getDataManager().armazenarPreviewsNovos(previews, false))
+                .flatMap(previews -> getDataManager().armazenarPreviewsNovos(previews, false))
                 .subscribe(previewsArmazenados -> {
                     mPodeCarregar = true;
                     getMvpView().esconderProgressBar();
@@ -53,13 +53,18 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
                     getMvpView().atualizarRecyclerView(previewsArmazenados);
 
                     //Atualizar a ultima página acessada
-                    if(pagina > getDataManager().getUltimaPaginaAcessadaNoticias()) {
+                    if (pagina > getDataManager().getUltimaPaginaAcessadaNoticias()) {
                         getDataManager().setUltimaPaginaAcessadaNoticias(pagina);
+                    }
+
+                    //Permitir que o serviço de sincronização notifique as notícias novas
+                    if (getDataManager().getPrimeiraSincronizacaoNoticias()) {
+                        getDataManager().setPrimeiraSincronizacaoNoticias(false);
                     }
                 }, erro -> {
                     mPodeCarregar = false;
                     getMvpView().esconderProgressBar();
-                    
+
                     if (erro.getClass() == NoInternetException.class) {
                         //Sem internet
                         getMvpView().onError(R.string.erro_sem_internet);
@@ -107,7 +112,7 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
 
         long minutosDesdeUltimaSync = TimeUnit.MILLISECONDS.toMinutes(new Date().getTime() - getDataManager().getDataUltimaSincronizacaoAutomaticaNoticias().getTime());
         Timber.d("Minutos desde a última sincronização: " + minutosDesdeUltimaSync);
-        if(minutosDesdeUltimaSync >= 10) {
+        if (minutosDesdeUltimaSync >= 10) {
             carregarPagina(1);
             getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
             getDataManager().agendarSincronizacaoPeriodicaNoticias();

@@ -253,6 +253,26 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public boolean getPrimeiraSincronizacaoNoticias() {
+        return mPreferencesHelper.getPrimeiraSincronizacaoNoticias();
+    }
+
+    @Override
+    public void setPrimeiraSincronizacaoNoticias(boolean b) {
+        mPreferencesHelper.setPrimeiraSincronizacaoNoticias(b);
+    }
+
+    @Override
+    public boolean getPrimeiraSincronizacaoSIGAA() {
+        return mPreferencesHelper.getPrimeiraSincronizacaoSIGAA();
+    }
+
+    @Override
+    public void setPrimeiraSincronizacaoSIGAA(boolean b) {
+        mPreferencesHelper.setPrimeiraSincronizacaoSIGAA(b);
+    }
+
+    @Override
     public boolean getSIGAAConectado() {
         return mPreferencesHelper.getSIGAAConectado();
     }

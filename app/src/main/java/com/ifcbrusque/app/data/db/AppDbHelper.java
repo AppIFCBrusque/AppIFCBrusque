@@ -247,7 +247,6 @@ public class AppDbHelper implements DbHelper {
     }
 
     /**
-     *
      * @param avaliacoesParaInserir
      * @return avaliações que não estavam armazenadas
      */
@@ -317,7 +316,6 @@ public class AppDbHelper implements DbHelper {
     }
 
     /**
-     *
      * @param tarefasParaInserir
      * @return tarefas que não estavam armazenadas
      */
@@ -387,7 +385,6 @@ public class AppDbHelper implements DbHelper {
     }
 
     /**
-     *
      * @param questionariosParaInserir
      * @return questionários que não estavam armazenados
      */

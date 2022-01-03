@@ -80,13 +80,19 @@ public class SyncService extends Service {
         return null;
     }
 
+    boolean mPrimeiraSincronizacaoNoticias = true;
+    boolean mPrimeiraSincronizacaoSIGAA = true;
+
     int mTarefaAtual = 0;
     int mTotalTarefas = 0;
 
-    int tarefasPorDisciplina = 3;
+    int mTarefasPorDisciplina = 3;
 
     private void sincronizar() {
         mDataManager.notificarSincronizacao(this);
+
+        mPrimeiraSincronizacaoNoticias = mDataManager.getPrimeiraSincronizacaoNoticias();
+        mPrimeiraSincronizacaoSIGAA = mDataManager.getPrimeiraSincronizacaoSIGAA();
 
         mCompositeDisposable.add(conferirSIGAAConectado()
                 .andThen(carregarNoticias())
@@ -114,14 +120,18 @@ public class SyncService extends Service {
                             mTarefaAtual++;
                             mDataManager.setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
 
-                            //Notificar os novos
                             Timber.d("Notícias novas: " + previewsNovos.size());
-                            if (previewsNovos.size() > 0) {
-                                for (Preview p : previewsNovos) {
-                                    int idNotificacao = mDataManager.getNovoIdNotificacao();
-                                    mDataManager.notificarNoticia(p, idNotificacao);
+                            if (!mPrimeiraSincronizacaoNoticias) {
+                                //Notificar
+                                if (previewsNovos.size() > 0) {
+                                    for (Preview p : previewsNovos) {
+                                        int idNotificacao = mDataManager.getNovoIdNotificacao();
+                                        mDataManager.notificarNoticia(p, idNotificacao);
+                                    }
+                                    data.onNext(OBSERVABLE_PREVIEWS_NOVOS);
                                 }
-                                data.onNext(OBSERVABLE_PREVIEWS_NOVOS);
+                            } else {
+                                mDataManager.setPrimeiraSincronizacaoNoticias(false);
                             }
 
                             return Completable.complete();
@@ -146,7 +156,7 @@ public class SyncService extends Service {
                 })
                 .flatMapCompletable(logado -> {
                     if (logado) {
-                        mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasAtuais().size() * tarefasPorDisciplina;
+                        mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasAtuais().size() * mTarefasPorDisciplina;
                         Timber.d("SIGAA logado");
                     } else {
                         Toast.makeText(this, R.string.erro_servico_sigaa_dados_invalidos, Toast.LENGTH_SHORT).show();
@@ -162,8 +172,10 @@ public class SyncService extends Service {
         return mDataManager.getAvaliacoesDisciplinaSIGAA(disciplina)
                 .flatMap(avaliacoes -> mDataManager.inserirAvaliacoes(avaliacoes))
                 .flatMap(avaliacoesNovas -> {
-                    for (Avaliacao a : avaliacoesNovas) {
-                        mDataManager.notificarAvaliacaoNova(a, mDataManager.getNovoIdNotificacao());
+                    if (!mPrimeiraSincronizacaoSIGAA) {
+                        for (Avaliacao a : avaliacoesNovas) {
+                            mDataManager.notificarAvaliacaoNova(a, mDataManager.getNovoIdNotificacao());
+                        }
                     }
 
                     mTarefaAtual++;
@@ -173,8 +185,10 @@ public class SyncService extends Service {
                 })
                 .flatMap(tarefas -> mDataManager.inserirTarefas(tarefas))
                 .flatMap(tarefasNovas -> {
-                    for (Tarefa t : tarefasNovas) {
-                        mDataManager.notificarTarefaNova(t, mDataManager.getNovoIdNotificacao());
+                    if (!mPrimeiraSincronizacaoSIGAA) {
+                        for (Tarefa t : tarefasNovas) {
+                            mDataManager.notificarTarefaNova(t, mDataManager.getNovoIdNotificacao());
+                        }
                     }
 
                     mTarefaAtual++;
@@ -184,8 +198,10 @@ public class SyncService extends Service {
                 })
                 .flatMap(questionarios -> mDataManager.inserirQuestionarios(questionarios))
                 .flatMapCompletable(questionariosNovos -> {
-                    for (Questionario q : questionariosNovos) {
-                        mDataManager.notificarQuestionarioNovo(q, mDataManager.getNovoIdNotificacao());
+                    if (!mPrimeiraSincronizacaoSIGAA) {
+                        for (Questionario q : questionariosNovos) {
+                            mDataManager.notificarQuestionarioNovo(q, mDataManager.getNovoIdNotificacao());
+                        }
                     }
 
                     mTarefaAtual++;
@@ -204,7 +220,12 @@ public class SyncService extends Service {
                     }
                 })
                 .flatMapIterable(disciplinas -> disciplinas)
-                .concatMapCompletable(disciplina -> carregarDisciplina(disciplina));
+                .concatMapCompletable(disciplina -> carregarDisciplina(disciplina))
+                .andThen(Completable.fromRunnable(() -> {
+                    if (mPrimeiraSincronizacaoSIGAA) {
+                        mDataManager.setPrimeiraSincronizacaoSIGAA(false);
+                    }
+                }));
     }
 
     private void lidarComErro(Throwable e) {
