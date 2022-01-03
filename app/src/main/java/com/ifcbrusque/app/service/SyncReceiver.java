@@ -19,11 +19,13 @@ public class SyncReceiver extends BroadcastReceiver {
         switch (action) {
             case ACTION_SINCRONIZACAO_COMPLETA:
                 serviceIntent = SyncService.getStartIntent(context, false);
+                context.stopService(serviceIntent);
                 ContextCompat.startForegroundService(context, serviceIntent);
                 break;
 
             case ACTION_SINCRONIZACAO_RAPIDA:
                 serviceIntent = SyncService.getStartIntent(context, true);
+                context.stopService(serviceIntent);
                 ContextCompat.startForegroundService(context, serviceIntent);
                 break;
 
