@@ -53,8 +53,12 @@
 
     <string name="sincronizacao">Sincronização</string>
     <string name="sincronizacao_inicio">Iniciando sincronização...</string>
+    <string name="avaliacao_nova">Nova avaliação em %s</string>
+    <string name="tarefa_nova">Nova tarefa em %s</string>
+    <string name="questionario_novo">Novo questionário em %s</string>
 
     <!-- SIGAA  -->
+    <string name="sigaa">SIGAA</string>
     <string name="sigaa_usuario">Usuário</string>
     <string name="sigaa_senha">Senha</string>
     <string name="sigaa_entrar">Entrar</string>

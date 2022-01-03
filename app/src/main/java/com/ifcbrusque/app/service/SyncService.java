@@ -163,7 +163,7 @@ public class SyncService extends Service {
                 .flatMap(avaliacoes -> mDataManager.inserirAvaliacoes(avaliacoes))
                 .flatMap(avaliacoesNovas -> {
                     for (Avaliacao a : avaliacoesNovas) {
-                        mDataManager.notificarAvaliacaoNova(a);
+                        mDataManager.notificarAvaliacaoNova(a, mDataManager.getNovoIdNotificacao());
                     }
 
                     mTarefaAtual++;
@@ -174,7 +174,7 @@ public class SyncService extends Service {
                 .flatMap(tarefas -> mDataManager.inserirTarefas(tarefas))
                 .flatMap(tarefasNovas -> {
                     for (Tarefa t : tarefasNovas) {
-                        mDataManager.notificarTarefaNova(t);
+                        mDataManager.notificarTarefaNova(t, mDataManager.getNovoIdNotificacao());
                     }
 
                     mTarefaAtual++;
@@ -185,7 +185,7 @@ public class SyncService extends Service {
                 .flatMap(questionarios -> mDataManager.inserirQuestionarios(questionarios))
                 .flatMapCompletable(questionariosNovos -> {
                     for (Questionario q : questionariosNovos) {
-                        mDataManager.notificarQuestionarioNovo(q);
+                        mDataManager.notificarQuestionarioNovo(q, mDataManager.getNovoIdNotificacao());
                     }
 
                     mTarefaAtual++;

@@ -309,17 +309,44 @@ public class AppNotificationHelper implements NotificationHelper {
     }
 
     @Override
-    public void notificarAvaliacaoNova(Avaliacao avaliacao) {
-
+    public void notificarAvaliacaoNova(Avaliacao avaliacao, int idNotificacao) {
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setChannelId(NOTF_CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle(String.format(mContext.getString(R.string.avaliacao_nova), avaliacao.getDisciplina().getNome()))
+                .setContentText(avaliacao.getDescricao())
+                .setSubText(mContext.getText(R.string.sigaa))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(avaliacao.getDescricao()));
+        mNotificationManager.notify(idNotificacao, notificationBuilder.build());
     }
 
     @Override
-    public void notificarTarefaNova(Tarefa tarefa) {
-
+    public void notificarTarefaNova(Tarefa tarefa, int idNotificacao) {
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setChannelId(NOTF_CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle(String.format(mContext.getString(R.string.tarefa_nova), tarefa.getDisciplina().getNome()))
+                .setContentText(tarefa.getTitulo())
+                .setSubText(mContext.getText(R.string.sigaa))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(tarefa.getDescricao()));
+        mNotificationManager.notify(idNotificacao, notificationBuilder.build());
     }
 
     @Override
-    public void notificarQuestionarioNovo(Questionario questionario) {
-
+    public void notificarQuestionarioNovo(Questionario questionario, int idNotificacao) {
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setChannelId(NOTF_CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle(String.format(mContext.getString(R.string.questionario_novo), questionario.getDisciplina().getNome()))
+                .setContentText(questionario.getTitulo())
+                .setSubText(mContext.getText(R.string.sigaa))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(questionario.getTitulo()));
+        mNotificationManager.notify(idNotificacao, notificationBuilder.build());
     }
 }
