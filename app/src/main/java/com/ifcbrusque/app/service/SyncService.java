@@ -144,25 +144,26 @@ public class SyncService extends Service {
             Timber.d("Conferindo SIGAA conectado");
             return Observable.just(mDataManager.getSIGAAConectado());
         })
-                .flatMap(conectado -> {
+                .flatMapCompletable(conectado -> {
                     if (conectado) {
                         //Conferir se as credenciais estão corretas
                         final String login = mDataManager.getLoginSIGAA();
                         final String senha = mDataManager.getSenhaSIGAA();
-                        return mDataManager.logarSIGAA(login, senha);
+
+                        return mDataManager.logarSIGAA(login, senha)
+                                .flatMapCompletable(logado -> {
+                                    if (logado) {
+                                        mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasAtuais().size() * mTarefasPorDisciplina;
+                                        Timber.d("SIGAA logado");
+                                    } else {
+                                        Toast.makeText(this, R.string.erro_servico_sigaa_dados_invalidos, Toast.LENGTH_SHORT).show();
+                                        mDataManager.setSIGAAConectado(false); //Desativa a sincronização do SIGAA
+                                    }
+                                    return Completable.complete();
+                                });
                     } else {
-                        return Observable.just(false);
+                        return Completable.complete();
                     }
-                })
-                .flatMapCompletable(logado -> {
-                    if (logado) {
-                        mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasAtuais().size() * mTarefasPorDisciplina;
-                        Timber.d("SIGAA logado");
-                    } else {
-                        Toast.makeText(this, R.string.erro_servico_sigaa_dados_invalidos, Toast.LENGTH_SHORT).show();
-                        mDataManager.setSIGAAConectado(false); //Desativa a sincronização do SIGAA
-                    }
-                    return Completable.complete();
                 });
     }
 
