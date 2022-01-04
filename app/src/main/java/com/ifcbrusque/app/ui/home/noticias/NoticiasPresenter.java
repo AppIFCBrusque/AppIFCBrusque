@@ -115,7 +115,6 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
         if (minutosDesdeUltimaSync >= 10) {
             carregarPagina(1);
             getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
-            getDataManager().agendarSincronizacaoPeriodicaNoticias();
         }
     }
 

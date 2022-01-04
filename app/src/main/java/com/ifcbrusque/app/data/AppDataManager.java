@@ -208,8 +208,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void agendarSincronizacaoPeriodicaNoticias() {
-        mNotificationHelper.agendarSincronizacaoPeriodicaNoticias();
+    public void agendarSincronizacao() {
+        mNotificationHelper.agendarSincronizacao();
     }
 
     @Override

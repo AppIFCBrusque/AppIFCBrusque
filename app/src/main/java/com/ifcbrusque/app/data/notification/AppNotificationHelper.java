@@ -241,17 +241,13 @@ public class AppNotificationHelper implements NotificationHelper {
     }
 
     @Override
-    public void agendarSincronizacaoPeriodicaNoticias() {
+    public void agendarSincronizacao() {
         Intent intent = new Intent(mContext, SyncReceiver.class);
         intent.setAction(SyncReceiver.ACTION_SINCRONIZACAO_COMPLETA);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.SECOND, 0);
-
+        
         mAlarmManager.cancel(pendingIntent);
-        mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
+        mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
         Timber.d("Serviço agendado");
     }
 

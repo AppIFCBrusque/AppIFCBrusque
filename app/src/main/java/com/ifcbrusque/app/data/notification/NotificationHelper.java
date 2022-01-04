@@ -27,7 +27,7 @@ public interface NotificationHelper {
 
     void notificarNoticia(Preview preview, int idNotificacao);
 
-    void agendarSincronizacaoPeriodicaNoticias();
+    void agendarSincronizacao();
 
     void notificarSincronizacao(SyncService service);
 
