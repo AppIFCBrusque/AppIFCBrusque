@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.ifcbrusque.app.App;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
+import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.di.component.DaggerServiceComponent;
@@ -182,7 +183,12 @@ public class SyncService extends Service {
 
                             if (avaliacao.getData().after(new Date())) {
                                 //Adicionar o lembrete
-                                return mDataManager.inserirLembrete(avaliacao);
+                                Lembrete lembrete = new Lembrete(avaliacao);
+                                lembrete.setIdNotificacao(mDataManager.getNovoIdNotificacao());
+                                if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                    mDataManager.agendarNotificacaoLembrete(lembrete);
+                                }
+                                return mDataManager.inserirLembrete(lembrete);
                             } else {
                                 return Observable.just((long) 0);
                             }
@@ -204,7 +210,12 @@ public class SyncService extends Service {
 
                             if (tarefa.getFim().after(new Date())) {
                                 //Adicionar o lembrete
-                                return mDataManager.inserirLembrete(tarefa);
+                                Lembrete lembrete = new Lembrete(tarefa);
+                                lembrete.setIdNotificacao(mDataManager.getNovoIdNotificacao());
+                                if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                    mDataManager.agendarNotificacaoLembrete(lembrete);
+                                }
+                                return mDataManager.inserirLembrete(lembrete);
                             } else {
                                 return Observable.just((long) 0);
                             }
@@ -226,7 +237,12 @@ public class SyncService extends Service {
 
                             if (questionario.getDataFim().after(new Date())) {
                                 //Adicionar o lembrete
-                                return mDataManager.inserirLembrete(questionario);
+                                Lembrete lembrete = new Lembrete(questionario);
+                                lembrete.setIdNotificacao(mDataManager.getNovoIdNotificacao());
+                                if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                    mDataManager.agendarNotificacaoLembrete(lembrete);
+                                }
+                                return mDataManager.inserirLembrete(lembrete);
                             } else {
                                 return Observable.just((long) 0);
                             }

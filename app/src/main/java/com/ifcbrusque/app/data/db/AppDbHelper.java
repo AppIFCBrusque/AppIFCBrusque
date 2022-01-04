@@ -107,42 +107,6 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Long> inserirLembrete(Avaliacao avaliacao) {
-        return Observable.just(avaliacao)
-                .map(a -> {
-                    Timber.d("Criando lembrete de %s", a.getDescricao());
-                    return new Lembrete(Lembrete.LEMBRETE_AVALIACAO, Long.toString(a.getId()), a.getDescricao(), "", a.getData(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO);
-                })
-                .flatMap(lembrete -> inserirLembrete(lembrete))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    @Override
-    public Observable<Long> inserirLembrete(Tarefa tarefa) {
-        return Observable.just(tarefa)
-                .map(t -> {
-                    Timber.d("Criando lembrete de %s", t.getTitulo());
-                    return new Lembrete(Lembrete.LEMBRETE_TAREFA, t.getId(), t.getTitulo(), t.getDescricao(), t.getFim(), Lembrete.REPETICAO_SEM, 0, (t.isEnviada()) ? Lembrete.ESTADO_COMPLETO : Lembrete.ESTADO_INCOMPLETO);
-                })
-                .flatMap(lembrete -> inserirLembrete(lembrete))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    @Override
-    public Observable<Long> inserirLembrete(Questionario questionario) {
-        return Observable.just(questionario)
-                .map(q -> {
-                    Timber.d("Criando lembrete de %s", q.getTitulo());
-                    return new Lembrete(Lembrete.LEMBRETE_QUESTIONARIO, Long.toString(q.getId()), q.getTitulo(), "", q.getDataFim(), Lembrete.REPETICAO_SEM, 0, (q.isEnviado()) ? Lembrete.ESTADO_COMPLETO : Lembrete.ESTADO_INCOMPLETO);
-                })
-                .flatMap(lembrete -> inserirLembrete(lembrete))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    @Override
     public Completable deletarLembrete(Lembrete lembrete) {
         return Completable.fromRunnable(() -> mAppDatabase.lembreteDao().delete(lembrete))
                 .subscribeOn(Schedulers.io())

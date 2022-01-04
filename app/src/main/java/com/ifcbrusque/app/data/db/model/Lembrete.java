@@ -5,6 +5,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.ifcbrusque.app.R;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Questionario;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.Date;
 
@@ -74,6 +77,18 @@ public class Lembrete {
         this.tipoRepeticao = tipoRepeticao;
         this.tempoRepeticaoPersonalizada = tempoRepeticaoPersonalizada;
         this.estado = estado;
+    }
+
+    public Lembrete(Avaliacao a) {
+        this(LEMBRETE_AVALIACAO, Long.toString(a.getId()), a.getDescricao(), "", a.getData(), REPETICAO_SEM, 0, ESTADO_INCOMPLETO);
+    }
+
+    public Lembrete(Tarefa t) {
+        this(LEMBRETE_TAREFA, t.getId(), t.getTitulo(), t.getDescricao(), t.getFim(), REPETICAO_SEM, 0, (t.isEnviada()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO);
+    }
+
+    public Lembrete(Questionario q) {
+        this(LEMBRETE_QUESTIONARIO, Long.toString(q.getId()), q.getTitulo(), "", q.getDataFim(), REPETICAO_SEM, 0, (q.isEnviado()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO);
     }
 
     public long getId() {
