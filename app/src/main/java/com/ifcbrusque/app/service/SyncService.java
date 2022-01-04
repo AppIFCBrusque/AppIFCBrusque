@@ -172,42 +172,70 @@ public class SyncService extends Service {
 
         return mDataManager.getAvaliacoesDisciplinaSIGAA(disciplina)
                 .flatMap(avaliacoes -> mDataManager.inserirAvaliacoes(avaliacoes))
-                .flatMap(avaliacoesNovas -> {
-                    if (!mPrimeiraSincronizacaoSIGAA) {
-                        for (Avaliacao a : avaliacoesNovas) {
-                            mDataManager.notificarAvaliacaoNova(a, mDataManager.getNovoIdNotificacao());
-                        }
-                    }
+                .flatMap(avaliacoesNovas -> Observable.fromIterable(avaliacoesNovas)
+                        .flatMap(avaliacao -> {
+                            Timber.d("Avaliação nova: %s", avaliacao.getDescricao());
+                            if (!mPrimeiraSincronizacaoSIGAA) {
+                                //Notificar
+                                mDataManager.notificarAvaliacaoNova(avaliacao, mDataManager.getNovoIdNotificacao());
+                            }
 
-                    mTarefaAtual++;
-                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-
-                    return mDataManager.getTarefasDisciplinaSIGAA(disciplina);
-                })
+                            if (avaliacao.getData().after(new Date())) {
+                                //Adicionar o lembrete
+                                return mDataManager.inserirLembrete(avaliacao);
+                            } else {
+                                return Observable.just((long) 0);
+                            }
+                        })
+                        .toList()
+                        .flatMapObservable(avaliacoes -> {
+                            mTarefaAtual++;
+                            mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                            return mDataManager.getTarefasDisciplinaSIGAA(disciplina);
+                        }))
                 .flatMap(tarefas -> mDataManager.inserirTarefas(tarefas))
-                .flatMap(tarefasNovas -> {
-                    if (!mPrimeiraSincronizacaoSIGAA) {
-                        for (Tarefa t : tarefasNovas) {
-                            mDataManager.notificarTarefaNova(t, mDataManager.getNovoIdNotificacao());
-                        }
-                    }
+                .flatMap(tarefasNovas -> Observable.fromIterable(tarefasNovas)
+                        .flatMap(tarefa -> {
+                            Timber.d("Tarefa nova: %s", tarefa.getTitulo());
+                            if (!mPrimeiraSincronizacaoSIGAA) {
+                                //Notificar
+                                mDataManager.notificarTarefaNova(tarefa, mDataManager.getNovoIdNotificacao());
+                            }
 
-                    mTarefaAtual++;
-                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-
-                    return mDataManager.getQuestionariosDisciplinaSIGAA(disciplina);
-                })
+                            if (tarefa.getFim().after(new Date())) {
+                                //Adicionar o lembrete
+                                return mDataManager.inserirLembrete(tarefa);
+                            } else {
+                                return Observable.just((long) 0);
+                            }
+                        })
+                        .toList()
+                        .flatMapObservable(ids -> {
+                            mTarefaAtual++;
+                            mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                            return mDataManager.getQuestionariosDisciplinaSIGAA(disciplina);
+                        }))
                 .flatMap(questionarios -> mDataManager.inserirQuestionarios(questionarios))
-                .flatMapCompletable(questionariosNovos -> {
-                    if (!mPrimeiraSincronizacaoSIGAA) {
-                        for (Questionario q : questionariosNovos) {
-                            mDataManager.notificarQuestionarioNovo(q, mDataManager.getNovoIdNotificacao());
-                        }
-                    }
+                .flatMapCompletable(questionariosNovos -> Observable.fromIterable(questionariosNovos)
+                        .flatMap(questionario -> {
+                            Timber.d("Questionário novo: %s", questionario.getTitulo());
+                            if (!mPrimeiraSincronizacaoSIGAA) {
+                                //Notificar
+                                mDataManager.notificarQuestionarioNovo(questionario, mDataManager.getNovoIdNotificacao());
+                            }
 
-                    mTarefaAtual++;
-                    return Completable.complete();
-                });
+                            if (questionario.getDataFim().after(new Date())) {
+                                //Adicionar o lembrete
+                                return mDataManager.inserirLembrete(questionario);
+                            } else {
+                                return Observable.just((long) 0);
+                            }
+                        })
+                        .toList()
+                        .flatMapCompletable(avaliacoes -> {
+                            mTarefaAtual++;
+                            return Completable.complete();
+                        }));
     }
 
     private Completable carregarSIGAA() {

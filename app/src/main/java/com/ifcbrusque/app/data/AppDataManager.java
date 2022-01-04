@@ -78,6 +78,21 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Long> inserirLembrete(Avaliacao avaliacao) {
+        return mDbHelper.inserirLembrete(avaliacao);
+    }
+
+    @Override
+    public Observable<Long> inserirLembrete(Tarefa tarefa) {
+        return mDbHelper.inserirLembrete(tarefa);
+    }
+
+    @Override
+    public Observable<Long> inserirLembrete(Questionario questionario) {
+        return mDbHelper.inserirLembrete(questionario);
+    }
+
+    @Override
     public Completable deletarLembrete(Lembrete lembrete) {
         return mDbHelper.deletarLembrete(lembrete);
     }

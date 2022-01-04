@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_AMANHA;
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_ATRASADO;
@@ -31,6 +32,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
         getCompositeDisposable().add(getDataManager()
                 .getLembretesArmazenados()
                 .doOnNext(lembretes -> {
+                    Timber.d("%s lembretes carregados", lembretes.size());
                     getMvpView().setLembretesNaView(lembretes);
 
                     if (agendarNotificacoes) {

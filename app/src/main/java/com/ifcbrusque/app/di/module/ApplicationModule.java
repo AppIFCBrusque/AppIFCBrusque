@@ -100,9 +100,9 @@ public class ApplicationModule {
     OkHttpClient provideOkHttpClient(Application app) {
         return new OkHttpClient.Builder()
                 .addInterceptor(new NetworkInterceptor(app))
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(200, TimeUnit.SECONDS)
+                .writeTimeout(200, TimeUnit.SECONDS)
+                .readTimeout(600, TimeUnit.SECONDS)
                 .build();
     }
 

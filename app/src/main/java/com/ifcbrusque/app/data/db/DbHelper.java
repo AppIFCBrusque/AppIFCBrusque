@@ -28,6 +28,12 @@ public interface DbHelper {
 
     Observable<Long> inserirLembrete(Lembrete lembrete);
 
+    Observable<Long> inserirLembrete(Avaliacao avaliacao);
+
+    Observable<Long> inserirLembrete(Tarefa tarefa);
+
+    Observable<Long> inserirLembrete(Questionario questionario);
+
     Completable deletarLembrete(Lembrete lembrete);
 
     Completable atualizarLembrete(Lembrete lembrete);
