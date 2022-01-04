@@ -17,6 +17,7 @@ public class QuestionarioArmazenavel {
     @ColumnInfo(name = "id_no_sigaa")
     private long idNoSIGAA;
     private String titulo;
+    private boolean enviado;
     @ColumnInfo(name = "data_inicio")
     private Date dataInicio;
     @ColumnInfo(name = "data_fim")
@@ -31,6 +32,7 @@ public class QuestionarioArmazenavel {
     public QuestionarioArmazenavel(Questionario questionario) {
         idNoSIGAA = questionario.getId();
         titulo = questionario.getTitulo();
+        enviado = questionario.isEnviado();
         dataInicio = questionario.getDataInicio();
         dataFim = questionario.getDataFim();
         disciplinaFrontEndIdTurma = questionario.getDisciplina().getPostArgs()[2];
@@ -50,6 +52,14 @@ public class QuestionarioArmazenavel {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public boolean isEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(boolean enviado) {
+        this.enviado = enviado;
     }
 
     public Date getDataInicio() {
@@ -77,7 +87,7 @@ public class QuestionarioArmazenavel {
     }
 
     public Questionario getQuestionario(Disciplina disciplina) {
-        return new Questionario(idNoSIGAA, titulo, dataInicio, dataFim, disciplina);
+        return new Questionario(idNoSIGAA, titulo, enviado, dataInicio, dataFim, disciplina);
     }
 
     public Questionario getQuestionario(DisciplinaArmazenavel disciplina) {
