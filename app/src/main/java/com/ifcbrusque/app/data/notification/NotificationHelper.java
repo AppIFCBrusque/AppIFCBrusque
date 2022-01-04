@@ -35,9 +35,9 @@ public interface NotificationHelper {
 
     void notificarSincronizacaoSIGAA(SyncService service, Disciplina disciplina, int tarefaAtual, int totalTarefas);
 
-    void notificarAvaliacaoNova(Avaliacao avaliacao, int idNotificacao);
+    void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao);
 
-    void notificarTarefaNova(Tarefa tarefa, int idNotificacao);
+    void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao);
 
-    void notificarQuestionarioNovo(Questionario questionario, int idNotificacao);
+    void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao);
 }

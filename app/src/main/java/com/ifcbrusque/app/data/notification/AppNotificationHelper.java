@@ -305,7 +305,15 @@ public class AppNotificationHelper implements NotificationHelper {
     }
 
     @Override
-    public void notificarAvaliacaoNova(Avaliacao avaliacao, int idNotificacao) {
+    public void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
+        //InserirLembreteActivity para abrir
+        Intent intentInserirLembrete = new Intent(mContext, InserirLembreteActivity.class);
+        intentInserirLembrete.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, lembrete.getId());
+        intentInserirLembrete.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
+        //Abrir a InserirLembreteActivity como uma nova tarefa (não atrapalha a aba principal do aplicativo)
+        intentInserirLembrete.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, (int) lembrete.getIdNotificacao(), intentInserirLembrete, PendingIntent.FLAG_UPDATE_CURRENT);
+
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
@@ -313,13 +321,22 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setContentTitle(String.format(mContext.getString(R.string.avaliacao_nova), avaliacao.getDisciplina().getNome()))
                 .setContentText(avaliacao.getDescricao())
                 .setSubText(mContext.getText(R.string.sigaa))
+                .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(avaliacao.getDescricao()));
         mNotificationManager.notify(idNotificacao, notificationBuilder.build());
     }
 
     @Override
-    public void notificarTarefaNova(Tarefa tarefa, int idNotificacao) {
+    public void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
+        //InserirLembreteActivity para abrir
+        Intent intentInserirLembrete = new Intent(mContext, InserirLembreteActivity.class);
+        intentInserirLembrete.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, lembrete.getId());
+        intentInserirLembrete.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
+        //Abrir a InserirLembreteActivity como uma nova tarefa (não atrapalha a aba principal do aplicativo)
+        intentInserirLembrete.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, (int) lembrete.getIdNotificacao(), intentInserirLembrete, PendingIntent.FLAG_UPDATE_CURRENT);
+
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
@@ -327,13 +344,22 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setContentTitle(String.format(mContext.getString(R.string.tarefa_nova), tarefa.getDisciplina().getNome()))
                 .setContentText(tarefa.getTitulo())
                 .setSubText(mContext.getText(R.string.sigaa))
+                .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(tarefa.getDescricao()));
         mNotificationManager.notify(idNotificacao, notificationBuilder.build());
     }
 
     @Override
-    public void notificarQuestionarioNovo(Questionario questionario, int idNotificacao) {
+    public void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao) {
+        //InserirLembreteActivity para abrir
+        Intent intentInserirLembrete = new Intent(mContext, InserirLembreteActivity.class);
+        intentInserirLembrete.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, lembrete.getId());
+        intentInserirLembrete.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
+        //Abrir a InserirLembreteActivity como uma nova tarefa (não atrapalha a aba principal do aplicativo)
+        intentInserirLembrete.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, (int) lembrete.getIdNotificacao(), intentInserirLembrete, PendingIntent.FLAG_UPDATE_CURRENT);
+
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
@@ -341,6 +367,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setContentTitle(String.format(mContext.getString(R.string.questionario_novo), questionario.getDisciplina().getNome()))
                 .setContentText(questionario.getTitulo())
                 .setSubText(mContext.getText(R.string.sigaa))
+                .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(questionario.getTitulo()));
         mNotificationManager.notify(idNotificacao, notificationBuilder.build());

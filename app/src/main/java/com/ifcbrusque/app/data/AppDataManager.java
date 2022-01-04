@@ -73,7 +73,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Long> inserirLembrete(Lembrete lembrete) {
+    public Observable<Lembrete> inserirLembrete(Lembrete lembrete) {
         return mDbHelper.inserirLembrete(lembrete);
     }
 
@@ -228,18 +228,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void notificarAvaliacaoNova(Avaliacao avaliacao, int idNotificacao) {
-        mNotificationHelper.notificarAvaliacaoNova(avaliacao, idNotificacao);
+    public void notificarAvaliacaoNova(Avaliacao avaliacao,  Lembrete lembrete,int idNotificacao) {
+        mNotificationHelper.notificarAvaliacaoNova(avaliacao, lembrete, idNotificacao);
     }
 
     @Override
-    public void notificarTarefaNova(Tarefa tarefa, int idNotificacao) {
-        mNotificationHelper.notificarTarefaNova(tarefa, idNotificacao);
+    public void notificarTarefaNova(Tarefa tarefa,  Lembrete lembrete,int idNotificacao) {
+        mNotificationHelper.notificarTarefaNova(tarefa, lembrete, idNotificacao);
     }
 
     @Override
-    public void notificarQuestionarioNovo(Questionario questionario, int idNotificacao) {
-        mNotificationHelper.notificarQuestionarioNovo(questionario, idNotificacao);
+    public void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao) {
+        mNotificationHelper.notificarQuestionarioNovo(questionario, lembrete, idNotificacao);
     }
 
     @Override

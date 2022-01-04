@@ -100,8 +100,12 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Long> inserirLembrete(Lembrete lembrete) {
+    public Observable<Lembrete> inserirLembrete(Lembrete lembrete) {
         return Observable.defer(() -> Observable.just(mAppDatabase.lembreteDao().insert(lembrete)))
+                .map(id -> {
+                    lembrete.setId(id);
+                    return lembrete;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

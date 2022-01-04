@@ -173,85 +173,101 @@ public class SyncService extends Service {
 
         return mDataManager.getAvaliacoesDisciplinaSIGAA(disciplina)
                 .flatMap(avaliacoes -> mDataManager.inserirAvaliacoes(avaliacoes))
-                .flatMap(avaliacoesNovas -> Observable.fromIterable(avaliacoesNovas)
-                        .flatMap(avaliacao -> {
-                            Timber.d("Avaliação nova: %s", avaliacao.getDescricao());
-                            if (!mPrimeiraSincronizacaoSIGAA) {
-                                //Notificar
-                                mDataManager.notificarAvaliacaoNova(avaliacao, mDataManager.getNovoIdNotificacao());
-                            }
+                .flatMap(avaliacoesNovas ->
+                        Observable.fromIterable(avaliacoesNovas)
+                                .flatMap(avaliacao -> {
+                                    Timber.d("Avaliação nova: %s", avaliacao.getDescricao());
+                                    if (avaliacao.getData().after(new Date())) {
+                                        //Criar um lembrete
+                                        Lembrete lembrete = new Lembrete(avaliacao, mDataManager.getNovoIdNotificacao());
+                                        return mDataManager.inserirLembrete(lembrete)
+                                                .map(lembreteComID -> {
+                                                    if (!mPrimeiraSincronizacaoSIGAA) {
+                                                        //Notificar novo item
+                                                        mDataManager.notificarAvaliacaoNova(avaliacao, lembreteComID, mDataManager.getNovoIdNotificacao());
+                                                    }
 
-                            if (avaliacao.getData().after(new Date())) {
-                                //Adicionar o lembrete
-                                Lembrete lembrete = new Lembrete(avaliacao);
-                                lembrete.setIdNotificacao(mDataManager.getNovoIdNotificacao());
-                                if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-                                    mDataManager.agendarNotificacaoLembrete(lembrete);
-                                }
-                                return mDataManager.inserirLembrete(lembrete);
-                            } else {
-                                return Observable.just((long) 0);
-                            }
-                        })
-                        .toList()
-                        .flatMapObservable(avaliacoes -> {
-                            mTarefaAtual++;
-                            mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-                            return mDataManager.getTarefasDisciplinaSIGAA(disciplina);
-                        }))
+                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                                        //Agendar a notificação do lembrete
+                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
+                                                    }
+                                                    return true;
+                                                });
+                                    } else {
+                                        //Retornar uma lista vazia pula
+                                        return Observable.just(true);
+                                    }
+                                })
+                                .toList()
+                                .flatMapObservable(x -> {
+                                    mTarefaAtual++;
+                                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                                    return mDataManager.getTarefasDisciplinaSIGAA(disciplina);
+                                }))
                 .flatMap(tarefas -> mDataManager.inserirTarefas(tarefas))
-                .flatMap(tarefasNovas -> Observable.fromIterable(tarefasNovas)
-                        .flatMap(tarefa -> {
-                            Timber.d("Tarefa nova: %s", tarefa.getTitulo());
-                            if (!mPrimeiraSincronizacaoSIGAA) {
-                                //Notificar
-                                mDataManager.notificarTarefaNova(tarefa, mDataManager.getNovoIdNotificacao());
-                            }
+                .flatMap(tarefasNovas ->
+                        Observable.fromIterable(tarefasNovas)
+                                .flatMap(tarefa -> {
+                                    Timber.d("Tarefa nova: %s", tarefa.getTitulo());
+                                    if (tarefa.getFim().after(new Date())) {
+                                        //Criar um lembrete
+                                        Lembrete lembrete = new Lembrete(tarefa, mDataManager.getNovoIdNotificacao());
+                                        return mDataManager.inserirLembrete(lembrete)
+                                                .map(lembreteComID -> {
+                                                    if (!mPrimeiraSincronizacaoSIGAA) {
+                                                        //Notificar novo item
+                                                        mDataManager.notificarTarefaNova(tarefa, lembreteComID, mDataManager.getNovoIdNotificacao());
+                                                    }
 
-                            if (tarefa.getFim().after(new Date())) {
-                                //Adicionar o lembrete
-                                Lembrete lembrete = new Lembrete(tarefa);
-                                lembrete.setIdNotificacao(mDataManager.getNovoIdNotificacao());
-                                if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-                                    mDataManager.agendarNotificacaoLembrete(lembrete);
-                                }
-                                return mDataManager.inserirLembrete(lembrete);
-                            } else {
-                                return Observable.just((long) 0);
-                            }
-                        })
-                        .toList()
-                        .flatMapObservable(ids -> {
-                            mTarefaAtual++;
-                            mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-                            return mDataManager.getQuestionariosDisciplinaSIGAA(disciplina);
-                        }))
+                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                                        //Agendar a notificação do lembrete
+                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
+                                                    }
+                                                    return true;
+                                                });
+                                    } else {
+                                        //Retornar uma lista vazia pula
+                                        return Observable.just(true);
+                                    }
+                                })
+                                .toList()
+                                .flatMapObservable(x -> {
+                                    mTarefaAtual++;
+                                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                                    return mDataManager.getQuestionariosDisciplinaSIGAA(disciplina);
+                                }))
                 .flatMap(questionarios -> mDataManager.inserirQuestionarios(questionarios))
-                .flatMapCompletable(questionariosNovos -> Observable.fromIterable(questionariosNovos)
-                        .flatMap(questionario -> {
-                            Timber.d("Questionário novo: %s", questionario.getTitulo());
-                            if (!mPrimeiraSincronizacaoSIGAA) {
-                                //Notificar
-                                mDataManager.notificarQuestionarioNovo(questionario, mDataManager.getNovoIdNotificacao());
-                            }
+                .flatMapCompletable(questionariosNovos ->
+                        Observable.fromIterable(questionariosNovos)
+                                .flatMap(questionario -> {
+                                    Timber.d("Questionário novo: %s", questionario.getTitulo());
+                                    if (questionario.getDataFim().after(new Date())) {
+                                        //Criar um lembrete
+                                        Lembrete lembrete = new Lembrete(questionario, mDataManager.getNovoIdNotificacao());
+                                        return mDataManager.inserirLembrete(lembrete)
+                                                .map(lembreteComID -> {
+                                                    if (!mPrimeiraSincronizacaoSIGAA) {
+                                                        //Notificar novo item
+                                                        mDataManager.notificarQuestionarioNovo(questionario, lembreteComID, mDataManager.getNovoIdNotificacao());
+                                                    }
 
-                            if (questionario.getDataFim().after(new Date())) {
-                                //Adicionar o lembrete
-                                Lembrete lembrete = new Lembrete(questionario);
-                                lembrete.setIdNotificacao(mDataManager.getNovoIdNotificacao());
-                                if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-                                    mDataManager.agendarNotificacaoLembrete(lembrete);
-                                }
-                                return mDataManager.inserirLembrete(lembrete);
-                            } else {
-                                return Observable.just((long) 0);
-                            }
-                        })
-                        .toList()
-                        .flatMapCompletable(avaliacoes -> {
-                            mTarefaAtual++;
-                            return Completable.complete();
-                        }));
+                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                                        //Agendar a notificação do lembrete
+                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
+                                                    }
+                                                    return true;
+                                                });
+                                    } else {
+                                        //Retornar uma lista vazia pula
+                                        return Observable.just(true);
+                                    }
+                                })
+                                .toList()
+                                .flatMapCompletable(x -> {
+                                    mTarefaAtual++;
+                                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                                    return Completable.complete();
+                                }));
     }
 
     private Completable carregarSIGAA() {

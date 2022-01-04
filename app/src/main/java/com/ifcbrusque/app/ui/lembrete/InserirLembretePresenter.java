@@ -43,16 +43,15 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         .subscribe());
             } else {
                 //Armazenar lembrete novo
-                long idNotificacao = getDataManager().getNovoIdNotificacao();
-                mLembrete.setIdNotificacao(idNotificacao);
-                getDataManager().agendarNotificacaoLembreteSeFuturo(mLembrete);
-
                 getCompositeDisposable().add(getDataManager()
                         .inserirLembrete(mLembrete)
-                        .doOnNext(id -> {
-                            mLembrete.setId(id);
-                            getMvpView().fecharActivity(true);
-                        }).subscribe());
+                        .map(lembrete -> {
+                            getDataManager().agendarNotificacaoLembreteSeFuturo(lembrete);
+                            return true;
+                        })
+                        .doOnComplete(() -> getMvpView().fecharActivity(true))
+                        .subscribe());
+
             }
         } else {
             getMvpView().showMessage(R.string.erro_titulo_lembrete_vazio);
@@ -92,7 +91,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
             mCalendar.set(Calendar.MINUTE, 0);
             mCalendar.set(Calendar.SECOND, 0);
 
-            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO);
+            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
 
             getMvpView().setTitulo(mLembrete.getTitulo());
             getMvpView().setDescricao(mLembrete.getDescricao());

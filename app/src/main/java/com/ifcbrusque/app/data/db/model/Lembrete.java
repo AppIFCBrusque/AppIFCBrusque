@@ -68,7 +68,7 @@ public class Lembrete {
     public final static int ESTADO_INCOMPLETO = 1;
     public final static int ESTADO_COMPLETO = 2;
 
-    public Lembrete(int tipo, String idObjetoAssociado, String titulo, String descricao, Date dataLembrete, int tipoRepeticao, long tempoRepeticaoPersonalizada, int estado) {
+    public Lembrete(int tipo, String idObjetoAssociado, String titulo, String descricao, Date dataLembrete, int tipoRepeticao, long tempoRepeticaoPersonalizada, int estado, long idNotificacao) {
         this.tipo = tipo;
         this.idObjetoAssociado = idObjetoAssociado;
         this.titulo = titulo;
@@ -77,18 +77,19 @@ public class Lembrete {
         this.tipoRepeticao = tipoRepeticao;
         this.tempoRepeticaoPersonalizada = tempoRepeticaoPersonalizada;
         this.estado = estado;
+        this.idNotificacao = idNotificacao;
     }
 
-    public Lembrete(Avaliacao a) {
-        this(LEMBRETE_AVALIACAO, Long.toString(a.getId()), a.getDescricao(), "", a.getData(), REPETICAO_SEM, 0, ESTADO_INCOMPLETO);
+    public Lembrete(Avaliacao a, long idNotificacao) {
+        this(LEMBRETE_AVALIACAO, Long.toString(a.getId()), a.getDescricao(), "", a.getData(), REPETICAO_SEM, 0, ESTADO_INCOMPLETO, idNotificacao);
     }
 
-    public Lembrete(Tarefa t) {
-        this(LEMBRETE_TAREFA, t.getId(), t.getTitulo(), t.getDescricao(), t.getFim(), REPETICAO_SEM, 0, (t.isEnviada()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO);
+    public Lembrete(Tarefa t, long idNotificacao) {
+        this(LEMBRETE_TAREFA, t.getId(), t.getTitulo(), t.getDescricao(), t.getFim(), REPETICAO_SEM, 0, (t.isEnviada()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO, idNotificacao);
     }
 
-    public Lembrete(Questionario q) {
-        this(LEMBRETE_QUESTIONARIO, Long.toString(q.getId()), q.getTitulo(), "", q.getDataFim(), REPETICAO_SEM, 0, (q.isEnviado()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO);
+    public Lembrete(Questionario q, long idNotificacao) {
+        this(LEMBRETE_QUESTIONARIO, Long.toString(q.getId()), q.getTitulo(), "", q.getDataFim(), REPETICAO_SEM, 0, (q.isEnviado()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO, idNotificacao);
     }
 
     public long getId() {

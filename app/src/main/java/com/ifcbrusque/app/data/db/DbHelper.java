@@ -26,7 +26,7 @@ public interface DbHelper {
 
     Observable<List<Lembrete>> getLembretesArmazenados();
 
-    Observable<Long> inserirLembrete(Lembrete lembrete);
+    Observable<Lembrete> inserirLembrete(Lembrete lembrete);
 
     Completable deletarLembrete(Lembrete lembrete);
 
