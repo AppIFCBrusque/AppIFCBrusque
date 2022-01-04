@@ -52,6 +52,11 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
 
                     getMvpView().atualizarRecyclerView(previewsArmazenados);
 
+                    //Definir data da ultima atualização da primeira página
+                    if (pagina == 1) {
+                        getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
+                    }
+
                     //Atualizar a ultima página acessada
                     if (pagina > getDataManager().getUltimaPaginaAcessadaNoticias()) {
                         getDataManager().setUltimaPaginaAcessadaNoticias(pagina);
@@ -114,7 +119,6 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
         Timber.d("Minutos desde a última sincronização: " + minutosDesdeUltimaSync);
         if (minutosDesdeUltimaSync >= 10) {
             carregarPagina(1);
-            getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
         }
     }
 
