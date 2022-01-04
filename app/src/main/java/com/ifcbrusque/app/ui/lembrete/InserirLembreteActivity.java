@@ -232,6 +232,39 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mBtnRepeticao.setText(Lembrete.getIdDaStringRepeticao(tipoRepeticao));
     }
 
+    @Override
+    public void desativarTitulo() {
+        mTiTitulo.getEditText().setFocusable(false);
+        mTiTitulo.getEditText().setFocusableInTouchMode(false);
+        mTiTitulo.getEditText().setClickable(false);
+        mTiTitulo.getEditText().setLongClickable(false);
+        mTiTitulo.getEditText().setCursorVisible(false);
+    }
+
+    @Override
+    public void desativarDescricao() {
+        mTiDescricao.getEditText().setFocusable(false);
+        mTiDescricao.getEditText().setFocusableInTouchMode(false);
+        mTiDescricao.getEditText().setClickable(false);
+        mTiDescricao.getEditText().setLongClickable(false);
+        mTiDescricao.getEditText().setCursorVisible(false);
+    }
+
+    @Override
+    public void desativarBotaoData() {
+        mBtnDatePicker.setEnabled(false);
+    }
+
+    @Override
+    public void desativarBotaoHora() {
+        mBtnTimePicker.setEnabled(false);
+    }
+
+    @Override
+    public void desativarBotaoRepeticao() {
+        mBtnRepeticao.setEnabled(false);
+    }
+
     /**
      * Utilizado para fechar esta activity e atualizar o recycler view do HomeFragment
      * Esta função adiciona um valor no bundle de resultado que indica se o HomeFragment deve atualizar os itens do recycler view (carregar o que está salvo no banco de dados)

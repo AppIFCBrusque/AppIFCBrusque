@@ -25,6 +25,16 @@ public interface InserirLembreteContract {
 
         void setTextoBotaoRepeticao(int tipoRepeticao);
 
+        void desativarTitulo();
+
+        void desativarDescricao();
+
+        void desativarBotaoData();
+
+        void desativarBotaoHora();
+
+        void desativarBotaoRepeticao();
+
         void fecharActivity(boolean atualizarRecyclerView);
     }
 
