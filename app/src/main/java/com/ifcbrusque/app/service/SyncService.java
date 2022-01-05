@@ -82,7 +82,6 @@ public class SyncService extends Service {
     }
 
     boolean mPrimeiraSincronizacaoNoticias = true;
-    boolean mPrimeiraSincronizacaoSIGAA = true;
 
     int mTarefaAtual = 0;
     int mTotalTarefas = 0;
@@ -93,7 +92,6 @@ public class SyncService extends Service {
         mDataManager.notificarSincronizacao(this);
 
         mPrimeiraSincronizacaoNoticias = mDataManager.getPrimeiraSincronizacaoNoticias();
-        mPrimeiraSincronizacaoSIGAA = mDataManager.getPrimeiraSincronizacaoSIGAA();
 
         mCompositeDisposable.add(conferirSIGAAConectado()
                 .andThen(carregarNoticias())
@@ -182,12 +180,9 @@ public class SyncService extends Service {
                                         Lembrete lembrete = new Lembrete(avaliacao, mDataManager.getNovoIdNotificacao());
                                         return mDataManager.inserirLembrete(lembrete)
                                                 .map(lembreteComID -> {
-                                                    if (!mPrimeiraSincronizacaoSIGAA) {
+                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                                                         //Notificar novo item
                                                         mDataManager.notificarAvaliacaoNova(avaliacao, lembreteComID, mDataManager.getNovoIdNotificacao());
-                                                    }
-
-                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                                                         //Agendar a notificação do lembrete
                                                         mDataManager.agendarNotificacaoLembrete(lembreteComID);
                                                     }
@@ -214,12 +209,9 @@ public class SyncService extends Service {
                                         Lembrete lembrete = new Lembrete(tarefa, mDataManager.getNovoIdNotificacao());
                                         return mDataManager.inserirLembrete(lembrete)
                                                 .map(lembreteComID -> {
-                                                    if (!mPrimeiraSincronizacaoSIGAA) {
+                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                                                         //Notificar novo item
                                                         mDataManager.notificarTarefaNova(tarefa, lembreteComID, mDataManager.getNovoIdNotificacao());
-                                                    }
-
-                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                                                         //Agendar a notificação do lembrete
                                                         mDataManager.agendarNotificacaoLembrete(lembreteComID);
                                                     }
@@ -246,12 +238,9 @@ public class SyncService extends Service {
                                         Lembrete lembrete = new Lembrete(questionario, mDataManager.getNovoIdNotificacao());
                                         return mDataManager.inserirLembrete(lembrete)
                                                 .map(lembreteComID -> {
-                                                    if (!mPrimeiraSincronizacaoSIGAA) {
+                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                                                         //Notificar novo item
                                                         mDataManager.notificarQuestionarioNovo(questionario, lembreteComID, mDataManager.getNovoIdNotificacao());
-                                                    }
-
-                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                                                         //Agendar a notificação do lembrete
                                                         mDataManager.agendarNotificacaoLembrete(lembreteComID);
                                                     }
@@ -281,12 +270,7 @@ public class SyncService extends Service {
                     }
                 })
                 .flatMapIterable(disciplinas -> disciplinas)
-                .concatMapCompletable(disciplina -> carregarDisciplina(disciplina))
-                .andThen(Completable.fromRunnable(() -> {
-                    if (mPrimeiraSincronizacaoSIGAA) {
-                        mDataManager.setPrimeiraSincronizacaoSIGAA(false);
-                    }
-                }));
+                .concatMapCompletable(disciplina -> carregarDisciplina(disciplina));
     }
 
     private void lidarComErro(Throwable e) {

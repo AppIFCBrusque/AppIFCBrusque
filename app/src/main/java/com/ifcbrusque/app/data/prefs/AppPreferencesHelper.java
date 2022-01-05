@@ -48,16 +48,6 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public boolean getPrimeiraSincronizacaoSIGAA() {
-        return pref.getBoolean(PRIMEIRA_SINCRONIZACAO_SIGAA, true);
-    }
-
-    @Override
-    public void setPrimeiraSincronizacaoSIGAA(boolean b) {
-        pref.edit().putBoolean(PRIMEIRA_SINCRONIZACAO_SIGAA, b).apply();
-    }
-
-    @Override
     public boolean getSIGAAConectado() {
         return pref.getBoolean(SIGAA_CONECTADO, false);
     }

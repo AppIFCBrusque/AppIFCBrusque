@@ -263,16 +263,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public boolean getPrimeiraSincronizacaoSIGAA() {
-        return mPreferencesHelper.getPrimeiraSincronizacaoSIGAA();
-    }
-
-    @Override
-    public void setPrimeiraSincronizacaoSIGAA(boolean b) {
-        mPreferencesHelper.setPrimeiraSincronizacaoSIGAA(b);
-    }
-
-    @Override
     public boolean getSIGAAConectado() {
         return mPreferencesHelper.getSIGAAConectado();
     }

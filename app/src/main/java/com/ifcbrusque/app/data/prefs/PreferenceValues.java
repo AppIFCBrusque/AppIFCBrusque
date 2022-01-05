@@ -11,8 +11,6 @@ public class PreferenceValues {
 
     public static String PRIMEIRA_SINCRONIZACAO_NOTICIAS = "PRIMEIRA_SINCRONIZACAO_NOTICIAS";
 
-    public static String PRIMEIRA_SINCRONIZACAO_SIGAA = "PRIMEIRA_SINCRONIZACAO_SIGAA";
-
     public static String SIGAA_CONECTADO = "SIGAA_CONECTADO";
 
     public static String SIGAA_LOGIN = "SIGAA_LOGIN";

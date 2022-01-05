@@ -11,10 +11,6 @@ public interface PreferencesHelper {
 
     void setPrimeiraSincronizacaoNoticias(boolean b);
 
-    boolean getPrimeiraSincronizacaoSIGAA();
-
-    void setPrimeiraSincronizacaoSIGAA(boolean b);
-
     boolean getSIGAAConectado();
 
     void setSIGAAConectado(boolean b);
