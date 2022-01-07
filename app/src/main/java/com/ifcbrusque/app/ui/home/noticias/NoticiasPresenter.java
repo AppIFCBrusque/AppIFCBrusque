@@ -82,28 +82,12 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
 
     private void anexarDisposableDaSincronizacao() {
         //Se o serviço de sincronização estiver rodando e carregar novos previews, ele pode notificar este presenter para atualizar a recycler view
-        SyncService.getObservable().subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                getCompositeDisposable().add(d);
+        SyncService.getObservable().subscribe(codigo -> {
+            if (codigo == SyncService.OBSERVABLE_ATUALIZAR_RV_PREVIEWS) {
+                carregarPreviewsArmazenados();
             }
-
-            @Override
-            public void onNext(@NonNull Integer integer) {
-                //Carregar os previews novos na recycler view
-                if (integer == SyncService.OBSERVABLE_PREVIEWS_NOVOS) {
-                    carregarPreviewsArmazenados();
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                getMvpView().onError(e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-            }
+        }, erro -> {
+            /* Engolir erro */
         });
     }
 

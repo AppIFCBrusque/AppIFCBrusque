@@ -17,10 +17,7 @@ import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 import com.ifcbrusque.app.di.module.ServiceModule;
-import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Questionario;
-import com.stacked.sigaa_ifc.Tarefa;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -71,6 +68,8 @@ public class SyncService extends Service {
 
     @Override
     public void onDestroy() {
+        data.onNext(OBSERVABLE_ATUALIZAR_RV_PREVIEWS);
+        data.onNext(OBSERVABLE_ATUALIZAR_RV_LEMBRETES);
         mCompositeDisposable.dispose();
         super.onDestroy();
     }
@@ -127,7 +126,6 @@ public class SyncService extends Service {
                                         int idNotificacao = mDataManager.getNovoIdNotificacao();
                                         mDataManager.notificarNoticia(p, idNotificacao);
                                     }
-                                    data.onNext(OBSERVABLE_PREVIEWS_NOVOS);
                                 }
                             } else {
                                 mDataManager.setPrimeiraSincronizacaoNoticias(false);
@@ -284,7 +282,8 @@ public class SyncService extends Service {
     /**
      * Utilizado para notificar as activities quando carrega algum resultado
      */
-    final public static int OBSERVABLE_PREVIEWS_NOVOS = 1;
+    final public static int OBSERVABLE_ATUALIZAR_RV_PREVIEWS = 1;
+    final public static int OBSERVABLE_ATUALIZAR_RV_LEMBRETES = 2;
 
     static PublishSubject<Integer> data = PublishSubject.create();
 

@@ -2,6 +2,7 @@ package com.ifcbrusque.app.ui.home.lembretes;
 
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
+import com.ifcbrusque.app.service.SyncService;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
 import java.text.SimpleDateFormat;
@@ -114,6 +115,8 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
         getMvpView().atualizarCategoriaRecyclerView(ultimaCategoriaAcessada);
 
         carregarLembretes(true);
+
+        anexarDisposableDaSincronizacao();
     }
 
     @Override
@@ -183,5 +186,16 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
     @Override
     public void onCategoriaAlterada(int categoria) {
         getDataManager().setUltimaCategoriaAcessadaHome(categoria);
+    }
+
+    private void anexarDisposableDaSincronizacao() {
+        //Se o serviço de sincronização estiver rodando e atualizar os lembretes, ele pode notificar este presenter para atualizar a recycler view
+        SyncService.getObservable().subscribe(codigo -> {
+            if (codigo == SyncService.OBSERVABLE_ATUALIZAR_RV_LEMBRETES) {
+                carregarLembretes(true);
+            }
+        }, erro -> {
+            /* Engolir erro */
+        });
     }
 }
