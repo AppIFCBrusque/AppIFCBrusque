@@ -434,4 +434,18 @@ public class AppDbHelper implements DbHelper {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Completable deletarTudoSIGAA() {
+        return Completable.fromRunnable(() -> {
+            mAppDatabase.avaliacaoDao().deleteAll();
+            mAppDatabase.questionarioDao().deleteAll();
+            mAppDatabase.tarefaDao().deleteAll();
+            mAppDatabase.disciplinaDao().deleteAll();
+            mAppDatabase.lembreteDao().deleteAllLembretesSIGAA();
+            Timber.d("Itens do SIGAA deletados");
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

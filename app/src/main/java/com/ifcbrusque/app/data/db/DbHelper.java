@@ -62,4 +62,6 @@ public interface DbHelper {
     Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionarios);
 
     Completable deletarQuestionario(Questionario questionario);
+
+    Completable deletarTudoSIGAA();
 }

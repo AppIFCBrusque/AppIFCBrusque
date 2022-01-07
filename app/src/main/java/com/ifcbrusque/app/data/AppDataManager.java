@@ -163,6 +163,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Completable deletarTudoSIGAA() {
+        return mDbHelper.deletarTudoSIGAA();
+    }
+
+    @Override
     public Observable<ArrayList<Preview>> getPaginaNoticias(int numeroPagina) {
         return mNetworkHelper.getPaginaNoticias(numeroPagina);
     }

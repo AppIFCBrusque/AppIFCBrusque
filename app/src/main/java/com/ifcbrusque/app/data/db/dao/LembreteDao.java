@@ -24,6 +24,9 @@ public interface LembreteDao {
     @Query("DELETE FROM lembrete_table")
     void deleteAll();
 
+    @Query("DELETE FROM lembrete_table WHERE tipo != 1")
+    void deleteAllLembretesSIGAA();
+
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
     Lembrete getLembrete(long id);
 

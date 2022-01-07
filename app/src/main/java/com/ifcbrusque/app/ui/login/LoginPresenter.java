@@ -7,6 +7,7 @@ import com.ifcbrusque.app.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
 
@@ -27,26 +28,33 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
         getMvpView().mostrarLoading();
 
         getCompositeDisposable().add(getDataManager().logarSIGAA(usuario, senha)
-                .subscribe(logado -> {
+                .flatMapCompletable(logado -> {
                     getMvpView().esconderLoading();
 
-                    if(logado) {
+                    if (logado) {
                         Timber.d("Logado como: " + getDataManager().getUsuarioSIGAA().getNome());
-                        getDataManager().setLoginSIGAA(usuario);
-                        getDataManager().setSenhaSIGAA(senha);
-                        //TODO: Iniciar o serviço da sincronização, arrumar no SyncReceiver
 
-                        getDataManager().setPrimeiraInicializacao(false);
-                        getDataManager().setSIGAAConectado(true);
-                        getDataManager().agendarSincronizacao();
-                        getMvpView().abrirHome();
-                        getMvpView().fecharActivity();
+                        return getDataManager().deletarTudoSIGAA()
+                                .doOnComplete(() -> {
+                                    getDataManager().setLoginSIGAA(usuario);
+                                    getDataManager().setSenhaSIGAA(senha);
+                                    getDataManager().setPrimeiraInicializacao(false);
+                                    getDataManager().setSIGAAConectado(true);
+
+                                    getDataManager().agendarSincronizacao();
+                                    getMvpView().abrirHome();
+                                    getMvpView().fecharActivity();
+                                });
                     } else {
                         //Credenciais incorretas
                         getMvpView().setMensagemErro(R.string.sigaa_dados_invalidos);
                         getMvpView().mostrarMensagemErro();
                         getMvpView().ativarBotaoEntrar();
+                        return Completable.complete();
                     }
+                })
+                .subscribe(() -> {
+                    ///
                 }, erro -> {
                     Timber.d("Erro no login");
                     getMvpView().esconderLoading();
