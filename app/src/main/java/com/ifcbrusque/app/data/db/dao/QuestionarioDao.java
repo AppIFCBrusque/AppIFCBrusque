@@ -33,5 +33,5 @@ public interface QuestionarioDao {
     List<QuestionarioArmazenavel> getAll();
 
     @Update
-    void atualizarQuestionario(QuestionarioArmazenavel questionario);
+    int atualizarQuestionario(QuestionarioArmazenavel questionario);
 }

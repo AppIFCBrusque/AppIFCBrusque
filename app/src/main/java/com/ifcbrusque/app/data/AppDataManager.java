@@ -68,6 +68,21 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<List<Lembrete>> getLembrete(Avaliacao avaliacao) {
+        return mDbHelper.getLembrete(avaliacao);
+    }
+
+    @Override
+    public Observable<List<Lembrete>> getLembrete(Tarefa tarefa) {
+        return mDbHelper.getLembrete(tarefa);
+    }
+
+    @Override
+    public Observable<List<Lembrete>> getLembrete(Questionario questionario) {
+        return mDbHelper.getLembrete(questionario);
+    }
+
+    @Override
     public Observable<List<Lembrete>> getLembretesArmazenados() {
         return mDbHelper.getLembretesArmazenados();
     }
@@ -123,6 +138,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Avaliacao> inserirAvaliacao(Avaliacao avaliacao) {
+        return mDbHelper.inserirAvaliacao(avaliacao);
+    }
+
+    @Override
     public Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoes) {
         return mDbHelper.inserirAvaliacoes(avaliacoes);
     }
@@ -133,8 +153,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Integer> atualizarAvaliacao(Avaliacao avaliacao) {
+        return mDbHelper.atualizarAvaliacao(avaliacao);
+    }
+
+    @Override
     public Observable<List<Tarefa>> getAllTarefas() {
         return mDbHelper.getAllTarefas();
+    }
+
+    @Override
+    public Observable<Tarefa> inserirTarefa(Tarefa tarefa) {
+        return mDbHelper.inserirTarefa(tarefa);
     }
 
     @Override
@@ -148,8 +178,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Integer> atualizarTarefa(Tarefa tarefa) {
+        return mDbHelper.atualizarTarefa(tarefa);
+    }
+
+    @Override
     public Observable<List<Questionario>> getAllQuestionarios() {
         return mDbHelper.getAllQuestionarios();
+    }
+
+    @Override
+    public Observable<Questionario> inserirQuestionario(Questionario questionario) {
+        return mDbHelper.inserirQuestionario(questionario);
     }
 
     @Override
@@ -160,6 +200,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Completable deletarQuestionario(Questionario questionario) {
         return deletarQuestionario(questionario);
+    }
+
+    @Override
+    public Observable<Integer> atualizarQuestionario(Questionario questionario) {
+        return mDbHelper.atualizarQuestionario(questionario);
     }
 
     @Override
@@ -233,12 +278,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void notificarAvaliacaoNova(Avaliacao avaliacao,  Lembrete lembrete,int idNotificacao) {
+    public void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
         mNotificationHelper.notificarAvaliacaoNova(avaliacao, lembrete, idNotificacao);
     }
 
     @Override
-    public void notificarTarefaNova(Tarefa tarefa,  Lembrete lembrete,int idNotificacao) {
+    public void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
         mNotificationHelper.notificarTarefaNova(tarefa, lembrete, idNotificacao);
     }
 

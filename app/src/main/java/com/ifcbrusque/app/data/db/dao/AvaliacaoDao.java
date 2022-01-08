@@ -34,5 +34,5 @@ public interface AvaliacaoDao {
     List<AvaliacaoArmazenavel> getAll();
 
     @Update
-    void atualizarAvaliacao(AvaliacaoArmazenavel avaliacao);
+    int atualizarAvaliacao(AvaliacaoArmazenavel avaliacao);
 }

@@ -18,12 +18,14 @@ import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 import com.ifcbrusque.app.di.module.ServiceModule;
 import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -152,11 +154,12 @@ public class SyncService extends Service {
                                     if (logado) {
                                         mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasAtuais().size() * mTarefasPorDisciplina;
                                         Timber.d("SIGAA logado");
+                                        return mDataManager.inserirDisciplinas(mDataManager.getUsuarioSIGAA().getDisciplinasAtuais());
                                     } else {
                                         Toast.makeText(this, R.string.erro_servico_sigaa_dados_invalidos, Toast.LENGTH_SHORT).show();
                                         mDataManager.setSIGAAConectado(false); //Desativa a sincronização do SIGAA
+                                        return Completable.complete();
                                     }
-                                    return Completable.complete();
                                 });
                     } else {
                         return Completable.complete();
@@ -167,94 +170,231 @@ public class SyncService extends Service {
     private Completable carregarDisciplina(Disciplina disciplina) {
         mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
 
+        //TODO: O código dessa função provavelmente pode ser reduzido, pois ele meio que somente repete o mesmo código 3 vezes
+
+        /*
+        Avaliações
+         */
         return mDataManager.getAvaliacoesDisciplinaSIGAA(disciplina)
-                .flatMap(avaliacoes -> mDataManager.inserirAvaliacoes(avaliacoes))
-                .flatMap(avaliacoesNovas ->
-                        Observable.fromIterable(avaliacoesNovas)
-                                .flatMap(avaliacao -> {
-                                    Timber.d("Avaliação nova: %s", avaliacao.getDescricao());
-                                    if (avaliacao.getData().after(new Date())) {
-                                        //Criar um lembrete
-                                        Lembrete lembrete = new Lembrete(avaliacao, mDataManager.getNovoIdNotificacao());
-                                        return mDataManager.inserirLembrete(lembrete)
-                                                .map(lembreteComID -> {
-                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-                                                        //Notificar novo item
-                                                        mDataManager.notificarAvaliacaoNova(avaliacao, lembreteComID, mDataManager.getNovoIdNotificacao());
-                                                        //Agendar a notificação do lembrete
-                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
-                                                    }
-                                                    return true;
-                                                });
+                .flatMap(avaliacoesNoSIGAA -> mDataManager.getAllAvaliacoes()
+                        .flatMap(avaliacoesNoBD -> Observable.fromIterable(avaliacoesNoSIGAA)
+                                .flatMap(avaliacaoNoSIGAA -> {
+                                    if (avaliacoesNoBD.stream().anyMatch(abd -> abd.getId() == avaliacaoNoSIGAA.getId())) {
+                                        //Avaliação já armazenada no BD (atualizar)
+                                        Timber.d("Avaliação já existente: %s", avaliacaoNoSIGAA.getDescricao());
+                                        return mDataManager.atualizarAvaliacao(avaliacaoNoSIGAA)
+                                                .flatMap(colunasAtualizadas -> mDataManager.getLembrete(avaliacaoNoSIGAA)
+                                                        .flatMapCompletable(avaliacoesArmazenadas -> {
+                                                            if (avaliacoesArmazenadas.size() > 0) {
+                                                                Lembrete lembreteArmazenado = avaliacoesArmazenadas.get(0);
+
+                                                                if (colunasAtualizadas > 0) {
+                                                                    //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
+                                                                    lembreteArmazenado.setTitulo(avaliacaoNoSIGAA.getDescricao());
+                                                                    lembreteArmazenado.setDescricao(avaliacaoNoSIGAA.getDescricao());
+
+                                                                    if (lembreteArmazenado.getDataLembrete().before(avaliacaoNoSIGAA.getData()) && avaliacaoNoSIGAA.getData().after(new Date())) {
+                                                                        //Caso a data foi prorrogada, definir como incompleto
+                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
+                                                                    }
+
+                                                                    lembreteArmazenado.setDataLembrete(avaliacaoNoSIGAA.getData());
+                                                                } else {
+                                                                    if (lembreteArmazenado.getDataLembrete().before(new Date())) {
+                                                                        //Definir como completo caso a data tenha passado
+                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    }
+                                                                }
+
+                                                                return mDataManager.atualizarLembrete(lembreteArmazenado);
+                                                            } else {
+                                                                return Completable.complete();
+                                                            }
+                                                        })
+                                                        .toObservable()
+                                                        .map(x -> avaliacaoNoSIGAA));
                                     } else {
-                                        //Retornar uma lista vazia pula
-                                        return Observable.just(true);
+                                        //Avaliação ainda não armazenada (inserir)
+                                        Timber.d("Avaliação nova: %s", avaliacaoNoSIGAA.getDescricao());
+                                        return mDataManager.inserirAvaliacao(avaliacaoNoSIGAA)
+                                                .flatMap(avaliacaoNova -> {
+                                                    if (avaliacaoNova.getData().after(new Date())) {
+                                                        //Criar um lembrete
+                                                        Lembrete lembrete = new Lembrete(avaliacaoNova, mDataManager.getNovoIdNotificacao());
+                                                        return mDataManager.inserirLembrete(lembrete)
+                                                                .map(lembreteComID -> {
+                                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                                                        //Notificar novo item
+                                                                        mDataManager.notificarAvaliacaoNova(avaliacaoNova, lembreteComID, mDataManager.getNovoIdNotificacao());
+                                                                        //Agendar a notificação do lembrete
+                                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
+                                                                    }
+                                                                    return avaliacaoNova;
+                                                                });
+                                                    } else {
+                                                        return Observable.just(avaliacaoNova);
+                                                    }
+                                                });
                                     }
                                 })
                                 .toList()
-                                .flatMapObservable(x -> {
-                                    mTarefaAtual++;
-                                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-                                    return mDataManager.getTarefasDisciplinaSIGAA(disciplina);
-                                }))
-                .flatMap(tarefas -> mDataManager.inserirTarefas(tarefas))
-                .flatMap(tarefasNovas ->
-                        Observable.fromIterable(tarefasNovas)
-                                .flatMap(tarefa -> {
-                                    Timber.d("Tarefa nova: %s", tarefa.getTitulo());
-                                    if (tarefa.getFim().after(new Date())) {
-                                        //Criar um lembrete
-                                        Lembrete lembrete = new Lembrete(tarefa, mDataManager.getNovoIdNotificacao());
-                                        return mDataManager.inserirLembrete(lembrete)
-                                                .map(lembreteComID -> {
-                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-                                                        //Notificar novo item
-                                                        mDataManager.notificarTarefaNova(tarefa, lembreteComID, mDataManager.getNovoIdNotificacao());
-                                                        //Agendar a notificação do lembrete
-                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
-                                                    }
-                                                    return true;
-                                                });
+                                .toObservable()))
+                .flatMap(listaAvaliacoes -> {
+                    mTarefaAtual++;
+                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                    return mDataManager.getTarefasDisciplinaSIGAA(disciplina);
+                })
+                /*
+                Tarefas
+                 */
+                .flatMap(tarefasNoSIGAA -> mDataManager.getAllTarefas()
+                        .flatMap(tarefasNoBD -> Observable.fromIterable(tarefasNoSIGAA)
+                                .flatMap(tarefaNoSIGAA -> {
+                                    if (tarefasNoBD.stream().anyMatch(tbd -> tbd.getId().equals(tarefaNoSIGAA.getId()))) {
+                                        //Tarefa já armazenada no BD (atualizar)
+                                        Timber.d("Tarefa já existente: %s", tarefaNoSIGAA.getTitulo());
+                                        return mDataManager.atualizarTarefa(tarefaNoSIGAA)
+                                                .flatMap(colunasAtualizadas -> mDataManager.getLembrete(tarefaNoSIGAA)
+                                                        .flatMapCompletable(lembretesArmazenados -> {
+                                                            if (lembretesArmazenados.size() > 0) {
+                                                                Lembrete lembreteArmazenado = lembretesArmazenados.get(0);
+
+                                                                if (colunasAtualizadas > 0) {
+                                                                    //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
+                                                                    lembreteArmazenado.setTitulo(tarefaNoSIGAA.getTitulo());
+                                                                    lembreteArmazenado.setDescricao(tarefaNoSIGAA.getDescricao());
+
+                                                                    if (tarefaNoSIGAA.isEnviada()) {
+                                                                        //Caso o item foi enviado no SIGAA, definir o lembrete como completo
+                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    } else {
+                                                                        if (lembreteArmazenado.getDataLembrete().before(tarefaNoSIGAA.getFim()) && tarefaNoSIGAA.getFim().after(new Date())) {
+                                                                            //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
+                                                                            lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
+                                                                        }
+                                                                    }
+
+                                                                    lembreteArmazenado.setDataLembrete(tarefaNoSIGAA.getFim());
+                                                                } else {
+                                                                    if (lembreteArmazenado.getDataLembrete().before(new Date())) {
+                                                                        //Definir como completo caso a data tenha passado
+                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    }
+                                                                }
+
+                                                                return mDataManager.atualizarLembrete(lembreteArmazenado);
+                                                            } else {
+                                                                return Completable.complete();
+                                                            }
+                                                        })
+                                                        .toObservable()
+                                                        .map(x -> tarefaNoSIGAA));
                                     } else {
-                                        //Retornar uma lista vazia pula
-                                        return Observable.just(true);
+                                        //Tarefa ainda não armazenada (inserir)
+                                        Timber.d("Tarefa nova: %s", tarefaNoSIGAA.getTitulo());
+                                        return mDataManager.inserirTarefa(tarefaNoSIGAA)
+                                                .flatMap(tarefaNova -> {
+                                                    if (tarefaNova.getFim().after(new Date())) {
+                                                        //Criar um lembrete
+                                                        Lembrete lembrete = new Lembrete(tarefaNova, mDataManager.getNovoIdNotificacao());
+                                                        return mDataManager.inserirLembrete(lembrete)
+                                                                .map(lembreteComID -> {
+                                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                                                        //Notificar novo item
+                                                                        mDataManager.notificarTarefaNova(tarefaNova, lembreteComID, mDataManager.getNovoIdNotificacao());
+                                                                        //Agendar a notificação do lembrete
+                                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
+                                                                    }
+                                                                    return tarefaNova;
+                                                                });
+                                                    } else {
+                                                        return Observable.just(tarefaNova);
+                                                    }
+                                                });
                                     }
                                 })
                                 .toList()
-                                .flatMapObservable(x -> {
-                                    mTarefaAtual++;
-                                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-                                    return mDataManager.getQuestionariosDisciplinaSIGAA(disciplina);
-                                }))
-                .flatMap(questionarios -> mDataManager.inserirQuestionarios(questionarios))
-                .flatMapCompletable(questionariosNovos ->
-                        Observable.fromIterable(questionariosNovos)
-                                .flatMap(questionario -> {
-                                    Timber.d("Questionário novo: %s", questionario.getTitulo());
-                                    if (questionario.getDataFim().after(new Date())) {
-                                        //Criar um lembrete
-                                        Lembrete lembrete = new Lembrete(questionario, mDataManager.getNovoIdNotificacao());
-                                        return mDataManager.inserirLembrete(lembrete)
-                                                .map(lembreteComID -> {
-                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
-                                                        //Notificar novo item
-                                                        mDataManager.notificarQuestionarioNovo(questionario, lembreteComID, mDataManager.getNovoIdNotificacao());
-                                                        //Agendar a notificação do lembrete
-                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
-                                                    }
-                                                    return true;
-                                                });
+                                .toObservable()))
+                .flatMap(listaTarefas -> {
+                    mTarefaAtual++;
+                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                    return mDataManager.getQuestionariosDisciplinaSIGAA(disciplina);
+                })
+                /*
+                Questionários
+                 */
+                .flatMap(questionariosNoSIGAA -> mDataManager.getAllQuestionarios()
+                        .flatMap(questionariosNoBD -> Observable.fromIterable(questionariosNoSIGAA)
+                                .flatMap(questionarioNoSIGAA -> {
+                                    if (questionariosNoBD.stream().anyMatch(qbd -> qbd.getId() == questionarioNoSIGAA.getId())) {
+                                        //Questionário já armazenado no BD (atualizar)
+                                        Timber.d("Questionário já existente: %s", questionarioNoSIGAA.getTitulo());
+                                        return mDataManager.atualizarQuestionario(questionarioNoSIGAA)
+                                                .flatMap(colunasAtualizadas -> mDataManager.getLembrete(questionarioNoSIGAA)
+                                                        .flatMapCompletable(lembretesArmazenados -> {
+                                                            if (lembretesArmazenados.size() > 0) {
+                                                                Lembrete lembreteArmazenado = lembretesArmazenados.get(0);
+
+                                                                if (colunasAtualizadas > 0) {
+                                                                    //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
+                                                                    lembreteArmazenado.setTitulo(questionarioNoSIGAA.getTitulo());
+
+                                                                    if (questionarioNoSIGAA.isEnviado()) {
+                                                                        //Caso o item foi enviado no SIGAA, definir o lembrete como completo
+                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    } else {
+                                                                        if (lembreteArmazenado.getDataLembrete().before(questionarioNoSIGAA.getDataFim()) && questionarioNoSIGAA.getDataFim().after(new Date())) {
+                                                                            //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
+                                                                            lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
+                                                                        }
+                                                                    }
+
+                                                                    lembreteArmazenado.setDataLembrete(questionarioNoSIGAA.getDataFim());
+                                                                } else {
+                                                                    if (lembreteArmazenado.getDataLembrete().before(new Date())) {
+                                                                        //Definir como completo caso a data tenha passado
+                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    }
+                                                                }
+
+                                                                return mDataManager.atualizarLembrete(lembreteArmazenado);
+                                                            } else {
+                                                                return Completable.complete();
+                                                            }
+                                                        })
+                                                        .toObservable()
+                                                        .map(x -> questionarioNoSIGAA));
                                     } else {
-                                        //Retornar uma lista vazia pula
-                                        return Observable.just(true);
+                                        //Questionário ainda não armazenado (inserir)
+                                        Timber.d("Questionário novo: %s", questionarioNoSIGAA.getTitulo());
+                                        return mDataManager.inserirQuestionario(questionarioNoSIGAA)
+                                                .flatMap(questionarioNovo -> {
+                                                    if (questionarioNovo.getDataFim().after(new Date())) {
+                                                        //Criar um lembrete
+                                                        Lembrete lembrete = new Lembrete(questionarioNovo, mDataManager.getNovoIdNotificacao());
+                                                        return mDataManager.inserirLembrete(lembrete)
+                                                                .map(lembreteComID -> {
+                                                                    if (lembreteComID.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                                                                        //Notificar novo item
+                                                                        mDataManager.notificarQuestionarioNovo(questionarioNovo, lembreteComID, mDataManager.getNovoIdNotificacao());
+                                                                        //Agendar a notificação do lembrete
+                                                                        mDataManager.agendarNotificacaoLembrete(lembreteComID);
+                                                                    }
+                                                                    return questionarioNovo;
+                                                                });
+                                                    } else {
+                                                        return Observable.just(questionarioNovo);
+                                                    }
+                                                });
                                     }
                                 })
                                 .toList()
-                                .flatMapCompletable(x -> {
-                                    mTarefaAtual++;
-                                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
-                                    return Completable.complete();
-                                }));
+                                .toObservable()))
+                .flatMapCompletable(listaQuestionarios -> {
+                    mTarefaAtual++;
+                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                    return Completable.complete();
+                });
     }
 
     private Completable carregarSIGAA() {

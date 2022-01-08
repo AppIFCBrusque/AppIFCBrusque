@@ -33,5 +33,5 @@ public interface TarefaDao {
     List<TarefaArmazenavel> getAll();
 
     @Update
-    void atualizarTarefa(TarefaArmazenavel tarefa);
+    int atualizarTarefa(TarefaArmazenavel tarefa);
 }

@@ -24,6 +24,12 @@ public interface DbHelper {
 
     Observable<Lembrete> getLembrete(long id);
 
+    Observable<List<Lembrete>> getLembrete(Avaliacao avaliacao);
+
+    Observable<List<Lembrete>> getLembrete(Tarefa tarefa);
+
+    Observable<List<Lembrete>> getLembrete(Questionario questionario);
+
     Observable<List<Lembrete>> getLembretesArmazenados();
 
     Observable<Lembrete> inserirLembrete(Lembrete lembrete);
@@ -47,21 +53,33 @@ public interface DbHelper {
 
     Observable<List<Avaliacao>> getAllAvaliacoes();
 
+    Observable<Avaliacao> inserirAvaliacao(Avaliacao avaliacao);
+
     Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoes);
 
     Completable deletarAvaliacao(Avaliacao avaliacao);
 
+    Observable<Integer> atualizarAvaliacao(Avaliacao avaliacao);
+
     Observable<List<Tarefa>> getAllTarefas();
+
+    Observable<Tarefa> inserirTarefa(Tarefa tarefa);
 
     Observable<List<Tarefa>> inserirTarefas(List<Tarefa> tarefas);
 
     Completable deletarTarefa(Tarefa tarefa);
 
+    Observable<Integer> atualizarTarefa(Tarefa tarefa);
+
     Observable<List<Questionario>> getAllQuestionarios();
+
+    Observable<Questionario> inserirQuestionario(Questionario questionario);
 
     Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionarios);
 
     Completable deletarQuestionario(Questionario questionario);
+
+    Observable<Integer> atualizarQuestionario(Questionario questionario);
 
     Completable deletarTudoSIGAA();
 }
