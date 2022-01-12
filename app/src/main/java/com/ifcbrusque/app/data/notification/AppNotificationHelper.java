@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -248,15 +249,35 @@ public class AppNotificationHelper implements NotificationHelper {
         mNotificationManager.notify(idNotificacao, notificationBuilder.build());
     }
 
-    @Override
-    public void agendarSincronizacao() {
+    private PendingIntent getPendingIntentSync() {
         Intent intent = new Intent(mContext, SyncReceiver.class);
         intent.setAction(SyncReceiver.ACTION_SINCRONIZACAO_COMPLETA);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
 
+    @Override
+    public void iniciarSincronizacao() {
+        PendingIntent pendingIntent = getPendingIntentSync();
         mAlarmManager.cancel(pendingIntent);
-        mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
-        Timber.d("Serviço agendado");
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
+    }
+
+    @Override
+    public void agendarSincronizacao() {
+        PendingIntent pendingIntent = getPendingIntentSync();
+        mAlarmManager.cancel(pendingIntent);
+
+        //Agendar para a próxima meia noite
+        final Calendar calendar = Calendar.getInstance();
+
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Timber.d("Sincronização agendada");
     }
 
     /**

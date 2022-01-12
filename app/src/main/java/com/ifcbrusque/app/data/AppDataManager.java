@@ -258,6 +258,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void iniciarSincronizacao() {
+        mNotificationHelper.iniciarSincronizacao();
+    }
+
+    @Override
     public void agendarSincronizacao() {
         mNotificationHelper.agendarSincronizacao();
     }
@@ -365,6 +370,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
         return mPreferencesHelper.getDataUltimaSincronizacaoAutomaticaNoticias();
+    }
+
+    @Override
+    public void setDataUltimaSincronizacaoCompleta(Date data) {
+        mPreferencesHelper.setDataUltimaSincronizacaoCompleta(data);
+    }
+
+    @Override
+    public Date getDataUltimaSincronizacaoCompleta() {
+        return mPreferencesHelper.getDataUltimaSincronizacaoCompleta();
     }
 
     @Override

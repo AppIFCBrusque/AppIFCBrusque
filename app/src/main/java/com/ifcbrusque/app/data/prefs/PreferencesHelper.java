@@ -27,6 +27,10 @@ public interface PreferencesHelper {
 
     Date getDataUltimaSincronizacaoAutomaticaNoticias();
 
+    void setDataUltimaSincronizacaoCompleta(Date data);
+
+    Date getDataUltimaSincronizacaoCompleta();
+
     void setUltimaPaginaAcessadaNoticias(int pagina);
 
     int getUltimaPaginaAcessadaNoticias();

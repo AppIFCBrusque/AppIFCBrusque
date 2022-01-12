@@ -70,9 +70,13 @@ public class SyncService extends Service {
 
     @Override
     public void onDestroy() {
+        mCompositeDisposable.dispose();
+
         data.onNext(OBSERVABLE_ATUALIZAR_RV_PREVIEWS);
         data.onNext(OBSERVABLE_ATUALIZAR_RV_LEMBRETES);
-        mCompositeDisposable.dispose();
+
+        mDataManager.agendarSincronizacao();
+
         super.onDestroy();
     }
 
@@ -91,6 +95,7 @@ public class SyncService extends Service {
 
     private void sincronizar() {
         mDataManager.notificarSincronizacao(this);
+        mDataManager.setDataUltimaSincronizacaoCompleta(new Date());
 
         mPrimeiraSincronizacaoNoticias = mDataManager.getPrimeiraSincronizacaoNoticias();
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,7 @@ import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_ATRAS
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_HOJE;
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_NESTA_SEMANA;
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_UM_MES;
+import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.ordenarLembretesPelaData;
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class LembretesPresenter<V extends LembretesContract.LembretesView> extends BasePresenter<V> implements LembretesContract.LembretesPresenter<V> {
@@ -117,6 +119,15 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
         carregarLembretes(true);
 
         anexarDisposableDaSincronizacao();
+
+        //Iniciar sincronização caso já tenha passado mais de um dia desde a última (provavelmente o alarme foi cancelado)
+        long horasDesdeUltimaSync = TimeUnit.MILLISECONDS.toHours(new Date().getTime() - getDataManager().getDataUltimaSincronizacaoCompleta().getTime());
+        Timber.d("%s horas desde a última sincronização", horasDesdeUltimaSync);
+        if(horasDesdeUltimaSync > 24) {
+            getDataManager().iniciarSincronizacao();
+        } else {
+            getDataManager().agendarSincronizacao();
+        }
     }
 
     @Override

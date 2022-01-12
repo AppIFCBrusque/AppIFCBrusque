@@ -89,6 +89,17 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public void setDataUltimaSincronizacaoCompleta(Date data) {
+        long _data = Converters.dateToTimestamp(data);
+        pref.edit().putLong(SYNC_ULTIMA_DATA, _data).apply();
+    }
+
+    @Override
+    public Date getDataUltimaSincronizacaoCompleta() {
+        return Converters.fromTimestamp(pref.getLong(SYNC_ULTIMA_DATA, 0));
+    }
+
+    @Override
     public void setUltimaPaginaAcessadaNoticias(int pagina) {
         pref.edit().putInt(NOTICIAS_ULTIMA_PAGINA_ACESSADA, pagina).apply();
     }
