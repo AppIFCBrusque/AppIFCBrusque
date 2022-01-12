@@ -283,13 +283,28 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void notificarAvaliacaoAlterada(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
+        mNotificationHelper.notificarAvaliacaoAlterada(avaliacao, lembrete, idNotificacao);
+    }
+
+    @Override
     public void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
         mNotificationHelper.notificarTarefaNova(tarefa, lembrete, idNotificacao);
     }
 
     @Override
+    public void notificarTarefaAlterada(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
+        mNotificationHelper.notificarTarefaAlterada(tarefa, lembrete, idNotificacao);
+    }
+
+    @Override
     public void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao) {
         mNotificationHelper.notificarQuestionarioNovo(questionario, lembrete, idNotificacao);
+    }
+
+    @Override
+    public void notificarQuestionarioAlterado(Questionario questionario, Lembrete lembrete, int idNotificacao) {
+        mNotificationHelper.notificarQuestionarioAlterado(questionario, lembrete, idNotificacao);
     }
 
     @Override

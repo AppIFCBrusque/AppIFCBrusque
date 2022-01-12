@@ -184,26 +184,35 @@ public class SyncService extends Service {
                                         Timber.d("Avaliação já existente: %s", avaliacaoNoSIGAA.getDescricao());
                                         return mDataManager.atualizarAvaliacao(avaliacaoNoSIGAA)
                                                 .flatMap(colunasAtualizadas -> mDataManager.getLembrete(avaliacaoNoSIGAA)
-                                                        .flatMapCompletable(avaliacoesArmazenadas -> {
-                                                            if (avaliacoesArmazenadas.size() > 0) {
-                                                                Lembrete lembreteArmazenado = avaliacoesArmazenadas.get(0);
+                                                        .flatMapCompletable(lembretesArmazenados -> {
+                                                            if (lembretesArmazenados.size() > 0) {
+                                                                Lembrete lembreteArmazenado = lembretesArmazenados.get(0);
 
-                                                                if (colunasAtualizadas > 0) {
-                                                                    //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
-                                                                    lembreteArmazenado.setTitulo(avaliacaoNoSIGAA.getDescricao());
-                                                                    lembreteArmazenado.setDescricao(avaliacaoNoSIGAA.getDescricao());
+                                                                //O colunasAtualizadas não está funcionando para conferir o número de colunas atualizadas (sempre retorna 1)
+                                                                //Por causa disso, eu estou conferindo se algum parâmetro do lembrete é diferente da tarefa no SIGAA
+                                                                boolean notificar = false;
+                                                                if (!avaliacaoNoSIGAA.getDescricao().equals(lembreteArmazenado.getTitulo()) || avaliacaoNoSIGAA.getData().getTime() != lembreteArmazenado.getDataLembrete().getTime()) {
+                                                                    notificar = true;
+                                                                }
 
-                                                                    if (lembreteArmazenado.getDataLembrete().before(avaliacaoNoSIGAA.getData()) && avaliacaoNoSIGAA.getData().after(new Date())) {
-                                                                        //Caso a data foi prorrogada, definir como incompleto
+                                                                //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
+
+                                                                if (avaliacaoNoSIGAA.getData().before(new Date())) {
+                                                                    //Definir como completo caso a data tenha passado
+                                                                    lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                } else {
+                                                                    //Ainda não passou a data da avaliação
+                                                                    if (lembreteArmazenado.getDataLembrete().before(avaliacaoNoSIGAA.getData())) {
+                                                                        //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                         lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
                                                                     }
+                                                                }
 
-                                                                    lembreteArmazenado.setDataLembrete(avaliacaoNoSIGAA.getData());
-                                                                } else {
-                                                                    if (lembreteArmazenado.getDataLembrete().before(new Date())) {
-                                                                        //Definir como completo caso a data tenha passado
-                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
-                                                                    }
+                                                                lembreteArmazenado.setTitulo(avaliacaoNoSIGAA.getDescricao());
+                                                                lembreteArmazenado.setDataLembrete(avaliacaoNoSIGAA.getData());
+
+                                                                if (notificar) {
+                                                                    mDataManager.notificarAvaliacaoAlterada(avaliacaoNoSIGAA, lembreteArmazenado, mDataManager.getNovoIdNotificacao());
                                                                 }
 
                                                                 return mDataManager.atualizarLembrete(lembreteArmazenado);
@@ -259,27 +268,37 @@ public class SyncService extends Service {
                                                             if (lembretesArmazenados.size() > 0) {
                                                                 Lembrete lembreteArmazenado = lembretesArmazenados.get(0);
 
-                                                                if (colunasAtualizadas > 0) {
-                                                                    //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
-                                                                    lembreteArmazenado.setTitulo(tarefaNoSIGAA.getTitulo());
-                                                                    lembreteArmazenado.setDescricao(tarefaNoSIGAA.getDescricao());
+                                                                //O colunasAtualizadas não está funcionando para conferir o número de colunas atualizadas (sempre retorna 1)
+                                                                //Por causa disso, eu estou conferindo se algum parâmetro do lembrete é diferente da tarefa no SIGAA
+                                                                boolean notificar = false;
+                                                                if (!tarefaNoSIGAA.getTitulo().equals(lembreteArmazenado.getTitulo()) || !tarefaNoSIGAA.getDescricao().equals(lembreteArmazenado.getDescricao()) || tarefaNoSIGAA.getFim().getTime() != lembreteArmazenado.getDataLembrete().getTime()) {
+                                                                    notificar = true;
+                                                                }
 
-                                                                    if (tarefaNoSIGAA.isEnviada()) {
-                                                                        //Caso o item foi enviado no SIGAA, definir o lembrete como completo
+                                                                //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
+
+                                                                if (tarefaNoSIGAA.isEnviada()) {
+                                                                    //Caso o item foi enviado no SIGAA, definir o lembrete como completo
+                                                                    lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                } else {
+                                                                    if (tarefaNoSIGAA.getFim().before(new Date())) {
+                                                                        //Definir como completo caso a data tenha passado
                                                                         lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
                                                                     } else {
-                                                                        if (lembreteArmazenado.getDataLembrete().before(tarefaNoSIGAA.getFim()) && tarefaNoSIGAA.getFim().after(new Date())) {
+                                                                        //Ainda não passou a data da tarefa
+                                                                        if (lembreteArmazenado.getDataLembrete().before(tarefaNoSIGAA.getFim())) {
                                                                             //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                             lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
                                                                         }
                                                                     }
+                                                                }
 
-                                                                    lembreteArmazenado.setDataLembrete(tarefaNoSIGAA.getFim());
-                                                                } else {
-                                                                    if (lembreteArmazenado.getDataLembrete().before(new Date())) {
-                                                                        //Definir como completo caso a data tenha passado
-                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
-                                                                    }
+                                                                lembreteArmazenado.setTitulo(tarefaNoSIGAA.getTitulo());
+                                                                lembreteArmazenado.setDescricao(tarefaNoSIGAA.getDescricao());
+                                                                lembreteArmazenado.setDataLembrete(tarefaNoSIGAA.getFim());
+
+                                                                if (notificar) {
+                                                                    mDataManager.notificarTarefaAlterada(tarefaNoSIGAA, lembreteArmazenado, mDataManager.getNovoIdNotificacao());
                                                                 }
 
                                                                 return mDataManager.atualizarLembrete(lembreteArmazenado);
@@ -335,26 +354,36 @@ public class SyncService extends Service {
                                                             if (lembretesArmazenados.size() > 0) {
                                                                 Lembrete lembreteArmazenado = lembretesArmazenados.get(0);
 
-                                                                if (colunasAtualizadas > 0) {
-                                                                    //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
-                                                                    lembreteArmazenado.setTitulo(questionarioNoSIGAA.getTitulo());
+                                                                //O colunasAtualizadas não está funcionando para conferir o número de colunas atualizadas (sempre retorna 1)
+                                                                //Por causa disso, eu estou conferindo se algum parâmetro do lembrete é diferente da tarefa no SIGAA
+                                                                boolean notificar = false;
+                                                                if (!questionarioNoSIGAA.getTitulo().equals(lembreteArmazenado.getTitulo()) || questionarioNoSIGAA.getDataFim().getTime() != lembreteArmazenado.getDataLembrete().getTime()) {
+                                                                    notificar = true;
+                                                                }
 
-                                                                    if (questionarioNoSIGAA.isEnviado()) {
-                                                                        //Caso o item foi enviado no SIGAA, definir o lembrete como completo
+                                                                //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
+
+                                                                if (questionarioNoSIGAA.isEnviado()) {
+                                                                    //Caso o item foi enviado no SIGAA, definir o lembrete como completo
+                                                                    lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                } else {
+                                                                    if (questionarioNoSIGAA.getDataFim().before(new Date())) {
+                                                                        //Definir como completo caso a data tenha passado
                                                                         lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
                                                                     } else {
-                                                                        if (lembreteArmazenado.getDataLembrete().before(questionarioNoSIGAA.getDataFim()) && questionarioNoSIGAA.getDataFim().after(new Date())) {
+                                                                        //Ainda não passou a data do questionário
+                                                                        if (lembreteArmazenado.getDataLembrete().before(questionarioNoSIGAA.getDataFim())) {
                                                                             //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                             lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
                                                                         }
                                                                     }
+                                                                }
 
-                                                                    lembreteArmazenado.setDataLembrete(questionarioNoSIGAA.getDataFim());
-                                                                } else {
-                                                                    if (lembreteArmazenado.getDataLembrete().before(new Date())) {
-                                                                        //Definir como completo caso a data tenha passado
-                                                                        lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
-                                                                    }
+                                                                lembreteArmazenado.setTitulo(questionarioNoSIGAA.getTitulo());
+                                                                lembreteArmazenado.setDataLembrete(questionarioNoSIGAA.getDataFim());
+
+                                                                if (notificar) {
+                                                                    mDataManager.notificarQuestionarioAlterado(questionarioNoSIGAA, lembreteArmazenado, mDataManager.getNovoIdNotificacao());
                                                                 }
 
                                                                 return mDataManager.atualizarLembrete(lembreteArmazenado);

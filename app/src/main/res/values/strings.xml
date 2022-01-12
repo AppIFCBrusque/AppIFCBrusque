@@ -54,8 +54,11 @@
     <string name="sincronizacao">Sincronização</string>
     <string name="sincronizacao_inicio">Iniciando sincronização...</string>
     <string name="avaliacao_nova">Nova avaliação em %s</string>
+    <string name="avaliacao_alterada">Avaliação alterada em %s</string>
     <string name="tarefa_nova">Nova tarefa em %s</string>
+    <string name="tarefa_alterada">Tarefa alterada em %s</string>
     <string name="questionario_novo">Novo questionário em %s</string>
+    <string name="questionario_alterado">Questionário alterado em %s</string>
 
     <!-- SIGAA  -->
     <string name="sigaa">SIGAA</string>

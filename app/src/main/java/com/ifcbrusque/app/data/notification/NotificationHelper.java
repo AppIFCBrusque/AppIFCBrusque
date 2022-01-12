@@ -37,7 +37,13 @@ public interface NotificationHelper {
 
     void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao);
 
+    void notificarAvaliacaoAlterada(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao);
+
     void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao);
 
+    void notificarTarefaAlterada(Tarefa tarefa, Lembrete lembrete, int idNotificacao);
+
     void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao);
+
+    void notificarQuestionarioAlterado(Questionario questionario, Lembrete lembrete, int idNotificacao);
 }

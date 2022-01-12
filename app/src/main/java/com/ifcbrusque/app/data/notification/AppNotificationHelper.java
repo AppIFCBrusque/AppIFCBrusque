@@ -61,6 +61,12 @@ public class AppNotificationHelper implements NotificationHelper {
     private NotificationManager mNotificationManager;
     private AlarmManager mAlarmManager;
 
+    public static int ICONE_LEMBRETE = R.drawable.ic_notifications_black_24dp;
+    public static int ICONE_SINCRONIZACAO = R.drawable.outline_sync_black_24;
+    public static int ICONE_NOTICIAS = R.drawable.outline_feed_black_24;
+    public static int ICONE_SIGAA = R.drawable.ic_notifications_black_24dp;
+    public static int ICONE_CANCELAR = R.drawable.outline_clear_black_24;
+
     @Inject
     public AppNotificationHelper(@ApplicationContext Context context) {
         mContext = context;
@@ -121,7 +127,7 @@ public class AppNotificationHelper implements NotificationHelper {
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(ICONE_LEMBRETE)
                 .setSubText("Lembretes")
                 .setContentTitle(titulo)
                 .setContentIntent(pendingIntent);
@@ -210,7 +216,7 @@ public class AppNotificationHelper implements NotificationHelper {
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.outline_feed_black_24)
+                .setSmallIcon(ICONE_NOTICIAS)
                 .setSubText("Notícias")
                 .setContentTitle(preview.getTitulo())
                 .setContentText(preview.getDescricao())
@@ -265,8 +271,8 @@ public class AppNotificationHelper implements NotificationHelper {
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setContentTitle(service.getString(R.string.sincronizacao))
                 .setContentText(service.getString(R.string.sincronizacao_inicio))
-                .setSmallIcon(R.drawable.outline_sync_black_24)
-                .addAction(R.drawable.outline_clear_black_24, service.getText(R.string.cancel), parar)
+                .setSmallIcon(ICONE_SINCRONIZACAO)
+                .addAction(ICONE_CANCELAR, service.getText(R.string.cancel), parar)
                 .build();
 
         service.startForeground(NOTF_SINCRONIZACAO_ID, notification);
@@ -281,9 +287,9 @@ public class AppNotificationHelper implements NotificationHelper {
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setContentTitle(service.getString(R.string.sincronizacao) + " (" + tarefaAtual + "/" + totalTarefas + ")")
                 .setContentText(service.getText(R.string.title_noticias).toString().toUpperCase())
-                .setSmallIcon(R.drawable.outline_sync_black_24)
+                .setSmallIcon(ICONE_SINCRONIZACAO)
                 .setProgress(totalTarefas, tarefaAtual, false)
-                .addAction(R.drawable.outline_clear_black_24, service.getText(R.string.cancel), parar)
+                .addAction(ICONE_CANCELAR, service.getText(R.string.cancel), parar)
                 .build();
 
         service.startForeground(NOTF_SINCRONIZACAO_ID, notification);
@@ -298,9 +304,9 @@ public class AppNotificationHelper implements NotificationHelper {
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setContentTitle(service.getString(R.string.sincronizacao) + " (" + tarefaAtual + "/" + totalTarefas + ")")
                 .setContentText(disciplina.getNome())
-                .setSmallIcon(R.drawable.outline_sync_black_24)
+                .setSmallIcon(ICONE_SINCRONIZACAO)
                 .setProgress(totalTarefas, tarefaAtual, false)
-                .addAction(R.drawable.outline_clear_black_24, service.getText(R.string.cancel), parar)
+                .addAction(ICONE_CANCELAR, service.getText(R.string.cancel), parar)
                 .build();
 
         service.startForeground(NOTF_SINCRONIZACAO_ID, notification);
@@ -312,8 +318,24 @@ public class AppNotificationHelper implements NotificationHelper {
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.avaliacao_nova), avaliacao.getDisciplina().getNome()))
+                .setContentText(avaliacao.getDescricao())
+                .setSubText(mContext.getText(R.string.sigaa))
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(avaliacao.getDescricao()));
+        mNotificationManager.notify(idNotificacao, notificationBuilder.build());
+    }
+
+    @Override
+    public void notificarAvaliacaoAlterada(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
+        final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setChannelId(NOTF_CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(ICONE_SIGAA)
+                .setContentTitle(String.format(mContext.getString(R.string.avaliacao_alterada), avaliacao.getDisciplina().getNome()))
                 .setContentText(avaliacao.getDescricao())
                 .setSubText(mContext.getText(R.string.sigaa))
                 .setContentIntent(pendingIntent)
@@ -328,8 +350,24 @@ public class AppNotificationHelper implements NotificationHelper {
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.tarefa_nova), tarefa.getDisciplina().getNome()))
+                .setContentText(tarefa.getTitulo())
+                .setSubText(mContext.getText(R.string.sigaa))
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(tarefa.getDescricao()));
+        mNotificationManager.notify(idNotificacao, notificationBuilder.build());
+    }
+
+    @Override
+    public void notificarTarefaAlterada(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
+        final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setChannelId(NOTF_CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(ICONE_SIGAA)
+                .setContentTitle(String.format(mContext.getString(R.string.tarefa_alterada), tarefa.getDisciplina().getNome()))
                 .setContentText(tarefa.getTitulo())
                 .setSubText(mContext.getText(R.string.sigaa))
                 .setContentIntent(pendingIntent)
@@ -344,8 +382,24 @@ public class AppNotificationHelper implements NotificationHelper {
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.questionario_novo), questionario.getDisciplina().getNome()))
+                .setContentText(questionario.getTitulo())
+                .setSubText(mContext.getText(R.string.sigaa))
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(questionario.getTitulo()));
+        mNotificationManager.notify(idNotificacao, notificationBuilder.build());
+    }
+
+    @Override
+    public void notificarQuestionarioAlterado(Questionario questionario, Lembrete lembrete, int idNotificacao) {
+        final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setChannelId(NOTF_CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(ICONE_SIGAA)
+                .setContentTitle(String.format(mContext.getString(R.string.questionario_alterado), questionario.getDisciplina().getNome()))
                 .setContentText(questionario.getTitulo())
                 .setSubText(mContext.getText(R.string.sigaa))
                 .setContentIntent(pendingIntent)
