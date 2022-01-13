@@ -11,10 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
 /*
@@ -41,25 +38,35 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
     private void carregarPagina(int pagina) {
         mPodeCarregar = false;
         getMvpView().mostrarProgressBar();
-        Timber.d("Carregando página: " + pagina);
+        Timber.d("Carregando página: %s", pagina);
 
         getCompositeDisposable().add(getDataManager()
                 .getPaginaNoticias(pagina)
-                .flatMap(previews  -> getDataManager().armazenarPreviewsNovos(previews, false))
+                .flatMap(previews -> getDataManager().armazenarPreviewsNovos(previews, false))
                 .subscribe(previewsArmazenados -> {
                     mPodeCarregar = true;
                     getMvpView().esconderProgressBar();
 
                     getMvpView().atualizarRecyclerView(previewsArmazenados);
 
+                    //Definir data da ultima atualização da primeira página
+                    if (pagina == 1) {
+                        getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
+                    }
+
                     //Atualizar a ultima página acessada
-                    if(pagina > getDataManager().getUltimaPaginaAcessadaNoticias()) {
+                    if (pagina > getDataManager().getUltimaPaginaAcessadaNoticias()) {
                         getDataManager().setUltimaPaginaAcessadaNoticias(pagina);
+                    }
+
+                    //Permitir que o serviço de sincronização notifique as notícias novas
+                    if (getDataManager().getPrimeiraSincronizacaoNoticias()) {
+                        getDataManager().setPrimeiraSincronizacaoNoticias(false);
                     }
                 }, erro -> {
                     mPodeCarregar = false;
                     getMvpView().esconderProgressBar();
-                    
+
                     if (erro.getClass() == NoInternetException.class) {
                         //Sem internet
                         getMvpView().onError(R.string.erro_sem_internet);
@@ -72,28 +79,12 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
 
     private void anexarDisposableDaSincronizacao() {
         //Se o serviço de sincronização estiver rodando e carregar novos previews, ele pode notificar este presenter para atualizar a recycler view
-        SyncService.getObservable().subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                getCompositeDisposable().add(d);
+        SyncService.getObservable().subscribe(codigo -> {
+            if (codigo == SyncService.OBSERVABLE_ATUALIZAR_RV_PREVIEWS) {
+                carregarPreviewsArmazenados();
             }
-
-            @Override
-            public void onNext(@NonNull Integer integer) {
-                //Carregar os previews novos na recycler view
-                if (integer == SyncService.OBSERVABLE_PREVIEWS_NOVOS) {
-                    carregarPreviewsArmazenados();
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                getMvpView().onError(e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-            }
+        }, erro -> {
+            /* Engolir erro */
         });
     }
 
@@ -106,11 +97,9 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
         anexarDisposableDaSincronizacao();
 
         long minutosDesdeUltimaSync = TimeUnit.MILLISECONDS.toMinutes(new Date().getTime() - getDataManager().getDataUltimaSincronizacaoAutomaticaNoticias().getTime());
-        Timber.d("Minutos desde a última sincronização: " + minutosDesdeUltimaSync);
-        if(minutosDesdeUltimaSync >= 10) {
+        Timber.d("Minutos desde a última sincronização: %s", minutosDesdeUltimaSync);
+        if (minutosDesdeUltimaSync >= 10) {
             carregarPagina(1);
-            getDataManager().setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
-            getDataManager().agendarSincronizacaoPeriodicaNoticias();
         }
     }
 

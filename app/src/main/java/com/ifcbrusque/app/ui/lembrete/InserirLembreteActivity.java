@@ -217,19 +217,52 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
      */
     @Override
     public void setTextoBotaoData(int ano, int mes, int dia) {
-        String texto = String.format("%02d", dia) + "/" + String.format("%02d", (mes + 1)) + "/" + String.format("%04d", ano);
+        String texto = String.format(getString(R.string.data_dd_MM_yyyy), dia, mes + 1, ano);
         mBtnDatePicker.setText(texto);
     }
 
     @Override
     public void setTextoBotaoHora(int hora, int minuto) {
-        String texto = String.format("%02d", hora) + ":" + String.format("%02d", minuto);
+        String texto = String.format(getString(R.string.hora_hh_mm), hora, minuto);
         mBtnTimePicker.setText(texto);
     }
 
     @Override
     public void setTextoBotaoRepeticao(int tipoRepeticao) {
         mBtnRepeticao.setText(Lembrete.getIdDaStringRepeticao(tipoRepeticao));
+    }
+
+    @Override
+    public void desativarTitulo() {
+        mTiTitulo.getEditText().setFocusable(false);
+        mTiTitulo.getEditText().setFocusableInTouchMode(false);
+        mTiTitulo.getEditText().setClickable(false);
+        mTiTitulo.getEditText().setLongClickable(false);
+        mTiTitulo.getEditText().setCursorVisible(false);
+    }
+
+    @Override
+    public void desativarDescricao() {
+        mTiDescricao.getEditText().setFocusable(false);
+        mTiDescricao.getEditText().setFocusableInTouchMode(false);
+        mTiDescricao.getEditText().setClickable(false);
+        mTiDescricao.getEditText().setLongClickable(false);
+        mTiDescricao.getEditText().setCursorVisible(false);
+    }
+
+    @Override
+    public void desativarBotaoData() {
+        mBtnDatePicker.setEnabled(false);
+    }
+
+    @Override
+    public void desativarBotaoHora() {
+        mBtnTimePicker.setEnabled(false);
+    }
+
+    @Override
+    public void desativarBotaoRepeticao() {
+        mBtnRepeticao.setEnabled(false);
     }
 
     /**

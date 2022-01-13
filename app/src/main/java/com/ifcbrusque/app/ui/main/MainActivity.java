@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.HomeActivity;
+import com.ifcbrusque.app.ui.login.LoginActivity;
 
 import javax.inject.Inject;
 
@@ -32,6 +33,12 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     protected void onDestroy() {
         mPresenter.onDetach();
         super.onDestroy();
+    }
+
+    @Override
+    public void abrirLogin() {
+        Intent intent = LoginActivity.getStartIntent(this);
+        startActivity(intent);
     }
 
     @Override

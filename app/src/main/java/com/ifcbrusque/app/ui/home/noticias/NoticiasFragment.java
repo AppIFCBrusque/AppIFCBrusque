@@ -23,14 +23,11 @@ import javax.inject.Inject;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.*;
-import static com.ifcbrusque.app.data.db.Converters.*;
-
 /*
 View dos previews (tela que você é levado ao clicar em "Notícias"), e não ao clicar para abrir em uma notícia
  */
 public class NoticiasFragment extends BaseFragment implements NoticiasContract.NoticiasView {
-    private Integer mCarregarQuandoFaltar = 5; //Quando estiver este número de notícias abaixo da atual, será carregada a próxima página
+    private final Integer mCarregarQuandoFaltar = 5; //Quando estiver este número de notícias abaixo da atual, será carregada a próxima página
 
     @Inject
     NoticiasContract.NoticiasPresenter<NoticiasContract.NoticiasView> mPresenter;

@@ -17,6 +17,8 @@ import com.ifcbrusque.app.ui.home.noticias.NoticiasContract;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasPresenter;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteContract;
 import com.ifcbrusque.app.ui.lembrete.InserirLembretePresenter;
+import com.ifcbrusque.app.ui.login.LoginContract;
+import com.ifcbrusque.app.ui.login.LoginPresenter;
 import com.ifcbrusque.app.ui.main.MainContract;
 import com.ifcbrusque.app.ui.main.MainPresenter;
 import com.ifcbrusque.app.ui.noticia.NoticiaContract;
@@ -31,7 +33,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 @Module
 public class ActivityModule {
-    private AppCompatActivity mActivity;
+    private final AppCompatActivity mActivity;
 
     public ActivityModule(AppCompatActivity activity) {
         mActivity = activity;
@@ -82,13 +84,19 @@ public class ActivityModule {
     }
 
     @Provides
+    @PerActivity
+    LoginContract.LoginPresenter<LoginContract.LoginView> provideLoginPresenter(LoginPresenter<LoginContract.LoginView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     LembretesAdapter provideLembretesAdapter() {
-        return new LembretesAdapter(new ArrayList<Object>(), Lembrete.ESTADO_INCOMPLETO);
+        return new LembretesAdapter(new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO);
     }
 
     @Provides
     NoticiasAdapter provideNoticiasAdapter(Picasso picasso) {
-        return new NoticiasAdapter(new ArrayList<Preview>(), picasso);
+        return new NoticiasAdapter(new ArrayList<>(), picasso);
     }
 
     @Provides

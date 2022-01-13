@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
 import com.ifcbrusque.app.data.db.model.Noticia;
 
 @Dao
@@ -22,5 +23,5 @@ public interface NoticiaDao {
     void delete(Noticia noticia);
 
     @Query("DELETE FROM noticia_table")
-    public void deleteAll();
+    void deleteAll();
 }

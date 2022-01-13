@@ -7,15 +7,32 @@ import android.content.Intent;
 import androidx.core.content.ContextCompat;
 
 public class SyncReceiver extends BroadcastReceiver {
-    public static final String ACTION_ATUALIZAR_NOTICIAS = "com.ifcbrusque.app.ACTION_ATUALIZAR_NOTICIAS";
+    public static final String ACTION_SINCRONIZACAO_COMPLETA = "com.ifcbrusque.app.ACTION_SINCRONIZACAO_COMPLETA";
+    public static final String ACTION_SINCRONIZACAO_RAPIDA = "com.ifcbrusque.app.ACTION_SINCRONIZACAO_RAPIDA";
+    public static final String ACTION_FINALIZAR_SERVICO = "com.ifcbrusque.app.ACTION_FINALIZAR_SERVICO";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        if (ACTION_ATUALIZAR_NOTICIAS.equals(action)) {
-            Intent serviceIntent = SyncService.getStartIntent(context, true);
-            ContextCompat.startForegroundService(context, serviceIntent);
+        Intent serviceIntent;
+        switch (action) {
+            case ACTION_SINCRONIZACAO_COMPLETA:
+                serviceIntent = SyncService.getStartIntent(context, false);
+                context.stopService(serviceIntent);
+                ContextCompat.startForegroundService(context, serviceIntent);
+                break;
+
+            case ACTION_SINCRONIZACAO_RAPIDA:
+                serviceIntent = SyncService.getStartIntent(context, true);
+                context.stopService(serviceIntent);
+                ContextCompat.startForegroundService(context, serviceIntent);
+                break;
+
+            case ACTION_FINALIZAR_SERVICO:
+                serviceIntent = SyncService.getStartIntent(context, false);
+                context.stopService(serviceIntent);
+                break;
         }
     }
 }

@@ -6,6 +6,7 @@ import com.ifcbrusque.app.ui.home.HomeActivity;
 import com.ifcbrusque.app.ui.home.lembretes.LembretesFragment;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasFragment;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity;
+import com.ifcbrusque.app.ui.login.LoginActivity;
 import com.ifcbrusque.app.ui.main.MainActivity;
 import com.ifcbrusque.app.ui.noticia.NoticiaActivity;
 
@@ -25,4 +26,6 @@ public interface ActivityComponent {
     void inject(NoticiasFragment fragment);
 
     void inject(NoticiaActivity activity);
+
+    void inject(LoginActivity activity);
 }

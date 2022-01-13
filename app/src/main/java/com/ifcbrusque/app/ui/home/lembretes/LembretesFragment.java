@@ -29,7 +29,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_ATUALIZAR_RECYCLER_VIEW;
 
 public class LembretesFragment extends BaseFragment implements LembretesContract.LembretesView {
-    int REQUEST_CODE_LEMBRETE = 100;
+    final int REQUEST_CODE_LEMBRETE = 100;
 
     @Inject
     LembretesContract.LembretesPresenter<LembretesContract.LembretesView> mPresenter;
@@ -164,18 +164,15 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
             TextView tvCompletos = mBottomSheetDialog.findViewById(R.id.tvCompletos);
             TextView tvTodos = mBottomSheetDialog.findViewById(R.id.tvTodos);
 
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v == tvIncompletos) {
-                        atualizarCategoriaRecyclerView(Lembrete.ESTADO_INCOMPLETO);
-                    } else if (v == tvCompletos) {
-                        atualizarCategoriaRecyclerView(Lembrete.ESTADO_COMPLETO);
-                    } else if (v == tvTodos) {
-                        atualizarCategoriaRecyclerView(0);
-                    }
-                    mBottomSheetDialog.dismiss();
+            View.OnClickListener onClickListener = v1 -> {
+                if (v1 == tvIncompletos) {
+                    atualizarCategoriaRecyclerView(Lembrete.ESTADO_INCOMPLETO);
+                } else if (v1 == tvCompletos) {
+                    atualizarCategoriaRecyclerView(Lembrete.ESTADO_COMPLETO);
+                } else if (v1 == tvTodos) {
+                    atualizarCategoriaRecyclerView(0);
                 }
+                mBottomSheetDialog.dismiss();
             };
             tvIncompletos.setOnClickListener(onClickListener);
             tvCompletos.setOnClickListener(onClickListener);

@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
 import java.util.List;
 
 import com.ifcbrusque.app.data.db.model.Preview;
@@ -24,5 +25,5 @@ public interface PreviewDao {
     void delete(Preview preview);
 
     @Query("DELETE FROM preview_table")
-    public void deleteAll();
+    void deleteAll();
 }

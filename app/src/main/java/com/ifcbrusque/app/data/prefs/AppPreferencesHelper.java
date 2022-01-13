@@ -28,10 +28,33 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public void setUsuarioSIGAA(String login, String senha) {
-        pref.edit().putString(SIGAA_LOGIN, login);
-        pref.edit().putString(SIGAA_SENHA, senha);
-        pref.edit().apply();
+    public boolean getPrimeiraInicializacao() {
+        return pref.getBoolean(PRIMEIRA_INICIALIZACAO, true);
+    }
+
+    @Override
+    public void setPrimeiraInicializacao(boolean b) {
+        pref.edit().putBoolean(PRIMEIRA_INICIALIZACAO, b).apply();
+    }
+
+    @Override
+    public boolean getPrimeiraSincronizacaoNoticias() {
+        return pref.getBoolean(PRIMEIRA_SINCRONIZACAO_NOTICIAS, true);
+    }
+
+    @Override
+    public void setPrimeiraSincronizacaoNoticias(boolean b) {
+        pref.edit().putBoolean(PRIMEIRA_SINCRONIZACAO_NOTICIAS, b).apply();
+    }
+
+    @Override
+    public boolean getSIGAAConectado() {
+        return pref.getBoolean(SIGAA_CONECTADO, false);
+    }
+
+    @Override
+    public void setSIGAAConectado(boolean b) {
+        pref.edit().putBoolean(SIGAA_CONECTADO, b).apply();
     }
 
     @Override
@@ -40,8 +63,18 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public void setLoginSIGAA(String login) {
+        pref.edit().putString(SIGAA_LOGIN, login).apply();
+    }
+
+    @Override
     public String getSenhaSIGAA() {
         return pref.getString(SIGAA_SENHA, "");
+    }
+
+    @Override
+    public void setSenhaSIGAA(String senha) {
+        pref.edit().putString(SIGAA_SENHA, senha).apply();
     }
 
     @Override
@@ -53,6 +86,17 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
         return Converters.fromTimestamp(pref.getLong(NOTICIAS_ULTIMA_SINCRONIZACAO, 0));
+    }
+
+    @Override
+    public void setDataUltimaSincronizacaoCompleta(Date data) {
+        long _data = Converters.dateToTimestamp(data);
+        pref.edit().putLong(SYNC_ULTIMA_DATA, _data).apply();
+    }
+
+    @Override
+    public Date getDataUltimaSincronizacaoCompleta() {
+        return Converters.fromTimestamp(pref.getLong(SYNC_ULTIMA_DATA, 0));
     }
 
     @Override
@@ -78,7 +122,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public int getNovoIdNotificacao() {
         final int id = pref.getInt(NOTIFICACOES_ULTIMO_ID, 100);
-        pref.edit().putInt(NOTIFICACOES_ULTIMO_ID, id+1).apply();
+        pref.edit().putInt(NOTIFICACOES_ULTIMO_ID, id + 1).apply();
         return id;
     }
 

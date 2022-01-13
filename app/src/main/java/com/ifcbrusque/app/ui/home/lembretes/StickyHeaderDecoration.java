@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Código retirado de https://stackoverflow.com/questions/55676164/sticky-header-in-nested-recyclerview-android?noredirect=1&lq=1
  */
 public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
-    private StickyHeaderInterface mListener;
+    private final StickyHeaderInterface mListener;
     private int mStickyHeaderHeight;
 
     public StickyHeaderDecoration(@NonNull StickyHeaderInterface listener) {

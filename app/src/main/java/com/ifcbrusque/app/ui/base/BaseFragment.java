@@ -10,7 +10,6 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.ifcbrusque.app.di.component.ActivityComponent;
-import com.ifcbrusque.app.utils.CommonUtils;
 
 public abstract class BaseFragment extends Fragment implements MvpView {
     private BaseActivity mActivity;

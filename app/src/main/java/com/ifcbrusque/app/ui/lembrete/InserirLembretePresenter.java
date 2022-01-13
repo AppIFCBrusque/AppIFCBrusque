@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class InserirLembretePresenter<V extends InserirLembreteContract.InserirLembreteView> extends BasePresenter<V> implements InserirLembreteContract.InserirLembretePresenter<V> {
     private Lembrete mLembrete;
-    private Calendar mCalendar = Calendar.getInstance();
+    private final Calendar mCalendar = Calendar.getInstance();
 
     @Inject
     public InserirLembretePresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
@@ -43,16 +43,15 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         .subscribe());
             } else {
                 //Armazenar lembrete novo
-                long idNotificacao = getDataManager().getNovoIdNotificacao();
-                mLembrete.setIdNotificacao(idNotificacao);
-                getDataManager().agendarNotificacaoLembreteSeFuturo(mLembrete);
-
                 getCompositeDisposable().add(getDataManager()
                         .inserirLembrete(mLembrete)
-                        .doOnNext(id -> {
-                            mLembrete.setId(id);
-                            getMvpView().fecharActivity(true);
-                        }).subscribe());
+                        .map(lembrete -> {
+                            getDataManager().agendarNotificacaoLembreteSeFuturo(lembrete);
+                            return true;
+                        })
+                        .doOnComplete(() -> getMvpView().fecharActivity(true))
+                        .subscribe());
+
             }
         } else {
             getMvpView().showMessage(R.string.erro_titulo_lembrete_vazio);
@@ -75,6 +74,14 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
                         getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
                         getMvpView().setTextoBotaoRepeticao(mLembrete.getTipoRepeticao());
+
+                        if (lembrete.getTipo() != Lembrete.LEMBRETE_PESSOAL) {
+                            getMvpView().desativarTitulo();
+                            getMvpView().desativarDescricao();
+                            getMvpView().desativarBotaoData();
+                            getMvpView().desativarBotaoHora();
+                            getMvpView().desativarBotaoRepeticao();
+                        }
                     })
                     .subscribe());
         } else {
@@ -84,7 +91,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
             mCalendar.set(Calendar.MINUTE, 0);
             mCalendar.set(Calendar.SECOND, 0);
 
-            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO);
+            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
 
             getMvpView().setTitulo(mLembrete.getTitulo());
             getMvpView().setDescricao(mLembrete.getDescricao());

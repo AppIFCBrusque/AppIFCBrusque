@@ -3,7 +3,6 @@ package com.ifcbrusque.app.ui.noticia;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
@@ -81,7 +80,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
         int id = item.getItemId();
 
         //Botão de voltar (fecha a activity)
-        if(id == android.R.id.home) {
+        if (id == android.R.id.home) {
             finish();
         }
 
@@ -101,6 +100,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
 
     /**
      * Utilizado para carregar um HTML no Web View
+     *
      * @param html HTML a ser carregado
      */
     @Override

@@ -1,12 +1,19 @@
 package com.ifcbrusque.app.data.db;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.ifcbrusque.app.data.db.model.AvaliacaoArmazenavel;
+import com.ifcbrusque.app.data.db.model.DisciplinaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
+import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.di.ApplicationContext;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Questionario;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,11 +29,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ifcbrusque.app.utils.AppConstants.TAG;
-
 @Singleton
 public class AppDbHelper implements DbHelper {
-    private AppDatabase mAppDatabase;
+    private final AppDatabase mAppDatabase;
 
     @Inject
     public AppDbHelper(@ApplicationContext Context context) {
@@ -48,7 +53,7 @@ public class AppDbHelper implements DbHelper {
             List<Preview> previewsNovos = new ArrayList<>();
             if (previews.size() > 0) {
                 for (Preview p : previews) { //Encontrar os previews não armazenados
-                    if (!previewsNoArmazenamento.stream().filter(_p -> _p.getUrlNoticia().equals(p.getUrlNoticia())).findFirst().isPresent()) {
+                    if (!previewsNoArmazenamento.stream().anyMatch(_p -> _p.getUrlNoticia().equals(p.getUrlNoticia()))) {
                         previewsNovos.add(p);
                     }
                 }
@@ -88,6 +93,27 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<List<Lembrete>> getLembrete(Avaliacao avaliacao) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.lembreteDao().getLembretes(Long.toString(avaliacao.getId()))))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Lembrete>> getLembrete(Tarefa tarefa) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.lembreteDao().getLembretes(tarefa.getId())))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Lembrete>> getLembrete(Questionario questionario) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.lembreteDao().getLembretes(Long.toString(questionario.getId()))))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Observable<List<Lembrete>> getLembretesArmazenados() {
         return Observable.defer(() -> Observable.just(mAppDatabase.lembreteDao().getAll()))
                 .subscribeOn(Schedulers.io())
@@ -95,17 +121,20 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Long> inserirLembrete(Lembrete lembrete) {
+    public Observable<Lembrete> inserirLembrete(Lembrete lembrete) {
         return Observable.defer(() -> Observable.just(mAppDatabase.lembreteDao().insert(lembrete)))
+                .map(id -> {
+                    lembrete.setId(id);
+                    return lembrete;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Completable deletarLembrete(Lembrete lembrete) {
-        return Completable.fromRunnable(() -> {
-            mAppDatabase.lembreteDao().delete(lembrete);
-        }).subscribeOn(Schedulers.io())
+        return Completable.fromRunnable(() -> mAppDatabase.lembreteDao().delete(lembrete))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -118,9 +147,8 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Completable alterarEstadoLembrete(long id, int novoEstado) {
-        return Completable.fromRunnable(() -> {
-            mAppDatabase.lembreteDao().alterarEstadoLembrete(id, novoEstado);
-        }).subscribeOn(Schedulers.io())
+        return Completable.fromRunnable(() -> mAppDatabase.lembreteDao().alterarEstadoLembrete(id, novoEstado))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -168,6 +196,341 @@ public class AppDbHelper implements DbHelper {
 
             mAppDatabase.lembreteDao().atualizarLembrete(lembrete);
             return Observable.just(lembrete);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable inserirDisciplinas(List<Disciplina> disciplinas) {
+        return Observable.fromIterable(disciplinas)
+                .map(disciplina -> new DisciplinaArmazenavel(disciplina))
+                .toList()
+                .flatMapCompletable(disciplinasArmazenaveis -> Completable.fromRunnable(() -> {
+                    Timber.d("Disciplinas a inserir: %s", disciplinasArmazenaveis.size());
+                    mAppDatabase.disciplinaDao().insertAll(disciplinasArmazenaveis);
+                }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarDisciplina(Disciplina disciplina) {
+        return Observable.just(disciplina)
+                .map(d -> new DisciplinaArmazenavel(d))
+                .flatMapCompletable(disciplinaArmazenavel -> Completable.fromRunnable(() -> {
+                    Timber.d("Disciplina a deletar: %s", disciplinaArmazenavel.getNome());
+                    mAppDatabase.disciplinaDao().delete(disciplinaArmazenavel);
+                }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Disciplina>> getDisciplinas(String frontEndIdTurma) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getDisciplinas(frontEndIdTurma)))
+                .flatMap(list -> Observable.fromIterable(list)
+                        .map(disciplinaArmazenavel -> disciplinaArmazenavel.getDisciplina())
+                        .toList()
+                        .toObservable())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Disciplina>> getAllDisciplinas() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
+                .flatMap(list -> Observable.fromIterable(list)
+                        .map(disciplinaArmazenavel -> disciplinaArmazenavel.getDisciplina())
+                        .toList()
+                        .toObservable()
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Avaliacao>> getAllAvaliacoes() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
+                .flatMap(disciplinas -> Observable.just(mAppDatabase.avaliacaoDao().getAll())
+                        .flatMapIterable(avaliacoes -> avaliacoes)
+                        .map(avaliacaoArmazenavel -> {
+                            List<Avaliacao> avaliacao = new ArrayList<>();
+                            if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma()))) {
+                                //Avaliação posssui disciplina correspondente salva (dá para criar)
+                                Disciplina disciplinaDaAvaliacao = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
+                                avaliacao.add(avaliacaoArmazenavel.getAvaliacao(disciplinaDaAvaliacao));
+                            } else {
+                                //Avaliação não posssui disciplina correspondente salva (não dá para criar)
+                                Timber.d("Avaliação sem disciplina correspondente: %s", avaliacaoArmazenavel.getDescricao());
+                                mAppDatabase.avaliacaoDao().delete(avaliacaoArmazenavel);
+                            }
+                            return avaliacao; //Se não houver item na lista, não vai ser "pulado" no .toList()
+                        })
+                        .flatMapIterable(list -> list)
+                        .toList()
+                        .toObservable())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Avaliacao> inserirAvaliacao(Avaliacao avaliacao) {
+        return Observable.just(new AvaliacaoArmazenavel(avaliacao))
+                .map(avaliacaoArmazenavel -> {
+                    mAppDatabase.avaliacaoDao().insert(avaliacaoArmazenavel);
+                    return avaliacao;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @param avaliacoesParaInserir
+     * @return avaliações que não estavam armazenadas
+     */
+    @Override
+    public Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoesParaInserir) {
+        return Observable.fromIterable(avaliacoesParaInserir)
+                .map(avaliacao -> new AvaliacaoArmazenavel(avaliacao))
+                .toList()
+                .map(avaliacoesArmazenaveis -> {
+                    List<AvaliacaoArmazenavel> avaliacoesNoDB = mAppDatabase.avaliacaoDao().getAll();
+                    List<AvaliacaoArmazenavel> avaliacoesNovas = new ArrayList<>();
+
+                    for (AvaliacaoArmazenavel avaliacao : avaliacoesArmazenaveis) {
+                        if (avaliacoesNoDB.stream().anyMatch(a -> a.getIdNoSIGAA() == avaliacao.getIdNoSIGAA())) {
+                            //Avaliação já armazenada (atualizar)
+                            mAppDatabase.avaliacaoDao().atualizarAvaliacao(avaliacao);
+                        } else {
+                            //Avaliação não armazenada (inserir)
+                            mAppDatabase.avaliacaoDao().insert(avaliacao);
+                            avaliacoesNovas.add(avaliacao);
+                        }
+                    }
+
+                    return avaliacoesNovas;
+                })
+                .flatMapObservable(avaliacoesNovas -> Observable.fromIterable(avaliacoesParaInserir)
+                        .filter(avaliacao -> avaliacoesNovas.stream().anyMatch(avaliacaoNova -> avaliacaoNova.getIdNoSIGAA() == avaliacao.getId()))
+                        .toList()
+                        .toObservable()
+                ) //Essa parte serve para remover da lista inicial os itens que não são novos (isso aqui é para não precisar converter do formato do banco de dados para o formato da API)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarAvaliacao(Avaliacao avaliacao) {
+        return Observable.just(avaliacao)
+                .map(a -> new AvaliacaoArmazenavel(a))
+                .flatMapCompletable(avaliacaoArmazenavel -> Completable.fromRunnable(() -> {
+                    Timber.d("Avaliação a deletar: %s", avaliacaoArmazenavel.getDescricao());
+                    mAppDatabase.avaliacaoDao().delete(avaliacaoArmazenavel);
+                }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Integer> atualizarAvaliacao(Avaliacao avaliacao) {
+        return Observable.just(new AvaliacaoArmazenavel(avaliacao))
+                .map(avaliacaoArmazenavel -> mAppDatabase.avaliacaoDao().atualizarAvaliacao(avaliacaoArmazenavel))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Tarefa>> getAllTarefas() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
+                .flatMap(disciplinas -> Observable.just(mAppDatabase.tarefaDao().getAll())
+                        .flatMapIterable(tarefas -> tarefas)
+                        .map(tarefaArmazenavel -> {
+                            List<Tarefa> tarefa = new ArrayList<>();
+                            if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(tarefaArmazenavel.getDisciplinaFrontEndIdTurma()))) {
+                                //Tarefa posssui disciplina correspondente salva (dá para criar)
+                                Disciplina disciplinaDaTarefa = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(tarefaArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
+                                tarefa.add(tarefaArmazenavel.getTarefa(disciplinaDaTarefa));
+                            } else {
+                                //Tarefa não posssui disciplina correspondente salva (não dá para criar)
+                                Timber.d("Tarefa sem disciplina correspondente: %s", tarefaArmazenavel.getTitulo());
+                                mAppDatabase.tarefaDao().delete(tarefaArmazenavel);
+                            }
+                            return tarefa; //Se não houver item na lista, não vai ser "pulado" no .toList()
+                        })
+                        .flatMapIterable(list -> list)
+                        .toList()
+                        .toObservable())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Tarefa> inserirTarefa(Tarefa tarefa) {
+        return Observable.just(new TarefaArmazenavel(tarefa))
+                .map(tarefaArmazenavel -> {
+                    mAppDatabase.tarefaDao().insert(tarefaArmazenavel);
+                    return tarefa;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @param tarefasParaInserir
+     * @return tarefas que não estavam armazenadas
+     */
+    @Override
+    public Observable<List<Tarefa>> inserirTarefas(List<Tarefa> tarefasParaInserir) {
+        return Observable.fromIterable(tarefasParaInserir)
+                .map(tarefa -> new TarefaArmazenavel(tarefa))
+                .toList()
+                .map(tarefasArmazenaveis -> {
+                    List<TarefaArmazenavel> tarefasNoDB = mAppDatabase.tarefaDao().getAll();
+                    List<TarefaArmazenavel> tarefasNovas = new ArrayList<>();
+
+                    for (TarefaArmazenavel tarefa : tarefasArmazenaveis) {
+                        if (tarefasNoDB.stream().anyMatch(t -> t.getIdNoSIGAA().equals(tarefa.getIdNoSIGAA()))) {
+                            //Tarefa já armazenada (atualizar)
+                            mAppDatabase.tarefaDao().atualizarTarefa(tarefa);
+                        } else {
+                            //Tarefa não armazenada (inserir)
+                            mAppDatabase.tarefaDao().insert(tarefa);
+                            tarefasNovas.add(tarefa);
+                        }
+                    }
+
+                    return tarefasNovas;
+                })
+                .flatMapObservable(tarefasNovas -> Observable.fromIterable(tarefasParaInserir)
+                        .filter(tarefa -> tarefasNovas.stream().anyMatch(tarefaNova -> tarefaNova.getIdNoSIGAA().equals(tarefa.getId())))
+                        .toList()
+                        .toObservable()
+                ) //Essa parte serve para remover da lista inicial os itens que não são novos (isso aqui é para não precisar converter do formato do banco de dados para o formato da API)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarTarefa(Tarefa tarefa) {
+        return Observable.just(tarefa)
+                .map(t -> new TarefaArmazenavel(t))
+                .flatMapCompletable(tarefaArmazenavel -> Completable.fromRunnable(() -> {
+                    Timber.d("Tarefa a deletar: %s", tarefaArmazenavel.getTitulo());
+                    mAppDatabase.tarefaDao().delete(tarefaArmazenavel);
+                }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Integer> atualizarTarefa(Tarefa tarefa) {
+        return Observable.just(new TarefaArmazenavel(tarefa))
+                .map(tarefaArmazenavel -> mAppDatabase.tarefaDao().atualizarTarefa(tarefaArmazenavel))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Questionario>> getAllQuestionarios() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
+                .flatMap(disciplinas -> Observable.just(mAppDatabase.questionarioDao().getAll())
+                        .flatMapIterable(questionarios -> questionarios)
+                        .map(questionarioArmazenavel -> {
+                            List<Questionario> questionario = new ArrayList<>();
+                            if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(questionarioArmazenavel.getDisciplinaFrontEndIdTurma()))) {
+                                //Questionário posssui disciplina correspondente salva (dá para criar)
+                                Disciplina disciplinaDoQuestionario = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(questionarioArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
+                                questionario.add(questionarioArmazenavel.getQuestionario(disciplinaDoQuestionario));
+                            } else {
+                                //Questionário não posssui disciplina correspondente salva (não dá para criar)
+                                Timber.d("Questionário sem disciplina correspondente: %s", questionarioArmazenavel.getTitulo());
+                                mAppDatabase.questionarioDao().delete(questionarioArmazenavel);
+                            }
+                            return questionario; //Se não houver item na lista, não vai ser "pulado" no .toList()
+                        })
+                        .flatMapIterable(list -> list)
+                        .toList()
+                        .toObservable())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Questionario> inserirQuestionario(Questionario questionario) {
+        return Observable.just(new QuestionarioArmazenavel(questionario))
+                .map(questionarioArmazenavel -> {
+                    mAppDatabase.questionarioDao().insert(questionarioArmazenavel);
+                    return questionario;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @param questionariosParaInserir
+     * @return questionários que não estavam armazenados
+     */
+    @Override
+    public Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionariosParaInserir) {
+        return Observable.fromIterable(questionariosParaInserir)
+                .map(questionario -> new QuestionarioArmazenavel(questionario))
+                .toList()
+                .map(questionariosArmazenaveis -> {
+                    List<QuestionarioArmazenavel> questionariosNoDB = mAppDatabase.questionarioDao().getAll();
+                    List<QuestionarioArmazenavel> questionariosNovos = new ArrayList<>();
+
+                    for (QuestionarioArmazenavel questionario : questionariosArmazenaveis) {
+                        if (questionariosNoDB.stream().anyMatch(q -> q.getIdNoSIGAA() == questionario.getIdNoSIGAA())) {
+                            //Questionário já armazenado (atualizar)
+                            mAppDatabase.questionarioDao().atualizarQuestionario(questionario);
+                        } else {
+                            //Questionário não armazenado (inserir)
+                            mAppDatabase.questionarioDao().insert(questionario);
+                            questionariosNovos.add(questionario);
+                        }
+                    }
+
+                    return questionariosNovos;
+                })
+                .flatMapObservable(questionariosNovos -> Observable.fromIterable(questionariosParaInserir)
+                        .filter(questionario -> questionariosNovos.stream().anyMatch(questionarioNovo -> questionarioNovo.getIdNoSIGAA() == questionario.getId()))
+                        .toList()
+                        .toObservable()
+                ) //Essa parte serve para remover da lista inicial os itens que não são novos (isso aqui é para não precisar converter do formato do banco de dados para o formato da API)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarQuestionario(Questionario questionario) {
+        return Observable.just(questionario)
+                .map(q -> new QuestionarioArmazenavel(q))
+                .flatMapCompletable(questionarioArmazenavel -> Completable.fromRunnable(() -> {
+                    Timber.d("Questionario a deletar: %s", questionarioArmazenavel.getTitulo());
+                    mAppDatabase.questionarioDao().delete(questionarioArmazenavel);
+                }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Integer> atualizarQuestionario(Questionario questionario) {
+        return Observable.just(new QuestionarioArmazenavel(questionario))
+                .map(questionarioArmazenavel -> mAppDatabase.questionarioDao().atualizarQuestionario(questionarioArmazenavel))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deletarTudoSIGAA() {
+        return Completable.fromRunnable(() -> {
+            mAppDatabase.avaliacaoDao().deleteAll();
+            mAppDatabase.questionarioDao().deleteAll();
+            mAppDatabase.tarefaDao().deleteAll();
+            mAppDatabase.disciplinaDao().deleteAll();
+            mAppDatabase.lembreteDao().deleteAllLembretesSIGAA();
+            Timber.d("Itens do SIGAA deletados");
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

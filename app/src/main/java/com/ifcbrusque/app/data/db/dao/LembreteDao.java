@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.ifcbrusque.app.data.db.model.Lembrete;
+
 import java.util.List;
 
 @Dao
@@ -24,8 +25,14 @@ public interface LembreteDao {
     @Query("DELETE FROM lembrete_table")
     void deleteAll();
 
+    @Query("DELETE FROM lembrete_table WHERE tipo != 1")
+    void deleteAllLembretesSIGAA();
+
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
     Lembrete getLembrete(long id);
+
+    @Query("SELECT * FROM lembrete_table WHERE idObjetoAssociado = :idObjetoAssociado")
+    List<Lembrete> getLembretes(String idObjetoAssociado);
 
     @Query("SELECT * FROM lembrete_table")
     List<Lembrete> getAll();

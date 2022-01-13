@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +21,7 @@ import javax.inject.Inject;
 import static com.ifcbrusque.app.data.network.noticias.PgNoticiasParser.*;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHolder> {
-    private Picasso mPicasso;
+    private final Picasso mPicasso;
 
     private List<Preview> mPreviews;
     private ItemListener mItemListener;
@@ -50,6 +51,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         notifyDataSetChanged();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Função obrigatória do recycler view
      */
@@ -58,8 +60,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
     public NoticiasAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.item_noticia, parent, false);
-        NoticiasAdapter.ViewHolder viewHolder = new NoticiasAdapter.ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     /**
@@ -80,7 +81,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         Preview preview = mPreviews.get(position);
         //TODO: Adicionar o espaçamento extra em cima do primeiro preview
 
-        if(preview.getTitulo().length() > 0) {
+        if (preview.getTitulo().length() > 0) {
             holder.mTvTitulo.setText(preview.getTitulo());
         } else {
             holder.mTvTitulo.setText(R.string.noticia_titulo_padrao);
@@ -103,8 +104,9 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
     Você configura ele quase da mesma forma que uma view
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTvTitulo, mTvData;
-        ImageView mIvPreview;
+        final TextView mTvTitulo;
+        final TextView mTvData;
+        final ImageView mIvPreview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +118,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         }
 
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Funções utilizadas neste adapter que são definidas na view (comunica a view com o adapter)

@@ -33,12 +33,8 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
     private void carregarNoticiaArmazenada(Preview preview) {
         getCompositeDisposable().add(getDataManager()
                 .getNoticia(preview.getUrlNoticia())
-                .subscribe(noticia -> {
-                            exibirNoticiaNaView(preview, noticia);
-                        },
-                        erro -> {
-                            carregarNoticiaWeb(preview);
-                        }));
+                .subscribe(noticia -> exibirNoticiaNaView(preview, noticia),
+                        erro -> carregarNoticiaWeb(preview)));
     }
 
     private void carregarNoticiaWeb(Preview preview) {

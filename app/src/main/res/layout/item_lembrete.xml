@@ -4,23 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding_views"
+    android:background="?attr/colorOnPrimary"
     android:foreground="?attr/selectableItemBackground"
-    android:background="?attr/colorOnPrimary"><![CDATA[
-
-
-    android:id="@+id/cardView"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    app:cardBackgroundColor="?attr/colorSurface"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:layout_editor_absoluteX="3dp">
-
-
-
-
-
-    ]]>
+    android:padding="@dimen/padding_views">
 
     <TextView
         android:id="@+id/lembrete_titulo"
@@ -50,51 +36,55 @@
         app:layout_constraintEnd_toStartOf="@+id/lembrete_opcoes"
         app:layout_constraintStart_toStartOf="@+id/lembrete_titulo"
         app:layout_constraintTop_toBottomOf="@+id/lembrete_titulo" />
+
     <TextView
         android:id="@+id/lembrete_data"
         style="@style/TextAppearance.Secundario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/padding_views"
         android:padding="@dimen/padding_views"
         android:text="00/00/0000"
+        app:drawableLeftCompat="@drawable/outline_event_black_20"
         app:layout_constrainedWidth="true"
         app:layout_constraintStart_toStartOf="@+id/lembrete_titulo"
-        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
-        android:drawableLeft="@drawable/outline_event_black_20"
-        android:drawablePadding="@dimen/padding_views"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao" />
+
     <TextView
         android:id="@+id/lembrete_hora"
         style="@style/TextAppearance.Secundario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/padding_views"
         android:padding="@dimen/padding_views"
         android:text="00:00"
+        app:drawableLeftCompat="@drawable/outline_schedule_black_20"
         app:layout_constrainedWidth="true"
         app:layout_constraintStart_toEndOf="@+id/lembrete_data"
-        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
-        android:drawableLeft="@drawable/outline_schedule_black_20"
-        android:drawablePadding="@dimen/padding_views"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao" />
+
     <TextView
         android:id="@+id/lembrete_repeticao"
         style="@style/TextAppearance.Secundario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/padding_views"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_nao_repetir"
+        app:drawableLeftCompat="@drawable/outline_repeat_one_black_24"
         app:layout_constrainedWidth="true"
         app:layout_constraintStart_toEndOf="@+id/lembrete_hora"
-        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao"
-        android:drawableLeft="@drawable/outline_repeat_one_black_24"
-        android:drawablePadding="@dimen/padding_views"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao" />
+
     <ImageButton
         android:id="@+id/lembrete_opcoes"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@null"
         android:backgroundTint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@null"
         app:srcCompat="@drawable/outline_more_vert_black_24" />
 
 

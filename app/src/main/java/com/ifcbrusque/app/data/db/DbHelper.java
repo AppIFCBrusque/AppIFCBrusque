@@ -3,6 +3,10 @@ package com.ifcbrusque.app.data.db;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.stacked.sigaa_ifc.Avaliacao;
+import com.stacked.sigaa_ifc.Disciplina;
+import com.stacked.sigaa_ifc.Questionario;
+import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.List;
 
@@ -20,9 +24,15 @@ public interface DbHelper {
 
     Observable<Lembrete> getLembrete(long id);
 
+    Observable<List<Lembrete>> getLembrete(Avaliacao avaliacao);
+
+    Observable<List<Lembrete>> getLembrete(Tarefa tarefa);
+
+    Observable<List<Lembrete>> getLembrete(Questionario questionario);
+
     Observable<List<Lembrete>> getLembretesArmazenados();
 
-    Observable<Long> inserirLembrete(Lembrete lembrete);
+    Observable<Lembrete> inserirLembrete(Lembrete lembrete);
 
     Completable deletarLembrete(Lembrete lembrete);
 
@@ -32,4 +42,44 @@ public interface DbHelper {
     Completable alterarEstadoLembrete(long id, int novoEstado);
 
     Observable<Lembrete> atualizarParaProximaDataLembreteComRepeticao(long idLembrete);
+
+    Observable<List<Disciplina>> getAllDisciplinas();
+
+    Observable<List<Disciplina>> getDisciplinas(String frontEndIdTurma);
+
+    Completable inserirDisciplinas(List<Disciplina> disciplinas);
+
+    Completable deletarDisciplina(Disciplina disciplina);
+
+    Observable<List<Avaliacao>> getAllAvaliacoes();
+
+    Observable<Avaliacao> inserirAvaliacao(Avaliacao avaliacao);
+
+    Observable<List<Avaliacao>> inserirAvaliacoes(List<Avaliacao> avaliacoes);
+
+    Completable deletarAvaliacao(Avaliacao avaliacao);
+
+    Observable<Integer> atualizarAvaliacao(Avaliacao avaliacao);
+
+    Observable<List<Tarefa>> getAllTarefas();
+
+    Observable<Tarefa> inserirTarefa(Tarefa tarefa);
+
+    Observable<List<Tarefa>> inserirTarefas(List<Tarefa> tarefas);
+
+    Completable deletarTarefa(Tarefa tarefa);
+
+    Observable<Integer> atualizarTarefa(Tarefa tarefa);
+
+    Observable<List<Questionario>> getAllQuestionarios();
+
+    Observable<Questionario> inserirQuestionario(Questionario questionario);
+
+    Observable<List<Questionario>> inserirQuestionarios(List<Questionario> questionarios);
+
+    Completable deletarQuestionario(Questionario questionario);
+
+    Observable<Integer> atualizarQuestionario(Questionario questionario);
+
+    Completable deletarTudoSIGAA();
 }
