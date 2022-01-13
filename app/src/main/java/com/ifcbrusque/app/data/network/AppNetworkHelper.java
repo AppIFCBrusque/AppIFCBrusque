@@ -21,8 +21,8 @@ import io.reactivex.rxjava3.core.Observable;
 
 @Singleton
 public class AppNetworkHelper implements NetworkHelper {
-    private AppPgNoticiasHelper mPgNoticiasHelper;
-    private SIGAAHelper mSIGAAHelper;
+    private final AppPgNoticiasHelper mPgNoticiasHelper;
+    private final SIGAAHelper mSIGAAHelper;
 
     @Inject
     public AppNetworkHelper(AppPgNoticiasHelper noticiasHelper, AppSIGAAHelper SIGAAHelper) {

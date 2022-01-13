@@ -8,15 +8,15 @@ import java.util.Date;
 
 @Entity(tableName = "noticia_table")
 public class Noticia {
-    @PrimaryKey(autoGenerate =  true)
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String url;
-    private String titulo;
+    private final String url;
+    private final String titulo;
     @ColumnInfo(name = "html_conteudo")
-    private String htmlConteudo;
+    private final String htmlConteudo;
     @ColumnInfo(name = "data_noticia")
-    private Date data;
+    private final Date data;
 
     public Noticia(String url, String titulo, String htmlConteudo, Date data) {
         this.url = url;
@@ -25,11 +25,27 @@ public class Noticia {
         this.data = data;
     }
 
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+    public int getId() {
+        return id;
+    }
 
-    public String getUrl() {return url;}
-    public String getTitulo() {return titulo;}
-    public String getHtmlConteudo() {return htmlConteudo;}
-    public Date getData() {return data;}
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getHtmlConteudo() {
+        return htmlConteudo;
+    }
+
+    public Date getData() {
+        return data;
+    }
 }

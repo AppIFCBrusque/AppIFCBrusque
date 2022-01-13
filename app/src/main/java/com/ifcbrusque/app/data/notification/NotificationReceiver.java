@@ -25,7 +25,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             //Reagendar lembretes com repetição
             int tipoRepeticao = intent.getExtras().getInt(InserirLembreteActivity.EXTRAS_LEMBRETE_TIPO_REPETICAO, Lembrete.REPETICAO_SEM);
-            if(tipoRepeticao != Lembrete.REPETICAO_SEM) {
+            if (tipoRepeticao != Lembrete.REPETICAO_SEM) {
                 long idLembrete = intent.getExtras().getLong(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, -1);
                 //Atualizar a data do lembrete salvo
                 db.atualizarParaProximaDataLembreteComRepeticao(idLembrete)

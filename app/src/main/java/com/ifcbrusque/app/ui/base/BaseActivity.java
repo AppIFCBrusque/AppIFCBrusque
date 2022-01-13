@@ -16,7 +16,6 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.component.ActivityComponent;
 import com.ifcbrusque.app.di.component.DaggerActivityComponent;
 import com.ifcbrusque.app.di.module.ActivityModule;
-import com.ifcbrusque.app.utils.CommonUtils;
 import com.ifcbrusque.app.utils.NetworkUtils;
 
 public abstract class BaseActivity extends AppCompatActivity implements MvpView {

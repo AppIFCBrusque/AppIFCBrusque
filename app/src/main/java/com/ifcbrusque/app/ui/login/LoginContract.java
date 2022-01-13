@@ -24,8 +24,6 @@ public interface LoginContract {
     }
 
     interface LoginPresenter<V extends LoginView> extends MvpPresenter<V> {
-        void onViewPronta();
-
         void onEntrarClick(String usuario, String senha);
 
         void onPularClick();

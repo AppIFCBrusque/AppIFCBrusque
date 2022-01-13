@@ -21,7 +21,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class AppSIGAAHelper implements SIGAAHelper {
-    private Sessao mSessao;
+    private final Sessao mSessao;
 
     @Inject
     public AppSIGAAHelper(@ApplicationContext Context context) {

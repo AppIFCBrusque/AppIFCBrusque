@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class InserirLembretePresenter<V extends InserirLembreteContract.InserirLembreteView> extends BasePresenter<V> implements InserirLembreteContract.InserirLembretePresenter<V> {
     private Lembrete mLembrete;
-    private Calendar mCalendar = Calendar.getInstance();
+    private final Calendar mCalendar = Calendar.getInstance();
 
     @Inject
     public InserirLembretePresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {

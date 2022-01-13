@@ -217,13 +217,13 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
      */
     @Override
     public void setTextoBotaoData(int ano, int mes, int dia) {
-        String texto = String.format("%02d", dia) + "/" + String.format("%02d", (mes + 1)) + "/" + String.format("%04d", ano);
+        String texto = String.format(getString(R.string.data_dd_MM_yyyy), dia, mes + 1, ano);
         mBtnDatePicker.setText(texto);
     }
 
     @Override
     public void setTextoBotaoHora(int hora, int minuto) {
-        String texto = String.format("%02d", hora) + ":" + String.format("%02d", minuto);
+        String texto = String.format(getString(R.string.hora_hh_mm), hora, minuto);
         mBtnTimePicker.setText(texto);
     }
 

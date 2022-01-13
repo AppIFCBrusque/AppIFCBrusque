@@ -18,11 +18,6 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
     }
 
     @Override
-    public void onViewPronta() {
-        //Conferir se o SIGAA está disponível?
-    }
-
-    @Override
     public void onEntrarClick(String usuario, String senha) {
         getMvpView().desativarBotaoEntrar();
         getMvpView().mostrarLoading();
@@ -32,7 +27,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                     getMvpView().esconderLoading();
 
                     if (logado) {
-                        Timber.d("Logado como: " + getDataManager().getUsuarioSIGAA().getNome());
+                        Timber.d("Logado como: %s", getDataManager().getUsuarioSIGAA().getNome());
 
                         return getDataManager().deletarTudoSIGAA()
                                 .doOnComplete(() -> {

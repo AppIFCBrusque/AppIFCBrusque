@@ -22,7 +22,6 @@ import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_ATRAS
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_HOJE;
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_NESTA_SEMANA;
 import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_UM_MES;
-import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.ordenarLembretesPelaData;
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class LembretesPresenter<V extends LembretesContract.LembretesView> extends BasePresenter<V> implements LembretesContract.LembretesPresenter<V> {
@@ -123,7 +122,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
         //Iniciar sincronização caso já tenha passado mais de um dia desde a última (provavelmente o alarme foi cancelado)
         long horasDesdeUltimaSync = TimeUnit.MILLISECONDS.toHours(new Date().getTime() - getDataManager().getDataUltimaSincronizacaoCompleta().getTime());
         Timber.d("%s horas desde a última sincronização", horasDesdeUltimaSync);
-        if(horasDesdeUltimaSync > 24) {
+        if (horasDesdeUltimaSync > 24) {
             getDataManager().iniciarSincronizacao();
         } else {
             getDataManager().agendarSincronizacao();
@@ -187,7 +186,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
                     getDataManager().desagendarNotificacaoLembrete(lembrete);
 
                     List<Lembrete> lembretes = getMvpView().getLembretesNaView();
-                    lembretes.remove(lembretes.indexOf(lembrete));
+                    lembretes.remove(lembrete);
 
                     getMvpView().setLembretesNaView(lembretes);
                 })

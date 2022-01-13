@@ -18,14 +18,12 @@ import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 import com.ifcbrusque.app.di.module.ServiceModule;
 import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Tarefa;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -39,7 +37,7 @@ import timber.log.Timber;
 Serviço utilizado para obter informações da internet (notícias, SIGAA) no fundo e processá-las
  */
 public class SyncService extends Service {
-    public static String EXTRA_SINCRONIZACAO_RAPIDA = "EXTRA_SINCRONIZACAO_RAPIDA";
+    public static final String EXTRA_SINCRONIZACAO_RAPIDA = "EXTRA_SINCRONIZACAO_RAPIDA";
 
     public static Intent getStartIntent(Context context, boolean sincronizacaoRapida) {
         Intent intent = new Intent(context, SyncService.class);
@@ -91,7 +89,7 @@ public class SyncService extends Service {
     int mTarefaAtual = 0;
     int mTotalTarefas = 0;
 
-    int mTarefasPorDisciplina = 3;
+    final int mTarefasPorDisciplina = 3;
 
     private void sincronizar() {
         mDataManager.notificarSincronizacao(this);
@@ -125,7 +123,7 @@ public class SyncService extends Service {
                             mTarefaAtual++;
                             mDataManager.setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
 
-                            Timber.d("Notícias novas: " + previewsNovos.size());
+                            Timber.d("Notícias novas: %s", previewsNovos.size());
                             if (!mPrimeiraSincronizacaoNoticias) {
                                 //Notificar
                                 if (previewsNovos.size() > 0) {
@@ -459,7 +457,7 @@ public class SyncService extends Service {
     final public static int OBSERVABLE_ATUALIZAR_RV_PREVIEWS = 1;
     final public static int OBSERVABLE_ATUALIZAR_RV_LEMBRETES = 2;
 
-    static PublishSubject<Integer> data = PublishSubject.create();
+    static final PublishSubject<Integer> data = PublishSubject.create();
 
     public static Observable<Integer> getObservable() {
         return data;

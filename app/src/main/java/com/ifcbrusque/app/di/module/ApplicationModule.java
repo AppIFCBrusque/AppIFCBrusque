@@ -2,9 +2,6 @@ package com.ifcbrusque.app.di.module;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.ifcbrusque.app.data.AppDataManager;
 import com.ifcbrusque.app.data.DataManager;
@@ -24,7 +21,6 @@ import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.di.ApplicationContext;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.PicassoProvider;
 
 import java.util.concurrent.TimeUnit;
 

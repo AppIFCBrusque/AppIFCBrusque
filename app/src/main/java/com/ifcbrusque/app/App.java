@@ -33,7 +33,7 @@ public class App extends Application {
         Timber.plant(new Timber.DebugTree());
     }
 
-    public ApplicationComponent getComponent(){
+    public ApplicationComponent getComponent() {
         return mApplicationComponent;
     }
 }

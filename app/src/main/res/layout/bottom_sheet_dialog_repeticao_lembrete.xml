@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="250dp">
@@ -10,78 +9,83 @@
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_dashboard_black_24dp"
+        android:background="?attr/colorOnPrimary"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_hora"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorOnPrimary"
+        app:drawableLeftCompat="@drawable/ic_dashboard_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvDia"
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_dashboard_black_24dp"
+        android:background="?attr/colorOnPrimary"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_dia"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorOnPrimary"
+        app:drawableLeftCompat="@drawable/ic_dashboard_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHora"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/tvHora" />
+
     <TextView
         android:id="@+id/tvSemana"
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_dashboard_black_24dp"
+        android:background="?attr/colorOnPrimary"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_semana"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorOnPrimary"
+        app:drawableLeftCompat="@drawable/ic_dashboard_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDia"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/tvDia" />
+
     <TextView
         android:id="@+id/tvMes"
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_dashboard_black_24dp"
+        android:background="?attr/colorOnPrimary"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_mes"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorOnPrimary"
+        app:drawableLeftCompat="@drawable/ic_dashboard_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSemana"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/tvSemana" />
+
     <TextView
         android:id="@+id/tvAno"
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_dashboard_black_24dp"
+        android:background="?attr/colorOnPrimary"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_ano"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorOnPrimary"
+        app:drawableLeftCompat="@drawable/ic_dashboard_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMes"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/tvMes" />
+
     <TextView
         android:id="@+id/tvNaoRepetir"
         style="@style/TextAppearance.TituloItemLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_dashboard_black_24dp"
+        android:background="?attr/colorOnPrimary"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/padding_views"
         android:text="@string/repeticao_lembretes_nao_repetir"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorOnPrimary"
+        app:drawableLeftCompat="@drawable/ic_dashboard_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvAno"></TextView>
+        app:layout_constraintTop_toBottomOf="@id/tvAno" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

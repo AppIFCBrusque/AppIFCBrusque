@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity(tableName = "tarefa_table")
 public class TarefaArmazenavel {
     @NonNull
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey()
     @ColumnInfo(name = "id_no_sigaa")
     private String idNoSIGAA = "";
 

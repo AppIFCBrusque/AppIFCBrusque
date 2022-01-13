@@ -2,7 +2,6 @@ package com.ifcbrusque.app.data.network.noticias;
 
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
-import com.ifcbrusque.app.data.network.model.NoInternetException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,12 +23,13 @@ Funções para obter as notícias da página de internet do campus
 public class AppPgNoticiasHelper implements PgNoticiasHelper {
     private final String urlBase = "http://noticias.brusque.ifc.edu.br/category/noticias/page/";
 
-    private OkHttpClient mClient;
+    private final OkHttpClient mClient;
 
     @Inject
     public AppPgNoticiasHelper(OkHttpClient client) {
         mClient = client;
     }
+
     /*
     Função básica que solicita alguma página da internet e retorna a resposta
      */
@@ -49,7 +49,7 @@ public class AppPgNoticiasHelper implements PgNoticiasHelper {
         return Observable.defer(() -> {
             Response r = GET(urlBase + numeroPagina);
 
-            if(r != null) {
+            if (r != null) {
                 return Observable.just(getObjetosPreview(r));
             } else {
                 throw new IOException("Erro ao carregar a página");
@@ -67,7 +67,7 @@ public class AppPgNoticiasHelper implements PgNoticiasHelper {
         return Observable.defer(() -> {
             Response r = GET(preview.getUrlNoticia());
 
-            if(r != null) {
+            if (r != null) {
                 return Observable.just(getObjetoNoticia(r, preview));
             } else {
                 throw new IOException("Erro ao carregar a página");

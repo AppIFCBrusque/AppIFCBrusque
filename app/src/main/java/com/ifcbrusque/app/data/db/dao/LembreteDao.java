@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.ifcbrusque.app.data.db.model.Lembrete;
+
 import java.util.List;
 
 @Dao

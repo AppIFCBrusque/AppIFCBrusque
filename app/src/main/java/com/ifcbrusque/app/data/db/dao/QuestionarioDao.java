@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.ifcbrusque.app.data.db.model.AvaliacaoArmazenavel;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 
 import java.util.List;

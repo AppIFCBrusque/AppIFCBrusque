@@ -13,7 +13,7 @@ public class DisciplinaArmazenavel {
     private String idNoSIGAA;
     private String nome, periodo;
     @NonNull
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey()
     @ColumnInfo(name = "front_end_id_turma")
     private String frontEndIdTurma = "";
     @ColumnInfo(name = "form_acessar_turma_virtual")

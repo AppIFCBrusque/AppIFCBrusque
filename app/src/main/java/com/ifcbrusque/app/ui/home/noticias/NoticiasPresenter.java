@@ -11,10 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
 /*
@@ -41,7 +38,7 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
     private void carregarPagina(int pagina) {
         mPodeCarregar = false;
         getMvpView().mostrarProgressBar();
-        Timber.d("Carregando página: " + pagina);
+        Timber.d("Carregando página: %s", pagina);
 
         getCompositeDisposable().add(getDataManager()
                 .getPaginaNoticias(pagina)
@@ -100,7 +97,7 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
         anexarDisposableDaSincronizacao();
 
         long minutosDesdeUltimaSync = TimeUnit.MILLISECONDS.toMinutes(new Date().getTime() - getDataManager().getDataUltimaSincronizacaoAutomaticaNoticias().getTime());
-        Timber.d("Minutos desde a última sincronização: " + minutosDesdeUltimaSync);
+        Timber.d("Minutos desde a última sincronização: %s", minutosDesdeUltimaSync);
         if (minutosDesdeUltimaSync >= 10) {
             carregarPagina(1);
         }

@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">IFC Brusque</string>
-    <string name="action_settings">Configurações</string>
 
-    <string name="next">Próximo</string>
-    <string name="previous">Anterior</string>
     <string name="cancel">Cancelar</string>
 
     <!-- ERROS -->
@@ -19,12 +16,10 @@
 
     <string name="noticia_titulo_padrao">Título não disponível</string>
     <string name="noticia_descricao_padrao">Descrição não disponível</string>
+    <string name="data_dd_MM_yyyy">%02d/%02d/%04d</string>
+    <string name="hora_hh_mm">%02d:%02d</string>
 
     <!-- LEMBRETES -->
-    <string name="lembrete_hora">Hora</string>
-    <string name="lembrete_data">Data</string>
-    <string name="lembrete_repeticao">Repetição</string>
-    <string name="lembrete_repetiir_ate">Repetir até</string>
 
     <string name="repeticao_lembretes_nao_repetir">Não repetir</string>
     <string name="repeticao_lembretes_hora">Toda hora</string>
@@ -47,12 +42,17 @@
     <string name="secao_nesta_semana">Nesta semana</string>
     <string name="secao_em_um_mes">Em um mês</string>
 
+    <string name="titulo">Título</string>
+    <string name="descricao">Descrição</string>
+    <string name="data">Data</string>
+    <string name="hora">Hora</string>
+
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>
 
     <string name="sincronizacao">Sincronização</string>
-    <string name="sincronizacao_inicio">Iniciando sincronização...</string>
+    <string name="sincronizacao_inicio">Iniciando sincronização…</string>
     <string name="avaliacao_nova">Nova avaliação em %s</string>
     <string name="avaliacao_alterada">Avaliação alterada em %s</string>
     <string name="tarefa_nova">Nova tarefa em %s</string>

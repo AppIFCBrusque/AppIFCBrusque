@@ -33,7 +33,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 @Module
 public class ActivityModule {
-    private AppCompatActivity mActivity;
+    private final AppCompatActivity mActivity;
 
     public ActivityModule(AppCompatActivity activity) {
         mActivity = activity;
@@ -91,12 +91,12 @@ public class ActivityModule {
 
     @Provides
     LembretesAdapter provideLembretesAdapter() {
-        return new LembretesAdapter(new ArrayList<Object>(), Lembrete.ESTADO_INCOMPLETO);
+        return new LembretesAdapter(new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO);
     }
 
     @Provides
     NoticiasAdapter provideNoticiasAdapter(Picasso picasso) {
-        return new NoticiasAdapter(new ArrayList<Preview>(), picasso);
+        return new NoticiasAdapter(new ArrayList<>(), picasso);
     }
 
     @Provides

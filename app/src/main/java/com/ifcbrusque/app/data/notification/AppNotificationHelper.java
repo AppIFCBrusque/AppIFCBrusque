@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -44,7 +42,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static android.content.Context.ALARM_SERVICE;
-import static com.ifcbrusque.app.utils.AppConstants.TAG;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
@@ -56,17 +53,17 @@ Classe com funções relacionadas às notificações
  */
 @Singleton
 public class AppNotificationHelper implements NotificationHelper {
-    public static int NOTF_SINCRONIZACAO_ID = 1;
+    public static final int NOTF_SINCRONIZACAO_ID = 1;
 
-    private Context mContext;
-    private NotificationManager mNotificationManager;
-    private AlarmManager mAlarmManager;
+    private final Context mContext;
+    private final NotificationManager mNotificationManager;
+    private final AlarmManager mAlarmManager;
 
-    public static int ICONE_LEMBRETE = R.drawable.ic_notifications_black_24dp;
-    public static int ICONE_SINCRONIZACAO = R.drawable.outline_sync_black_24;
-    public static int ICONE_NOTICIAS = R.drawable.outline_feed_black_24;
-    public static int ICONE_SIGAA = R.drawable.ic_notifications_black_24dp;
-    public static int ICONE_CANCELAR = R.drawable.outline_clear_black_24;
+    public static final int ICONE_LEMBRETE = R.drawable.ic_notifications_black_24dp;
+    public static final int ICONE_SINCRONIZACAO = R.drawable.outline_sync_black_24;
+    public static final int ICONE_NOTICIAS = R.drawable.outline_feed_black_24;
+    public static final int ICONE_SIGAA = R.drawable.ic_notifications_black_24dp;
+    public static final int ICONE_CANCELAR = R.drawable.outline_clear_black_24;
 
     @Inject
     public AppNotificationHelper(@ApplicationContext Context context) {
@@ -125,7 +122,7 @@ public class AppNotificationHelper implements NotificationHelper {
         final PendingIntent pendingIntent = getPendingIntentLembrete(idLembrete, idNotificacao);
 
         //Criar notificação
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_LEMBRETE)
@@ -194,7 +191,7 @@ public class AppNotificationHelper implements NotificationHelper {
         //Remover a notificação (quando já notificado)
         mNotificationManager.cancel(Math.toIntExact(lembrete.getIdNotificacao()));
 
-        Timber.d("Alarme cancelado | ID_NOTIFICACAO=" + lembrete.getIdNotificacao());
+        Timber.d("Alarme cancelado | ID_NOTIFICACAO=%s", lembrete.getIdNotificacao());
     }
 
     private PendingIntent criarPendingIntentNotificacaoNoticia(Preview preview, int idNotificacao) {
@@ -214,7 +211,7 @@ public class AppNotificationHelper implements NotificationHelper {
         PendingIntent pendingIntent = criarPendingIntentNotificacaoNoticia(preview, idNotificacao);
 
         //Notificação
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_NOTICIAS)
@@ -336,7 +333,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
@@ -352,7 +349,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarAvaliacaoAlterada(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
@@ -368,7 +365,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
@@ -384,7 +381,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarTarefaAlterada(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
@@ -400,7 +397,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
@@ -416,7 +413,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarQuestionarioAlterado(Questionario questionario, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
-        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setChannelId(NOTF_CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)

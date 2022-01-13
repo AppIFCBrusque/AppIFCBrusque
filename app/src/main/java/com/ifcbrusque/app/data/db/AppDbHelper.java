@@ -15,7 +15,6 @@ import com.stacked.sigaa_ifc.Disciplina;
 import com.stacked.sigaa_ifc.Questionario;
 import com.stacked.sigaa_ifc.Tarefa;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +31,7 @@ import timber.log.Timber;
 
 @Singleton
 public class AppDbHelper implements DbHelper {
-    private AppDatabase mAppDatabase;
+    private final AppDatabase mAppDatabase;
 
     @Inject
     public AppDbHelper(@ApplicationContext Context context) {
@@ -54,7 +53,7 @@ public class AppDbHelper implements DbHelper {
             List<Preview> previewsNovos = new ArrayList<>();
             if (previews.size() > 0) {
                 for (Preview p : previews) { //Encontrar os previews não armazenados
-                    if (!previewsNoArmazenamento.stream().filter(_p -> _p.getUrlNoticia().equals(p.getUrlNoticia())).findFirst().isPresent()) {
+                    if (!previewsNoArmazenamento.stream().anyMatch(_p -> _p.getUrlNoticia().equals(p.getUrlNoticia()))) {
                         previewsNovos.add(p);
                     }
                 }
@@ -253,26 +252,24 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<List<Avaliacao>> getAllAvaliacoes() {
         return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
-                .flatMap(disciplinas -> {
-                    return Observable.just(mAppDatabase.avaliacaoDao().getAll())
-                            .flatMapIterable(avaliacoes -> avaliacoes)
-                            .map(avaliacaoArmazenavel -> {
-                                List<Avaliacao> avaliacao = new ArrayList<>();
-                                if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma()))) {
-                                    //Avaliação posssui disciplina correspondente salva (dá para criar)
-                                    Disciplina disciplinaDaAvaliacao = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
-                                    avaliacao.add(avaliacaoArmazenavel.getAvaliacao(disciplinaDaAvaliacao));
-                                } else {
-                                    //Avaliação não posssui disciplina correspondente salva (não dá para criar)
-                                    Timber.d("Avaliação sem disciplina correspondente: " + avaliacaoArmazenavel.getDescricao());
-                                    mAppDatabase.avaliacaoDao().delete(avaliacaoArmazenavel);
-                                }
-                                return avaliacao; //Se não houver item na lista, não vai ser "pulado" no .toList()
-                            })
-                            .flatMapIterable(list -> list)
-                            .toList()
-                            .toObservable();
-                })
+                .flatMap(disciplinas -> Observable.just(mAppDatabase.avaliacaoDao().getAll())
+                        .flatMapIterable(avaliacoes -> avaliacoes)
+                        .map(avaliacaoArmazenavel -> {
+                            List<Avaliacao> avaliacao = new ArrayList<>();
+                            if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma()))) {
+                                //Avaliação posssui disciplina correspondente salva (dá para criar)
+                                Disciplina disciplinaDaAvaliacao = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(avaliacaoArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
+                                avaliacao.add(avaliacaoArmazenavel.getAvaliacao(disciplinaDaAvaliacao));
+                            } else {
+                                //Avaliação não posssui disciplina correspondente salva (não dá para criar)
+                                Timber.d("Avaliação sem disciplina correspondente: %s", avaliacaoArmazenavel.getDescricao());
+                                mAppDatabase.avaliacaoDao().delete(avaliacaoArmazenavel);
+                            }
+                            return avaliacao; //Se não houver item na lista, não vai ser "pulado" no .toList()
+                        })
+                        .flatMapIterable(list -> list)
+                        .toList()
+                        .toObservable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -346,26 +343,24 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<List<Tarefa>> getAllTarefas() {
         return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
-                .flatMap(disciplinas -> {
-                    return Observable.just(mAppDatabase.tarefaDao().getAll())
-                            .flatMapIterable(tarefas -> tarefas)
-                            .map(tarefaArmazenavel -> {
-                                List<Tarefa> tarefa = new ArrayList<>();
-                                if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(tarefaArmazenavel.getDisciplinaFrontEndIdTurma()))) {
-                                    //Tarefa posssui disciplina correspondente salva (dá para criar)
-                                    Disciplina disciplinaDaTarefa = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(tarefaArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
-                                    tarefa.add(tarefaArmazenavel.getTarefa(disciplinaDaTarefa));
-                                } else {
-                                    //Tarefa não posssui disciplina correspondente salva (não dá para criar)
-                                    Timber.d("Tarefa sem disciplina correspondente: " + tarefaArmazenavel.getTitulo());
-                                    mAppDatabase.tarefaDao().delete(tarefaArmazenavel);
-                                }
-                                return tarefa; //Se não houver item na lista, não vai ser "pulado" no .toList()
-                            })
-                            .flatMapIterable(list -> list)
-                            .toList()
-                            .toObservable();
-                })
+                .flatMap(disciplinas -> Observable.just(mAppDatabase.tarefaDao().getAll())
+                        .flatMapIterable(tarefas -> tarefas)
+                        .map(tarefaArmazenavel -> {
+                            List<Tarefa> tarefa = new ArrayList<>();
+                            if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(tarefaArmazenavel.getDisciplinaFrontEndIdTurma()))) {
+                                //Tarefa posssui disciplina correspondente salva (dá para criar)
+                                Disciplina disciplinaDaTarefa = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(tarefaArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
+                                tarefa.add(tarefaArmazenavel.getTarefa(disciplinaDaTarefa));
+                            } else {
+                                //Tarefa não posssui disciplina correspondente salva (não dá para criar)
+                                Timber.d("Tarefa sem disciplina correspondente: %s", tarefaArmazenavel.getTitulo());
+                                mAppDatabase.tarefaDao().delete(tarefaArmazenavel);
+                            }
+                            return tarefa; //Se não houver item na lista, não vai ser "pulado" no .toList()
+                        })
+                        .flatMapIterable(list -> list)
+                        .toList()
+                        .toObservable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -439,26 +434,24 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<List<Questionario>> getAllQuestionarios() {
         return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
-                .flatMap(disciplinas -> {
-                    return Observable.just(mAppDatabase.questionarioDao().getAll())
-                            .flatMapIterable(questionarios -> questionarios)
-                            .map(questionarioArmazenavel -> {
-                                List<Questionario> questionario = new ArrayList<>();
-                                if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(questionarioArmazenavel.getDisciplinaFrontEndIdTurma()))) {
-                                    //Questionário posssui disciplina correspondente salva (dá para criar)
-                                    Disciplina disciplinaDoQuestionario = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(questionarioArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
-                                    questionario.add(questionarioArmazenavel.getQuestionario(disciplinaDoQuestionario));
-                                } else {
-                                    //Questionário não posssui disciplina correspondente salva (não dá para criar)
-                                    Timber.d("Questionário sem disciplina correspondente: " + questionarioArmazenavel.getTitulo());
-                                    mAppDatabase.questionarioDao().delete(questionarioArmazenavel);
-                                }
-                                return questionario; //Se não houver item na lista, não vai ser "pulado" no .toList()
-                            })
-                            .flatMapIterable(list -> list)
-                            .toList()
-                            .toObservable();
-                })
+                .flatMap(disciplinas -> Observable.just(mAppDatabase.questionarioDao().getAll())
+                        .flatMapIterable(questionarios -> questionarios)
+                        .map(questionarioArmazenavel -> {
+                            List<Questionario> questionario = new ArrayList<>();
+                            if (disciplinas.stream().anyMatch(d -> d.getFrontEndIdTurma().equals(questionarioArmazenavel.getDisciplinaFrontEndIdTurma()))) {
+                                //Questionário posssui disciplina correspondente salva (dá para criar)
+                                Disciplina disciplinaDoQuestionario = disciplinas.stream().filter(d -> d.getFrontEndIdTurma().equals(questionarioArmazenavel.getDisciplinaFrontEndIdTurma())).findFirst().get().getDisciplina();
+                                questionario.add(questionarioArmazenavel.getQuestionario(disciplinaDoQuestionario));
+                            } else {
+                                //Questionário não posssui disciplina correspondente salva (não dá para criar)
+                                Timber.d("Questionário sem disciplina correspondente: %s", questionarioArmazenavel.getTitulo());
+                                mAppDatabase.questionarioDao().delete(questionarioArmazenavel);
+                            }
+                            return questionario; //Se não houver item na lista, não vai ser "pulado" no .toList()
+                        })
+                        .flatMapIterable(list -> list)
+                        .toList()
+                        .toObservable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

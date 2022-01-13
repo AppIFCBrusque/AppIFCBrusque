@@ -41,7 +41,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public static List<Lembrete> ordenarLembretesPelaData(List<Lembrete> lembretes) {
-        Collections.sort(lembretes, (o1, o2) -> o1.getDataLembrete().compareTo(o2.getDataLembrete()));
+        lembretes.sort((o1, o2) -> o1.getDataLembrete().compareTo(o2.getDataLembrete()));
         return lembretes;
     }
 
@@ -92,11 +92,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return false;
         } else {
             //Categorias padrão (incompleto, completo, todos)
-            if (lembrete.getEstado() == mCategoria || mCategoria == 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return lembrete.getEstado() == mCategoria || mCategoria == 0;
         }
     }
 
@@ -236,8 +232,12 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     Você configura ele quase da mesma forma que uma view
      */
     public class ViewHolderItem extends RecyclerView.ViewHolder {
-        TextView mTvTitulo, mTvDescricao, mTvData, mTvHora, mTvRepeticao;
-        ImageButton mIbOpcoes;
+        final TextView mTvTitulo;
+        final TextView mTvDescricao;
+        final TextView mTvData;
+        final TextView mTvHora;
+        final TextView mTvRepeticao;
+        final ImageButton mIbOpcoes;
 
         public ViewHolderItem(@NonNull View itemView) {
             super(itemView);
@@ -254,7 +254,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public class ViewHolderHeader extends RecyclerView.ViewHolder {
-        TextView mTitulo;
+        final TextView mTitulo;
 
         public ViewHolderHeader(@NonNull View itemView) {
             super(itemView);

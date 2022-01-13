@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.HomeActivity;
-import com.ifcbrusque.app.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -54,8 +53,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
         mBtEntrar.setOnClickListener(v -> mPresenter.onEntrarClick(mEtUsuario.getText().toString(), mEtSenha.getText().toString()));
         mBtPular.setOnClickListener(v -> mPresenter.onPularClick());
-
-        mPresenter.onViewPronta();
     }
 
     @Override

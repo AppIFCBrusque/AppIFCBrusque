@@ -18,14 +18,13 @@
         <activity
             android:name=".ui.lembrete.InserirLembreteActivity"
             android:label=""
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.noticia.NoticiaActivity"
             android:excludeFromRecents="true"
             android:label=""
             android:screenOrientation="portrait"
             android:taskAffinity="">
-            >
         </activity>
         <activity
             android:name=".ui.home.HomeActivity"
