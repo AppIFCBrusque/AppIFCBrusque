@@ -17,6 +17,8 @@ public interface LembretesContract {
         void setDadosNaView(List<Object> dados);
 
         void atualizarCategoriaRecyclerView(int categoria);
+
+        String getString(int resId);
     }
 
     interface LembretesPresenter<V extends LembretesView> extends MvpPresenter<V> {

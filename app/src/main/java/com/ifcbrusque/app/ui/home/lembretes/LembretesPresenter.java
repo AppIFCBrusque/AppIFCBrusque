@@ -1,5 +1,6 @@
 package com.ifcbrusque.app.ui.home.lembretes;
 
+import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.service.SyncService;
@@ -17,11 +18,6 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
 
-import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_AMANHA;
-import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_ATRASADO;
-import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_HOJE;
-import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_NESTA_SEMANA;
-import static com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter.TITULO_UM_MES;
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class LembretesPresenter<V extends LembretesContract.LembretesView> extends BasePresenter<V> implements LembretesContract.LembretesPresenter<V> {
@@ -63,48 +59,69 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
         //Lista que vai ser inserida no recycler view
         List<Object> dados = new ArrayList<>();
 
-        Calendar hoje = Calendar.getInstance(), amanha = Calendar.getInstance(), primeiroDiaProximaSemana = Calendar.getInstance(), daquiUmMes = Calendar.getInstance(), dataLembrete = Calendar.getInstance();
+        Calendar hoje = Calendar.getInstance();
+        Calendar amanha = Calendar.getInstance();
         amanha.add(Calendar.DAY_OF_YEAR, 1);
-        primeiroDiaProximaSemana.add(Calendar.WEEK_OF_YEAR, 1);
-        primeiroDiaProximaSemana.set(Calendar.DAY_OF_WEEK, primeiroDiaProximaSemana.getActualMinimum(Calendar.DAY_OF_WEEK));
+        amanha.set(Calendar.HOUR_OF_DAY, 23);
+        amanha.set(Calendar.MINUTE, 59);
+        amanha.set(Calendar.SECOND, 59);
+        amanha.set(Calendar.MILLISECOND, 999);
+        Calendar daquiUmMes = Calendar.getInstance();
         daquiUmMes.add(Calendar.MONTH, 1);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_DATA);
+        String tituloAtrasado = getMvpView().getString(R.string.secao_atrasado);
+        String tituloHoje = getMvpView().getString(R.string.secao_hoje);
+        String tituloAmanha = getMvpView().getString(R.string.secao_amanha);
+        String tituloEmXDias = getMvpView().getString(R.string.secao_em_dias);
+        String tituloApos1Mes = getMvpView().getString(R.string.secao_apos_um_mes);
+        String tituloAposXMeses = getMvpView().getString(R.string.secao_apos_meses);
 
         for (int i = 0; i < lembretes.size(); i++) {
-            Lembrete l = lembretes.get(i);
+            Lembrete lembrete = lembretes.get(i);
 
             //Adicionar cabeçalho
-            dataLembrete.setTime(l.getDataLembrete());
-            if (hoje.getTime().after(dataLembrete.getTime())) {
-                if (!dados.contains(TITULO_ATRASADO)) {
-                    dados.add(TITULO_ATRASADO);
+            Calendar dataLembrete = Calendar.getInstance();
+            dataLembrete.setTime(lembrete.getDataLembrete());
+
+            if (dataLembrete.after(daquiUmMes)) {
+                //Meses
+                int meses = dataLembrete.get(Calendar.MONTH) - hoje.get(Calendar.MONTH);
+                String titulo;
+                if (meses == 1) {
+                    titulo = tituloApos1Mes;
+                } else {
+                    titulo = String.format(tituloAposXMeses, meses);
                 }
-            } else if (dataLembrete.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR)) {
-                if (!dados.contains(TITULO_HOJE)) {
-                    dados.add(TITULO_HOJE);
+
+                if (!dados.contains(titulo)) {
+                    dados.add(titulo);
+                }
+            } else if (dataLembrete.after(amanha)) {
+                //Em x dias
+                int dias = dataLembrete.get(Calendar.DAY_OF_YEAR) - hoje.get(Calendar.DAY_OF_YEAR);
+                String titulo = String.format(tituloEmXDias, dias);
+                if (!dados.contains(titulo)) {
+                    dados.add(titulo);
                 }
             } else if (dataLembrete.get(Calendar.YEAR) == amanha.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == amanha.get(Calendar.DAY_OF_YEAR)) {
-                if (!dados.contains(TITULO_AMANHA)) {
-                    dados.add(TITULO_AMANHA);
+                //Amanhã
+                if (!dados.contains(tituloAmanha)) {
+                    dados.add(tituloAmanha);
                 }
-            } else if (dataLembrete.before(primeiroDiaProximaSemana)) {
-                if (!dados.contains(TITULO_NESTA_SEMANA)) {
-                    dados.add(TITULO_NESTA_SEMANA);
+            } else if (dataLembrete.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR)) {
+                //Hoje
+                if (!dados.contains(tituloHoje)) {
+                    dados.add(tituloHoje);
                 }
-            } else if (dataLembrete.before(daquiUmMes)) {
-                if (!dados.contains(TITULO_UM_MES)) {
-                    dados.add(TITULO_UM_MES);
-                }
-            } else if (dataLembrete.after(daquiUmMes)) {
-                String stringDataLembrete = dateFormat.format(dataLembrete.getTime()).split(" ")[0];
-                if (!dados.contains(stringDataLembrete)) {
-                    dados.add(stringDataLembrete);
+            } else if (hoje.getTime().after(dataLembrete.getTime())) {
+                //Atrasado
+                if (!dados.contains(tituloAtrasado)) {
+                    dados.add(tituloAtrasado);
                 }
             }
 
             //Adicionar lembrete
-            dados.add(l);
+            dados.add(lembrete);
         }
 
         getMvpView().setDadosNaView(dados);

@@ -39,8 +39,9 @@
     <string name="secao_atrasado">Atrasado</string>
     <string name="secao_hoje">Hoje</string>
     <string name="secao_amanha">Amanhã</string>
-    <string name="secao_nesta_semana">Nesta semana</string>
-    <string name="secao_em_um_mes">Em um mês</string>
+    <string name="secao_em_dias">Em %s dias</string>
+    <string name="secao_apos_um_mes">Após 1 mês</string>
+    <string name="secao_apos_meses">Após %s meses</string>
 
     <string name="titulo">Título</string>
     <string name="descricao">Descrição</string>

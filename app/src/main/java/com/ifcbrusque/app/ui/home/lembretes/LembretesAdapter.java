@@ -21,12 +21,6 @@ import java.util.List;
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderDecoration.StickyHeaderInterface {
-    public static final String TITULO_ATRASADO = "ATRASADO";
-    public static final String TITULO_HOJE = "HOJE";
-    public static final String TITULO_AMANHA = "AMANHA";
-    public static final String TITULO_NESTA_SEMANA = "NESTA_SEMANA";
-    public static final String TITULO_UM_MES = "UM_MES";
-
     public static final int TIPO_LEMBRETE = 0;
     public static final int TIPO_HEADER = 1;
 
@@ -106,22 +100,6 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         return false;
     }
-
-    public int getIdTextoHeader(String data) {
-        if (TITULO_ATRASADO.equals(data)) {
-            return R.string.secao_atrasado;
-        } else if (TITULO_HOJE.equals(data)) {
-            return R.string.secao_hoje;
-        } else if (TITULO_AMANHA.equals(data)) {
-            return R.string.secao_amanha;
-        } else if (TITULO_NESTA_SEMANA.equals(data)) {
-            return R.string.secao_nesta_semana;
-        } else if (TITULO_UM_MES.equals(data)) {
-            return R.string.secao_em_um_mes;
-        } else {
-            return -1;
-        }
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -161,7 +139,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     /**
      * Função obrigatória do recycler view
-     * Executada para ao colocar um item_lembrete ou section_lembrete no recycler view
+     * Executada ao colocar um item_lembrete ou section_lembrete no recycler view
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -207,13 +185,8 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //Esconder caso não tenha um lembrete vísivel na frente
             if (itemVisivelNaFrenteDoHeader(position)) {
                 //Texto
-                String data = (String) mDados.get(position);
-                int textoHeader = getIdTextoHeader(data);
-                if (textoHeader != -1) {
-                    headerHolder.mTitulo.setText(textoHeader);
-                } else {
-                    headerHolder.mTitulo.setText(data);
-                }
+                String textoHeader = (String) mDados.get(position);
+                headerHolder.mTitulo.setText(textoHeader);
 
                 headerHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 headerHolder.itemView.setVisibility(View.VISIBLE);
@@ -295,13 +268,8 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView mTitulo = header.findViewById(R.id.secao_lembretes_titulo);
 
         if (itemVisivelNaFrenteDoHeader(headerPosition)) {
-            String data = (String) mDados.get(headerPosition);
-            int idTextoHeader = getIdTextoHeader(data);
-            if (idTextoHeader != -1) {
-                mTitulo.setText(idTextoHeader);
-            } else {
-                mTitulo.setText(data);
-            }
+            String textoHeader = (String) mDados.get(headerPosition);
+            mTitulo.setText(textoHeader);
 
             layout.setAlpha(1);
         } else {
