@@ -208,6 +208,7 @@ public class SyncService extends Service {
                                                                     if (lembreteArmazenado.getDataLembrete().before(avaliacaoNoSIGAA.getData())) {
                                                                         //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                         lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
+                                                                        mDataManager.agendarNotificacaoLembrete(lembreteArmazenado);
                                                                     }
                                                                 }
 
@@ -283,6 +284,7 @@ public class SyncService extends Service {
                                                                 if (tarefaNoSIGAA.isEnviada()) {
                                                                     //Caso o item foi enviado no SIGAA, definir o lembrete como completo
                                                                     lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    mDataManager.desagendarNotificacaoLembrete(lembreteArmazenado);
                                                                 } else {
                                                                     if (tarefaNoSIGAA.getFim().before(new Date())) {
                                                                         //Definir como completo caso a data tenha passado
@@ -292,6 +294,7 @@ public class SyncService extends Service {
                                                                         if (lembreteArmazenado.getDataLembrete().before(tarefaNoSIGAA.getFim())) {
                                                                             //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                             lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
+                                                                            mDataManager.agendarNotificacaoLembrete(lembreteArmazenado);
                                                                         }
                                                                     }
                                                                 }
@@ -369,6 +372,7 @@ public class SyncService extends Service {
                                                                 if (questionarioNoSIGAA.isEnviado()) {
                                                                     //Caso o item foi enviado no SIGAA, definir o lembrete como completo
                                                                     lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
+                                                                    mDataManager.desagendarNotificacaoLembrete(lembreteArmazenado);
                                                                 } else {
                                                                     if (questionarioNoSIGAA.getDataFim().before(new Date())) {
                                                                         //Definir como completo caso a data tenha passado
@@ -378,6 +382,7 @@ public class SyncService extends Service {
                                                                         if (lembreteArmazenado.getDataLembrete().before(questionarioNoSIGAA.getDataFim())) {
                                                                             //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                             lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
+                                                                            mDataManager.agendarNotificacaoLembrete(lembreteArmazenado);
                                                                         }
                                                                     }
                                                                 }
