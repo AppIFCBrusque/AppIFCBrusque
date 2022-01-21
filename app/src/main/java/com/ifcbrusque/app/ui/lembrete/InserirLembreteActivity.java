@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+
 import javax.inject.Inject;
 
 public class InserirLembreteActivity extends BaseActivity implements InserirLembreteContract.InserirLembreteView {
@@ -69,6 +71,8 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
     @Override
     protected void setUp() {
+        Toolbar toolbar = findViewById(R.id.toolbarInserirLembrete);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTiTitulo = findViewById(R.id.tiTitulo);

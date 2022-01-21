@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +39,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     private Button mBtCategorias;
     private RecyclerView mRecyclerView;
     private BottomSheetDialog mBottomSheetDialog;
+    private Toolbar mToolbar;
 
     @Inject
     LembretesAdapter mHomeAdapter;
@@ -143,6 +145,11 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
 
     @Override
     protected void setUp(View view) {
+        mToolbar = getActivity().findViewById(R.id.toolbarHome);
+        if(mToolbar != null) {
+            mToolbar.setElevation(0);
+        }
+
         mFabNovoLembrete = view.findViewById(R.id.fabNovoLembrete);
         mBtCategorias = view.findViewById(R.id.btCategorias);
 

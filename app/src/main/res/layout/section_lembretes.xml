@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,23 +8,18 @@
         android:id="@+id/secao_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorAccent"
-        android:padding="@dimen/padding_views"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?attr/backgroundColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/secao_lembretes_titulo"
-            style="@style/TextAppearance.TituloPagina"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/padding_views"
-            android:paddingTop="@dimen/padding_views"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
             android:text="@string/noticia_titulo_padrao"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textAppearance="@style/TextAppearance.TituloPagina" />
 
     </LinearLayout>
 

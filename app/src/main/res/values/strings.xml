@@ -10,7 +10,7 @@
     <string name="erro_carregar_pagina">Não foi possível carregar a página</string>
     <string name="erro_servico_sigaa_dados_invalidos">As credenciais do SIGAA salvas estão inválidas</string>
 
-    <string name="title_home">Home</string>
+    <string name="title_home">Lembretes</string>
     <!-- NOTÍCIAS -->
     <string name="title_noticias">Notícias</string>
 

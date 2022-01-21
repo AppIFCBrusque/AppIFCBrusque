@@ -15,8 +15,9 @@ import com.ifcbrusque.app.data.db.model.Lembrete;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
@@ -27,10 +28,13 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<Object> mDados;
     private ItemListener mItemListener;
     private int mCategoria;
+    private int mMargemHorizontal, mMargemVertical;
 
-    public LembretesAdapter(List<Object> dados, int categoria) {
+    public LembretesAdapter(List<Object> dados, int categoria, int margemHorizontal, int margemVertical) {
         mDados = dados;
         mCategoria = categoria;
+        mMargemHorizontal = margemHorizontal;
+        mMargemVertical = margemVertical;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +175,9 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             //Categorias
             if (isItemVisivel(lembrete)) {
-                itemHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(mMargemHorizontal, mMargemVertical, mMargemHorizontal, mMargemVertical);
+                itemHolder.itemView.setLayoutParams(params);
                 itemHolder.itemView.setVisibility(View.VISIBLE);
             } else {
                 itemHolder.itemView.setVisibility(View.GONE);

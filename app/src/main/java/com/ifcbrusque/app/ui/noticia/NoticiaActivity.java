@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import com.ifcbrusque.app.R;
@@ -62,6 +64,8 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     @Override
     protected void setUp() {
         //Ativar botão de voltar
+        Toolbar toolbar = findViewById(R.id.toolbarNoticia);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mWv = findViewById(R.id.wvNoticia);

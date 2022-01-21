@@ -6,6 +6,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,6 +26,9 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void setUp() {
+        Toolbar toolbar = findViewById(R.id.toolbarHome);
+        setSupportActionBar(toolbar);
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations. (remove o botao de voltar na barra superior se for topo)

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
 
     private MaterialProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
+    private Toolbar mToolbar;
 
     @Inject
     NoticiasAdapter mNoticiasAdapter;
@@ -54,6 +56,11 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
 
     @Override
     protected void setUp(View view) {
+        mToolbar = getActivity().findViewById(R.id.toolbarHome);
+        if(mToolbar != null) {
+            mToolbar.setElevation(4);
+        }
+
         mProgressBar = getActivity().findViewById(R.id.pbHorizontalHome);
 
         //Configuração do recycler view

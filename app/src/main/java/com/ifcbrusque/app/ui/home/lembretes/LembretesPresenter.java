@@ -6,7 +6,6 @@ import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.service.SyncService;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,8 +16,6 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
-
-import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class LembretesPresenter<V extends LembretesContract.LembretesView> extends BasePresenter<V> implements LembretesContract.LembretesPresenter<V> {
     @Inject
