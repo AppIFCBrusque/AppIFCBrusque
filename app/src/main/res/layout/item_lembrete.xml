@@ -50,7 +50,8 @@
             android:layout_below="@id/lembrete_descricao"
             android:drawablePadding="4dp"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
             android:text="00/00/0000"
             android:textAppearance="@style/TextAppearance.Secundario"
             app:drawableLeftCompat="@drawable/outline_event_black_20" />
@@ -63,13 +64,11 @@
             android:layout_toEndOf="@id/lembrete_data"
             android:drawablePadding="4dp"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
             android:text="00:00"
             android:textAppearance="@style/TextAppearance.Secundario"
-            app:drawableLeftCompat="@drawable/outline_schedule_black_20"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintStart_toEndOf="@+id/lembrete_data"
-            app:layout_constraintTop_toBottomOf="@+id/lembrete_descricao" />
+            app:drawableLeftCompat="@drawable/outline_schedule_black_20" />
 
         <TextView
             android:id="@+id/lembrete_repeticao"
@@ -79,10 +78,11 @@
             android:layout_toEndOf="@id/lembrete_hora"
             android:drawablePadding="4dp"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
             android:text="@string/repeticao_lembretes_nao_repetir"
             android:textAppearance="@style/TextAppearance.Secundario"
-            app:drawableLeftCompat="@drawable/outline_repeat_one_black_24" />
+            app:drawableLeftCompat="@drawable/outline_repeat_one_black_20" />
 
         <ImageButton
             android:id="@+id/lembrete_opcoes"
