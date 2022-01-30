@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import javax.inject.Inject;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_ATUALIZAR_RECYCLER_VIEW;
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddOpcaoBelow;
 
 public class LembretesFragment extends BaseFragment implements LembretesContract.LembretesView {
     final int REQUEST_CODE_LEMBRETE = 100;
@@ -146,7 +149,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     @Override
     protected void setUp(View view) {
         mToolbar = getActivity().findViewById(R.id.toolbarHome);
-        if(mToolbar != null) {
+        if (mToolbar != null) {
             mToolbar.setElevation(0);
         }
 
@@ -165,11 +168,15 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
             } else {
                 mBottomSheetDialog = new BottomSheetDialog(getContext());
             }
-            mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_categorias_lembrete);
+            mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
-            TextView tvIncompletos = mBottomSheetDialog.findViewById(R.id.tvIncompletos);
-            TextView tvCompletos = mBottomSheetDialog.findViewById(R.id.tvCompletos);
-            TextView tvTodos = mBottomSheetDialog.findViewById(R.id.tvTodos);
+            //Criar views
+            RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
+
+            TextView tvCategoriaEstado = bsdAddDescricaoBelow(getContext(), R.string.categoria_estado, rlBottomSheetDialog, null);
+            TextView tvIncompletos = bsdAddOpcaoBelow(getContext(), R.string.categoria_lembretes_incompletos, R.drawable.outline_clear_black_24, rlBottomSheetDialog, tvCategoriaEstado);
+            TextView tvCompletos = bsdAddOpcaoBelow(getContext(), R.string.categoria_lembretes_completos, R.drawable.outline_done_black_24, rlBottomSheetDialog, tvIncompletos);
+            TextView tvTodos = bsdAddOpcaoBelow(getContext(), R.string.categoria_lembretes_todos, R.drawable.outline_assignment_black_24, rlBottomSheetDialog, tvCompletos);
 
             View.OnClickListener onClickListener = v1 -> {
                 if (v1 == tvIncompletos) {
