@@ -5,7 +5,7 @@
     <string name="opcoes">Opções</string>
 
     <!-- ERROS -->
-    <string name="some_error">Erro</string>
+    <string name="erro">Erro</string>
     <string name="erro_sem_internet">Internet não disponível</string>
     <string name="erro_titulo_lembrete_vazio">Informe um título ao lembrete</string>
     <string name="erro_carregar_pagina">Não foi possível carregar a página</string>

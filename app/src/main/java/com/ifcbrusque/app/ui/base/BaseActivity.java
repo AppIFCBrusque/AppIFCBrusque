@@ -54,7 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         if (message != null) {
             showMessage(message);
         } else {
-            showMessage(getString(R.string.some_error));
+            showMessage(getString(R.string.erro));
         }
     }
 
@@ -68,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         if (message != null) {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, getString(R.string.some_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.erro), Toast.LENGTH_SHORT).show();
         }
     }
 
