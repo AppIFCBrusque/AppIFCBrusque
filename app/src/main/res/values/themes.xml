@@ -8,7 +8,6 @@
         <item name="colorAccent">#0a843b</item>
 
         <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">#9e9e9e</item>
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Status bar color. -->
