@@ -15,11 +15,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import javax.inject.Inject;
+
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddOpcaoBelow;
 
 public class InserirLembreteActivity extends BaseActivity implements InserirLembreteContract.InserirLembreteView {
     public static final String EXTRAS_LEMBRETE_ID = "EXTRAS_LEMBRETE_ID";
@@ -156,14 +160,17 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         }
 
         mBottomSheetDialog = new BottomSheetDialog(this);
-        mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_repeticao_lembrete);
+        mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
-        TextView tvHora = mBottomSheetDialog.findViewById(R.id.tvHora);
-        TextView tvDia = mBottomSheetDialog.findViewById(R.id.tvDia);
-        TextView tvSemana = mBottomSheetDialog.findViewById(R.id.tvSemana);
-        TextView tvMes = mBottomSheetDialog.findViewById(R.id.tvMes);
-        TextView tvAno = mBottomSheetDialog.findViewById(R.id.tvAno);
-        TextView tvNaoRepetir = mBottomSheetDialog.findViewById(R.id.tvNaoRepetir);
+        RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
+
+        TextView tvRepeticao = bsdAddDescricaoBelow(this, R.string.repeticao, rlBottomSheetDialog, null);
+        TextView tvHora = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_hora, 0, rlBottomSheetDialog, tvRepeticao);
+        TextView tvDia = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_dia, 0, rlBottomSheetDialog, tvHora);
+        TextView tvSemana = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_semana, 0, rlBottomSheetDialog, tvDia);
+        TextView tvMes = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_mes, 0, rlBottomSheetDialog, tvSemana);
+        TextView tvAno = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_ano, 0, rlBottomSheetDialog, tvMes);
+        TextView tvNaoRepetir = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_nao_repetir, 0, rlBottomSheetDialog, tvAno);
 
         final View.OnClickListener onRepeticaoClick = v -> {
             if (v == tvHora) {

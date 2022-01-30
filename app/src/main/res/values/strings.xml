@@ -21,7 +21,7 @@
     <string name="hora_hh_mm">%02d:%02d</string>
 
     <!-- LEMBRETES -->
-
+    <string name="repeticao">Repetição</string>
     <string name="repeticao_lembretes_nao_repetir">Não repetir</string>
     <string name="repeticao_lembretes_hora">Toda hora</string>
     <string name="repeticao_lembretes_dia">Todo dia</string>
