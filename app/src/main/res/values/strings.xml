@@ -2,6 +2,7 @@
     <string name="app_name">IFC Brusque</string>
 
     <string name="cancel">Cancelar</string>
+    <string name="opcoes">Opções</string>
 
     <!-- ERROS -->
     <string name="some_error">Erro</string>

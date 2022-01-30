@@ -223,15 +223,19 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
                     mBottomSheetDialog = new BottomSheetDialog(getContext());
                 }
 
-                mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_opcoes_lembrete);
-                TextView tvAlternarEstado = mBottomSheetDialog.findViewById(R.id.tvAlterarEstado);
-                TextView tvExcluir = mBottomSheetDialog.findViewById(R.id.tvExcluir);
+                mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
+
+                RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
+
+                TextView tvOpcoes = bsdAddDescricaoBelow(getContext(), R.string.opcoes, rlBottomSheetDialog, null);
+                TextView tvAlternarEstado = bsdAddOpcaoBelow(getContext(), R.string.lembrete_completar, R.drawable.outline_done_black_24, rlBottomSheetDialog, tvOpcoes);
+                TextView tvExcluir = bsdAddOpcaoBelow(getContext(), R.string.lembrete_excluir, R.drawable.outline_delete_black_24, rlBottomSheetDialog, tvAlternarEstado);
 
                 //Ajustar texto e ícones
                 switch (((Lembrete) getDadosNaView().get(position)).getEstado()) {
                     case Lembrete.ESTADO_INCOMPLETO:
                         tvAlternarEstado.setText(R.string.lembrete_completar);
-                        tvAlternarEstado.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);
+                        tvAlternarEstado.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);
                         break;
 
                     case Lembrete.ESTADO_COMPLETO:
