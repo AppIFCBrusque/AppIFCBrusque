@@ -32,6 +32,7 @@
     <string name="lembrete_descompletar">Marcar como incompleto</string>
     <string name="lembrete_excluir">Excluir lembrete</string>
 
+    <string name="categoria_estado">Estado</string>
     <string name="categoria_lembretes_todos">Todos os lembretes</string>
     <string name="categoria_lembretes_completos">Completos</string>
     <string name="categoria_lembretes_incompletos">Incompletos</string>

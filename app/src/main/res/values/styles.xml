@@ -15,6 +15,11 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="TextAppearance.DescricaoItensLista">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="TextAppearance.Secundario">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">14sp</item>
