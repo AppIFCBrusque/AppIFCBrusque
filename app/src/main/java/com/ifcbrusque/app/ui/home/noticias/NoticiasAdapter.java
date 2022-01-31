@@ -93,7 +93,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
         mPicasso.load(((preview.getUrlImagemPreview().equals("") || preview.getUrlImagemPreview().length() == 0)) ? URL_SEM_IMAGEM : preview.getUrlImagemPreview())
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.mipmap.ic_launcher_round)
                 .into(holder.mIvPreview);
     }
 

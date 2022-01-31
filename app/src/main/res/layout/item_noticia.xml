@@ -22,8 +22,8 @@
             android:id="@+id/noticia_imagem"
             android:layout_width="136dp"
             android:layout_height="136dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            android:background="@color/verde"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/noticia_titulo"
