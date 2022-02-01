@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.di.ActivityContext;
 import com.ifcbrusque.app.di.PerActivity;
@@ -96,7 +97,10 @@ public class ActivityModule {
         int margemHorizontal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
         int margemVertical = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, r.getDisplayMetrics());
 
-        return new LembretesAdapter(new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO, margemHorizontal, margemVertical);
+        int corIncompleto = mActivity.getResources().getColor(R.color.vermelho);
+        int corCompleto = mActivity.getResources().getColor(R.color.verde);
+
+        return new LembretesAdapter(new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO, margemHorizontal, margemVertical, corIncompleto, corCompleto);
     }
 
     @Provides

@@ -29,12 +29,15 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ItemListener mItemListener;
     private int mCategoria;
     private int mMargemHorizontal, mMargemVertical;
+    private int mCorIncompleto, mCorCompleto;
 
-    public LembretesAdapter(List<Object> dados, int categoria, int margemHorizontal, int margemVertical) {
+    public LembretesAdapter(List<Object> dados, int categoria, int margemHorizontal, int margemVertical, int corIncompleto, int corCompleto) {
         mDados = dados;
         mCategoria = categoria;
         mMargemHorizontal = margemHorizontal;
         mMargemVertical = margemVertical;
+        mCorIncompleto = corIncompleto;
+        mCorCompleto = corCompleto;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +176,13 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.mTvRepeticao.setVisibility(View.GONE);
             }
 
+            //Cor
+            if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
+                itemHolder.mVwCor.setBackgroundColor(mCorIncompleto);
+            } else {
+                itemHolder.mVwCor.setBackgroundColor(mCorCompleto);
+            }
+
             //Categorias
             if (isItemVisivel(lembrete)) {
                 RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -217,6 +227,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         final TextView mTvHora;
         final TextView mTvRepeticao;
         final ImageButton mIbOpcoes;
+        final View mVwCor;
 
         public ViewHolderItem(@NonNull View itemView) {
             super(itemView);
@@ -226,6 +237,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mTvHora = itemView.findViewById(R.id.lembrete_hora);
             mIbOpcoes = itemView.findViewById(R.id.lembrete_opcoes);
             mTvRepeticao = itemView.findViewById(R.id.lembrete_repeticao);
+            mVwCor = itemView.findViewById(R.id.lembrete_cor);
 
             itemView.setOnClickListener(v -> mItemListener.onLembreteClick(getAdapterPosition()));
             mIbOpcoes.setOnClickListener(v -> mItemListener.onOpcoesClick(getAdapterPosition()));
