@@ -9,7 +9,7 @@
     android:elevation="8dp"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="@dimen/raio_bordas"
     app:cardMaxElevation="10dp"
     app:cardPreventCornerOverlap="true">
 
