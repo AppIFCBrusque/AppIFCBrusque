@@ -37,13 +37,17 @@
         <item name="colorOnSecondary">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="BottomSheetDialog"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ModalStyle</item>
     </style>
 
-    <style name="ModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="ModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/background_bottom_sheet_dialog</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.IFCBrusque.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:statusBarColor">@color/ic_launcher_background</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
