@@ -22,7 +22,6 @@
             android:id="@+id/noticia_imagem"
             android:layout_width="136dp"
             android:layout_height="136dp"
-            android:background="@color/verde"
             android:scaleType="centerCrop" />
 
         <TextView
