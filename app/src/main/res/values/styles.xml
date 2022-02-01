@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Texto-->
+    <!-- Texto -->
     <style name="TextAppearance" parent="android:TextAppearance">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
@@ -25,4 +25,23 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- Componentes -->
+    <style name="Theme.IFCBrusque.Toolbar">
+        <item name="android:background">?attr/colorSecondary</item>
+        <item name="android:titleTextColor">?attr/colorOnSecondary</item>
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.FloatingActionButton">
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="backgroundColor">#f5f5f6</item>
+        <item name="colorAccent">#f5f5f6</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorOnSecondary">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.BottomSheetDialog" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/background_bottom_sheet_dialog</item>
+    </style>
 </resources>

@@ -14,7 +14,7 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
-        android:theme="@style/FloatingActionButton"
+        android:theme="@style/Theme.IFCBrusque.FloatingActionButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

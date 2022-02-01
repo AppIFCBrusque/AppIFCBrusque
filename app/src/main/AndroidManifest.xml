@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IFCBrusque.NoActionBar">
+        android:theme="@style/Theme.IFCBrusque">
         <activity
             android:name=".ui.lembrete.InserirLembreteActivity"
             android:label=""
@@ -32,7 +32,7 @@
             android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/Theme.IFCBrusque.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
