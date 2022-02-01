@@ -41,7 +41,11 @@
         <item name="colorOnSecondary">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="Theme.IFCBrusque.BottomSheetDialog" parent="Widget.Design.BottomSheet.Modal">
+    <style name="Theme.IFCBrusque.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Theme.IFCBrusque.BottomSheetDialog.Style</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.BottomSheetDialog.Style" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/background_bottom_sheet_dialog</item>
     </style>
 </resources>

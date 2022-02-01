@@ -18,7 +18,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="bottomSheetStyle">@style/Theme.IFCBrusque.BottomSheetDialog</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.IFCBrusque.BottomSheetDialog</item>
     </style>
 
     <!-- Splash screen -->
