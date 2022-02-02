@@ -8,6 +8,7 @@
     <style name="TextAppearance.TituloPagina">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.TituloItemLista">
@@ -47,5 +48,11 @@
 
     <style name="Theme.IFCBrusque.BottomSheetDialog.Style" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/background_bottom_sheet_dialog</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.ImageViewNoticia" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">@dimen/raio_bordas</item>
+        <item name="cornerSizeBottomRight">@dimen/raio_bordas</item>
     </style>
 </resources>

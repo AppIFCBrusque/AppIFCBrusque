@@ -17,12 +17,15 @@ public class Noticia {
     private final String htmlConteudo;
     @ColumnInfo(name = "data_noticia")
     private final Date data;
+    @ColumnInfo(name = "data_formatada")
+    private final String dataFormatada;
 
-    public Noticia(String url, String titulo, String htmlConteudo, Date data) {
+    public Noticia(String url, String titulo, String htmlConteudo, Date data, String dataFormatada) {
         this.url = url;
         this.titulo = titulo;
         this.htmlConteudo = htmlConteudo;
         this.data = data;
+        this.dataFormatada = dataFormatada;
     }
 
     public int getId() {
@@ -47,5 +50,9 @@ public class Noticia {
 
     public Date getData() {
         return data;
+    }
+
+    public String getDataFormatada() {
+        return dataFormatada;
     }
 }

@@ -3,16 +3,22 @@ package com.ifcbrusque.app.ui.noticia;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.ui.base.BaseActivity;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,9 +29,14 @@ import static com.ifcbrusque.app.data.db.Converters.dateToTimestamp;
 public class NoticiaActivity extends BaseActivity implements NoticiaContract.NoticiaView {
     @Inject
     NoticiaContract.NoticiaPresenter<NoticiaContract.NoticiaView> mPresenter;
+    @Inject
+    Picasso mPicasso;
 
     private WebView mWv;
     private CircularProgressIndicator mPb;
+    private ShapeableImageView mImg;
+    private TextView mTvTitulo, mTvData;
+    private RelativeLayout mRelativeLayout;
 
     /*
     Chaves do Bundle
@@ -70,6 +81,10 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
 
         mWv = findViewById(R.id.wvNoticia);
         mPb = findViewById(R.id.pbCircularNoticia);
+        mImg = findViewById(R.id.noticia_imagem_grande);
+        mTvTitulo = findViewById(R.id.noticia_titulo);
+        mTvData = findViewById(R.id.noticia_data);
+        mRelativeLayout = findViewById(R.id.noticia_relative_layout);
 
         mPresenter.onViewPronta(getIntent().getExtras());
     }
@@ -110,6 +125,37 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     @Override
     public void carregarHtmlWebView(String html) {
         mWv.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+    }
+
+    @Override
+    public void carregarImagemGrande(String url) {
+        if (url.equals("") || url.length() == 0) {
+            //Sem imagem
+            mImg.setImageResource(R.drawable.splash_background);
+        } else {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int width = displayMetrics.widthPixels;
+
+            mPicasso.load(url)
+                    .resize(width, 0)
+                    .into(mImg);
+        }
+    }
+
+    @Override
+    public void setTitulo(String titulo) {
+        mTvTitulo.setText(titulo);
+    }
+
+    @Override
+    public void setData(String data) {
+        mTvData.setText(data);
+    }
+
+    @Override
+    public void mostrarView() {
+        mRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -95,17 +95,21 @@ public class PgNoticiasParser {
 
         Document d = Jsoup.parse(r.body().string());
 
-        String titulo = "", htmlConteudo = "";
+        String titulo = "", htmlConteudo = "", dataFormatada = "";
 
         for (Element subheader : d.getElementsByClass("page-subheader")) {
             titulo = subheader.text();
+        }
+
+        for (Element data : d.getElementsByClass("text-muted")) {
+            dataFormatada = data.text();
         }
 
         for (Element content : d.getElementsByClass("entry-content")) {
             htmlConteudo = content.outerHtml();
         }
 
-        return new Noticia(p.getUrlNoticia(), titulo, htmlConteudo, p.getDataNoticia());
+        return new Noticia(p.getUrlNoticia(), titulo, htmlConteudo, p.getDataNoticia(), dataFormatada);
     }
 
     /**
@@ -128,42 +132,26 @@ public class PgNoticiasParser {
 
     /**
      * Utilizado para formatar o conteúdo em HTML da notícia obtido do site do campus a um formato que se adeque melhor ao web view do aplicativo
-     *
-     * @param html .html() do elemento com classe "entry-content" na página da notícia
-     * @return corpo formatado
      */
     public static String formatarCorpoNoticia(Preview preview, String html) {
-        //TODO: Preciso organizar isto melhor alguma hora
         Document doc = Jsoup.parse(html);
 
         //Continuar o texto que transborda na próxima linha
         doc.getElementsByTag("body").attr("style", "overflow-x: hidden; overflow-wrap: break-word;");
 
-        boolean contemPreview = false;
         //Ajustar imagens
         Elements imgs = doc.getElementsByTag("img");
-        imgs.after("<br>"); //Espaçamento depois das imagens
         for (Element img : imgs) {
             //Tamanho das imagens
-            if (!img.className().equals("CToWUd")) { //As imagens com essa classe precisam permanecer no tamanho original -> imagens pequenas do "Graduação em Química Licenciatura, inscreva-se!"
-                img.attr("style", "width: 100%; height: auto;"); //Ocupar o espaço horizontal inteiro
-            } else {
-                img.before("<br>"); //Espaçamento antes nas imagens menores
+            img.attr("style", "display: inline; max-width: 100%; height: auto;");
+
+            //Centralizar e deixar um espaço nas imagens que estavam alinhadas
+            if (img.className().contains("alignright") || img.className().contains("alignleft") || img.className().contains("aligncenter")) {
+                img.before("<br>");
+                img.after("<br>");
+                img.attr("style", "display: block; max-width: 100%; height: auto; margin: 0 auto;");
             }
-
-            //Conferir se já tem o preview no meio da notícia
-            String srcImagem = getCaminhoImagemNoticia(img.attr("src"));
-            String srcPreview = getCaminhoImagemNoticia(preview.getUrlImagemPreview());
-            if (srcImagem.contains(srcPreview) || srcPreview.contains(srcImagem))
-                contemPreview = true;
         }
-
-        doc.getElementsByTag("body").first().before("<h3 class=\"titulo\">" + preview.getTitulo() + "</h3>"); //Título no topo
-        doc.getElementsByClass("titulo").get(0).after("<p class=\"data\">" + FORMATO_DATA.format(preview.getDataNoticia()) + "</p>"); //Data abaixo do título TODO: formatar bonitinho isso também
-        doc.getElementsByClass("data").get(0).after("<hr class=\"barra_horizontal\"></hr>");
-        //Preview abaixo da data (adiciona somente se já não está no texto)
-        if (!contemPreview && !preview.getUrlImagemPreview().equals(""))
-            doc.getElementsByClass("barra_horizontal").get(0).after("<br><img class=\"preview\" src=\"" + preview.getUrlImagemPreview() + "\" style=\"width: 100%; height: auto;\">");
 
         return doc.html();
     }

@@ -109,9 +109,9 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTvTitulo = itemView.findViewById(R.id.noticia_titulo);
-            mTvData = itemView.findViewById(R.id.noticia_data);
-            mIvPreview = itemView.findViewById(R.id.noticia_imagem);
+            mTvTitulo = itemView.findViewById(R.id.preview_titulo);
+            mTvData = itemView.findViewById(R.id.preview_data);
+            mIvPreview = itemView.findViewById(R.id.preview_imagem);
 
             itemView.setOnClickListener(v -> mItemListener.onPreviewClick(getAdapterPosition()));
         }

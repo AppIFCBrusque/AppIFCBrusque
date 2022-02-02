@@ -19,16 +19,16 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/noticia_imagem"
+            android:id="@+id/preview_imagem"
             android:layout_width="136dp"
             android:layout_height="136dp"
             android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/noticia_titulo"
+            android:id="@+id/preview_titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/noticia_imagem"
+            android:layout_toEndOf="@id/preview_imagem"
             android:ellipsize="end"
             android:maxLines="4"
             android:paddingHorizontal="16dp"
@@ -37,11 +37,11 @@
             android:textAppearance="@style/TextAppearance.TituloItemLista" />
 
         <TextView
-            android:id="@+id/noticia_data"
+            android:id="@+id/preview_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/noticia_titulo"
-            android:layout_toEndOf="@id/noticia_imagem"
+            android:layout_below="@id/preview_titulo"
+            android:layout_toEndOf="@id/preview_imagem"
             android:paddingHorizontal="16dp"
             android:paddingTop="4dp"
             android:text="00/00/00"
