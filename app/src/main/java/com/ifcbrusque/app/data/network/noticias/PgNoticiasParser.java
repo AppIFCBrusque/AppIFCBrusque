@@ -91,6 +91,8 @@ public class PgNoticiasParser {
      * @return objeto notícia
      */
     public static Noticia getObjetoNoticia(Response r, Preview p) throws IOException {
+
+
         Document d = Jsoup.parse(r.body().string());
 
         String titulo = "", htmlConteudo = "";
@@ -100,7 +102,7 @@ public class PgNoticiasParser {
         }
 
         for (Element content : d.getElementsByClass("entry-content")) {
-            htmlConteudo = content.html();
+            htmlConteudo = content.outerHtml();
         }
 
         return new Noticia(p.getUrlNoticia(), titulo, htmlConteudo, p.getDataNoticia());
@@ -134,6 +136,7 @@ public class PgNoticiasParser {
         //TODO: Preciso organizar isto melhor alguma hora
         Document doc = Jsoup.parse(html);
 
+        //Continuar o texto que transborda na próxima linha
         doc.getElementsByTag("body").attr("style", "overflow-x: hidden; overflow-wrap: break-word;");
 
         boolean contemPreview = false;
@@ -162,6 +165,6 @@ public class PgNoticiasParser {
         if (!contemPreview && !preview.getUrlImagemPreview().equals(""))
             doc.getElementsByClass("barra_horizontal").get(0).after("<br><img class=\"preview\" src=\"" + preview.getUrlImagemPreview() + "\" style=\"width: 100%; height: auto;\">");
 
-        return doc.toString();
+        return doc.html();
     }
 }

@@ -109,7 +109,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
      */
     @Override
     public void carregarHtmlWebView(String html) {
-        mWv.loadData(html, "text/html", "UTF-8");
+        mWv.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
     }
 
     @Override
