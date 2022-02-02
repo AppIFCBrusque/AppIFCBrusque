@@ -86,6 +86,8 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
         mTvData = findViewById(R.id.noticia_data);
         mRelativeLayout = findViewById(R.id.noticia_relative_layout);
 
+        mWv.setVerticalScrollBarEnabled(false);
+
         mPresenter.onViewPronta(getIntent().getExtras());
     }
 
