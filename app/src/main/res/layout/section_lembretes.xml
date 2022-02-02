@@ -19,7 +19,7 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:text="@string/noticia_titulo_padrao"
-            android:textAppearance="@style/TextAppearance.TituloPagina" />
+            android:textAppearance="@style/TextAppearance.TituloItemLista" />
 
     </LinearLayout>
 
