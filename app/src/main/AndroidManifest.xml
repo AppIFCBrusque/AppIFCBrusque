@@ -40,7 +40,8 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.IFCBrusque.SplashTheme" />
 
         <service
             android:name=".service.SyncService"

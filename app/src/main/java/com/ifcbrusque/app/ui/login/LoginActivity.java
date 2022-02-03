@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.HomeActivity;
@@ -21,7 +22,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     LoginContract.LoginPresenter<LoginContract.LoginView> mPresenter;
 
     private MaterialProgressBar mProgressBar;
-    private EditText mEtUsuario, mEtSenha;
+    private TextInputLayout mEtUsuario, mEtSenha;
     private TextView mTvErro;
     private Button mBtEntrar, mBtPular;
 
@@ -51,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         mBtEntrar = findViewById(R.id.btEntrar);
         mBtPular = findViewById(R.id.btPular);
 
-        mBtEntrar.setOnClickListener(v -> mPresenter.onEntrarClick(mEtUsuario.getText().toString(), mEtSenha.getText().toString()));
+        mBtEntrar.setOnClickListener(v -> mPresenter.onEntrarClick(mEtUsuario.getEditText().getText().toString(), mEtSenha.getEditText().getText().toString()));
         mBtPular.setOnClickListener(v -> mPresenter.onPularClick());
     }
 
