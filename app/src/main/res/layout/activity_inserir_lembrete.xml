@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,93 +11,115 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp"
-        android:theme="@style/Theme.IFCBrusque.Toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:theme="@style/Theme.IFCBrusque.Toolbar" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiTitulo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarInserirLembrete"
-        app:layout_constraintVertical_bias="0.050000012">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarInserirLembrete">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:hint="@string/titulo" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiDescricao"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tiTitulo"
-        app:layout_constraintVertical_bias="0.029999971">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiTitulo"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/titulo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/colorBackground"
-            android:hint="@string/descricao" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiDescricao"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tiTitulo"
+                android:hint="@string/descricao"
+                app:layout_constraintTop_toBottomOf="@id/tiTitulo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="@string/data"
+                android:textAppearance="@style/TextAppearance.Secundario"
+                app:layout_constraintStart_toStartOf="@id/tiDescricao"
+                app:layout_constraintTop_toBottomOf="@id/tiDescricao" />
+
+            <Button
+                android:id="@+id/btData"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginRight="2dp"
+                android:text="@string/data"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/btHora"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvData" />
+
+            <Button
+                android:id="@+id/btHora"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginLeft="2dp"
+                android:text="@string/hora"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btData"
+                app:layout_constraintTop_toBottomOf="@id/tvData" />
+
+            <TextView
+                android:id="@+id/tvRepeticao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="@string/repeticao"
+                android:textAppearance="@style/TextAppearance.Secundario"
+                app:layout_constraintStart_toStartOf="@id/tiDescricao"
+                app:layout_constraintTop_toBottomOf="@id/btData" />
+
+            <Button
+                android:id="@+id/btRepeticao"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@id/btHora"
+                android:layout_marginTop="4dp"
+                android:text="@string/repeticao_lembretes_nao_repetir"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvRepeticao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabInserir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        android:src="@drawable/outline_done_black_24"
+        android:theme="@style/Theme.IFCBrusque.FloatingActionButton" />
 
-    <Button
-        android:id="@+id/btData"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/data"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tiDescricao"
-        app:layout_constraintTop_toBottomOf="@+id/tiDescricao" />
-
-    <Button
-        android:id="@+id/btHora"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/hora"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@+id/btData"
-        app:layout_constraintTop_toBottomOf="@+id/tiDescricao" />
-
-    <Button
-        android:id="@+id/btRepeticao"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/repeticao_lembretes_nao_repetir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btData"
-        app:layout_constraintTop_toBottomOf="@+id/btData" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
