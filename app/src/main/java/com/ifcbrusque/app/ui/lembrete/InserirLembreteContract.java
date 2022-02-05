@@ -35,6 +35,8 @@ public interface InserirLembreteContract {
 
         void desativarBotaoRepeticao();
 
+        void esconderBotaoSalvar();
+
         void fecharActivity(boolean atualizarRecyclerView);
     }
 

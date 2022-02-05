@@ -81,6 +81,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                             getMvpView().desativarBotaoData();
                             getMvpView().desativarBotaoHora();
                             getMvpView().desativarBotaoRepeticao();
+                            getMvpView().esconderBotaoSalvar();
                         }
                     })
                     .subscribe());

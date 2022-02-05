@@ -276,6 +276,11 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mBtnRepeticao.setEnabled(false);
     }
 
+    @Override
+    public void esconderBotaoSalvar() {
+        mFabSalvar.setVisibility(View.GONE);
+    }
+
     /**
      * Utilizado para fechar esta activity e atualizar o recycler view do HomeFragment
      * Esta função adiciona um valor no bundle de resultado que indica se o HomeFragment deve atualizar os itens do recycler view (carregar o que está salvo no banco de dados)
