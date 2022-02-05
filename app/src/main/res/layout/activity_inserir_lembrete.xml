@@ -68,8 +68,9 @@
             <Button
                 android:id="@+id/btData"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
+                android:minHeight="56dp"
                 android:text="@string/data"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@id/btHora"
@@ -79,8 +80,9 @@
             <Button
                 android:id="@+id/btHora"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
+                android:minHeight="56dp"
                 android:text="@string/hora"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,9 +102,10 @@
             <Button
                 android:id="@+id/btRepeticao"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/btHora"
                 android:layout_marginTop="4dp"
+                android:minHeight="56dp"
                 android:text="@string/repeticao_lembretes_nao_repetir"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvRepeticao" />

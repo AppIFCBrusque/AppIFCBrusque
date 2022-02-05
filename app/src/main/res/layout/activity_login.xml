@@ -110,14 +110,16 @@
                 <Button
                     android:id="@+id/btEntrar"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:minHeight="56dp"
                     android:text="@string/sigaa_entrar" />
 
                 <Button
                     android:id="@+id/btPular"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
                     android:text="@string/sigaa_pular" />
 
             </LinearLayout>
