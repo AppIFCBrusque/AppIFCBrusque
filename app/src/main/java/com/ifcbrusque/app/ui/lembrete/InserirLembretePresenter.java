@@ -1,5 +1,8 @@
 package com.ifcbrusque.app.ui.lembrete;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
@@ -166,5 +169,30 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
         mLembrete.setTempoRepeticaoPersonalizada(tempoRepeticaoPersonalizada);
 
         getMvpView().setTextoBotaoRepeticao(tipoRepeticao);
+    }
+
+    @Override
+    public TextWatcher onTextoTituloChanged() {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                /* */
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Desativar o botão de salvar caso o título esteja vazio
+                if (charSequence.length() == 0) {
+                    getMvpView().desativarBotaoSalvar();
+                } else {
+                    getMvpView().ativarBotaoSalvar();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                /* */
+            }
+        };
     }
 }

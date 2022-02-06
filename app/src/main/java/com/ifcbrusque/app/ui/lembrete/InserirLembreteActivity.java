@@ -12,6 +12,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -90,6 +92,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mBtnTimePicker.setOnClickListener(v -> mPresenter.onBotaoTempoClick());
         mBtnRepeticao.setOnClickListener(v -> mPresenter.onBotaoRepeticaoClick());
         mFabSalvar.setOnClickListener(v -> mPresenter.onBotaoSalvarClick());
+        mTiTitulo.getEditText().addTextChangedListener(mPresenter.onTextoTituloChanged());
 
         long idLembrete = -1;
         if (getIntent().getExtras() != null) {
@@ -274,6 +277,16 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Override
     public void desativarBotaoRepeticao() {
         mBtnRepeticao.setEnabled(false);
+    }
+
+    @Override
+    public void ativarBotaoSalvar() {
+        mFabSalvar.setEnabled(true);
+    }
+
+    @Override
+    public void desativarBotaoSalvar() {
+        mFabSalvar.setEnabled(false);
     }
 
     @Override
