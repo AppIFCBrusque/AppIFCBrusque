@@ -52,7 +52,6 @@
 
     <style name="Theme.IFCBrusque.ImageViewNoticia" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">@dimen/raio_bordas</item>
-        <item name="cornerSizeBottomRight">@dimen/raio_bordas</item>
+        <item name="cornerSize">@dimen/raio_bordas</item>
     </style>
 </resources>
