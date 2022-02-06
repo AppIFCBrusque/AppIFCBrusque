@@ -90,10 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@null"
-            android:backgroundTint="?attr/colorOnPrimary"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/outline_more_vert_black_24" />
 
     </RelativeLayout>
