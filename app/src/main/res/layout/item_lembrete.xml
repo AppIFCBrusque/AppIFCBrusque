@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="8dp"
+            android:padding="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/outline_more_vert_black_24" />
 
