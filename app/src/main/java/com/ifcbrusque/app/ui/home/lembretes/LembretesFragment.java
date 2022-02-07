@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_ATUALIZAR_RECYCLER_VIEW;
 import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
@@ -39,10 +39,9 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     LembretesContract.LembretesPresenter<LembretesContract.LembretesView> mPresenter;
 
     private FloatingActionButton mFabNovoLembrete;
-    private Button mBtCategorias;
+    private ImageButton mIbCategorias;
     private RecyclerView mRecyclerView;
     private BottomSheetDialog mBottomSheetDialog;
-    private Toolbar mToolbar;
 
     @Inject
     LembretesAdapter mHomeAdapter;
@@ -123,15 +122,15 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
         //Texto do botão
         switch (categoria) {
             case 0:
-                mBtCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
+                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
                 break;
 
             case 1:
-                mBtCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
+                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
                 break;
 
             case 2:
-                mBtCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
+                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
                 break;
 
             default:
@@ -147,21 +146,13 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     }
 
     @Override
-    protected void setUp(View view) {
-        mToolbar = getActivity().findViewById(R.id.toolbarHome);
-        if (mToolbar != null) {
-            mToolbar.setElevation(0);
-        }
+    protected void setUp() {
+        mIbCategorias = getBaseActivity().findViewById(R.id.ibCategorias);
+        mFabNovoLembrete = getView().findViewById(R.id.fabNovoLembrete);
 
-        mFabNovoLembrete = view.findViewById(R.id.fabNovoLembrete);
-        mBtCategorias = view.findViewById(R.id.btCategorias);
+        mIbCategorias.setVisibility(View.VISIBLE);
 
-        mFabNovoLembrete.setOnClickListener(v -> {
-            //Abrir activity para dicionar um lembrete
-            Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
-            startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
-        });
-        mBtCategorias.setOnClickListener(v -> {
+        mIbCategorias.setOnClickListener(v -> {
             //Exibir bottom sheet dialog
             if (mBottomSheetDialog != null) {
                 mBottomSheetDialog.dismiss();
@@ -194,9 +185,14 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
 
             mBottomSheetDialog.show();
         });
+        mFabNovoLembrete.setOnClickListener(v -> {
+            //Abrir activity para dicionar um lembrete
+            Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
+            startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
+        });
 
         //Configuração do recycler view
-        mRecyclerView = view.findViewById(R.id.rvHome);
+        mRecyclerView = getView().findViewById(R.id.rvHome);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemViewCacheSize(20);
