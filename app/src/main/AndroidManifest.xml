@@ -18,7 +18,8 @@
         <activity
             android:name=".ui.lembrete.InserirLembreteActivity"
             android:label=""
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.noticia.NoticiaActivity"
             android:excludeFromRecents="true"
