@@ -49,6 +49,12 @@
     <string name="descricao">Descrição</string>
     <string name="data">Data</string>
     <string name="hora">Hora</string>
+    <string name="disciplina">Disciplina</string>
+    <string name="tipo">Tipo</string>
+
+    <string name="avaliacao">Avaliação</string>
+    <string name="tarefa">Tarefa</string>
+    <string name="questionario">Questionário</string>
 
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>

@@ -155,8 +155,10 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ViewHolderItem itemHolder = (ViewHolderItem) holder;
             Lembrete lembrete = (Lembrete) mDados.get(position);
 
+            //Título
             itemHolder.mTvTitulo.setText(lembrete.getTitulo());
 
+            //Descrição
             if (lembrete.getDescricao().length() > 0) {
                 itemHolder.mTvDescricao.setVisibility(View.VISIBLE);
                 itemHolder.mTvDescricao.setText(lembrete.getDescricao());
@@ -165,16 +167,48 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.mTvDescricao.setText("");
             }
 
+            //Data
             String[] data = new SimpleDateFormat(FORMATO_DATA).format(lembrete.getDataLembrete()).split(" ");
             itemHolder.mTvData.setText(data[0]);
             itemHolder.mTvHora.setText(data[1]);
 
+            //Repetição
             if (lembrete.getTipoRepeticao() != Lembrete.REPETICAO_SEM) {
                 itemHolder.mTvRepeticao.setVisibility(View.VISIBLE);
                 itemHolder.mTvRepeticao.setText(Lembrete.getIdDaStringRepeticao(lembrete.getTipoRepeticao()));
             } else {
                 itemHolder.mTvRepeticao.setVisibility(View.GONE);
             }
+
+            //Informações do SIGAA
+            if (lembrete.getTipo() != Lembrete.LEMBRETE_PESSOAL) {
+                /*
+                Disciplina
+
+                Estou salvando o nome da disciplina diretamente no lembrete
+                Acredito que não vale a pena consultar o banco de dados para encontrar a disciplina associada à atividade aqui, pois não influencia coisa alguma
+                 */
+                itemHolder.mTvDisciplina.setText(lembrete.getNomeDisciplina());
+
+                //Tipo
+                switch (lembrete.getTipo()) {
+                    case Lembrete.LEMBRETE_AVALIACAO:
+                        itemHolder.mTvTipo.setText(R.string.avaliacao);
+                        break;
+
+                    case Lembrete.LEMBRETE_TAREFA:
+                        itemHolder.mTvTipo.setText(R.string.tarefa);
+                        break;
+
+                    case Lembrete.LEMBRETE_QUESTIONARIO:
+                        itemHolder.mTvTipo.setText(R.string.questionario);
+                        break;
+                }
+            } else {
+                itemHolder.mTvDisciplina.setVisibility(View.GONE);
+                itemHolder.mTvTipo.setVisibility(View.GONE);
+            }
+
 
             //Cor
             if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
@@ -221,11 +255,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     Você configura ele quase da mesma forma que uma view
      */
     public class ViewHolderItem extends RecyclerView.ViewHolder {
-        final TextView mTvTitulo;
-        final TextView mTvDescricao;
-        final TextView mTvData;
-        final TextView mTvHora;
-        final TextView mTvRepeticao;
+        final TextView mTvTitulo, mTvDescricao, mTvData, mTvHora, mTvRepeticao, mTvDisciplina, mTvTipo;
         final ImageButton mIbOpcoes;
         final View mVwCor;
 
@@ -238,6 +268,8 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mIbOpcoes = itemView.findViewById(R.id.lembrete_opcoes);
             mTvRepeticao = itemView.findViewById(R.id.lembrete_repeticao);
             mVwCor = itemView.findViewById(R.id.lembrete_cor);
+            mTvDisciplina = itemView.findViewById(R.id.lembrete_disciplina);
+            mTvTipo = itemView.findViewById(R.id.lembrete_tipo);
 
             itemView.setOnClickListener(v -> mItemListener.onLembreteClick(getAdapterPosition()));
             mIbOpcoes.setOnClickListener(v -> mItemListener.onOpcoesClick(getAdapterPosition()));

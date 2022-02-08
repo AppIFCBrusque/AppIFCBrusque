@@ -24,6 +24,10 @@ public class Lembrete {
     public final static int LEMBRETE_AVALIACAO = 2;
     public final static int LEMBRETE_TAREFA = 3;
     public final static int LEMBRETE_QUESTIONARIO = 4;
+
+    @ColumnInfo(name = "nome_disciplina")
+    private String nomeDisciplina;
+    @ColumnInfo(name = "id_objeto_associado")
     private String idObjetoAssociado;
 
     private String titulo;
@@ -68,8 +72,9 @@ public class Lembrete {
     public final static int ESTADO_INCOMPLETO = 1;
     public final static int ESTADO_COMPLETO = 2;
 
-    public Lembrete(int tipo, String idObjetoAssociado, String titulo, String descricao, Date dataLembrete, int tipoRepeticao, long tempoRepeticaoPersonalizada, int estado, long idNotificacao) {
+    public Lembrete(int tipo, String nomeDisciplina, String idObjetoAssociado, String titulo, String descricao, Date dataLembrete, int tipoRepeticao, long tempoRepeticaoPersonalizada, int estado, long idNotificacao) {
         this.tipo = tipo;
+        this.nomeDisciplina = nomeDisciplina;
         this.idObjetoAssociado = idObjetoAssociado;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -81,15 +86,15 @@ public class Lembrete {
     }
 
     public Lembrete(Avaliacao a, long idNotificacao) {
-        this(LEMBRETE_AVALIACAO, Long.toString(a.getId()), a.getDescricao(), "", a.getData(), REPETICAO_SEM, 0, ESTADO_INCOMPLETO, idNotificacao);
+        this(LEMBRETE_AVALIACAO, a.getDisciplina().getNome(), Long.toString(a.getId()), a.getDescricao(), "", a.getData(), REPETICAO_SEM, 0, ESTADO_INCOMPLETO, idNotificacao);
     }
 
     public Lembrete(Tarefa t, long idNotificacao) {
-        this(LEMBRETE_TAREFA, t.getId(), t.getTitulo(), t.getDescricao(), t.getFim(), REPETICAO_SEM, 0, (t.isEnviada()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO, idNotificacao);
+        this(LEMBRETE_TAREFA, t.getDisciplina().getNome(), t.getId(), t.getTitulo(), t.getDescricao(), t.getFim(), REPETICAO_SEM, 0, (t.isEnviada()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO, idNotificacao);
     }
 
     public Lembrete(Questionario q, long idNotificacao) {
-        this(LEMBRETE_QUESTIONARIO, Long.toString(q.getId()), q.getTitulo(), "", q.getDataFim(), REPETICAO_SEM, 0, (q.isEnviado()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO, idNotificacao);
+        this(LEMBRETE_QUESTIONARIO, q.getDisciplina().getNome(), Long.toString(q.getId()), q.getTitulo(), "", q.getDataFim(), REPETICAO_SEM, 0, (q.isEnviado()) ? ESTADO_COMPLETO : ESTADO_INCOMPLETO, idNotificacao);
     }
 
     public long getId() {
@@ -114,6 +119,14 @@ public class Lembrete {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    public String getNomeDisciplina() {
+        return nomeDisciplina;
+    }
+
+    public void setNomeDisciplina(String nomeDisciplina) {
+        this.nomeDisciplina = nomeDisciplina;
     }
 
     public String getIdObjetoAssociado() {

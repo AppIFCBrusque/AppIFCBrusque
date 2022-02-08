@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
@@ -17,7 +16,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/lembrete_opcoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            app:srcCompat="@drawable/outline_more_vert_black_24" />
 
         <TextView
             android:id="@+id/lembrete_titulo"
@@ -50,9 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/lembrete_descricao"
             android:drawablePadding="4dp"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="2dp"
             android:text="00/00/0000"
             android:textAppearance="@style/TextAppearance.Secundario"
             app:drawableLeftCompat="@drawable/outline_event_black_20" />
@@ -64,9 +75,9 @@
             android:layout_below="@id/lembrete_descricao"
             android:layout_toEndOf="@id/lembrete_data"
             android:drawablePadding="4dp"
-            android:paddingHorizontal="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
+            android:paddingHorizontal="4dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="2dp"
             android:text="00:00"
             android:textAppearance="@style/TextAppearance.Secundario"
             app:drawableLeftCompat="@drawable/outline_schedule_black_20" />
@@ -78,21 +89,41 @@
             android:layout_below="@id/lembrete_descricao"
             android:layout_toEndOf="@id/lembrete_hora"
             android:drawablePadding="4dp"
-            android:paddingHorizontal="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
-            android:text="@string/repeticao_lembretes_nao_repetir"
+            android:paddingLeft="4dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="2dp"
+            android:text="@string/repeticao"
             android:textAppearance="@style/TextAppearance.Secundario"
             app:drawableLeftCompat="@drawable/outline_repeat_one_black_20" />
 
-        <ImageButton
-            android:id="@+id/lembrete_opcoes"
+        <TextView
+            android:id="@+id/lembrete_tipo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:padding="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/outline_more_vert_black_24" />
+            android:layout_below="@id/lembrete_data"
+            android:layout_alignStart="@id/lembrete_data"
+            android:drawablePadding="4dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="2dp"
+            android:paddingRight="4dp"
+            android:text="@string/tipo"
+            android:textAppearance="@style/TextAppearance.Secundario"
+            app:drawableLeftCompat="@drawable/outline_class_black_20" />
+
+        <TextView
+            android:id="@+id/lembrete_disciplina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lembrete_data"
+            android:layout_toRightOf="@id/lembrete_tipo"
+            android:drawablePadding="4dp"
+            android:paddingHorizontal="4dp"
+            android:paddingTop="2dp"
+            android:singleLine="true"
+            android:text="@string/disciplina"
+            android:textAppearance="@style/TextAppearance.Secundario"
+            app:drawableLeftCompat="@drawable/outline_school_black_20" />
 
     </RelativeLayout>
 

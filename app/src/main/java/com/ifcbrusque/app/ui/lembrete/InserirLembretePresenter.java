@@ -95,7 +95,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
             mCalendar.set(Calendar.MINUTE, 0);
             mCalendar.set(Calendar.SECOND, 0);
 
-            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
+            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
 
             getMvpView().setTitulo(mLembrete.getTitulo());
             getMvpView().setDescricao(mLembrete.getDescricao());

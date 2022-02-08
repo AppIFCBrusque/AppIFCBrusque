@@ -31,7 +31,7 @@ public interface LembreteDao {
     @Query("SELECT * FROM lembrete_table WHERE id = :id")
     Lembrete getLembrete(long id);
 
-    @Query("SELECT * FROM lembrete_table WHERE idObjetoAssociado = :idObjetoAssociado")
+    @Query("SELECT * FROM lembrete_table WHERE id_objeto_associado = :idObjetoAssociado")
     List<Lembrete> getLembretes(String idObjetoAssociado);
 
     @Query("SELECT * FROM lembrete_table")
