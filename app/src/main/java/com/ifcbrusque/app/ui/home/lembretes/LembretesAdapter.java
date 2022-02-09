@@ -204,6 +204,9 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         itemHolder.mTvTipo.setText(R.string.questionario);
                         break;
                 }
+
+                itemHolder.mTvDisciplina.setVisibility(View.VISIBLE);
+                itemHolder.mTvTipo.setVisibility(View.VISIBLE);
             } else {
                 itemHolder.mTvDisciplina.setVisibility(View.GONE);
                 itemHolder.mTvTipo.setVisibility(View.GONE);
