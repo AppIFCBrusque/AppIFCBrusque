@@ -29,8 +29,8 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
      * O lembrete precisa ter um título válido. Se não tiver, mostra um toast
      */
     private void salvarLembrete() {
-        mLembrete.setTitulo(getMvpView().getTitulo());
-        mLembrete.setDescricao(getMvpView().getDescricao());
+        mLembrete.setTitulo(getMvpView().getTitulo().trim());
+        mLembrete.setDescricao(getMvpView().getDescricao().trim());
 
         if (mLembrete.getTitulo().length() > 0) {
 
