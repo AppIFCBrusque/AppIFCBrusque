@@ -4,6 +4,8 @@
     <string name="cancel">Cancelar</string>
     <string name="opcoes">Opções</string>
 
+    <string name="copiado">Copiado para a área de transferência</string>
+
     <!-- ERROS -->
     <string name="erro">Erro</string>
     <string name="erro_sem_internet">Internet não disponível</string>
