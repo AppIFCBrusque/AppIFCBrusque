@@ -48,7 +48,9 @@
             android:name=".service.SyncService"
             android:exported="false" />
 
-        <receiver android:name=".service.SyncReceiver">
+        <receiver
+            android:name=".service.SyncReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_COMPLETA" />
                 <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_RAPIDA" />
@@ -56,11 +58,14 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".data.notification.NotificationReceiver">
+        <receiver
+            android:name=".data.notification.NotificationReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.ifcbrusque.app.ACTION_NOTIFICAR_LEMBRETE" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>
