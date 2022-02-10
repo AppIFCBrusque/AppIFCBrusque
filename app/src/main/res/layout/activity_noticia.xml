@@ -1,45 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.noticia.NoticiaActivity">
-
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/pbCircularNoticia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true" />
 
-
-    <ScrollView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarNoticia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:elevation="4dp"
+        android:theme="@style/Theme.IFCBrusque.Toolbar" />
 
-        <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarNoticia"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:paddingBottom="80dp">
+
+        <RelativeLayout
+            android:id="@+id/noticia_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/noticia_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                android:text="@string/noticia_titulo_padrao"
+                android:textAppearance="@style/TextAppearance.TituloPagina" />
+
+            <TextView
+                android:id="@+id/noticia_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/noticia_titulo"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="16dp"
+                android:text="00/00/00"
+                android:textAppearance="@style/TextAppearance.Secundario" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/noticia_imagem_grande"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/noticia_data"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/Theme.IFCBrusque.ImageViewNoticia" />
 
             <WebView
                 android:id="@+id/wvNoticia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_below="@id/noticia_imagem_grande"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp" />
 
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

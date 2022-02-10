@@ -9,6 +9,14 @@ public interface NoticiaContract {
     interface NoticiaView extends MvpView {
         void carregarHtmlWebView(String html);
 
+        void carregarImagemGrande(String url);
+
+        void setTitulo(String titulo);
+
+        void setData(String data);
+
+        void mostrarView();
+
         void mostrarLoading();
 
         void esconderLoading();

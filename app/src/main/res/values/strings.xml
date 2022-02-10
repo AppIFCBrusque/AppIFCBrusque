@@ -2,15 +2,18 @@
     <string name="app_name">IFC Brusque</string>
 
     <string name="cancel">Cancelar</string>
+    <string name="opcoes">Opções</string>
+
+    <string name="copiado">Copiado para a área de transferência</string>
 
     <!-- ERROS -->
-    <string name="some_error">Erro</string>
+    <string name="erro">Erro</string>
     <string name="erro_sem_internet">Internet não disponível</string>
     <string name="erro_titulo_lembrete_vazio">Informe um título ao lembrete</string>
     <string name="erro_carregar_pagina">Não foi possível carregar a página</string>
     <string name="erro_servico_sigaa_dados_invalidos">As credenciais do SIGAA salvas estão inválidas</string>
 
-    <string name="title_home">Home</string>
+    <string name="title_home">Lembretes</string>
     <!-- NOTÍCIAS -->
     <string name="title_noticias">Notícias</string>
 
@@ -20,7 +23,7 @@
     <string name="hora_hh_mm">%02d:%02d</string>
 
     <!-- LEMBRETES -->
-
+    <string name="repeticao">Repetição</string>
     <string name="repeticao_lembretes_nao_repetir">Não repetir</string>
     <string name="repeticao_lembretes_hora">Toda hora</string>
     <string name="repeticao_lembretes_dia">Todo dia</string>
@@ -32,6 +35,7 @@
     <string name="lembrete_descompletar">Marcar como incompleto</string>
     <string name="lembrete_excluir">Excluir lembrete</string>
 
+    <string name="categoria_estado">Estado</string>
     <string name="categoria_lembretes_todos">Todos os lembretes</string>
     <string name="categoria_lembretes_completos">Completos</string>
     <string name="categoria_lembretes_incompletos">Incompletos</string>
@@ -47,6 +51,12 @@
     <string name="descricao">Descrição</string>
     <string name="data">Data</string>
     <string name="hora">Hora</string>
+    <string name="disciplina">Disciplina</string>
+    <string name="tipo">Tipo</string>
+
+    <string name="avaliacao">Avaliação</string>
+    <string name="tarefa">Tarefa</string>
+    <string name="questionario">Questionário</string>
 
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>

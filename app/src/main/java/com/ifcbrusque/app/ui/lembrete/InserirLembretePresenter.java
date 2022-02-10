@@ -1,5 +1,8 @@
 package com.ifcbrusque.app.ui.lembrete;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
@@ -26,8 +29,8 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
      * O lembrete precisa ter um título válido. Se não tiver, mostra um toast
      */
     private void salvarLembrete() {
-        mLembrete.setTitulo(getMvpView().getTitulo());
-        mLembrete.setDescricao(getMvpView().getDescricao());
+        mLembrete.setTitulo(getMvpView().getTitulo().trim());
+        mLembrete.setDescricao(getMvpView().getDescricao().trim());
 
         if (mLembrete.getTitulo().length() > 0) {
 
@@ -81,6 +84,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                             getMvpView().desativarBotaoData();
                             getMvpView().desativarBotaoHora();
                             getMvpView().desativarBotaoRepeticao();
+                            getMvpView().esconderBotaoSalvar();
                         }
                     })
                     .subscribe());
@@ -91,7 +95,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
             mCalendar.set(Calendar.MINUTE, 0);
             mCalendar.set(Calendar.SECOND, 0);
 
-            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
+            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
 
             getMvpView().setTitulo(mLembrete.getTitulo());
             getMvpView().setDescricao(mLembrete.getDescricao());
@@ -165,5 +169,30 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
         mLembrete.setTempoRepeticaoPersonalizada(tempoRepeticaoPersonalizada);
 
         getMvpView().setTextoBotaoRepeticao(tipoRepeticao);
+    }
+
+    @Override
+    public TextWatcher onTextoTituloChanged() {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                /* */
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Desativar o botão de salvar caso o título esteja vazio
+                if (charSequence.length() == 0) {
+                    getMvpView().desativarBotaoSalvar();
+                } else {
+                    getMvpView().ativarBotaoSalvar();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                /* */
+            }
+        };
     }
 }

@@ -1,99 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/verde"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.IFCBrusque.AppBarOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:theme="@style/Theme.IFCBrusque">
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/pbHorizontalLogin"
             style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:layout_alignParentBottom="true"
             android:indeterminate="true"
+            android:indeterminateTint="?attr/colorOnPrimary"
             android:visibility="gone"
             app:mpb_progressStyle="horizontal"
             app:mpb_useIntrinsicPadding="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <EditText
-        android:id="@+id/etUsuario"
-        android:layout_width="300dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="252dp"
-        android:ems="10"
-        android:hint="@string/sigaa_usuario"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etSenha"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="@string/sigaa_senha"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUsuario" />
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_ifc_brusque_logo"
+            android:tint="@color/white" />
 
-    <Button
-        android:id="@+id/btEntrar"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/sigaa_entrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSenha" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:background="@color/white"
+            android:elevation="0dp"
+            app:cardCornerRadius="@dimen/raio_bordas"
+            app:cardMaxElevation="0dp">
 
-    <Button
-        android:id="@+id/btPular"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="@string/sigaa_pular"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btEntrar" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-    <TextView
-        android:id="@+id/tvErro"
-        style="@style/TextAppearance.Secundario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/sigaa_dados_invalidos"
-        android:textAlignment="center"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/btEntrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+                <TextView
+                    android:id="@+id/tvMensagemSIGAA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sigaa_mensagem_conexao"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.Secundario" />
 
-    <TextView
-        style="@style/TextAppearance.Secundario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:maxWidth="300dp"
-        android:text="@string/sigaa_mensagem_conexao"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/etUsuario"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etUsuario"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/sigaa_usuario">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etSenha"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sigaa_senha">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvErro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/sigaa_dados_invalidos"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.Secundario"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+                <Button
+                    android:id="@+id/btEntrar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="56dp"
+                    android:text="@string/sigaa_entrar" />
+
+                <Button
+                    android:id="@+id/btPular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:text="@string/sigaa_pular" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>

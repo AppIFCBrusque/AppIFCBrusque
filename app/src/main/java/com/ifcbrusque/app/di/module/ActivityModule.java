@@ -1,12 +1,14 @@
 package com.ifcbrusque.app.di.module;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.Lembrete;
-import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.di.ActivityContext;
 import com.ifcbrusque.app.di.PerActivity;
 import com.ifcbrusque.app.ui.home.lembretes.LembretesAdapter;
@@ -91,7 +93,14 @@ public class ActivityModule {
 
     @Provides
     LembretesAdapter provideLembretesAdapter() {
-        return new LembretesAdapter(new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO);
+        Resources r = mActivity.getResources();
+        int margemHorizontal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
+        int margemVertical = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, r.getDisplayMetrics());
+
+        int corIncompleto = mActivity.getResources().getColor(R.color.vermelho);
+        int corCompleto = mActivity.getResources().getColor(R.color.verde);
+
+        return new LembretesAdapter(new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO, margemHorizontal, margemVertical, corIncompleto, corCompleto);
     }
 
     @Provides

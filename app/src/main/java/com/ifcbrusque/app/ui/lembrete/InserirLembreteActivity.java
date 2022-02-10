@@ -9,15 +9,24 @@ import com.ifcbrusque.app.ui.base.BaseActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+
 import javax.inject.Inject;
+
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddOpcaoBelow;
 
 public class InserirLembreteActivity extends BaseActivity implements InserirLembreteContract.InserirLembreteView {
     public static final String EXTRAS_LEMBRETE_ID = "EXTRAS_LEMBRETE_ID";
@@ -27,7 +36,6 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     public static final String EXTRAS_LEMBRETE_TIPO_REPETICAO = "EXTRAS_LEMBRETE_TIPO_REPETICAO";
     public static final String EXTRAS_LEMBRETE_TEMPO_REPETICAO_PERSONALIZADA = "EXTRAS_LEMBRETE_TEMPO_REPETICAO_PERSONALIZADA";
     public static final String EXTRAS_ATUALIZAR_RECYCLER_VIEW = "EXTRAS_ATUALIZAR_RECYCLER_VIEW";
-
 
     public static Intent getStartIntent(Context context) {
         return getStartIntent(context, null);
@@ -55,6 +63,8 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     DatePickerDialog mDatePickerDialog;
     TimePickerDialog mTimePickerDialog;
 
+    ClipboardManager mClipboard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +79,11 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
     @Override
     protected void setUp() {
+        Toolbar toolbar = findViewById(R.id.toolbarInserirLembrete);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         mTiTitulo = findViewById(R.id.tiTitulo);
         mTiDescricao = findViewById(R.id.tiDescricao);
@@ -82,6 +96,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mBtnTimePicker.setOnClickListener(v -> mPresenter.onBotaoTempoClick());
         mBtnRepeticao.setOnClickListener(v -> mPresenter.onBotaoRepeticaoClick());
         mFabSalvar.setOnClickListener(v -> mPresenter.onBotaoSalvarClick());
+        mTiTitulo.getEditText().addTextChangedListener(mPresenter.onTextoTituloChanged());
 
         long idLembrete = -1;
         if (getIntent().getExtras() != null) {
@@ -90,11 +105,6 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mPresenter.onViewPronta(idLembrete);
     }
 
-    /*
-    Executado quando algum item da barra de cima é selecionado
-
-    Identifica o item e realiza os procedimentos correspondentes
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -112,10 +122,6 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mPresenter.onDetach();
         super.onDestroy();
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    Funções declaradas no contract para serem definidas por esta view
-     */
 
     @Override
     public void exibirDialogoData(int anoInicial, int mesInicial, int diaInicial) {
@@ -152,14 +158,17 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         }
 
         mBottomSheetDialog = new BottomSheetDialog(this);
-        mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_repeticao_lembrete);
+        mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
-        TextView tvHora = mBottomSheetDialog.findViewById(R.id.tvHora);
-        TextView tvDia = mBottomSheetDialog.findViewById(R.id.tvDia);
-        TextView tvSemana = mBottomSheetDialog.findViewById(R.id.tvSemana);
-        TextView tvMes = mBottomSheetDialog.findViewById(R.id.tvMes);
-        TextView tvAno = mBottomSheetDialog.findViewById(R.id.tvAno);
-        TextView tvNaoRepetir = mBottomSheetDialog.findViewById(R.id.tvNaoRepetir);
+        RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
+
+        TextView tvRepeticao = bsdAddDescricaoBelow(this, R.string.repeticao, rlBottomSheetDialog, null);
+        TextView tvHora = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_hora, 0, rlBottomSheetDialog, tvRepeticao);
+        TextView tvDia = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_dia, 0, rlBottomSheetDialog, tvHora);
+        TextView tvSemana = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_semana, 0, rlBottomSheetDialog, tvDia);
+        TextView tvMes = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_mes, 0, rlBottomSheetDialog, tvSemana);
+        TextView tvAno = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_ano, 0, rlBottomSheetDialog, tvMes);
+        TextView tvNaoRepetir = bsdAddOpcaoBelow(this, R.string.repeticao_lembretes_nao_repetir, 0, rlBottomSheetDialog, tvAno);
 
         final View.OnClickListener onRepeticaoClick = v -> {
             if (v == tvHora) {
@@ -237,8 +246,9 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mTiTitulo.getEditText().setFocusable(false);
         mTiTitulo.getEditText().setFocusableInTouchMode(false);
         mTiTitulo.getEditText().setClickable(false);
-        mTiTitulo.getEditText().setLongClickable(false);
+        mTiTitulo.getEditText().setLongClickable(true);
         mTiTitulo.getEditText().setCursorVisible(false);
+        mTiTitulo.getEditText().setOnLongClickListener(onEditTextLongClickListener(mTiTitulo.getEditText()));
     }
 
     @Override
@@ -246,8 +256,23 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mTiDescricao.getEditText().setFocusable(false);
         mTiDescricao.getEditText().setFocusableInTouchMode(false);
         mTiDescricao.getEditText().setClickable(false);
-        mTiDescricao.getEditText().setLongClickable(false);
+        mTiDescricao.getEditText().setLongClickable(true);
         mTiDescricao.getEditText().setCursorVisible(false);
+        mTiDescricao.getEditText().setOnLongClickListener(onEditTextLongClickListener(mTiDescricao.getEditText()));
+    }
+
+    private View.OnLongClickListener onEditTextLongClickListener(EditText editText) {
+        return view -> {
+            String texto = editText.getText().toString();
+            if (texto.length() > 0) {
+                ClipData clip = ClipData.newPlainText(getString(R.string.copiado), texto);
+                mClipboard.setPrimaryClip(clip);
+                showMessage(R.string.copiado);
+                return true;
+            } else {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -263,6 +288,21 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Override
     public void desativarBotaoRepeticao() {
         mBtnRepeticao.setEnabled(false);
+    }
+
+    @Override
+    public void ativarBotaoSalvar() {
+        mFabSalvar.setEnabled(true);
+    }
+
+    @Override
+    public void desativarBotaoSalvar() {
+        mFabSalvar.setEnabled(false);
+    }
+
+    @Override
+    public void esconderBotaoSalvar() {
+        mFabSalvar.setVisibility(View.GONE);
     }
 
     /**

@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorOnPrimary"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:backgroundTint="?attr/colorSurface"
+    android:elevation="8dp"
     android:foreground="?attr/selectableItemBackground"
-    android:paddingHorizontal="@dimen/padding_views">
+    android:orientation="horizontal"
+    app:cardCornerRadius="@dimen/raio_bordas"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true">
 
-    <TextView
-        android:id="@+id/noticia_titulo"
-        style="@style/TextAppearance.TituloItemLista"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_views"
-        android:paddingTop="@dimen/padding_views"
-        android:text="@string/noticia_titulo_padrao"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/noticia_imagem"
-        app:layout_constraintTop_toTopOf="@+id/noticia_imagem" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/noticia_data"
-        style="@style/TextAppearance.Secundario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_views"
-        android:paddingBottom="@dimen/padding_views"
-        android:text="00/00/00"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/noticia_imagem"
-        app:layout_constraintTop_toBottomOf="@+id/noticia_titulo" />
+        <ImageView
+            android:id="@+id/preview_imagem"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:scaleType="centerCrop" />
 
-    <ImageView
-        android:id="@+id/noticia_imagem"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background"
-        tools:srcCompat="@drawable/ic_launcher_background" />
+        <TextView
+            android:id="@+id/preview_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/preview_imagem"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:text="@string/noticia_titulo_padrao"
+            android:textAppearance="@style/TextAppearance.TituloItemLista" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/preview_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/preview_titulo"
+            android:layout_toEndOf="@id/preview_imagem"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="4dp"
+            android:text="00/00/00"
+            android:textAppearance="@style/TextAppearance.Secundario" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

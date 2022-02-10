@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
 
     private MaterialProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
+    private ImageButton mIbCategorias;
 
     @Inject
     NoticiasAdapter mNoticiasAdapter;
@@ -53,11 +55,14 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
     }
 
     @Override
-    protected void setUp(View view) {
-        mProgressBar = getActivity().findViewById(R.id.pbHorizontalHome);
+    protected void setUp() {
+        mIbCategorias = getBaseActivity().findViewById(R.id.ibCategorias);
+        mProgressBar = getBaseActivity().findViewById(R.id.pbHorizontalHome);
+
+        mIbCategorias.setVisibility(View.GONE);
 
         //Configuração do recycler view
-        mRecyclerView = view.findViewById(R.id.recyclerView_noticias);
+        mRecyclerView = getView().findViewById(R.id.recyclerView_noticias);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemViewCacheSize(20);
@@ -81,11 +86,7 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
             startActivity(intent);
         };
         mNoticiasAdapter.setItemListener(itemListener);
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         mPresenter.onViewPronta();
     }
 
@@ -103,11 +104,14 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
      */
     @Override
     public void onDestroyView() {
-        int itemNoTopoLista = mLayoutManager.findFirstVisibleItemPosition();
-        mPresenter.onDestroyView(itemNoTopoLista);
         super.onDestroyView();
 
-        esconderProgressBar(); //TODO: Utilizar uma progerss bar única do fragmento
+        int itemNoTopoLista = mLayoutManager.findFirstVisibleItemPosition();
+        mPresenter.onDestroyView(itemNoTopoLista);
+
+        if (mProgressBar != null) {
+            esconderProgressBar();
+        }
     }
 
     @Override

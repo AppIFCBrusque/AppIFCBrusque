@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_ATUALIZAR_RECYCLER_VIEW;
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
+import static com.ifcbrusque.app.utils.ViewUtils.bsdAddOpcaoBelow;
 
 public class LembretesFragment extends BaseFragment implements LembretesContract.LembretesView {
     final int REQUEST_CODE_LEMBRETE = 100;
@@ -35,7 +39,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     LembretesContract.LembretesPresenter<LembretesContract.LembretesView> mPresenter;
 
     private FloatingActionButton mFabNovoLembrete;
-    private Button mBtCategorias;
+    private ImageButton mIbCategorias;
     private RecyclerView mRecyclerView;
     private BottomSheetDialog mBottomSheetDialog;
 
@@ -118,15 +122,15 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
         //Texto do botão
         switch (categoria) {
             case 0:
-                mBtCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
+                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
                 break;
 
             case 1:
-                mBtCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
+                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
                 break;
 
             case 2:
-                mBtCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
+                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
                 break;
 
             default:
@@ -142,27 +146,28 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     }
 
     @Override
-    protected void setUp(View view) {
-        mFabNovoLembrete = view.findViewById(R.id.fabNovoLembrete);
-        mBtCategorias = view.findViewById(R.id.btCategorias);
+    protected void setUp() {
+        mIbCategorias = getBaseActivity().findViewById(R.id.ibCategorias);
+        mFabNovoLembrete = getView().findViewById(R.id.fabNovoLembrete);
 
-        mFabNovoLembrete.setOnClickListener(v -> {
-            //Abrir activity para dicionar um lembrete
-            Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
-            startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
-        });
-        mBtCategorias.setOnClickListener(v -> {
+        mIbCategorias.setVisibility(View.VISIBLE);
+
+        mIbCategorias.setOnClickListener(v -> {
             //Exibir bottom sheet dialog
             if (mBottomSheetDialog != null) {
                 mBottomSheetDialog.dismiss();
             } else {
                 mBottomSheetDialog = new BottomSheetDialog(getContext());
             }
-            mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_categorias_lembrete);
+            mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
-            TextView tvIncompletos = mBottomSheetDialog.findViewById(R.id.tvIncompletos);
-            TextView tvCompletos = mBottomSheetDialog.findViewById(R.id.tvCompletos);
-            TextView tvTodos = mBottomSheetDialog.findViewById(R.id.tvTodos);
+            //Criar views
+            RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
+
+            TextView tvCategoriaEstado = bsdAddDescricaoBelow(getContext(), R.string.categoria_estado, rlBottomSheetDialog, null);
+            TextView tvIncompletos = bsdAddOpcaoBelow(getContext(), R.string.categoria_lembretes_incompletos, R.drawable.outline_clear_black_24, rlBottomSheetDialog, tvCategoriaEstado);
+            TextView tvCompletos = bsdAddOpcaoBelow(getContext(), R.string.categoria_lembretes_completos, R.drawable.outline_done_black_24, rlBottomSheetDialog, tvIncompletos);
+            TextView tvTodos = bsdAddOpcaoBelow(getContext(), R.string.categoria_lembretes_todos, R.drawable.outline_assignment_black_24, rlBottomSheetDialog, tvCompletos);
 
             View.OnClickListener onClickListener = v1 -> {
                 if (v1 == tvIncompletos) {
@@ -180,9 +185,14 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
 
             mBottomSheetDialog.show();
         });
+        mFabNovoLembrete.setOnClickListener(v -> {
+            //Abrir activity para dicionar um lembrete
+            Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
+            startActivityForResult(intentLembrete, REQUEST_CODE_LEMBRETE);
+        });
 
         //Configuração do recycler view
-        mRecyclerView = view.findViewById(R.id.rvHome);
+        mRecyclerView = getView().findViewById(R.id.rvHome);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemViewCacheSize(20);
@@ -209,15 +219,19 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
                     mBottomSheetDialog = new BottomSheetDialog(getContext());
                 }
 
-                mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_opcoes_lembrete);
-                TextView tvAlternarEstado = mBottomSheetDialog.findViewById(R.id.tvAlterarEstado);
-                TextView tvExcluir = mBottomSheetDialog.findViewById(R.id.tvExcluir);
+                mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
+
+                RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
+
+                TextView tvOpcoes = bsdAddDescricaoBelow(getContext(), R.string.opcoes, rlBottomSheetDialog, null);
+                TextView tvAlternarEstado = bsdAddOpcaoBelow(getContext(), R.string.lembrete_completar, R.drawable.outline_done_black_24, rlBottomSheetDialog, tvOpcoes);
+                TextView tvExcluir = bsdAddOpcaoBelow(getContext(), R.string.lembrete_excluir, R.drawable.outline_delete_black_24, rlBottomSheetDialog, tvAlternarEstado);
 
                 //Ajustar texto e ícones
                 switch (((Lembrete) getDadosNaView().get(position)).getEstado()) {
                     case Lembrete.ESTADO_INCOMPLETO:
                         tvAlternarEstado.setText(R.string.lembrete_completar);
-                        tvAlternarEstado.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);
+                        tvAlternarEstado.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);
                         break;
 
                     case Lembrete.ESTADO_COMPLETO:

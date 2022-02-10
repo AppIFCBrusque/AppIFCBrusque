@@ -1,5 +1,7 @@
 package com.ifcbrusque.app.ui.lembrete;
 
+import android.text.TextWatcher;
+
 import com.ifcbrusque.app.ui.base.MvpPresenter;
 import com.ifcbrusque.app.ui.base.MvpView;
 
@@ -35,6 +37,12 @@ public interface InserirLembreteContract {
 
         void desativarBotaoRepeticao();
 
+        void ativarBotaoSalvar();
+
+        void desativarBotaoSalvar();
+
+        void esconderBotaoSalvar();
+
         void fecharActivity(boolean atualizarRecyclerView);
     }
 
@@ -54,5 +62,7 @@ public interface InserirLembreteContract {
         void onTempoSelecionado(int hora, int minuto);
 
         void onRepeticaoSelecionada(int tipoRepeticao, int tempoRepeticaoPersonalizada);
+
+        TextWatcher onTextoTituloChanged();
     }
 }

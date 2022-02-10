@@ -10,12 +10,15 @@ import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.data.network.noticias.PgNoticiasParser;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
+import java.text.SimpleDateFormat;
+
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.*;
 import static com.ifcbrusque.app.data.db.Converters.*;
+import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends BasePresenter<V> implements NoticiaContract.NoticiaPresenter<V> {
     @Inject
@@ -62,8 +65,15 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
     }
 
     private void exibirNoticiaNaView(Preview preview, Noticia noticia) {
+        getMvpView().carregarImagemGrande(preview.getUrlImagemPreview());
+
+        getMvpView().setTitulo(noticia.getTitulo());
+        getMvpView().setData(noticia.getDataFormatada());
+
         getMvpView().carregarHtmlWebView(PgNoticiasParser.formatarCorpoNoticia(preview, noticia.getHtmlConteudo()));
+
         getMvpView().esconderLoading();
+        getMvpView().mostrarView();
     }
 
     @Override

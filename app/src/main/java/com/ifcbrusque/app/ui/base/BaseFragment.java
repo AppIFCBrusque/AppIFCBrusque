@@ -16,6 +16,8 @@ public abstract class BaseFragment extends Fragment implements MvpView {
 
     private ProgressDialog mProgressDialog;
 
+    private boolean setUpDone = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +27,8 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setUp(view);
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -35,6 +37,20 @@ public abstract class BaseFragment extends Fragment implements MvpView {
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!setUpDone) {
+            setUp();
+            setUpDone = true;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -90,7 +106,7 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         return mActivity;
     }
 
-    protected abstract void setUp(View view);
+    protected abstract void setUp();
 
     @Override
     public void onDestroy() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Texto-->
+    <!-- Texto -->
     <style name="TextAppearance" parent="android:TextAppearance">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
@@ -8,10 +8,16 @@
     <style name="TextAppearance.TituloPagina">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.TituloItemLista">
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.DescricaoItensLista">
+        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -20,4 +26,32 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- Componentes -->
+    <style name="Theme.IFCBrusque.Toolbar">
+        <item name="android:background">?attr/colorSecondary</item>
+        <item name="android:titleTextColor">?attr/colorOnSecondary</item>
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.FloatingActionButton">
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="backgroundColor">#f5f5f6</item>
+        <item name="colorAccent">#f5f5f6</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorOnSecondary">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Theme.IFCBrusque.BottomSheetDialog.Style</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.BottomSheetDialog.Style" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/background_bottom_sheet_dialog</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.ImageViewNoticia" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/raio_bordas</item>
+    </style>
 </resources>

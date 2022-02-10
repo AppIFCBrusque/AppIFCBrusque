@@ -53,6 +53,8 @@ Classe com funções relacionadas às notificações
  */
 @Singleton
 public class AppNotificationHelper implements NotificationHelper {
+    public static final int NOTF_COR = R.color.verde;
+
     public static final int NOTF_SINCRONIZACAO_ID = 1;
 
     private final Context mContext;
@@ -123,7 +125,7 @@ public class AppNotificationHelper implements NotificationHelper {
 
         //Criar notificação
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_LEMBRETE)
                 .setSubText("Lembretes")
@@ -212,7 +214,7 @@ public class AppNotificationHelper implements NotificationHelper {
 
         //Notificação
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_NOTICIAS)
                 .setSubText("Notícias")
@@ -287,6 +289,7 @@ public class AppNotificationHelper implements NotificationHelper {
         PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setContentTitle(service.getString(R.string.sincronizacao))
                 .setContentText(service.getString(R.string.sincronizacao_inicio))
                 .setSmallIcon(ICONE_SINCRONIZACAO)
@@ -303,6 +306,7 @@ public class AppNotificationHelper implements NotificationHelper {
         PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setContentTitle(service.getString(R.string.sincronizacao) + " (" + tarefaAtual + "/" + totalTarefas + ")")
                 .setContentText(service.getText(R.string.title_noticias).toString().toUpperCase())
                 .setSmallIcon(ICONE_SINCRONIZACAO)
@@ -320,6 +324,7 @@ public class AppNotificationHelper implements NotificationHelper {
         PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setContentTitle(service.getString(R.string.sincronizacao) + " (" + tarefaAtual + "/" + totalTarefas + ")")
                 .setContentText(disciplina.getNome())
                 .setSmallIcon(ICONE_SINCRONIZACAO)
@@ -333,8 +338,9 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
+
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.avaliacao_nova), avaliacao.getDisciplina().getNome()))
@@ -350,7 +356,7 @@ public class AppNotificationHelper implements NotificationHelper {
     public void notificarAvaliacaoAlterada(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.avaliacao_alterada), avaliacao.getDisciplina().getNome()))
@@ -366,7 +372,7 @@ public class AppNotificationHelper implements NotificationHelper {
     public void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.tarefa_nova), tarefa.getDisciplina().getNome()))
@@ -382,7 +388,7 @@ public class AppNotificationHelper implements NotificationHelper {
     public void notificarTarefaAlterada(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.tarefa_alterada), tarefa.getDisciplina().getNome()))
@@ -398,7 +404,7 @@ public class AppNotificationHelper implements NotificationHelper {
     public void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.questionario_novo), questionario.getDisciplina().getNome()))
@@ -414,7 +420,7 @@ public class AppNotificationHelper implements NotificationHelper {
     public void notificarQuestionarioAlterado(Questionario questionario, Lembrete lembrete, int idNotificacao) {
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
-                .setChannelId(NOTF_CHANNEL_ID)
+                .setColor(mContext.getColor(NOTF_COR))
                 .setAutoCancel(true)
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.questionario_alterado), questionario.getDisciplina().getNome()))
