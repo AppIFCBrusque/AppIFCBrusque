@@ -3,7 +3,6 @@ package com.ifcbrusque.app.ui.home.lembretes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,7 +25,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public static final int TIPO_HEADER = 1;
 
     private List<Object> mDados;
-    private ItemListener mItemListener;
+    private LembreteItemListener mItemListener;
     private int mCategoria;
     private int mMargemHorizontal, mMargemVertical;
     private int mCorIncompleto, mCorCompleto;
@@ -45,12 +44,11 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         lembretes.sort((o1, o2) -> o1.getDataLembrete().compareTo(o2.getDataLembrete()));
         return lembretes;
     }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Funções que podem ser utilizadas pela view
      */
-    public void setItemListener(ItemListener itemListener) {
+    public void setItemListener(LembreteItemListener itemListener) {
         mItemListener = itemListener;
     }
 
@@ -118,10 +116,10 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         if (viewType == TIPO_LEMBRETE) {
             View view = layoutInflater.inflate(R.layout.item_lembrete, parent, false);
-            return new LembretesAdapter.ViewHolderItem(view);
+            return new LembreteViewHolder(view, mItemListener);
         } else if (viewType == TIPO_HEADER) {
             View view = layoutInflater.inflate(R.layout.section_lembretes, parent, false);
-            return new ViewHolderHeader(view);
+            return new HeaderViewHolder(view);
         }
 
         throw new RuntimeException(viewType + " não é um tipo válido");
@@ -150,9 +148,9 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ViewHolderItem) {
+        if (holder instanceof LembreteViewHolder) {
 
-            ViewHolderItem itemHolder = (ViewHolderItem) holder;
+            LembreteViewHolder itemHolder = (LembreteViewHolder) holder;
             Lembrete lembrete = (Lembrete) mDados.get(position);
 
             //Título
@@ -231,9 +229,9 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
             }
 
-        } else if (holder instanceof ViewHolderHeader) {
+        } else if (holder instanceof HeaderViewHolder) {
 
-            ViewHolderHeader headerHolder = (ViewHolderHeader) holder;
+            HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
 
             //Esconder caso não tenha um lembrete vísivel na frente
             if (itemVisivelNaFrenteDoHeader(position)) {
@@ -248,43 +246,6 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 headerHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
             }
 
-        }
-    }
-
-    /*
-    Utilizado para declarar a estrutura do ViewHolder (item_lembrete)
-
-    Essencialmente, serve pra transformar o item em uma view
-    Você configura ele quase da mesma forma que uma view
-     */
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
-        final TextView mTvTitulo, mTvDescricao, mTvData, mTvHora, mTvRepeticao, mTvDisciplina, mTvTipo;
-        final ImageButton mIbOpcoes;
-        final View mVwCor;
-
-        public ViewHolderItem(@NonNull View itemView) {
-            super(itemView);
-            mTvTitulo = itemView.findViewById(R.id.lembrete_titulo);
-            mTvDescricao = itemView.findViewById(R.id.lembrete_descricao);
-            mTvData = itemView.findViewById(R.id.lembrete_data);
-            mTvHora = itemView.findViewById(R.id.lembrete_hora);
-            mIbOpcoes = itemView.findViewById(R.id.lembrete_opcoes);
-            mTvRepeticao = itemView.findViewById(R.id.lembrete_repeticao);
-            mVwCor = itemView.findViewById(R.id.lembrete_cor);
-            mTvDisciplina = itemView.findViewById(R.id.lembrete_disciplina);
-            mTvTipo = itemView.findViewById(R.id.lembrete_tipo);
-
-            itemView.setOnClickListener(v -> mItemListener.onLembreteClick(getAdapterPosition()));
-            mIbOpcoes.setOnClickListener(v -> mItemListener.onOpcoesClick(getAdapterPosition()));
-        }
-    }
-
-    public class ViewHolderHeader extends RecyclerView.ViewHolder {
-        final TextView mTitulo;
-
-        public ViewHolderHeader(@NonNull View itemView) {
-            super(itemView);
-            mTitulo = itemView.findViewById(R.id.secao_lembretes_titulo);
         }
     }
 
@@ -328,15 +289,5 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             layout.setAlpha(0);
         }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    Funções chamadas pelos itens que são definidas na view
-     */
-    public interface ItemListener {
-        void onLembreteClick(int position);
-
-        void onOpcoesClick(int position);
     }
 }

@@ -199,7 +199,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
         mRecyclerView.setAdapter(mHomeAdapter);
         mRecyclerView.addItemDecoration(new StickyHeaderDecoration(mHomeAdapter));
 
-        LembretesAdapter.ItemListener itemListener = new LembretesAdapter.ItemListener() {
+        LembreteItemListener itemListener = new LembreteItemListener() {
             @Override
             public void onLembreteClick(int position) {
                 //Abrir uma activity para adicionar um lembrete
