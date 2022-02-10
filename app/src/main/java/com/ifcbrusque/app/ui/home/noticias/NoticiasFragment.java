@@ -78,7 +78,7 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
             }
         });
         //Clique em um preview
-        NoticiasAdapter.ItemListener itemListener = position -> {
+        NoticiaItemListener itemListener = position -> {
             Preview preview = mNoticiasAdapter.getPreviews().get(position);
 
             Intent intent = NoticiaActivity.getStartIntent(getContext(), preview);
