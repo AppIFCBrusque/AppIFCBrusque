@@ -19,6 +19,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 public class InserirLembretePresenter<V extends InserirLembreteContract.InserirLembreteView> extends BasePresenter<V> implements InserirLembreteContract.InserirLembretePresenter<V> {
     private Lembrete mLembrete;
 
+    //Objeto armazenado associado ao lembrete
     private TarefaArmazenavel mTarefa;
 
     private final Calendar mCalendar = Calendar.getInstance();
@@ -26,6 +27,71 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
     @Inject
     public InserirLembretePresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
+    }
+
+    private void criarLembreteNovo() {
+        //Definir a data e hora padrão dos botões de data e hora
+        //A hora é arredondada para cima. Exemplo: 17:23 -> 18::00; 02:00 -> 03:00
+        mCalendar.add(Calendar.HOUR_OF_DAY, 1);
+        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.SECOND, 0);
+
+        mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
+
+        getMvpView().setTitulo(mLembrete.getTitulo());
+        getMvpView().setDescricao(mLembrete.getDescricao());
+        getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+        getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
+        getMvpView().setTextoBotaoRepeticao(Lembrete.REPETICAO_SEM);
+    }
+
+    private void carregarLembreteArmazenado(long idLembrete) {
+        getCompositeDisposable().add(getDataManager()
+                .getLembrete(idLembrete)
+                .flatMapCompletable(lembrete -> {
+                    mLembrete = lembrete;
+
+                    mCalendar.setTime(mLembrete.getDataLembrete());
+
+                    getMvpView().setTitulo(mLembrete.getTitulo());
+                    getMvpView().setDescricao(mLembrete.getDescricao());
+                    getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                    getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
+                    getMvpView().setTextoBotaoRepeticao(mLembrete.getTipoRepeticao());
+
+                    if (lembrete.getTipo() == Lembrete.LEMBRETE_PESSOAL) {
+                        //Lembrete pessoal -> não precisa carregar algo a mais
+                        return Completable.complete();
+                    } else {
+                        //Lembrete do SIGAA
+                        //Impedir o usuário de editar as informações do lembrete
+                        getMvpView().desativarTitulo();
+                        getMvpView().desativarDescricao();
+                        getMvpView().desativarBotaoData();
+                        getMvpView().desativarBotaoHora();
+                        getMvpView().desativarBotaoRepeticao();
+                        getMvpView().esconderBotaoSalvar();
+
+                        //Carregar o objeto associado
+                        switch (lembrete.getTipo()) {
+                            case Lembrete.LEMBRETE_TAREFA:
+                                return getDataManager().getTarefaArmazenavel(lembrete)
+                                        .flatMapCompletable(tarefaArmazenavel -> {
+                                            mTarefa = tarefaArmazenavel;
+
+                                            if (mTarefa.getUrlDownload().length() > 0) {
+                                                getMvpView().exibirBotaoArquivo();
+                                            }
+
+                                            return Completable.complete();
+                                        });
+
+                            default:
+                                return Completable.complete();
+                        }
+                    }
+                })
+                .subscribe());
     }
 
     /**
@@ -69,67 +135,9 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
     @Override
     public void onViewPronta(long idLembrete) {
         if (idLembrete != -1) {
-            //Carregar lembrete armazenado no banco de dados
-            getCompositeDisposable().add(getDataManager()
-                    .getLembrete(idLembrete)
-                    .flatMapCompletable(lembrete -> {
-                        mLembrete = lembrete;
-
-                        mCalendar.setTime(mLembrete.getDataLembrete());
-
-                        getMvpView().setTitulo(mLembrete.getTitulo());
-                        getMvpView().setDescricao(mLembrete.getDescricao());
-                        getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
-                        getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
-                        getMvpView().setTextoBotaoRepeticao(mLembrete.getTipoRepeticao());
-
-                        if (lembrete.getTipo() == Lembrete.LEMBRETE_PESSOAL) {
-                            //Lembrete pessoal -> não precisa carregar algo a mais
-                            return Completable.complete();
-                        } else {
-                            //Lembrete do SIGAA
-                            //Impedir o usuário de editar as informações do lembrete
-                            getMvpView().desativarTitulo();
-                            getMvpView().desativarDescricao();
-                            getMvpView().desativarBotaoData();
-                            getMvpView().desativarBotaoHora();
-                            getMvpView().desativarBotaoRepeticao();
-                            getMvpView().esconderBotaoSalvar();
-
-                            //Carregar o objeto associado
-                            switch (lembrete.getTipo()) {
-                                case Lembrete.LEMBRETE_TAREFA:
-                                    return getDataManager().getTarefaArmazenavel(lembrete)
-                                            .flatMapCompletable(tarefaArmazenavel -> {
-                                                mTarefa = tarefaArmazenavel;
-
-                                                if (mTarefa.getUrlDownload().length() > 0) {
-                                                    getMvpView().exibirBotaoArquivo();
-                                                }
-
-                                                return Completable.complete();
-                                            });
-
-                                default:
-                                    return Completable.complete();
-                            }
-                        }
-                    })
-                    .subscribe());
+            carregarLembreteArmazenado(idLembrete);
         } else {
-            //Definir a data e hora padrão dos botões de data e hora
-            //A hora é arredondada para cima. Exemplo: 17:23 -> 18::00; 02:00 -> 03:00
-            mCalendar.add(Calendar.HOUR_OF_DAY, 1);
-            mCalendar.set(Calendar.MINUTE, 0);
-            mCalendar.set(Calendar.SECOND, 0);
-
-            mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
-
-            getMvpView().setTitulo(mLembrete.getTitulo());
-            getMvpView().setDescricao(mLembrete.getDescricao());
-            getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
-            getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
-            getMvpView().setTextoBotaoRepeticao(Lembrete.REPETICAO_SEM);
+            criarLembreteNovo();
         }
     }
 
