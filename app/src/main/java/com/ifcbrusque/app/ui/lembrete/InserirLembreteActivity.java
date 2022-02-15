@@ -13,6 +13,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,8 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     InserirLembreteContract.InserirLembretePresenter<InserirLembreteContract.InserirLembreteView> mPresenter;
 
     TextInputLayout mTiTitulo, mTiDescricao;
-    Button mBtnDatePicker, mBtnTimePicker, mBtnRepeticao;
+    Button mBtnArquivo, mBtnDatePicker, mBtnTimePicker, mBtnRepeticao;
+    TextView mTvArquivo;
     FloatingActionButton mFabSalvar;
 
     BottomSheetDialog mBottomSheetDialog;
@@ -85,13 +87,16 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
         mClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
+        mTvArquivo = findViewById(R.id.inserir_lembrete_texto_arquivo);
         mTiTitulo = findViewById(R.id.tiTitulo);
         mTiDescricao = findViewById(R.id.tiDescricao);
+        mBtnArquivo = findViewById(R.id.inserir_lembrete_botao_arquivo);
         mBtnDatePicker = findViewById(R.id.btData);
         mBtnTimePicker = findViewById(R.id.btHora);
         mBtnRepeticao = findViewById(R.id.btRepeticao);
         mFabSalvar = findViewById(R.id.fabInserir);
 
+        mBtnArquivo.setOnClickListener(v -> mPresenter.onBotaoArquivoClick());
         mBtnDatePicker.setOnClickListener(v -> mPresenter.onBotaoDataClick());
         mBtnTimePicker.setOnClickListener(v -> mPresenter.onBotaoTempoClick());
         mBtnRepeticao.setOnClickListener(v -> mPresenter.onBotaoRepeticaoClick());
@@ -303,6 +308,20 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Override
     public void esconderBotaoSalvar() {
         mFabSalvar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void exibirBotaoArquivo() {
+        mTvArquivo.setVisibility(View.VISIBLE);
+        mBtnArquivo.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void abrirNavegador(String url) {
+        Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(url);
+        browserIntent.setData(uri);
+        startActivity(browserIntent);
     }
 
     /**

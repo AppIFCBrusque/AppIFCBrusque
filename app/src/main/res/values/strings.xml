@@ -58,6 +58,8 @@
     <string name="tarefa">Tarefa</string>
     <string name="questionario">Questionário</string>
 
+    <string name="arquivo">Arquivo</string>
+    <string name="baixar_arquivo">Baixar arquivo</string>
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>

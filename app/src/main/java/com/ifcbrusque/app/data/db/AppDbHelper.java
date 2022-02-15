@@ -341,6 +341,18 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<TarefaArmazenavel> getTarefaArmazenavel(String id) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.tarefaDao().getTarefa(id)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<TarefaArmazenavel> getTarefaArmazenavel(Lembrete lembrete) {
+        return getTarefaArmazenavel(lembrete.getIdObjetoAssociado());
+    }
+
+    @Override
     public Observable<List<Tarefa>> getAllTarefas() {
         return Observable.defer(() -> Observable.just(mAppDatabase.disciplinaDao().getAll()))
                 .flatMap(disciplinas -> Observable.just(mAppDatabase.tarefaDao().getAll())

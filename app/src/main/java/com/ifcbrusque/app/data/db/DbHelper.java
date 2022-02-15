@@ -3,6 +3,7 @@ package com.ifcbrusque.app.data.db;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
 import com.stacked.sigaa_ifc.Questionario;
@@ -60,6 +61,10 @@ public interface DbHelper {
     Completable deletarAvaliacao(Avaliacao avaliacao);
 
     Observable<Integer> atualizarAvaliacao(Avaliacao avaliacao);
+
+    Observable<TarefaArmazenavel> getTarefaArmazenavel(String id);
+
+    Observable<TarefaArmazenavel> getTarefaArmazenavel(Lembrete lembrete);
 
     Observable<List<Tarefa>> getAllTarefas();
 

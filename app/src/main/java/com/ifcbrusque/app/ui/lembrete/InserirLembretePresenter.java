@@ -6,16 +6,21 @@ import android.text.TextWatcher;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
+import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
 import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class InserirLembretePresenter<V extends InserirLembreteContract.InserirLembreteView> extends BasePresenter<V> implements InserirLembreteContract.InserirLembretePresenter<V> {
     private Lembrete mLembrete;
+
+    private TarefaArmazenavel mTarefa;
+
     private final Calendar mCalendar = Calendar.getInstance();
 
     @Inject
@@ -67,7 +72,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
             //Carregar lembrete armazenado no banco de dados
             getCompositeDisposable().add(getDataManager()
                     .getLembrete(idLembrete)
-                    .doOnNext(lembrete -> {
+                    .flatMapCompletable(lembrete -> {
                         mLembrete = lembrete;
 
                         mCalendar.setTime(mLembrete.getDataLembrete());
@@ -78,13 +83,36 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
                         getMvpView().setTextoBotaoRepeticao(mLembrete.getTipoRepeticao());
 
-                        if (lembrete.getTipo() != Lembrete.LEMBRETE_PESSOAL) {
+                        if (lembrete.getTipo() == Lembrete.LEMBRETE_PESSOAL) {
+                            //Lembrete pessoal -> não precisa carregar algo a mais
+                            return Completable.complete();
+                        } else {
+                            //Lembrete do SIGAA
+                            //Impedir o usuário de editar as informações do lembrete
                             getMvpView().desativarTitulo();
                             getMvpView().desativarDescricao();
                             getMvpView().desativarBotaoData();
                             getMvpView().desativarBotaoHora();
                             getMvpView().desativarBotaoRepeticao();
                             getMvpView().esconderBotaoSalvar();
+
+                            //Carregar o objeto associado
+                            switch (lembrete.getTipo()) {
+                                case Lembrete.LEMBRETE_TAREFA:
+                                    return getDataManager().getTarefaArmazenavel(lembrete)
+                                            .flatMapCompletable(tarefaArmazenavel -> {
+                                                mTarefa = tarefaArmazenavel;
+
+                                                if (mTarefa.getUrlDownload().length() > 0) {
+                                                    getMvpView().exibirBotaoArquivo();
+                                                }
+
+                                                return Completable.complete();
+                                            });
+
+                                default:
+                                    return Completable.complete();
+                            }
                         }
                     })
                     .subscribe());
@@ -103,6 +131,11 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
             getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
             getMvpView().setTextoBotaoRepeticao(Lembrete.REPETICAO_SEM);
         }
+    }
+
+    @Override
+    public void onBotaoArquivoClick() {
+        getMvpView().abrirNavegador(mTarefa.getUrlDownload());
     }
 
     @Override

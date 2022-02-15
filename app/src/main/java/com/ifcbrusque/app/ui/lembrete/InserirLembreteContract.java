@@ -43,11 +43,17 @@ public interface InserirLembreteContract {
 
         void esconderBotaoSalvar();
 
+        void exibirBotaoArquivo();
+
+        void abrirNavegador(String url);
+
         void fecharActivity(boolean atualizarRecyclerView);
     }
 
     interface InserirLembretePresenter<V extends InserirLembreteView> extends MvpPresenter<V> {
         void onViewPronta(long idLembrete);
+
+        void onBotaoArquivoClick();
 
         void onBotaoDataClick();
 

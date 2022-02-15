@@ -25,6 +25,9 @@ public interface TarefaDao {
     @Query("DELETE FROM tarefa_table")
     void deleteAll();
 
+    @Query("SELECT * FROM tarefa_table WHERE id_no_sigaa = :id")
+    TarefaArmazenavel getTarefa(String id);
+
     @Query("SELECT * FROM tarefa_table WHERE disciplina_front_end_id_turma = :frontEndIdTurma")
     List<TarefaArmazenavel> getTarefas(String frontEndIdTurma);
 
