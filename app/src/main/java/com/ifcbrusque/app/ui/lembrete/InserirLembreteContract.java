@@ -17,9 +17,13 @@ public interface InserirLembreteContract {
 
         String getDescricao();
 
+        String getAnotacoes();
+
         void setTitulo(String titulo);
 
         void setDescricao(String descricao);
+
+        void setAnotacoes(String anotacoes);
 
         void setTextoBotaoData(int ano, int mes, int dia);
 
@@ -31,6 +35,10 @@ public interface InserirLembreteContract {
 
         void desativarDescricao();
 
+        void esconderDescricao();
+
+        void mostrarAnotacoes();
+
         void desativarBotaoData();
 
         void desativarBotaoHora();
@@ -40,8 +48,6 @@ public interface InserirLembreteContract {
         void ativarBotaoSalvar();
 
         void desativarBotaoSalvar();
-
-        void esconderBotaoSalvar();
 
         void exibirBotaoArquivo();
 

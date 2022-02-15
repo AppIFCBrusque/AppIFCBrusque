@@ -36,10 +36,12 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
 
-        mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
+        mLembrete = new Lembrete(Lembrete.LEMBRETE_PESSOAL, "", "", "", "", "", mCalendar.getTime(), Lembrete.REPETICAO_SEM, 0, Lembrete.ESTADO_INCOMPLETO, getDataManager().getNovoIdNotificacao());
 
         getMvpView().setTitulo(mLembrete.getTitulo());
-        getMvpView().setDescricao(mLembrete.getDescricao());
+        getMvpView().esconderDescricao();
+        getMvpView().setAnotacoes(mLembrete.getAnotacoes());
+        getMvpView().mostrarAnotacoes();
         getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
         getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
         getMvpView().setTextoBotaoRepeticao(Lembrete.REPETICAO_SEM);
@@ -55,22 +57,25 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
 
                     getMvpView().setTitulo(mLembrete.getTitulo());
                     getMvpView().setDescricao(mLembrete.getDescricao());
+                    getMvpView().setAnotacoes(mLembrete.getAnotacoes());
                     getMvpView().setTextoBotaoData(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
                     getMvpView().setTextoBotaoHora(mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE));
                     getMvpView().setTextoBotaoRepeticao(mLembrete.getTipoRepeticao());
 
                     if (lembrete.getTipo() == Lembrete.LEMBRETE_PESSOAL) {
-                        //Lembrete pessoal -> não precisa carregar algo a mais
+                        //Lembrete pessoal
+                        getMvpView().esconderDescricao();
+                        getMvpView().mostrarAnotacoes();
                         return Completable.complete();
                     } else {
                         //Lembrete do SIGAA
-                        //Impedir o usuário de editar as informações do lembrete
+                        //Impedir o usuário de editar as informações do lembrete e mostrar o campo de anotações
                         getMvpView().desativarTitulo();
                         getMvpView().desativarDescricao();
+                        getMvpView().mostrarAnotacoes();
                         getMvpView().desativarBotaoData();
                         getMvpView().desativarBotaoHora();
                         getMvpView().desativarBotaoRepeticao();
-                        getMvpView().esconderBotaoSalvar();
 
                         //Carregar o objeto associado
                         switch (lembrete.getTipo()) {
@@ -102,6 +107,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
     private void salvarLembrete() {
         mLembrete.setTitulo(getMvpView().getTitulo().trim());
         mLembrete.setDescricao(getMvpView().getDescricao().trim());
+        mLembrete.setAnotacoes(getMvpView().getAnotacoes().trim());
 
         if (mLembrete.getTitulo().length() > 0) {
 

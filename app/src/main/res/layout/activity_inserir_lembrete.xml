@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".ui.lembrete.InserirLembreteActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -48,9 +50,24 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tiTitulo"
                 android:hint="@string/descricao"
                 app:layout_constraintTop_toBottomOf="@id/tiTitulo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_anotacoes"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/anotacoes"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tiDescricao"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="fill_parent"
@@ -68,14 +85,13 @@
                 android:textAppearance="@style/TextAppearance.Secundario"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/tiDescricao"
-                app:layout_constraintTop_toBottomOf="@id/tiDescricao"
+                app:layout_constraintTop_toBottomOf="@id/input_anotacoes"
                 tools:visibility="visible" />
 
             <Button
                 android:id="@+id/inserir_lembrete_botao_arquivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btHora"
                 android:layout_marginTop="4dp"
                 android:minHeight="56dp"
                 android:text="@string/baixar_arquivo"
@@ -132,7 +148,6 @@
                 android:id="@+id/btRepeticao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btHora"
                 android:layout_marginTop="4dp"
                 android:minHeight="56dp"
                 android:text="@string/repeticao_lembretes_nao_repetir"

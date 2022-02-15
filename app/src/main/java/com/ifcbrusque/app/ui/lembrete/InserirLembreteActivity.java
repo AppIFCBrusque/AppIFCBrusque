@@ -56,7 +56,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Inject
     InserirLembreteContract.InserirLembretePresenter<InserirLembreteContract.InserirLembreteView> mPresenter;
 
-    TextInputLayout mTiTitulo, mTiDescricao;
+    TextInputLayout mTiTitulo, mTiDescricao, mTiAnotacoes;
     Button mBtnArquivo, mBtnDatePicker, mBtnTimePicker, mBtnRepeticao;
     TextView mTvArquivo;
     FloatingActionButton mFabSalvar;
@@ -90,6 +90,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mTvArquivo = findViewById(R.id.inserir_lembrete_texto_arquivo);
         mTiTitulo = findViewById(R.id.tiTitulo);
         mTiDescricao = findViewById(R.id.tiDescricao);
+        mTiAnotacoes = findViewById(R.id.input_anotacoes);
         mBtnArquivo = findViewById(R.id.inserir_lembrete_botao_arquivo);
         mBtnDatePicker = findViewById(R.id.btData);
         mBtnTimePicker = findViewById(R.id.btHora);
@@ -212,6 +213,11 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     }
 
     @Override
+    public String getAnotacoes() {
+        return mTiAnotacoes.getEditText().getText().toString();
+    }
+
+    @Override
     public void setTitulo(String titulo) {
         mTiTitulo.getEditText().setText(titulo);
     }
@@ -219,6 +225,11 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Override
     public void setDescricao(String descricao) {
         mTiDescricao.getEditText().setText(descricao);
+    }
+
+    @Override
+    public void setAnotacoes(String anotacoes) {
+        mTiAnotacoes.getEditText().setText(anotacoes);
     }
 
     /**
@@ -266,6 +277,16 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mTiDescricao.getEditText().setOnLongClickListener(onEditTextLongClickListener(mTiDescricao.getEditText()));
     }
 
+    @Override
+    public void esconderDescricao() {
+        mTiDescricao.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void mostrarAnotacoes() {
+        mTiAnotacoes.setVisibility(View.VISIBLE);
+    }
+
     private View.OnLongClickListener onEditTextLongClickListener(EditText editText) {
         return view -> {
             String texto = editText.getText().toString();
@@ -303,11 +324,6 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Override
     public void desativarBotaoSalvar() {
         mFabSalvar.setEnabled(false);
-    }
-
-    @Override
-    public void esconderBotaoSalvar() {
-        mFabSalvar.setVisibility(View.GONE);
     }
 
     @Override

@@ -49,6 +49,7 @@
 
     <string name="titulo">Título</string>
     <string name="descricao">Descrição</string>
+    <string name="anotacoes">Anotações</string>
     <string name="data">Data</string>
     <string name="hora">Hora</string>
     <string name="disciplina">Disciplina</string>
