@@ -1,5 +1,6 @@
 package com.ifcbrusque.app.ui.home.lembretes;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,35 +15,147 @@ import com.ifcbrusque.app.data.db.model.Lembrete;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import timber.log.Timber;
 
 import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderDecoration.StickyHeaderInterface {
+    private final Context mContext;
+
+    private List<Lembrete> mTodosOsLembretes;
+    private List<Object> mDadosVisiveis;
+
     public static final int TIPO_LEMBRETE = 0;
     public static final int TIPO_HEADER = 1;
 
-    private List<Object> mDados;
     private LembreteItemListener mItemListener;
-    private int mCategoria;
-    private int mMargemHorizontal, mMargemVertical;
-    private int mCorIncompleto, mCorCompleto;
 
-    public LembretesAdapter(List<Object> dados, int categoria, int margemHorizontal, int margemVertical, int corIncompleto, int corCompleto) {
-        mDados = dados;
+    private int mCategoria;
+
+    private final SimpleDateFormat mFormatoData;
+    private final int mCorIncompleto, mCorCompleto;
+
+    public LembretesAdapter(Context context, List<Lembrete> lembretes, int categoria) {
+        mContext = context;
+        mTodosOsLembretes = lembretes;
+        mDadosVisiveis = new ArrayList<>();
         mCategoria = categoria;
-        mMargemHorizontal = margemHorizontal;
-        mMargemVertical = margemVertical;
-        mCorIncompleto = corIncompleto;
-        mCorCompleto = corCompleto;
+        mCorIncompleto = mContext.getResources().getColor(R.color.vermelho);
+        mCorCompleto = mContext.getResources().getColor(R.color.verde);
+        mFormatoData = new SimpleDateFormat(FORMATO_DATA);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static List<Lembrete> ordenarLembretesPelaData(List<Lembrete> lembretes) {
+    private void exibirLembretes() {
+        mDadosVisiveis = aplicarFiltros(mTodosOsLembretes);
+        mDadosVisiveis = adicionarHeadersDosLembretes(mDadosVisiveis);
+        notifyDataSetChanged();
+    }
+
+    private List<Lembrete> ordenarLembretesPelaData(List<Lembrete> lembretes) {
         lembretes.sort((o1, o2) -> o1.getDataLembrete().compareTo(o2.getDataLembrete()));
         return lembretes;
+    }
+
+    private List<Object> adicionarHeadersDosLembretes(List<Object> lembretes) {
+        //Lista que vai ser inserida no recycler view
+        List<Object> dados = new ArrayList<>();
+
+        Calendar hoje = Calendar.getInstance();
+        Calendar amanha = Calendar.getInstance();
+        amanha.add(Calendar.DAY_OF_YEAR, 1);
+        amanha.set(Calendar.HOUR_OF_DAY, 23);
+        amanha.set(Calendar.MINUTE, 59);
+        amanha.set(Calendar.SECOND, 59);
+        amanha.set(Calendar.MILLISECOND, 999);
+        Calendar daquiUmMes = Calendar.getInstance();
+        daquiUmMes.add(Calendar.MONTH, 1);
+
+        String tituloAtrasado = mContext.getString(R.string.secao_atrasado);
+        String tituloHoje = mContext.getString(R.string.secao_hoje);
+        String tituloAmanha = mContext.getString(R.string.secao_amanha);
+        String tituloEmXDias = mContext.getString(R.string.secao_em_dias);
+        String tituloApos1Mes = mContext.getString(R.string.secao_apos_um_mes);
+        String tituloAposXMeses = mContext.getString(R.string.secao_apos_meses);
+
+        for (int i = 0; i < lembretes.size(); i++) {
+            Lembrete lembrete = (Lembrete) lembretes.get(i);
+
+            //Adicionar cabeçalho
+            Calendar dataLembrete = Calendar.getInstance();
+            dataLembrete.setTime(lembrete.getDataLembrete());
+
+            if (dataLembrete.after(daquiUmMes)) {
+                //Meses
+                int meses = dataLembrete.get(Calendar.MONTH) - hoje.get(Calendar.MONTH);
+                String titulo;
+                if (meses == 1) {
+                    titulo = tituloApos1Mes;
+                } else {
+                    titulo = String.format(tituloAposXMeses, Integer.toString(meses));
+                }
+
+                if (!dados.contains(titulo)) {
+                    dados.add(titulo);
+                }
+            } else if (dataLembrete.after(amanha)) {
+                //Em x dias
+                int dias = dataLembrete.get(Calendar.DAY_OF_YEAR) - hoje.get(Calendar.DAY_OF_YEAR);
+                String titulo = String.format(tituloEmXDias, Integer.toString(dias));
+                if (!dados.contains(titulo)) {
+                    dados.add(titulo);
+                }
+            } else if (dataLembrete.get(Calendar.YEAR) == amanha.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == amanha.get(Calendar.DAY_OF_YEAR)) {
+                //Amanhã
+                if (!dados.contains(tituloAmanha)) {
+                    dados.add(tituloAmanha);
+                }
+            } else if (dataLembrete.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR)) {
+                //Hoje
+                if (!dados.contains(tituloHoje)) {
+                    dados.add(tituloHoje);
+                }
+            } else if (hoje.getTime().after(dataLembrete.getTime())) {
+                //Atrasado
+                if (!dados.contains(tituloAtrasado)) {
+                    dados.add(tituloAtrasado);
+                }
+            }
+
+            //Adicionar lembrete
+            dados.add(lembrete);
+        }
+
+        return dados;
+    }
+
+    private List<Object> aplicarFiltros(List<Lembrete> lembretes) {
+        return lembretes.stream().filter(lembrete -> isItemVisivel(lembrete)).collect(Collectors.toList());
+    }
+
+    private boolean isItemVisivel(Lembrete lembrete) {
+        if (mCategoria >= 10) {
+            //TODO: Categorias personalizadas
+            return false;
+        } else {
+            //Categorias padrão (incompleto, completo, todos)
+            return lembrete.getEstado() == mCategoria || mCategoria == 0;
+        }
+    }
+
+    private boolean existeItemVisivelNaFrenteDoHeader(int position) {
+        int i = position + 1;
+        while (i < mDadosVisiveis.size() && mDadosVisiveis.get(i) instanceof Lembrete) {
+            if (isItemVisivel((Lembrete) mDadosVisiveis.get(i))) {
+                return true;
+            }
+            i++;
+        }
+        return false;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
@@ -53,57 +166,23 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public List<Lembrete> getLembretes() {
-        List<Lembrete> lembretes = new ArrayList<>();
-        for (Object o : mDados) {
-            if (o instanceof Lembrete) {
-                lembretes.add((Lembrete) o);
-            }
-        }
-
-        return lembretes;
+        return mTodosOsLembretes;
     }
 
     public void setLembretes(List<Lembrete> lembretes) {
-        mDados = new ArrayList<>();
-        mDados.addAll(ordenarLembretesPelaData(lembretes));
-        notifyDataSetChanged();
+        mTodosOsLembretes = ordenarLembretesPelaData(lembretes);
+        exibirLembretes();
     }
 
-    public List<Object> getDados() {
-        return mDados;
-    }
-
-    public void setDados(List<Object> dados) {
-        mDados = dados;
-        notifyDataSetChanged();
+    public List<Object> getDadosVisiveis() {
+        return mDadosVisiveis;
     }
 
     public void setCategoria(int categoria) {
         if (mCategoria != categoria) {
             mCategoria = categoria;
-            notifyDataSetChanged();
+            exibirLembretes();
         }
-    }
-
-    public boolean isItemVisivel(Lembrete lembrete) {
-        if (mCategoria >= 10) {
-            //TODO: Categorias personalizadas
-            return false;
-        } else {
-            //Categorias padrão (incompleto, completo, todos)
-            return lembrete.getEstado() == mCategoria || mCategoria == 0;
-        }
-    }
-
-    public boolean itemVisivelNaFrenteDoHeader(int position) {
-        int i = position + 1;
-        while (i < mDados.size() && mDados.get(i) instanceof Lembrete) {
-            if (isItemVisivel((Lembrete) mDados.get(i))) {
-                return true;
-            }
-            i++;
-        }
-        return false;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -130,12 +209,12 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      */
     @Override
     public int getItemCount() {
-        return mDados.size();
+        return mDadosVisiveis.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if ((mDados.get(position) instanceof Lembrete)) {
+        if ((mDadosVisiveis.get(position) instanceof Lembrete)) {
             return TIPO_LEMBRETE;
         } else {
             return TIPO_HEADER;
@@ -151,7 +230,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (holder instanceof LembreteViewHolder) {
 
             LembreteViewHolder itemHolder = (LembreteViewHolder) holder;
-            Lembrete lembrete = (Lembrete) mDados.get(position);
+            Lembrete lembrete = (Lembrete) mDadosVisiveis.get(position);
 
             //Título
             itemHolder.mTvTitulo.setText(lembrete.getTitulo());
@@ -166,7 +245,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             //Data
-            String[] data = new SimpleDateFormat(FORMATO_DATA).format(lembrete.getDataLembrete()).split(" ");
+            String[] data = mFormatoData.format(lembrete.getDataLembrete()).split(" ");
             itemHolder.mTvData.setText(data[0]);
             itemHolder.mTvHora.setText(data[1]);
 
@@ -210,7 +289,6 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.mTvTipo.setVisibility(View.GONE);
             }
 
-
             //Cor
             if (lembrete.getEstado() == Lembrete.ESTADO_INCOMPLETO) {
                 itemHolder.mVwCor.setBackgroundColor(mCorIncompleto);
@@ -218,33 +296,12 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.mVwCor.setBackgroundColor(mCorCompleto);
             }
 
-            //Categorias
-            if (isItemVisivel(lembrete)) {
-                RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(mMargemHorizontal, mMargemVertical, mMargemHorizontal, mMargemVertical);
-                itemHolder.itemView.setLayoutParams(params);
-                itemHolder.itemView.setVisibility(View.VISIBLE);
-            } else {
-                itemHolder.itemView.setVisibility(View.GONE);
-                itemHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-            }
-
         } else if (holder instanceof HeaderViewHolder) {
 
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
 
-            //Esconder caso não tenha um lembrete vísivel na frente
-            if (itemVisivelNaFrenteDoHeader(position)) {
-                //Texto
-                String textoHeader = (String) mDados.get(position);
-                headerHolder.mTitulo.setText(textoHeader);
-
-                headerHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                headerHolder.itemView.setVisibility(View.VISIBLE);
-            } else {
-                headerHolder.itemView.setVisibility(View.GONE);
-                headerHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-            }
+            String textoHeader = (String) mDadosVisiveis.get(position);
+            headerHolder.mTitulo.setText(textoHeader);
 
         }
     }
@@ -255,7 +312,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      */
     @Override
     public boolean isHeader(int itemPosition) {
-        return (mDados.get(itemPosition) instanceof String);
+        return (mDadosVisiveis.get(itemPosition) instanceof String);
     }
 
     @Override
@@ -281,8 +338,8 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         LinearLayout layout = header.findViewById(R.id.secao_layout);
         TextView mTitulo = header.findViewById(R.id.secao_lembretes_titulo);
 
-        if (itemVisivelNaFrenteDoHeader(headerPosition)) {
-            String textoHeader = (String) mDados.get(headerPosition);
+        if (existeItemVisivelNaFrenteDoHeader(headerPosition)) {
+            String textoHeader = (String) mDadosVisiveis.get(headerPosition);
             mTitulo.setText(textoHeader);
 
             layout.setAlpha(1);

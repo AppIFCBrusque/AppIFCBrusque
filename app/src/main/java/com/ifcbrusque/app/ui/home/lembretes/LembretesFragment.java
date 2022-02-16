@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_ATUALIZAR_RECYCLER_VIEW;
 import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
@@ -91,24 +90,18 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
      */
 
     @Override
-    public List<Lembrete> getLembretesNaView() {
+    public List<Lembrete> getLembretes() {
         return mHomeAdapter.getLembretes();
     }
 
     @Override
-    public void setLembretesNaView(List<Lembrete> lembretes) {
+    public void setLembretes(List<Lembrete> lembretes) {
         mHomeAdapter.setLembretes(lembretes);
-        mPresenter.onLembretesAtualizados();
     }
 
     @Override
-    public List<Object> getDadosNaView() {
-        return mHomeAdapter.getDados();
-    }
-
-    @Override
-    public void setDadosNaView(List<Object> dados) {
-        mHomeAdapter.setDados(dados);
+    public List<Object> getDadosVisiveis() {
+        return mHomeAdapter.getDadosVisiveis();
     }
 
     /**
@@ -118,26 +111,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
      *
      * @param categoria
      */
-    public void atualizarCategoriaRecyclerView(int categoria) {
-        //Texto do botão
-        switch (categoria) {
-            case 0:
-                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_todos));
-                break;
-
-            case 1:
-                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_incompletos));
-                break;
-
-            case 2:
-                //mIbCategorias.setText(getResources().getString(R.string.categoria_lembretes_completos));
-                break;
-
-            default:
-                //TODO: Categorias personalizadas
-                break;
-        }
-
+    public void setCategoria(int categoria) {
         //Atualizar o recycler view e a última categoria acessada
         if (mHomeAdapter != null) {
             mHomeAdapter.setCategoria(categoria);
@@ -171,11 +145,11 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
 
             View.OnClickListener onClickListener = v1 -> {
                 if (v1 == tvIncompletos) {
-                    atualizarCategoriaRecyclerView(Lembrete.ESTADO_INCOMPLETO);
+                    setCategoria(Lembrete.ESTADO_INCOMPLETO);
                 } else if (v1 == tvCompletos) {
-                    atualizarCategoriaRecyclerView(Lembrete.ESTADO_COMPLETO);
+                    setCategoria(Lembrete.ESTADO_COMPLETO);
                 } else if (v1 == tvTodos) {
-                    atualizarCategoriaRecyclerView(0);
+                    setCategoria(0);
                 }
                 mBottomSheetDialog.dismiss();
             };
@@ -203,7 +177,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
             @Override
             public void onLembreteClick(int position) {
                 //Abrir uma activity para adicionar um lembrete
-                Lembrete lembrete = (Lembrete) getDadosNaView().get(position);
+                Lembrete lembrete = (Lembrete) getDadosVisiveis().get(position);
 
                 Intent intent = InserirLembreteActivity.getStartIntent(getContext(), lembrete);
 
@@ -228,7 +202,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
                 TextView tvExcluir = bsdAddOpcaoBelow(getContext(), R.string.lembrete_excluir, R.drawable.outline_delete_black_24, rlBottomSheetDialog, tvAlternarEstado);
 
                 //Ajustar texto e ícones
-                switch (((Lembrete) getDadosNaView().get(position)).getEstado()) {
+                switch (((Lembrete) getDadosVisiveis().get(position)).getEstado()) {
                     case Lembrete.ESTADO_INCOMPLETO:
                         tvAlternarEstado.setText(R.string.lembrete_completar);
                         tvAlternarEstado.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_done_black_24, 0, 0, 0);

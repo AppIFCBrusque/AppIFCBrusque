@@ -8,25 +8,19 @@ import java.util.List;
 
 public interface LembretesContract {
     interface LembretesView extends MvpView {
-        List<Lembrete> getLembretesNaView();
+        List<Lembrete> getLembretes();
 
-        void setLembretesNaView(List<Lembrete> lembretes);
+        void setLembretes(List<Lembrete> lembretes);
 
-        List<Object> getDadosNaView();
+        List<Object> getDadosVisiveis();
 
-        void setDadosNaView(List<Object> dados);
-
-        void atualizarCategoriaRecyclerView(int categoria);
-
-        String getString(int resId);
+        void setCategoria(int categoria);
     }
 
     interface LembretesPresenter<V extends LembretesView> extends MvpPresenter<V> {
         void onViewPronta();
 
         void onLembreteInserido();
-
-        void onLembretesAtualizados();
 
         void onAlternarEstadoLembreteClick(int position);
 

@@ -1,13 +1,10 @@
 package com.ifcbrusque.app.ui.home.lembretes;
 
-import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.service.SyncService;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +25,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
                 .getLembretesArmazenados()
                 .doOnNext(lembretes -> {
                     Timber.d("%s lembretes carregados", lembretes.size());
-                    getMvpView().setLembretesNaView(lembretes);
+                    getMvpView().setLembretes(lembretes);
 
                     if (agendarNotificacoes) {
                         getDataManager().agendarNotificacoesLembretesFuturos(lembretes);
@@ -37,97 +34,27 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
                 .subscribe());
     }
 
-    private void atualizarLembreteDaLista(Lembrete lembreteVelho, Lembrete lembreteAtualizado) {
-        List<Lembrete> lembretes = getMvpView().getLembretesNaView();
-        lembretes.set(lembretes.indexOf(lembreteVelho), lembreteAtualizado);
-        getMvpView().setLembretesNaView(lembretes);
+    private void atualizarLembrete(Lembrete lembreteAntigo, Lembrete lembreteNovo) {
+        List<Lembrete> lembretes = getMvpView().getLembretes();
+        lembretes.set(lembretes.indexOf(lembreteAntigo), lembreteNovo);
+        getMvpView().setLembretes(lembretes);
     }
 
-    /**
-     * Pega somente os lembretes dos dados da recycler view e adiciona os cabeçalhos
-     */
-    private void inserirHeadersNaLista() {
-        /*
-        Esse código tá bem feio, mas eu não encontrei uma maneira melhor para fazer
-         */
-
-        //Pegar somente os lembretes
-        List<Lembrete> lembretes = getMvpView().getLembretesNaView();
-        //Lista que vai ser inserida no recycler view
-        List<Object> dados = new ArrayList<>();
-
-        Calendar hoje = Calendar.getInstance();
-        Calendar amanha = Calendar.getInstance();
-        amanha.add(Calendar.DAY_OF_YEAR, 1);
-        amanha.set(Calendar.HOUR_OF_DAY, 23);
-        amanha.set(Calendar.MINUTE, 59);
-        amanha.set(Calendar.SECOND, 59);
-        amanha.set(Calendar.MILLISECOND, 999);
-        Calendar daquiUmMes = Calendar.getInstance();
-        daquiUmMes.add(Calendar.MONTH, 1);
-
-        String tituloAtrasado = getMvpView().getString(R.string.secao_atrasado);
-        String tituloHoje = getMvpView().getString(R.string.secao_hoje);
-        String tituloAmanha = getMvpView().getString(R.string.secao_amanha);
-        String tituloEmXDias = getMvpView().getString(R.string.secao_em_dias);
-        String tituloApos1Mes = getMvpView().getString(R.string.secao_apos_um_mes);
-        String tituloAposXMeses = getMvpView().getString(R.string.secao_apos_meses);
-
-        for (int i = 0; i < lembretes.size(); i++) {
-            Lembrete lembrete = lembretes.get(i);
-
-            //Adicionar cabeçalho
-            Calendar dataLembrete = Calendar.getInstance();
-            dataLembrete.setTime(lembrete.getDataLembrete());
-
-            if (dataLembrete.after(daquiUmMes)) {
-                //Meses
-                int meses = dataLembrete.get(Calendar.MONTH) - hoje.get(Calendar.MONTH);
-                String titulo;
-                if (meses == 1) {
-                    titulo = tituloApos1Mes;
-                } else {
-                    titulo = String.format(tituloAposXMeses, meses);
-                }
-
-                if (!dados.contains(titulo)) {
-                    dados.add(titulo);
-                }
-            } else if (dataLembrete.after(amanha)) {
-                //Em x dias
-                int dias = dataLembrete.get(Calendar.DAY_OF_YEAR) - hoje.get(Calendar.DAY_OF_YEAR);
-                String titulo = String.format(tituloEmXDias, dias);
-                if (!dados.contains(titulo)) {
-                    dados.add(titulo);
-                }
-            } else if (dataLembrete.get(Calendar.YEAR) == amanha.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == amanha.get(Calendar.DAY_OF_YEAR)) {
-                //Amanhã
-                if (!dados.contains(tituloAmanha)) {
-                    dados.add(tituloAmanha);
-                }
-            } else if (dataLembrete.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR)) {
-                //Hoje
-                if (!dados.contains(tituloHoje)) {
-                    dados.add(tituloHoje);
-                }
-            } else if (hoje.getTime().after(dataLembrete.getTime())) {
-                //Atrasado
-                if (!dados.contains(tituloAtrasado)) {
-                    dados.add(tituloAtrasado);
-                }
+    private void anexarDisposableDaSincronizacao() {
+        //Se o serviço de sincronização estiver rodando e atualizar os lembretes, ele pode notificar este presenter para atualizar a recycler view
+        SyncService.getObservable().subscribe(codigo -> {
+            if (codigo == SyncService.OBSERVABLE_ATUALIZAR_RV_LEMBRETES) {
+                carregarLembretes(true);
             }
-
-            //Adicionar lembrete
-            dados.add(lembrete);
-        }
-
-        getMvpView().setDadosNaView(dados);
+        }, erro -> {
+            /* Engolir erro */
+        });
     }
 
     @Override
     public void onViewPronta() {
         int ultimaCategoriaAcessada = getDataManager().getUltimaCategoriaAcessadaHome();
-        getMvpView().atualizarCategoriaRecyclerView(ultimaCategoriaAcessada);
+        getMvpView().setCategoria(ultimaCategoriaAcessada);
 
         carregarLembretes(true);
 
@@ -149,13 +76,8 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
     }
 
     @Override
-    public void onLembretesAtualizados() {
-        inserirHeadersNaLista();
-    }
-
-    @Override
     public void onAlternarEstadoLembreteClick(int position) {
-        Lembrete lembrete = (Lembrete) getMvpView().getDadosNaView().get(position);
+        Lembrete lembrete = (Lembrete) getMvpView().getDadosVisiveis().get(position);
 
         if (lembrete.getTipoRepeticao() == Lembrete.REPETICAO_SEM) {
             //Lembrete que não repete (simplesmente alterar entre completo/incompleto)
@@ -177,7 +99,7 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
                             getDataManager().desagendarNotificacaoLembrete(lembrete);
                         }
 
-                        atualizarLembreteDaLista(lembrete, lembreteNovo);
+                        atualizarLembrete(lembrete, lembreteNovo);
                     })
                     .subscribe());
         } else {
@@ -185,24 +107,24 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
             getDataManager().desagendarNotificacaoLembrete(lembrete);
             getCompositeDisposable().add(getDataManager()
                     .atualizarParaProximaDataLembreteComRepeticao(lembrete.getId())
-                    .doOnNext(lembreteReagendado -> atualizarLembreteDaLista(lembrete, lembreteReagendado))
+                    .doOnNext(lembreteReagendado -> atualizarLembrete(lembrete, lembreteReagendado))
                     .subscribe());
         }
     }
 
     @Override
     public void onExcluirLembreteClick(int position) {
-        Lembrete lembrete = (Lembrete) getMvpView().getDadosNaView().get(position);
+        Lembrete lembrete = (Lembrete) getMvpView().getDadosVisiveis().get(position);
 
         getCompositeDisposable().add(getDataManager()
                 .deletarLembrete(lembrete)
                 .doOnComplete(() -> {
                     getDataManager().desagendarNotificacaoLembrete(lembrete);
 
-                    List<Lembrete> lembretes = getMvpView().getLembretesNaView();
+                    List<Lembrete> lembretes = getMvpView().getLembretes();
                     lembretes.remove(lembrete);
 
-                    getMvpView().setLembretesNaView(lembretes);
+                    getMvpView().setLembretes(lembretes);
                 })
                 .subscribe());
     }
@@ -210,16 +132,5 @@ public class LembretesPresenter<V extends LembretesContract.LembretesView> exten
     @Override
     public void onCategoriaAlterada(int categoria) {
         getDataManager().setUltimaCategoriaAcessadaHome(categoria);
-    }
-
-    private void anexarDisposableDaSincronizacao() {
-        //Se o serviço de sincronização estiver rodando e atualizar os lembretes, ele pode notificar este presenter para atualizar a recycler view
-        SyncService.getObservable().subscribe(codigo -> {
-            if (codigo == SyncService.OBSERVABLE_ATUALIZAR_RV_LEMBRETES) {
-                carregarLembretes(true);
-            }
-        }, erro -> {
-            /* Engolir erro */
-        });
     }
 }
