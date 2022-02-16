@@ -147,16 +147,6 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private boolean existeItemVisivelNaFrenteDoHeader(int position) {
-        int i = position + 1;
-        while (i < mDadosVisiveis.size() && mDadosVisiveis.get(i) instanceof Lembrete) {
-            if (isItemVisivel((Lembrete) mDadosVisiveis.get(i))) {
-                return true;
-            }
-            i++;
-        }
-        return false;
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     Funções que podem ser utilizadas pela view
@@ -337,14 +327,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void bindHeaderData(View header, int headerPosition) {
         LinearLayout layout = header.findViewById(R.id.secao_layout);
         TextView mTitulo = header.findViewById(R.id.secao_lembretes_titulo);
-
-        if (existeItemVisivelNaFrenteDoHeader(headerPosition)) {
-            String textoHeader = (String) mDadosVisiveis.get(headerPosition);
-            mTitulo.setText(textoHeader);
-
-            layout.setAlpha(1);
-        } else {
-            layout.setAlpha(0);
-        }
+        String textoHeader = (String) mDadosVisiveis.get(headerPosition);
+        mTitulo.setText(textoHeader);
     }
 }
