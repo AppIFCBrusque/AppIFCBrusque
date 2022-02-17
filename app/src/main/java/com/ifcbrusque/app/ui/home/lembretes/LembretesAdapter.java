@@ -114,12 +114,12 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 if (!dados.contains(tituloAmanha)) {
                     dados.add(tituloAmanha);
                 }
-            } else if (dataLembrete.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR)) {
+            } else if (hoje.before(dataLembrete) && dataLembrete.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) && dataLembrete.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR)) {
                 //Hoje
                 if (!dados.contains(tituloHoje)) {
                     dados.add(tituloHoje);
                 }
-            } else if (hoje.getTime().after(dataLembrete.getTime())) {
+            } else if (hoje.after(dataLembrete)) {
                 //Atrasado
                 if (!dados.contains(tituloAtrasado)) {
                     dados.add(tituloAtrasado);
