@@ -133,7 +133,9 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setContentIntent(pendingIntent);
         //Se não houver descrição, é utilizado um formato reduzido de notificação
         if (!descricao.equals("")) {
-            notificationBuilder.setContentText(descricao);
+            notificationBuilder.setContentText(descricao)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(descricao));
         }
 
         //Notificar
