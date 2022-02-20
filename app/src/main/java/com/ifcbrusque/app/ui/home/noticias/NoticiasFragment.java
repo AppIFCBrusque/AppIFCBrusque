@@ -90,25 +90,9 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
         mPresenter.onViewPronta();
     }
 
-    /*
-        Executado quando sai do fragmento (manter posição atual)
-        */
-    @Override
-    public void onPause() {
-        super.onPause();
-        mPresenter.onPause();
-    }
-
-    /*
-    Executado quando clica novamente já neste fragmento (voltar ao topo)
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        int itemNoTopoLista = mLayoutManager.findFirstVisibleItemPosition();
-        mPresenter.onDestroyView(itemNoTopoLista);
-
         if (mProgressBar != null) {
             esconderProgressBar();
         }
@@ -117,21 +101,6 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
     @Override
     public void atualizarRecyclerView(List<Preview> previews) {
         mNoticiasAdapter.setPreviews(previews);
-    }
-
-    /**
-     * Utilizado para mudar a posição do recycler view
-     *
-     * @param position posição do preview no topo
-     */
-    @Override
-    public void setRecyclerViewPosition(int position) {
-        mLayoutManager.scrollToPosition(position);
-    }
-
-    @Override
-    public List<Preview> getPreviewsNaView() {
-        return mNoticiasAdapter.getPreviews();
     }
 
     @Override

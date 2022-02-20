@@ -110,16 +110,6 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public void setPreviewTopoRecyclerViewNoticias(int index) {
-        pref.edit().putInt(NOTICIAS_PREVIEW_NO_TOPO, index).apply();
-    }
-
-    @Override
-    public int getPreviewTopoRecyclerViewNoticias() {
-        return pref.getInt(NOTICIAS_PREVIEW_NO_TOPO, 0);
-    }
-
-    @Override
     public int getNovoIdNotificacao() {
         final int id = pref.getInt(NOTIFICACOES_ULTIMO_ID, 100);
         pref.edit().putInt(NOTIFICACOES_ULTIMO_ID, id + 1).apply();

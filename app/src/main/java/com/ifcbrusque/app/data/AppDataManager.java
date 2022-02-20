@@ -404,16 +404,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setPreviewTopoRecyclerViewNoticias(int index) {
-        mPreferencesHelper.setPreviewTopoRecyclerViewNoticias(index);
-    }
-
-    @Override
-    public int getPreviewTopoRecyclerViewNoticias() {
-        return mPreferencesHelper.getPreviewTopoRecyclerViewNoticias();
-    }
-
-    @Override
     public int getNovoIdNotificacao() {
         return mPreferencesHelper.getNovoIdNotificacao();
     }

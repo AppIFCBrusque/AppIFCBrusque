@@ -28,11 +28,8 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
     private void carregarPreviewsArmazenados() {
         getCompositeDisposable().add(getDataManager()
                 .getPreviewsArmazenados()
-                .doOnNext(previews -> {
-                    getMvpView().atualizarRecyclerView(previews);
-                    int previewTopoRecyclerView = getDataManager().getPreviewTopoRecyclerViewNoticias();
-                    getMvpView().setRecyclerViewPosition(previewTopoRecyclerView);
-                }).subscribe());
+                .doOnNext(previews -> getMvpView().atualizarRecyclerView(previews))
+                .subscribe());
     }
 
     private void carregarPagina(int pagina) {
@@ -101,17 +98,6 @@ public class NoticiasPresenter<V extends NoticiasContract.NoticiasView> extends 
         if (minutosDesdeUltimaSync >= 10) {
             carregarPagina(1);
         }
-    }
-
-    @Override
-    public void onPause() {
-        getDataManager().setPreviewTopoRecyclerViewNoticias(0);
-    }
-
-    @Override
-    public void onDestroyView(int indexPreviewTopo) {
-        getDataManager().setPreviewTopoRecyclerViewNoticias(indexPreviewTopo);
-        super.onDetach();
     }
 
     @Override

@@ -35,10 +35,6 @@ public interface PreferencesHelper {
 
     int getUltimaPaginaAcessadaNoticias();
 
-    void setPreviewTopoRecyclerViewNoticias(int index);
-
-    int getPreviewTopoRecyclerViewNoticias();
-
     int getNovoIdNotificacao();
 
     int getUltimaCategoriaAcessadaHome();

@@ -10,10 +10,6 @@ public interface NoticiasContract {
     interface NoticiasView extends MvpView {
         void atualizarRecyclerView(List<Preview> previews);
 
-        void setRecyclerViewPosition(int position);
-
-        List<Preview> getPreviewsNaView();
-
         void mostrarProgressBar();
 
         void esconderProgressBar();
@@ -21,10 +17,6 @@ public interface NoticiasContract {
 
     interface NoticiasPresenter<V extends NoticiasView> extends MvpPresenter<V> {
         void onViewPronta();
-
-        void onPause();
-
-        void onDestroyView(int indexPreviewTopo);
 
         void onFimRecyclerView();
     }
