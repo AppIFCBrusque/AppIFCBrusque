@@ -58,7 +58,7 @@
     <!-- Transição -->
     <style name="Theme.IFCBrusque.WindowAnimation">
         <item name="android:activityOpenExitAnimation">@anim/hold_200</item>
-        <item name="android:activityOpenEnterAnimation">@anim/slide_from_bottom</item>
+        <item name="android:activityOpenEnterAnimation">@anim/right_to_left</item>
         <item name="android:activityCloseExitAnimation">@anim/hold_100</item>
         <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
     </style>
