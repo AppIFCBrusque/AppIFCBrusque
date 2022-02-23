@@ -16,4 +16,9 @@
         android:label="@string/title_noticias"
         tools:layout="@layout/fragment_noticias" />
 
+    <fragment
+        android:id="@+id/navigation_configuracoes"
+        android:label="@string/configuracoes"
+        />
+
 </navigation>

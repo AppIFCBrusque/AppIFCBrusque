@@ -11,4 +11,10 @@
         android:icon="@drawable/outline_newspaper_black_24"
         android:title="@string/title_noticias" />
 
+    <item
+        android:id="@+id/navigation_configuracoes"
+        android:icon="@drawable/baseline_settings_black_24"
+        android:title="@string/configuracoes"
+        />
+
 </menu>

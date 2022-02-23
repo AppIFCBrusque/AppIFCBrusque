@@ -1,5 +1,6 @@
 package com.ifcbrusque.app.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -7,6 +8,7 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.lembretes.LembretesFragment;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasFragment;
+import com.ifcbrusque.app.ui.settings.SettingsActivity;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -45,6 +47,12 @@ public class HomeActivity extends BaseActivity {
                 case R.id.navigation_noticias:
                     fragment = new NoticiasFragment();
                     idTitulo = R.string.title_noticias;
+                    break;
+
+                case R.id.navigation_configuracoes:
+                    Intent settingsIntent = SettingsActivity.getStartIntent(this);
+                    startActivity(settingsIntent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.hold_100);
                     break;
             }
 

@@ -42,13 +42,13 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_ifc_brusque_logo"
-            android:tint="@color/white" />
+            android:tint="@color/branco" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:background="@color/white"
+            android:background="@color/branco"
             android:elevation="0dp"
             app:cardCornerRadius="@dimen/raio_bordas"
             app:cardMaxElevation="0dp">

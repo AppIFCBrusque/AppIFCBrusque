@@ -5,13 +5,13 @@
 
         <!-- Cores -->
         <item name="colorPrimary">@color/verde</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnPrimary">@color/branco</item>
+        <item name="colorSecondary">@color/branco</item>
+        <item name="colorOnSecondary">@color/preto</item>
         <item name="colorAccent">@color/verde</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
-        <item name="backgroundColor">#f5f5f6</item>
+        <item name="colorSurface">@color/branco</item>
+        <item name="colorOnSurface">@color/preto</item>
+        <item name="backgroundColor">@color/fundo</item>
 
         <!-- Temas -->
         <item name="windowActionBar">false</item>
@@ -20,6 +20,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="bottomSheetDialogTheme">@style/Theme.IFCBrusque.BottomSheetDialog</item>
         <item name="android:windowAnimationStyle">@style/Theme.IFCBrusque.WindowAnimation</item>
+        <item name="preferenceTheme">@style/Theme.IFCBrusque.Preferences</item>
     </style>
 
     <!-- Splash screen -->
