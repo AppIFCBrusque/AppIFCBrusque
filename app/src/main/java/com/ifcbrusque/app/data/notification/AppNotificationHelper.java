@@ -15,7 +15,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.ApplicationContext;
-import com.ifcbrusque.app.service.SyncReceiver;
+import com.ifcbrusque.app.receiver.NotificationReceiver;
+import com.ifcbrusque.app.receiver.SyncReceiver;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.ui.noticia.NoticiaActivity;
 import com.ifcbrusque.app.data.db.Converters;
@@ -96,7 +97,6 @@ public class AppNotificationHelper implements NotificationHelper {
 
     private PendingIntent criarPendingIntentNotificacaoLembrete(Lembrete lembrete) {
         Intent intent = new Intent(mContext, NotificationReceiver.class);
-        intent.setAction(NotificationReceiver.ACTION_NOTIFICAR_LEMBRETE);
 
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID, lembrete.getId());
         intent.putExtra(InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO, lembrete.getIdNotificacao());
@@ -252,7 +252,7 @@ public class AppNotificationHelper implements NotificationHelper {
 
     private PendingIntent getPendingIntentSync() {
         Intent intent = new Intent(mContext, SyncReceiver.class);
-        intent.setAction(SyncReceiver.ACTION_SINCRONIZACAO_COMPLETA);
+        intent.setAction(SyncReceiver.SYNC_COMPLETA);
         return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
@@ -287,7 +287,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarSincronizacao(SyncService service) {
         Intent intentParar = new Intent(service, SyncReceiver.class);
-        intentParar.setAction(SyncReceiver.ACTION_FINALIZAR_SERVICO);
+        intentParar.setAction(SyncReceiver.FINALIZAR_SYNC);
         PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
@@ -304,7 +304,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarSincronizacaoNoticias(SyncService service, int tarefaAtual, int totalTarefas) {
         Intent intentParar = new Intent(service, SyncReceiver.class);
-        intentParar.setAction(SyncReceiver.ACTION_FINALIZAR_SERVICO);
+        intentParar.setAction(SyncReceiver.FINALIZAR_SYNC);
         PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
@@ -322,7 +322,7 @@ public class AppNotificationHelper implements NotificationHelper {
     @Override
     public void notificarSincronizacaoSIGAA(SyncService service, Disciplina disciplina, int tarefaAtual, int totalTarefas) {
         Intent intentParar = new Intent(service, SyncReceiver.class);
-        intentParar.setAction(SyncReceiver.ACTION_FINALIZAR_SERVICO);
+        intentParar.setAction(SyncReceiver.FINALIZAR_SYNC);
         PendingIntent parar = PendingIntent.getBroadcast(service, (int) System.currentTimeMillis(), intentParar, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)

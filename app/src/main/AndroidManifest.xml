@@ -61,23 +61,19 @@
             android:exported="false" />
 
         <receiver
-            android:name=".service.SyncReceiver"
+            android:name=".receiver.NotificationReceiver"
             android:exported="false">
-
-            <intent-filter>
-                <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_COMPLETA" />
-                <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_RAPIDA" />
-                <action android:name="com.ifcbrusque.app.ACTION_FINALIZAR_SERVICO" />
-            </intent-filter>
-
         </receiver>
 
         <receiver
-            android:name=".data.notification.NotificationReceiver"
+            android:name=".receiver.SyncReceiver"
             android:exported="false">
 
             <intent-filter>
-                <action android:name="com.ifcbrusque.app.ACTION_NOTIFICAR_LEMBRETE" />
+                <action android:name="com.ifcbrusque.app.SYNC_COMPLETA" />
+                <action android:name="com.ifcbrusque.app.SYNC_RAPIDA" />
+                <action android:name="com.ifcbrusque.app.ACTION_SINCRONIZACAO_RAPIDA" />
+                <action android:name="com.ifcbrusque.app.FINALIZAR_SYNC" />
             </intent-filter>
 
         </receiver>
