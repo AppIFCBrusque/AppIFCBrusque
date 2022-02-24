@@ -419,6 +419,46 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public boolean getPrefNotificarLembretes() {
+        return mPreferencesHelper.getPrefNotificarLembretes();
+    }
+
+    @Override
+    public boolean getPrefNotificarNoticiasDoCampusNovas() {
+        return mPreferencesHelper.getPrefNotificarNoticiasDoCampusNovas();
+    }
+
+    @Override
+    public boolean getPrefNotificarAvaliacoesNovas() {
+        return mPreferencesHelper.getPrefNotificarAvaliacoesNovas();
+    }
+
+    @Override
+    public boolean getPrefNotificarAvaliacoesAlteradas() {
+        return mPreferencesHelper.getPrefNotificarAvaliacoesAlteradas();
+    }
+
+    @Override
+    public boolean getPrefNotificarTarefasNovas() {
+        return mPreferencesHelper.getPrefNotificarTarefasNovas();
+    }
+
+    @Override
+    public boolean getPrefNotificarTarefasAlteradas() {
+        return mPreferencesHelper.getPrefNotificarTarefasAlteradas();
+    }
+
+    @Override
+    public boolean getPrefNotificarQuestionariosNovos() {
+        return mPreferencesHelper.getPrefNotificarQuestionariosNovos();
+    }
+
+    @Override
+    public boolean getPrefNotificarQuestionariosAlterados() {
+        return mPreferencesHelper.getPrefNotificarQuestionariosAlterados();
+    }
+
+    @Override
     public Usuario getUsuarioSIGAA() {
         return mNetworkHelper.getUsuarioSIGAA();
     }

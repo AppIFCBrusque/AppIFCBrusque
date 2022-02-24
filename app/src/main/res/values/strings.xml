@@ -70,7 +70,7 @@
     <string name="notificacoes">Notificações</string>
     <string name="notificar">Notificar</string>
     <string name="notificar_lembretes">Lembretes</string>
-    <string name="notificar_noticias_novas">Notícias novas</string>
+    <string name="notificar_noticias_do_campus_novas">Notícias do campus novas</string>
     <string name="notificar_avaliacoes_novas">Avaliações novas</string>
     <string name="notificar_avaliacoes_alteradas">Avaliações alteradas</string>
     <string name="notificar_tarefas_novas">Tarefas novas</string>

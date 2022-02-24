@@ -40,4 +40,20 @@ public interface PreferencesHelper {
     int getUltimaCategoriaAcessadaHome();
 
     void setUltimaCategoriaAcessadaHome(int categoria);
+
+    boolean getPrefNotificarLembretes();
+
+    boolean getPrefNotificarNoticiasDoCampusNovas();
+
+    boolean getPrefNotificarAvaliacoesNovas();
+
+    boolean getPrefNotificarAvaliacoesAlteradas();
+
+    boolean getPrefNotificarTarefasNovas();
+
+    boolean getPrefNotificarTarefasAlteradas();
+
+    boolean getPrefNotificarQuestionariosNovos();
+
+    boolean getPrefNotificarQuestionariosAlterados();
 }

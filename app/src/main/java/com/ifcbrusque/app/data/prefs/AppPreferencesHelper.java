@@ -125,4 +125,44 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public void setUltimaCategoriaAcessadaHome(int categoria) {
         pref.edit().putInt(HOME_ULTIMA_CATEGORIA_ACESSADA_ID, categoria).apply();
     }
+
+    @Override
+    public boolean getPrefNotificarLembretes() {
+        return pref.getBoolean(PREF_NOTIFICAR_LEMBRETES, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarNoticiasDoCampusNovas() {
+        return pref.getBoolean(PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarAvaliacoesNovas() {
+        return pref.getBoolean(PREF_NOTIFICAR_AVALIACOES_NOVAS, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarAvaliacoesAlteradas() {
+        return pref.getBoolean(PREF_NOTIFICAR_AVALIACOES_ALTERADAS, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarTarefasNovas() {
+        return pref.getBoolean(PREF_NOTIFICAR_TAREFAS_NOVAS, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarTarefasAlteradas() {
+        return pref.getBoolean(PREF_NOTIFICAR_TAREFAS_ALTERADAS, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarQuestionariosNovos() {
+        return pref.getBoolean(PREF_NOTIFICAR_QUESTIONARIOS_NOVOS, true);
+    }
+
+    @Override
+    public boolean getPrefNotificarQuestionariosAlterados() {
+        return pref.getBoolean(PREF_NOTIFICAR_QUESTIONARIOS_ALTERADOS, true);
+    }
 }

@@ -14,6 +14,8 @@ import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 
 import com.ifcbrusque.app.R;
+import com.ifcbrusque.app.data.prefs.AppPreferencesHelper;
+import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.di.ApplicationContext;
 import com.ifcbrusque.app.receiver.NotificationReceiver;
 import com.ifcbrusque.app.receiver.SyncReceiver;
@@ -61,6 +63,7 @@ public class AppNotificationHelper implements NotificationHelper {
     private final Context mContext;
     private final NotificationManager mNotificationManager;
     private final AlarmManager mAlarmManager;
+    private final PreferencesHelper mPreferencesHelper;
 
     public static final int ICONE_LEMBRETE = R.drawable.ic_notifications_black_24dp;
     public static final int ICONE_SINCRONIZACAO = R.drawable.outline_sync_black_24;
@@ -73,6 +76,7 @@ public class AppNotificationHelper implements NotificationHelper {
         mContext = context;
         mNotificationManager = mContext.getSystemService(NotificationManager.class);
         mAlarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+        mPreferencesHelper = new AppPreferencesHelper(context);
     }
 
     /**
@@ -116,6 +120,10 @@ public class AppNotificationHelper implements NotificationHelper {
      */
     @Override
     public void notificarLembrete(Bundle bundle) {
+        if (!mPreferencesHelper.getPrefNotificarLembretes()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         long idLembrete = bundle.getLong(EXTRAS_LEMBRETE_ID, -1);
         int idNotificacao = Math.toIntExact(bundle.getLong(EXTRAS_LEMBRETE_ID_NOTIFICACAO, 9999));
         String titulo = bundle.getString(EXTRAS_LEMBRETE_TITULO, "");
@@ -212,6 +220,10 @@ public class AppNotificationHelper implements NotificationHelper {
      */
     @Override
     public void notificarNoticia(Preview preview, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarNoticiasDoCampusNovas()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         PendingIntent pendingIntent = criarPendingIntentNotificacaoNoticia(preview, idNotificacao);
 
         //Notificação
@@ -339,6 +351,10 @@ public class AppNotificationHelper implements NotificationHelper {
 
     @Override
     public void notificarAvaliacaoNova(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarAvaliacoesNovas()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
 
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
@@ -356,6 +372,10 @@ public class AppNotificationHelper implements NotificationHelper {
 
     @Override
     public void notificarAvaliacaoAlterada(Avaliacao avaliacao, Lembrete lembrete, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarAvaliacoesAlteradas()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setColor(mContext.getColor(NOTF_COR))
@@ -372,6 +392,10 @@ public class AppNotificationHelper implements NotificationHelper {
 
     @Override
     public void notificarTarefaNova(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarTarefasNovas()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setColor(mContext.getColor(NOTF_COR))
@@ -388,6 +412,10 @@ public class AppNotificationHelper implements NotificationHelper {
 
     @Override
     public void notificarTarefaAlterada(Tarefa tarefa, Lembrete lembrete, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarTarefasAlteradas()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setColor(mContext.getColor(NOTF_COR))
@@ -404,6 +432,10 @@ public class AppNotificationHelper implements NotificationHelper {
 
     @Override
     public void notificarQuestionarioNovo(Questionario questionario, Lembrete lembrete, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarQuestionariosNovos()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setColor(mContext.getColor(NOTF_COR))
@@ -420,6 +452,10 @@ public class AppNotificationHelper implements NotificationHelper {
 
     @Override
     public void notificarQuestionarioAlterado(Questionario questionario, Lembrete lembrete, int idNotificacao) {
+        if (!mPreferencesHelper.getPrefNotificarQuestionariosAlterados()) { // Não notificar caso o usuário tenha configurado
+            return;
+        }
+
         final PendingIntent pendingIntent = getPendingIntentLembrete(lembrete.getId(), lembrete.getIdNotificacao());
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, NOTF_CHANNEL_ID)
                 .setColor(mContext.getColor(NOTF_COR))

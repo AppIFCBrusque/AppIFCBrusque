@@ -8,7 +8,7 @@ import com.ifcbrusque.app.ui.base.BasePreferenceFragment;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_AVALIACOES_ALTERADAS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_AVALIACOES_NOVAS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_LEMBRETES;
-import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_NOTICIAS_NOVAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_QUESTIONARIOS_ALTERADOS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_QUESTIONARIOS_NOVOS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_TAREFAS_ALTERADAS;
@@ -19,7 +19,7 @@ public class SettingsNotificacoesFragment extends BasePreferenceFragment {
     protected void setUp() {
         PreferenceCategory categoriaNotificar = inserirCategoria(R.string.notificar);
         inserirCheckBox(PREF_NOTIFICAR_LEMBRETES, R.string.notificar_lembretes, 0, true, categoriaNotificar);
-        inserirCheckBox(PREF_NOTIFICAR_NOTICIAS_NOVAS, R.string.notificar_noticias_novas, 0, true, categoriaNotificar);
+        inserirCheckBox(PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS, R.string.notificar_noticias_do_campus_novas, 0, true, categoriaNotificar);
         inserirCheckBox(PREF_NOTIFICAR_AVALIACOES_NOVAS, R.string.notificar_avaliacoes_novas, 0, true, categoriaNotificar);
         inserirCheckBox(PREF_NOTIFICAR_AVALIACOES_ALTERADAS, R.string.notificar_avaliacoes_alteradas, 0, true, categoriaNotificar);
         inserirCheckBox(PREF_NOTIFICAR_TAREFAS_NOVAS, R.string.notificar_tarefas_novas, 0, true, categoriaNotificar);
