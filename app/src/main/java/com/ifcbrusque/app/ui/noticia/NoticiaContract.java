@@ -16,10 +16,6 @@ public interface NoticiaContract {
         void setData(String data);
 
         void mostrarView();
-
-        void mostrarLoading();
-
-        void esconderLoading();
     }
 
     interface NoticiaPresenter<V extends NoticiaView> extends MvpPresenter<V> {

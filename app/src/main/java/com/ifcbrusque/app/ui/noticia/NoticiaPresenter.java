@@ -41,21 +41,16 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
     }
 
     private void carregarNoticiaWeb(Preview preview) {
-        getMvpView().mostrarLoading();
-
         getCompositeDisposable().add(getDataManager()
                 .getNoticiaWeb(preview)
                 .flatMap(noticia -> {
                     exibirNoticiaNaView(preview, noticia);
-                    getMvpView().esconderLoading();
-
                     return getDataManager().inserirNoticia(noticia);
                 })
                 .subscribe(id -> {
 
                         },
                         erro -> {
-                            getMvpView().esconderLoading();
                             if (erro.getClass() == NoInternetException.class) {
                                 getMvpView().onError(R.string.erro_sem_internet);
                             } else {
@@ -72,7 +67,6 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
 
         getMvpView().carregarHtmlWebView(PgNoticiasParser.formatarCorpoNoticia(preview, noticia.getHtmlConteudo()), getDataManager().getPrefTema());
 
-        getMvpView().esconderLoading();
         getMvpView().mostrarView();
     }
 

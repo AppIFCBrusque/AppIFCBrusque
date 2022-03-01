@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.Preview;
@@ -34,7 +33,6 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     Picasso mPicasso;
 
     private WebView mWv;
-    private CircularProgressIndicator mPb;
     private ShapeableImageView mImg;
     private TextView mTvTitulo, mTvData;
     private RelativeLayout mRelativeLayout;
@@ -81,7 +79,6 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mWv = findViewById(R.id.wvNoticia);
-        mPb = findViewById(R.id.pbCircularNoticia);
         mImg = findViewById(R.id.noticia_imagem_grande);
         mTvTitulo = findViewById(R.id.noticia_titulo);
         mTvData = findViewById(R.id.noticia_data);
@@ -186,15 +183,5 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     @Override
     public void mostrarView() {
         mRelativeLayout.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void mostrarLoading() {
-        mPb.show();
-    }
-
-    @Override
-    public void esconderLoading() {
-        mPb.hide();
     }
 }
