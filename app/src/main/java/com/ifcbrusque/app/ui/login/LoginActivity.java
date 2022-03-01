@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_IFCBrusque_SplashTheme);
         setContentView(R.layout.activity_login);
 
         getActivityComponent().inject(this);

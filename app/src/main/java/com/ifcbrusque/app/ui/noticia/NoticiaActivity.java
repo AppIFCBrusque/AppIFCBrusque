@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 
 import static com.ifcbrusque.app.data.db.Converters.dateToTimestamp;
+import static com.ifcbrusque.app.utils.ThemeUtils.getCorEmHex;
 
 public class NoticiaActivity extends BaseActivity implements NoticiaContract.NoticiaView {
     @Inject
@@ -125,8 +126,35 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
      * @param html HTML a ser carregado
      */
     @Override
-    public void carregarHtmlWebView(String html) {
-        mWv.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+    public void carregarHtmlWebView(String html, int idTema) {
+        String htmlComTema = adicionarCoresDoTemaAoHTML(html, idTema);
+        mWv.loadDataWithBaseURL(null, htmlComTema, "text/html", "UTF-8", null);
+        mWv.setVisibility(View.VISIBLE);
+    }
+
+    private String adicionarCoresDoTemaAoHTML(String html, int tema) {
+        String backgroundColor = "", textColor = "";
+
+        switch (tema) {
+            case 0:
+                // Dia
+                backgroundColor = getCorEmHex(getColor(R.color.background_dia));
+                textColor = getCorEmHex(getColor(R.color.on_background_dia));
+                break;
+
+            case 2:
+                // Meia-noite
+                backgroundColor = getCorEmHex(getColor(R.color.background_meia_noite));
+                textColor = getCorEmHex(getColor(R.color.on_background_meia_noite));
+                break;
+        }
+
+        String style = "<style>body { background-color: " + backgroundColor + "; } .entry-content, span { color: " + textColor + " ; }</style>";
+
+        int posInicioHead = html.indexOf("<head>") + 6;
+        String htmlComTema = html.substring(0, posInicioHead) + style + html.substring(posInicioHead);
+
+        return htmlComTema;
     }
 
     @Override

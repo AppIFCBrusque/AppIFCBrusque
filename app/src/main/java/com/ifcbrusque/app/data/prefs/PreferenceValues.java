@@ -27,6 +27,8 @@ public class PreferenceValues {
 
     public static final String HOME_ULTIMA_CATEGORIA_ACESSADA_ID = "HOME_ULTIMA_CATEGORIA_ACESSADA_ID";
 
+    public static final String PREF_TEMA = "PREF_TEMA";
+
     public static final String PREF_NOTIFICAR_LEMBRETES = "PREF_NOTIFICAR_LEMBRETES";
 
     public static final String PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS = "PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS";

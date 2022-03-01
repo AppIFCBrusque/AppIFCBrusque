@@ -41,6 +41,8 @@ public interface PreferencesHelper {
 
     void setUltimaCategoriaAcessadaHome(int categoria);
 
+    int getPrefTema();
+
     boolean getPrefNotificarLembretes();
 
     boolean getPrefNotificarNoticiasDoCampusNovas();

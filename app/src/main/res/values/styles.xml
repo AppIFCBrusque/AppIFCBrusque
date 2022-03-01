@@ -34,12 +34,8 @@
     </style>
 
     <style name="Theme.IFCBrusque.FloatingActionButton">
-        <item name="colorOnPrimary">@color/branco</item>
-        <item name="colorSurface">@color/branco</item>
-        <item name="backgroundColor">#f5f5f6</item>
-        <item name="colorAccent">#f5f5f6</item>
-        <item name="colorSecondary">?attr/colorPrimary</item>
-        <item name="colorOnSecondary">?attr/colorOnPrimary</item>
+        <item name="backgroundTint">@drawable/fab_background_tint</item>
+        <item name="tint">@color/branco</item>
     </style>
 
     <style name="Theme.IFCBrusque.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">

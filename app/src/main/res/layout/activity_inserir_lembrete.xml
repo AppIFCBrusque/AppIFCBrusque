@@ -11,15 +11,16 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarInserirLembrete"
+        style="@style/Theme.IFCBrusque.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:theme="@style/Theme.IFCBrusque.Toolbar" />
+        android:elevation="4dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarInserirLembrete"
+        android:background="?attr/backgroundColor"
         android:clipToPadding="false"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
@@ -160,6 +161,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabInserir"
+        style="@style/Theme.IFCBrusque.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

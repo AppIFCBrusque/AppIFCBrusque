@@ -27,6 +27,7 @@
             android:layout_alignParentRight="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
+            android:tint="?attr/colorOnSurface"
             app:srcCompat="@drawable/outline_more_vert_black_24" />
 
         <TextView

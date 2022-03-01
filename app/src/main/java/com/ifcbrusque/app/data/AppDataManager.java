@@ -419,6 +419,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public int getPrefTema() {
+        return mPreferencesHelper.getPrefTema();
+    }
+
+    @Override
     public boolean getPrefNotificarLembretes() {
         return mPreferencesHelper.getPrefNotificarLembretes();
     }

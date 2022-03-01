@@ -1,7 +1,6 @@
 package com.ifcbrusque.app.ui.base;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +17,14 @@ import com.ifcbrusque.app.di.component.DaggerActivityComponent;
 import com.ifcbrusque.app.di.module.ActivityModule;
 import com.ifcbrusque.app.utils.NetworkUtils;
 
-public abstract class BaseActivity extends AppCompatActivity implements MvpView {
-    private ProgressDialog mProgressDialog;
+import static com.ifcbrusque.app.utils.ThemeUtils.aplicarTema;
 
+public abstract class BaseActivity extends AppCompatActivity implements MvpView {
     private ActivityComponent mActivityComponent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        aplicarTema(this);
         super.onCreate(savedInstanceState);
         mActivityComponent = DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))

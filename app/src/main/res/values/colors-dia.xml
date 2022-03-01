@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_dia">@color/verde</color>
+    <color name="on_primary_dia">@color/branco</color>
+    <color name="secondary_dia">@color/branco</color>
+    <color name="on_secondary_dia">@color/preto</color>
+    <color name="surface_dia">@color/branco</color>
+    <color name="on_surface_dia">@color/preto</color>
+    <color name="background_dia">@color/cinza_claro</color>
+    <color name="on_background_dia">@color/preto</color>
+</resources>

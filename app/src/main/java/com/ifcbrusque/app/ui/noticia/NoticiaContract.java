@@ -7,7 +7,7 @@ import com.ifcbrusque.app.ui.base.MvpView;
 
 public interface NoticiaContract {
     interface NoticiaView extends MvpView {
-        void carregarHtmlWebView(String html);
+        void carregarHtmlWebView(String html, int idTema);
 
         void carregarImagemGrande(String url);
 

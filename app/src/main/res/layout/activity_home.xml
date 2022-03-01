@@ -8,10 +8,10 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarHome"
+        style="@style/Theme.IFCBrusque.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp"
-        android:theme="@style/Theme.IFCBrusque.Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,6 +24,7 @@
             android:layout_marginHorizontal="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
+            android:tint="?attr/colorOnSecondary"
             app:srcCompat="@drawable/outline_filter_list_black_24"
             tools:layout_editor_absoluteX="371dp"
             tools:layout_editor_absoluteY="16dp" />

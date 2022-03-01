@@ -67,6 +67,11 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="configuracoes">Configurações</string>
 
+    <string name="aparencia">Aparência</string>
+    <string name="tema">Tema</string>
+    <string name="tema_dia">Dia</string>
+    <string name="tema_meia_noite">Meia-noite</string>
+
     <string name="notificacoes">Notificações</string>
     <string name="notificar">Notificar</string>
     <string name="notificar_lembretes">Lembretes</string>

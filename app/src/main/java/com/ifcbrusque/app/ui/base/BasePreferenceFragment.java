@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -17,6 +19,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.ifcbrusque.app.R;
 
 import static com.ifcbrusque.app.utils.AppConstants.PREF_NAME;
+import static com.ifcbrusque.app.utils.ThemeUtils.getStringResIdTema;
 
 public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
     @Override
@@ -68,6 +71,27 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
         checkBoxPreference.setIconSpaceReserved(false);
         categoria.addPreference(checkBoxPreference);
         return checkBoxPreference;
+    }
+
+    public ListPreference inserirListPreference(String key, int titleResId, String idTemaAtual, @ArrayRes int entriesResId, @ArrayRes int entryValuesResId, PreferenceCategory preferenceCategory) {
+        ListPreference listPreference = new ListPreference(getContext());
+
+        listPreference.setKey(key);
+        listPreference.setTitle(titleResId);
+        listPreference.setSummary(getStringResIdTema(idTemaAtual));
+        listPreference.setDialogTitle(titleResId);
+        listPreference.setEntries(entriesResId);
+        listPreference.setEntryValues(entryValuesResId);
+        listPreference.setValue(idTemaAtual);
+        listPreference.setIconSpaceReserved(false);
+
+        if (preferenceCategory == null) {
+            getPreferenceScreen().addPreference(listPreference);
+        } else {
+            preferenceCategory.addPreference(listPreference);
+        }
+
+        return listPreference;
     }
 
     protected abstract void setUp();

@@ -70,7 +70,7 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
         getMvpView().setTitulo(noticia.getTitulo());
         getMvpView().setData(noticia.getDataFormatada());
 
-        getMvpView().carregarHtmlWebView(PgNoticiasParser.formatarCorpoNoticia(preview, noticia.getHtmlConteudo()));
+        getMvpView().carregarHtmlWebView(PgNoticiasParser.formatarCorpoNoticia(preview, noticia.getHtmlConteudo()), getDataManager().getPrefTema());
 
         getMvpView().esconderLoading();
         getMvpView().mostrarView();

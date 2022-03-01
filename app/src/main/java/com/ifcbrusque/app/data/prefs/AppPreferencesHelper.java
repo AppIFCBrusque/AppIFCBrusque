@@ -127,6 +127,11 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public int getPrefTema() {
+        return Integer.parseInt(pref.getString(PREF_TEMA, "0"));
+    }
+
+    @Override
     public boolean getPrefNotificarLembretes() {
         return pref.getBoolean(PREF_NOTIFICAR_LEMBRETES, true);
     }

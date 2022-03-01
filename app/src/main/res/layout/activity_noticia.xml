@@ -17,15 +17,16 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarNoticia"
+        style="@style/Theme.IFCBrusque.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:theme="@style/Theme.IFCBrusque.Toolbar" />
+        android:elevation="4dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarNoticia"
+        android:background="?attr/backgroundColor"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:orientation="vertical"
@@ -73,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/noticia_imagem_grande"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:visibility="gone" />
 
         </RelativeLayout>
 

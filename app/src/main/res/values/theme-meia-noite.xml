@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema noite -->
+    <style name="Theme.IFCBrusque.Noite">
+        <!-- Cores -->
+        <item name="colorPrimary">@color/primary_meia_noite</item>
+        <item name="colorOnPrimary">@color/on_primary_meia_noite</item>
+        <item name="colorSecondary">@color/secondary_meia_noite</item>
+        <item name="colorOnSecondary">@color/on_secondary_meia_noite</item>
+        <item name="colorSurface">@color/surface_meia_noite</item>
+        <item name="colorOnSurface">@color/on_surface_meia_noite</item>
+        <item name="backgroundColor">@color/background_meia_noite</item>
+        <item name="colorOnBackground">@color/on_background_meia_noite</item>
+        <item name="colorAccent">@color/primary_meia_noite</item>
+        <item name="colorControlNormal">@color/on_surface_meia_noite</item>
+        <item name="android:textColor">@color/on_surface_meia_noite</item>
+        <item name="android:textColorPrimary">@color/on_surface_meia_noite</item>
+        <item name="android:textColorSecondary">@color/on_surface_meia_noite</item>
+        <item name="android:textColorTertiary">@color/on_surface_meia_noite</item>
+        <item name="colorControlHighlight">@color/ripple_color_meia_noite</item>
+        <item name="drawableTint">@color/on_surface_meia_noite</item>
+
+        <!-- Temas -->
+        <item name="alertDialogTheme">@style/Theme.IFCBrusque.Noite.AlertDialog</item>
+        <item name="android:timePickerStyle">@style/Theme.IFCBrusque.Noite.TimePicker</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Diálogos -->
+    <style name="Theme.IFCBrusque.Noite.AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/primary_meia_noite</item>
+        <item name="drawableTint">@color/primary_meia_noite</item>
+        <item name="android:background">@color/surface_meia_noite</item>
+        <item name="android:textColor">@color/on_surface_meia_noite</item>
+        <item name="textColorAlertDialogListItem">@color/on_surface_meia_noite</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.Noite.TimePicker" parent="@android:style/Widget.Material.TimePicker">
+        <item name="colorPrimary">@color/primary_meia_noite</item>
+        <item name="android:headerBackground">@color/primary_meia_noite</item>
+        <item name="android:numbersBackgroundColor">@color/background_meia_noite</item>
+        <item name="android:numbersTextColor">@color/on_background_meia_noite</item>
+        <item name="android:numbersInnerTextColor">@color/on_background_meia_noite</item>
+        <item name="android:numbersSelectorColor">@color/primary_meia_noite</item>
+    </style>
+</resources>
