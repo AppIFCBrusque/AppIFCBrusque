@@ -26,8 +26,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import javax.inject.Inject;
 
-import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
-import static com.ifcbrusque.app.utils.ViewUtils.bsdAddOpcaoBelow;
+import static com.ifcbrusque.app.utils.DialogUtils.bsdAddDescricaoBelow;
+import static com.ifcbrusque.app.utils.DialogUtils.bsdAddOpcaoBelow;
 
 public class InserirLembreteActivity extends BaseActivity implements InserirLembreteContract.InserirLembreteView {
     public static final String EXTRAS_LEMBRETE_ID = "EXTRAS_LEMBRETE_ID";

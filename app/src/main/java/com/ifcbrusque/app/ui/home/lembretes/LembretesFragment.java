@@ -28,8 +28,8 @@ import javax.inject.Inject;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_ATUALIZAR_RECYCLER_VIEW;
-import static com.ifcbrusque.app.utils.ViewUtils.bsdAddDescricaoBelow;
-import static com.ifcbrusque.app.utils.ViewUtils.bsdAddOpcaoBelow;
+import static com.ifcbrusque.app.utils.DialogUtils.bsdAddDescricaoBelow;
+import static com.ifcbrusque.app.utils.DialogUtils.bsdAddOpcaoBelow;
 
 public class LembretesFragment extends BaseFragment implements LembretesContract.LembretesView {
     final int REQUEST_CODE_LEMBRETE = 100;

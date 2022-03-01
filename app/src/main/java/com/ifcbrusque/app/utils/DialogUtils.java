@@ -11,8 +11,8 @@ import androidx.annotation.StringRes;
 
 import com.ifcbrusque.app.R;
 
-public class ViewUtils {
-    private ViewUtils() {
+public class DialogUtils {
+    private DialogUtils() {
 
     }
 
