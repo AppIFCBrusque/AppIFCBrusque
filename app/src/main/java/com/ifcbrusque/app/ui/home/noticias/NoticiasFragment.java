@@ -56,14 +56,19 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
     }
 
     @Override
-    protected void setUp() {
+    public void onStart() {
+        super.onStart();
+
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle(R.string.title_noticias);
         ImageButton ibFiltros = getBaseActivity().findViewById(R.id.ibCategorias);
         ibFiltros.setVisibility(View.GONE);
+    }
 
+    @Override
+    protected void setUp() {
         mProgressBar = getBaseActivity().findViewById(R.id.pbHorizontalHome);
 
         //Configuração do recycler view

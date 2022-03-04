@@ -25,9 +25,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
             android:tint="?attr/colorOnSecondary"
+            android:visibility="gone"
             app:srcCompat="@drawable/outline_filter_list_black_24"
             tools:layout_editor_absoluteX="371dp"
-            tools:layout_editor_absoluteY="16dp" />
+            tools:layout_editor_absoluteY="16dp"
+            tools:visibility="visible" />
 
     </androidx.appcompat.widget.Toolbar>
 

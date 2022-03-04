@@ -1,5 +1,8 @@
 package com.ifcbrusque.app.ui.home.settings;
 
+import android.view.View;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceCategory;
 
@@ -18,12 +21,19 @@ import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_TARE
 
 public class SettingsNotificacoesFragment extends BasePreferenceFragment {
     @Override
-    protected void setUp() {
+    public void onStart() {
+        super.onStart();
+
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.notificacoes);
+        ImageButton ibFiltro = getActivity().findViewById(R.id.ibCategorias);
+        ibFiltro.setVisibility(View.GONE);
+    }
 
+    @Override
+    protected void setUp() {
         // Opções
         PreferenceCategory categoriaNotificar = inserirCategoria(R.string.notificar);
         inserirCheckBox(PREF_NOTIFICAR_LEMBRETES, R.string.notificar_lembretes, 0, true, categoriaNotificar);

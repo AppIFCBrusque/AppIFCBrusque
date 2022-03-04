@@ -1,5 +1,8 @@
 package com.ifcbrusque.app.ui.home.settings;
 
+import android.view.View;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.ListPreference;
 
@@ -11,14 +14,20 @@ import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_TEMA;
 import static com.ifcbrusque.app.utils.ThemeUtils.getStringResIdTema;
 
 public class SettingsAparenciaFragment extends BasePreferenceFragment {
-
     @Override
-    protected void setUp() {
+    public void onStart() {
+        super.onStart();
+
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.aparencia);
+        ImageButton ibFiltro = getActivity().findViewById(R.id.ibCategorias);
+        ibFiltro.setVisibility(View.GONE);
+    }
 
+    @Override
+    protected void setUp() {
         // ListPreference do tema
         String idTemaAtual = getPreferenceManager().getSharedPreferences().getString(PREF_TEMA, "0");
         ListPreference listPreferenceTema = inserirListPreference(PREF_TEMA, R.string.tema, idTemaAtual, R.array.temas, R.array.temas_values, null);

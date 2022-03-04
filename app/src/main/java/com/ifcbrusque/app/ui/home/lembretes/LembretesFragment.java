@@ -122,19 +122,20 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     }
 
     @Override
-    protected void setUp() {
+    public void onStart() {
+        super.onStart();
+
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle(R.string.title_home);
 
         mIbFiltros = getBaseActivity().findViewById(R.id.ibCategorias);
-        mFabNovoLembrete = getView().findViewById(R.id.fabNovoLembrete);
-
+        
         mIbFiltros.setVisibility(View.VISIBLE);
 
         mIbFiltros.setOnClickListener(v -> {
-            //Exibir bottom sheet dialog
+            // Exibir bottom sheet dialog
             if (mBottomSheetDialog != null) {
                 mBottomSheetDialog.dismiss();
             } else {
@@ -142,7 +143,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
             }
             mBottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
-            //Criar views
+            // Criar views
             RelativeLayout rlBottomSheetDialog = mBottomSheetDialog.findViewById(R.id.rlBottomSheetDialog);
 
             TextView tvCategoriaEstado = bsdAddDescricaoBelow(getContext(), R.string.categoria_estado, rlBottomSheetDialog, null);
@@ -166,6 +167,12 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
 
             mBottomSheetDialog.show();
         });
+    }
+
+    @Override
+    protected void setUp() {
+        mFabNovoLembrete = getView().findViewById(R.id.fabNovoLembrete);
+
         mFabNovoLembrete.setOnClickListener(v -> {
             //Abrir activity para dicionar um lembrete
             Intent intentLembrete = new Intent(getActivity(), InserirLembreteActivity.class);
