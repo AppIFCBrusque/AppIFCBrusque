@@ -1,9 +1,11 @@
-package com.ifcbrusque.app.ui.settings;
+package com.ifcbrusque.app.ui.home.settings;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceCategory;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BasePreferenceFragment;
+import com.ifcbrusque.app.ui.home.HomeActivity;
 
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_AVALIACOES_ALTERADAS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_AVALIACOES_NOVAS;
@@ -17,6 +19,12 @@ import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_TARE
 public class SettingsNotificacoesFragment extends BasePreferenceFragment {
     @Override
     protected void setUp() {
+        // Configuração da toolbar
+        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(R.string.notificacoes);
+
+        // Opções
         PreferenceCategory categoriaNotificar = inserirCategoria(R.string.notificar);
         inserirCheckBox(PREF_NOTIFICAR_LEMBRETES, R.string.notificar_lembretes, 0, true, categoriaNotificar);
         inserirCheckBox(PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS, R.string.notificar_noticias_do_campus_novas, 0, true, categoriaNotificar);

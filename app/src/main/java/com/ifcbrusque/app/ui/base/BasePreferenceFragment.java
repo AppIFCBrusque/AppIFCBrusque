@@ -22,6 +22,8 @@ import static com.ifcbrusque.app.utils.AppConstants.PREF_NAME;
 import static com.ifcbrusque.app.utils.ThemeUtils.getStringResIdTema;
 
 public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
+    private boolean setUpDone = false;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(PREF_NAME);
@@ -33,14 +35,22 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Definir a cor do fundo
+        // Definir a cor do fundo
         TypedValue typedValue = new TypedValue();
         Resources.Theme tema = getContext().getTheme();
         tema.resolveAttribute(R.attr.backgroundColor, typedValue, true);
         @ColorInt int cor = typedValue.data;
         getView().setBackgroundColor(cor);
+    }
 
-        setUp();
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!setUpDone) {
+            setUp();
+            setUpDone = true;
+        }
     }
 
     public void inserirPreferencias(String fragmento, String key, int icone, int titulo) {

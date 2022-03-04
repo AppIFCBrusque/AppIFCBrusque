@@ -1,14 +1,14 @@
 package com.ifcbrusque.app.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.lembretes.LembretesFragment;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasFragment;
-import com.ifcbrusque.app.ui.settings.SettingsActivity;
+import com.ifcbrusque.app.ui.home.settings.SettingsFragment;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -26,13 +26,36 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // Botão de voltar
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            // Finalizar activity
+            finish();
+        } else {
+            // Voltar ao fragmento anterior
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+
+    @Override
     protected void setUp() {
-        //Configuração da toolbar
+        // Configuração da toolbar
         Toolbar toolbar = findViewById(R.id.toolbarHome);
         toolbar.setTitle(R.string.title_home);
         setSupportActionBar(toolbar);
 
-        //Configuração do bottom navigation view
+        // Configuração do bottom navigation view
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
@@ -50,14 +73,13 @@ public class HomeActivity extends BaseActivity {
                     break;
 
                 case R.id.navigation_configuracoes:
-                    Intent settingsIntent = SettingsActivity.getStartIntent(this);
-                    startActivity(settingsIntent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.hold_100);
+                    fragment = new SettingsFragment();
+                    idTitulo = R.string.configuracoes;
                     break;
             }
 
             if (fragment != null) {
-                //Trocar para o fragmento
+                // Trocar para o fragmento
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                         .add(R.id.nav_host_fragment, fragment)
@@ -65,10 +87,9 @@ public class HomeActivity extends BaseActivity {
                 toolbar.setTitle(idTitulo);
                 return true;
             } else {
-                return false; //Retornar false não troca o item selecionado no bottom navigation view
+                return false; // Retornar false não troca o item selecionado no bottom navigation view
             }
         });
-
     }
 
 }
