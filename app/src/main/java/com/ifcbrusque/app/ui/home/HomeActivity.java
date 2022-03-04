@@ -52,29 +52,24 @@ public class HomeActivity extends BaseActivity {
     protected void setUp() {
         // Configuração da toolbar
         Toolbar toolbar = findViewById(R.id.toolbarHome);
-        toolbar.setTitle(R.string.title_home);
         setSupportActionBar(toolbar);
 
         // Configuração do bottom navigation view
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
-            int idTitulo = R.string.app_name;
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     fragment = new LembretesFragment();
-                    idTitulo = R.string.title_home;
                     break;
 
                 case R.id.navigation_noticias:
                     fragment = new NoticiasFragment();
-                    idTitulo = R.string.title_noticias;
                     break;
 
                 case R.id.navigation_configuracoes:
                     fragment = new SettingsFragment();
-                    idTitulo = R.string.configuracoes;
                     break;
             }
 
@@ -84,7 +79,6 @@ public class HomeActivity extends BaseActivity {
                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                         .add(R.id.nav_host_fragment, fragment)
                         .commit();
-                toolbar.setTitle(idTitulo);
                 return true;
             } else {
                 return false; // Retornar false não troca o item selecionado no bottom navigation view

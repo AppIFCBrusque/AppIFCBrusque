@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.component.ActivityComponent;
 import com.ifcbrusque.app.ui.base.BaseFragment;
+import com.ifcbrusque.app.ui.home.HomeActivity;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 
@@ -38,7 +40,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
     LembretesContract.LembretesPresenter<LembretesContract.LembretesView> mPresenter;
 
     private FloatingActionButton mFabNovoLembrete;
-    private ImageButton mIbCategorias;
+    private ImageButton mIbFiltros;
     private RecyclerView mRecyclerView;
     private BottomSheetDialog mBottomSheetDialog;
 
@@ -121,12 +123,17 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
 
     @Override
     protected void setUp() {
-        mIbCategorias = getBaseActivity().findViewById(R.id.ibCategorias);
+        // Configuração da toolbar
+        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle(R.string.title_home);
+
+        mIbFiltros = getBaseActivity().findViewById(R.id.ibCategorias);
         mFabNovoLembrete = getView().findViewById(R.id.fabNovoLembrete);
 
-        mIbCategorias.setVisibility(View.VISIBLE);
+        mIbFiltros.setVisibility(View.VISIBLE);
 
-        mIbCategorias.setOnClickListener(v -> {
+        mIbFiltros.setOnClickListener(v -> {
             //Exibir bottom sheet dialog
             if (mBottomSheetDialog != null) {
                 mBottomSheetDialog.dismiss();

@@ -9,12 +9,14 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.component.ActivityComponent;
 import com.ifcbrusque.app.ui.base.BaseFragment;
+import com.ifcbrusque.app.ui.home.HomeActivity;
 import com.ifcbrusque.app.ui.noticia.NoticiaActivity;
 import com.ifcbrusque.app.data.db.model.Preview;
 
@@ -35,7 +37,6 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
 
     private MaterialProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
-    private ImageButton mIbCategorias;
 
     @Inject
     NoticiasAdapter mNoticiasAdapter;
@@ -56,10 +57,14 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
 
     @Override
     protected void setUp() {
-        mIbCategorias = getBaseActivity().findViewById(R.id.ibCategorias);
-        mProgressBar = getBaseActivity().findViewById(R.id.pbHorizontalHome);
+        // Configuração da toolbar
+        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle(R.string.title_noticias);
+        ImageButton ibFiltros = getBaseActivity().findViewById(R.id.ibCategorias);
+        ibFiltros.setVisibility(View.GONE);
 
-        mIbCategorias.setVisibility(View.GONE);
+        mProgressBar = getBaseActivity().findViewById(R.id.pbHorizontalHome);
 
         //Configuração do recycler view
         mRecyclerView = getView().findViewById(R.id.recyclerView_noticias);
