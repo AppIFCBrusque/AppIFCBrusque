@@ -18,7 +18,8 @@
 
     <fragment
         android:id="@+id/navigation_configuracoes"
-        android:label="@string/configuracoes"
-        />
+        android:label="@string/configuracoes" />
+
+    <fragment android:id="@+id/navigation_configuracoes_notificacoes" />
 
 </navigation>

@@ -3,6 +3,7 @@ package com.ifcbrusque.app.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.HomeActivity;
 import com.ifcbrusque.app.ui.login.LoginActivity;
@@ -43,8 +44,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     public void abrirHome() {
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-        startActivity(intent);
+        startActivity(HomeActivity.getStartIntent(this, R.id.navigation_home));
     }
 
     @Override

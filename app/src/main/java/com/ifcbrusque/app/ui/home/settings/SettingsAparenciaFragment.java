@@ -32,8 +32,22 @@ public class SettingsAparenciaFragment extends BasePreferenceFragment {
         String idTemaAtual = getPreferenceManager().getSharedPreferences().getString(PREF_TEMA, "0");
         ListPreference listPreferenceTema = inserirListPreference(PREF_TEMA, R.string.tema, idTemaAtual, R.array.temas, R.array.temas_values, null);
         listPreferenceTema.setOnPreferenceChangeListener((preference, newValue) -> {
-            preference.setSummary(getStringResIdTema((String) newValue));
+            String idTemaNovo = (String) newValue;
+
+            preference.setSummary(getStringResIdTema(idTemaNovo));
+
+            // Reiniciar activity ao mudar o tema
+            if (!idTemaAtual.equals(idTemaNovo)) {
+                reiniciarActivity();
+            }
+
             return true;
         });
+    }
+
+    private void reiniciarActivity() {
+        startActivity(HomeActivity.getStartIntent(getContext(), R.id.navigation_configuracoes_notificacoes));
+        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.hold_100);
+        getActivity().finish();
     }
 }
