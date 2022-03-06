@@ -80,7 +80,7 @@ public class HomeActivity extends BaseActivity {
                 fragment = new SettingsFragment();
                 break;
 
-            case R.id.navigation_configuracoes_notificacoes:
+            case R.id.navigation_configuracoes_aparencia:
                 // Definir as configurações como a aba atual da navigation bar para poder voltar
                 mBottomNavigationView.setSelectedItemId(R.id.navigation_configuracoes);
 

@@ -20,7 +20,7 @@
         android:id="@+id/navigation_configuracoes"
         android:label="@string/configuracoes" />
 
-    <fragment android:id="@+id/navigation_configuracoes_notificacoes" />
+    <fragment android:id="@+id/navigation_configuracoes_aparencia" />
 
     <fragment android:id="@+id/navigation_configuracoes_sincronizacao" />
 

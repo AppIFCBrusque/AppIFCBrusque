@@ -46,7 +46,7 @@ public class SettingsAparenciaFragment extends BasePreferenceFragment {
     }
 
     private void reiniciarActivity() {
-        startActivity(HomeActivity.getStartIntent(getContext(), R.id.navigation_configuracoes_notificacoes));
+        startActivity(HomeActivity.getStartIntent(getContext(), R.id.navigation_configuracoes_aparencia));
         getActivity().overridePendingTransition(R.anim.fade_in, R.anim.hold_100);
         getActivity().finish();
     }
