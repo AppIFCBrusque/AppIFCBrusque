@@ -11,8 +11,6 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
 
-import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_NOME_DO_USUARIO;
-
 public class LoginPresenter<V extends LoginContract.LoginView> extends BasePresenter<V> implements LoginContract.LoginPresenter<V> {
     @Inject
     public LoginPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
@@ -40,8 +38,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getDataManager().setSIGAAConectado(true);
                                     getDataManager().setPrefSincronizarSIGAA(true);
 
-                                    getMvpView().abrirHome();
-                                    getMvpView().fecharActivity();
+                                    getMvpView().sair();
                                 });
                     } else {
                         //Credenciais incorretas
@@ -73,7 +70,6 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
         getDataManager().setPrimeiraInicializacao(false);
         getDataManager().setSIGAAConectado(false);
         getDataManager().setPrefSincronizarSIGAA(false);
-        getMvpView().abrirHome();
-        getMvpView().fecharActivity();
+        getMvpView().sair();
     }
 }

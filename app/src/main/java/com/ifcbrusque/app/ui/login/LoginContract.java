@@ -22,9 +22,7 @@ public interface LoginContract {
 
         void setMensagemErro(int resid);
 
-        void abrirHome();
-
-        void fecharActivity();
+        void sair();
     }
 
     interface LoginPresenter<V extends LoginView> extends MvpPresenter<V> {

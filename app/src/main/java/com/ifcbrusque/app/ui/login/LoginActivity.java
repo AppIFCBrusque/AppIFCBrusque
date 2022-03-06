@@ -38,6 +38,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     private TextView mTvErro;
     private Button mBtEntrar, mBtPular;
 
+    private boolean mPodeVoltar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +82,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         mBtEntrar.setOnClickListener(v -> mPresenter.onEntrarClick(mEtUsuario.getEditText().getText().toString(), mEtSenha.getEditText().getText().toString()));
         mBtPular.setOnClickListener(v -> mPresenter.onPularClick());
 
-        if (getIntent().getExtras().getBoolean(EXTRAS_PODE_VOLTAR, false)) {
+        mPodeVoltar = getIntent().getExtras().getBoolean(EXTRAS_PODE_VOLTAR, false);
+
+        if (mPodeVoltar) {
             esconderBotaoPular();
             mostrarVoltar();
         }
@@ -127,12 +131,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     }
 
     @Override
-    public void abrirHome() {
-        startActivity(HomeActivity.getStartIntent(this, R.id.navigation_home));
-    }
+    public void sair() {
+        if (!mPodeVoltar) {
+            startActivity(HomeActivity.getStartIntent(this, R.id.navigation_home));
+        }
 
-    @Override
-    public void fecharActivity() {
         finish();
     }
 }
