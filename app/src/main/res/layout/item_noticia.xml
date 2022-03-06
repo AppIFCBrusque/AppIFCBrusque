@@ -22,6 +22,7 @@
             android:id="@+id/preview_imagem"
             android:layout_width="136dp"
             android:layout_height="136dp"
+            android:tint="@null"
             android:scaleType="centerCrop" />
 
         <TextView
