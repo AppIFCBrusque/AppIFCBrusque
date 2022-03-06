@@ -15,6 +15,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 
 import com.ifcbrusque.app.R;
 
@@ -70,17 +71,25 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
         return preferenceCategory;
     }
 
-    public CheckBoxPreference inserirCheckBox(String key, int titulo, int sumario, boolean checado, PreferenceCategory categoria) {
-        CheckBoxPreference checkBoxPreference = new CheckBoxPreference(getContext());
-        checkBoxPreference.setKey(key);
-        checkBoxPreference.setTitle(titulo);
+    public SwitchPreference inserirSwitch(String key, int titulo, int sumario, boolean checado, PreferenceCategory preferenceCategory) {
+        SwitchPreference switchPreference = new SwitchPreference(getContext());
+
+        switchPreference.setKey(key);
+        switchPreference.setTitle(titulo);
+        switchPreference.setChecked(checado);
+        switchPreference.setIconSpaceReserved(false);
+
         if (sumario != 0) {
-            checkBoxPreference.setSummary(sumario);
+            switchPreference.setSummary(sumario);
         }
-        checkBoxPreference.setChecked(checado);
-        checkBoxPreference.setIconSpaceReserved(false);
-        categoria.addPreference(checkBoxPreference);
-        return checkBoxPreference;
+
+        if (preferenceCategory == null) {
+            getPreferenceScreen().addPreference(switchPreference);
+        } else {
+            preferenceCategory.addPreference(switchPreference);
+        }
+
+        return switchPreference;
     }
 
     public ListPreference inserirListPreference(String key, int titleResId, String idTemaAtual, @ArrayRes int entriesResId, @ArrayRes int entryValuesResId, PreferenceCategory preferenceCategory) {
