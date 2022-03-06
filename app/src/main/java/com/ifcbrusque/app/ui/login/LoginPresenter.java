@@ -11,6 +11,8 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_NOME_DO_USUARIO;
+
 public class LoginPresenter<V extends LoginContract.LoginView> extends BasePresenter<V> implements LoginContract.LoginPresenter<V> {
     @Inject
     public LoginPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
@@ -33,6 +35,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                 .doOnComplete(() -> {
                                     getDataManager().setLoginSIGAA(usuario);
                                     getDataManager().setSenhaSIGAA(senha);
+                                    getDataManager().setNomeDoUsuarioSIGAA(getDataManager().getUsuarioSIGAA().getNome());
                                     getDataManager().setPrimeiraInicializacao(false);
                                     getDataManager().setSIGAAConectado(true);
                                     getDataManager().setPrefSincronizarSIGAA(true);

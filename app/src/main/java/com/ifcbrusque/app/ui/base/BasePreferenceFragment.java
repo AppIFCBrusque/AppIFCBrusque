@@ -71,6 +71,30 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
         return preferenceCategory;
     }
 
+    public Preference inserirPreference(String key, String titulo, String sumario, PreferenceCategory preferenceCategory) {
+        Preference preference = new Preference(getContext());
+
+        preference.setKey(key);
+        preference.setTitle(titulo);
+        preference.setIconSpaceReserved(false);
+
+        if (sumario.length() > 0) {
+            preference.setSummary(sumario);
+        }
+
+        if (preferenceCategory == null) {
+            getPreferenceScreen().addPreference(preference);
+        } else {
+            preferenceCategory.addPreference(preference);
+        }
+
+        return preference;
+    }
+
+    public Preference inserirPreference(String key, int titulo, int sumario, PreferenceCategory preferenceCategory) {
+        return inserirPreference(key, getString(titulo), getString(sumario), preferenceCategory);
+    }
+
     public SwitchPreference inserirSwitch(String key, int titulo, int sumario, boolean checado, PreferenceCategory preferenceCategory) {
         SwitchPreference switchPreference = new SwitchPreference(getContext());
 

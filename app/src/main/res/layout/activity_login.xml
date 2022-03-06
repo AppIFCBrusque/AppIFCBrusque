@@ -7,9 +7,16 @@
     android:background="@color/verde"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarLogin"
+        style="@style/Theme.IFCBrusque.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarLogin"
         android:theme="@style/Theme.IFCBrusque"
         app:elevation="1px">
 

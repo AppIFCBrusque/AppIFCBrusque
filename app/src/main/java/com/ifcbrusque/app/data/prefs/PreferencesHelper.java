@@ -23,6 +23,10 @@ public interface PreferencesHelper {
 
     void setSenhaSIGAA(String senha);
 
+    String getNomeDoUsuarioSIGAA();
+
+    void setNomeDoUsuarioSIGAA(String s);
+
     void setDataUltimaSincronizacaoAutomaticaNoticias(Date data);
 
     Date getDataUltimaSincronizacaoAutomaticaNoticias();

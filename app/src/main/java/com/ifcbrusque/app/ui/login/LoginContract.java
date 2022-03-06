@@ -10,9 +10,13 @@ public interface LoginContract {
 
         void ativarBotaoEntrar();
 
+        void esconderBotaoPular();
+
         void mostrarLoading();
 
         void esconderLoading();
+
+        void mostrarVoltar();
 
         void mostrarMensagemErro();
 

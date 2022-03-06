@@ -86,6 +86,12 @@
     <string name="sincronizacao">Sincronização</string>
     <string name="sincronizar_sigaa">Sincronizar o aplicativo com o SIGAA</string>
     <string name="sincronizar_sigaa_descricao">Ao ativar, as avaliações, as tarefas e os questionários cadastrados no SIGAA serão automaticamente importados para o aplicativo</string>
+    <string name="sincronizar_sigaa_nao_conectado">Nenhuma conta conectada</string>
+    <string name="sincronizar_sigaa_nao_conectado_descricao">Clique aqui para fazer o login</string>
+    <string name="sincronizar_sigaa_conectado_como">Conectado como %s</string>
+    <string name="sincronizar_sigaa_conectado_como_descricao">Clique aqui deslogar</string>
+    <string name="sincronizar_sigaa_conectado_deslogar_mensagem">Você tem certeza que deslogar do SIGAA?</string>
+    <string name="sincronizar_sigaa_conectado_deslogar">Deslogar</string>
 
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>

@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     public void abrirLogin() {
-        Intent intent = LoginActivity.getStartIntent(this);
+        Intent intent = LoginActivity.getStartIntent(this, false);
         startActivity(intent);
     }
 

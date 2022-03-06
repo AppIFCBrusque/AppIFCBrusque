@@ -12,6 +12,7 @@ import com.ifcbrusque.app.ui.home.lembretes.LembretesFragment;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasFragment;
 import com.ifcbrusque.app.ui.home.settings.SettingsAparenciaFragment;
 import com.ifcbrusque.app.ui.home.settings.SettingsFragment;
+import com.ifcbrusque.app.ui.home.settings.SettingsSincronizacaoFragment;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -90,6 +91,18 @@ public class HomeActivity extends BaseActivity {
                         .replace(R.id.nav_host_fragment, new SettingsFragment())
                         .add(R.id.nav_host_fragment, new SettingsAparenciaFragment())
                         .addToBackStack(SettingsAparenciaFragment.class.getName())
+                        .commit();
+                break;
+
+            case R.id.navigation_configuracoes_sincronizacao:
+                mBottomNavigationView.setSelectedItemId(R.id.navigation_configuracoes);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .replace(R.id.nav_host_fragment, new SettingsFragment())
+                        .add(R.id.nav_host_fragment, new SettingsSincronizacaoFragment())
+                        .addToBackStack(SettingsSincronizacaoFragment.class.getName())
                         .commit();
                 break;
         }

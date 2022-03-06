@@ -78,6 +78,16 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public String getNomeDoUsuarioSIGAA() {
+        return pref.getString(SIGAA_NOME_DO_USUARIO, "");
+    }
+
+    @Override
+    public void setNomeDoUsuarioSIGAA(String s) {
+        pref.edit().putString(SIGAA_NOME_DO_USUARIO, s).apply();
+    }
+
+    @Override
     public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
         long _data = Converters.dateToTimestamp(data);
         pref.edit().putLong(NOTICIAS_ULTIMA_SINCRONIZACAO, _data).apply();

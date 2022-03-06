@@ -374,6 +374,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public String getNomeDoUsuarioSIGAA() {
+        return mPreferencesHelper.getNomeDoUsuarioSIGAA();
+    }
+
+    @Override
+    public void setNomeDoUsuarioSIGAA(String s) {
+        mPreferencesHelper.setNomeDoUsuarioSIGAA(s);
+    }
+
+    @Override
     public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
         mPreferencesHelper.setDataUltimaSincronizacaoAutomaticaNoticias(data);
     }

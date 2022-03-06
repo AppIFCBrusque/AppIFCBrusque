@@ -22,4 +22,6 @@
 
     <fragment android:id="@+id/navigation_configuracoes_notificacoes" />
 
+    <fragment android:id="@+id/navigation_configuracoes_sincronizacao" />
+
 </navigation>
