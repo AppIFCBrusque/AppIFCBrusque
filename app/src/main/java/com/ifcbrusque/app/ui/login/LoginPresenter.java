@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+
 import timber.log.Timber;
 
 public class LoginPresenter<V extends LoginContract.LoginView> extends BasePresenter<V> implements LoginContract.LoginPresenter<V> {
@@ -38,7 +39,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getDataManager().setSIGAAConectado(true);
                                     getDataManager().setPrefSincronizarSIGAA(true);
 
-                                    getMvpView().sair();
+                                    getMvpView().sair(true);
                                 });
                     } else {
                         //Credenciais incorretas
@@ -70,6 +71,6 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
         getDataManager().setPrimeiraInicializacao(false);
         getDataManager().setSIGAAConectado(false);
         getDataManager().setPrefSincronizarSIGAA(false);
-        getMvpView().sair();
+        getMvpView().sair(false);
     }
 }

@@ -131,9 +131,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     }
 
     @Override
-    public void sair() {
+    public void sair(boolean logado) {
         if (!mPodeVoltar) {
             startActivity(HomeActivity.getStartIntent(this, R.id.navigation_home));
+        } else {
+            // Resultado para o SettingsSincronizacaoFragment atualizar a Preference
+            setResult((logado) ? RESULT_OK : RESULT_CANCELED, new Intent());
         }
 
         finish();
