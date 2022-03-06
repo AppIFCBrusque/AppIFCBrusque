@@ -83,11 +83,12 @@
     <string name="notificar_questionarios_novos">Questionários novos</string>
     <string name="notificar_questionarios_alterados">Questionários alterados</string>
 
+    <string name="sincronizacao">Sincronização</string>
+
     <!-- NOTIFICAÇÕES -->
     <string name="channel_title">APP IFC Brusque</string>
     <string name="channel_description">Canal de notificações do aplicativo</string>
 
-    <string name="sincronizacao">Sincronização</string>
     <string name="sincronizacao_inicio">Iniciando sincronização…</string>
     <string name="avaliacao_nova">Nova avaliação em %s</string>
     <string name="avaliacao_alterada">Avaliação alterada em %s</string>

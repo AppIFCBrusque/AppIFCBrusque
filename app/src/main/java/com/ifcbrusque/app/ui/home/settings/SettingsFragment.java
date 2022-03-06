@@ -26,5 +26,6 @@ public class SettingsFragment extends BasePreferenceFragment {
     protected void setUp() {
         inserirPreferencias("com.ifcbrusque.app.ui.home.settings.SettingsAparenciaFragment", SettingsAparenciaFragment.class.toString(), R.drawable.baseline_palette_black_24, R.string.aparencia);
         inserirPreferencias("com.ifcbrusque.app.ui.home.settings.SettingsNotificacoesFragment", SettingsNotificacoesFragment.class.toString(), R.drawable.ic_notifications_black_24dp, R.string.notificacoes);
+        inserirPreferencias("com.ifcbrusque.app.ui.home.settings.SettingsSincronizacaoFragment", SettingsSincronizacaoFragment.class.toString(), R.drawable.outline_sync_black_24, R.string.sincronizacao);
     }
 }
