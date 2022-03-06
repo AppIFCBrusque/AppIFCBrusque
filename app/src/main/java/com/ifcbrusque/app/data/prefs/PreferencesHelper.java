@@ -58,4 +58,8 @@ public interface PreferencesHelper {
     boolean getPrefNotificarQuestionariosNovos();
 
     boolean getPrefNotificarQuestionariosAlterados();
+
+    boolean getPrefSincronizarSIGAAA();
+
+    void setPrefSincronizarSIGAA(boolean b);
 }

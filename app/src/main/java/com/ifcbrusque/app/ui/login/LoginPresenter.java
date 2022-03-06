@@ -35,6 +35,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getDataManager().setSenhaSIGAA(senha);
                                     getDataManager().setPrimeiraInicializacao(false);
                                     getDataManager().setSIGAAConectado(true);
+                                    getDataManager().setPrefSincronizarSIGAA(true);
 
                                     getMvpView().abrirHome();
                                     getMvpView().fecharActivity();
@@ -68,6 +69,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
     public void onPularClick() {
         getDataManager().setPrimeiraInicializacao(false);
         getDataManager().setSIGAAConectado(false);
+        getDataManager().setPrefSincronizarSIGAA(false);
         getMvpView().abrirHome();
         getMvpView().fecharActivity();
     }

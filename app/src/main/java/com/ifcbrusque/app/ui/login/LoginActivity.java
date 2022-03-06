@@ -89,8 +89,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     @Override
     public void abrirHome() {
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);
+        startActivity(HomeActivity.getStartIntent(this, R.id.navigation_home));
     }
 
     @Override

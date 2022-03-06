@@ -9,6 +9,8 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BasePreferenceFragment;
 import com.ifcbrusque.app.ui.home.HomeActivity;
 
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_SINCRONIZAR_SIGAA;
+
 public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
     @Override
     public void onStart() {
@@ -24,6 +26,6 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
 
     @Override
     protected void setUp() {
-
+        inserirSwitch(PREF_SINCRONIZAR_SIGAA, R.string.sincronizar_sigaa, R.string.sincronizar_sigaa_descricao, false, null);
     }
 }

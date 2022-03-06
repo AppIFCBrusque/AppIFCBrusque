@@ -144,7 +144,7 @@ public class SyncService extends Service {
     private Completable conferirSIGAAConectado() {
         return Observable.defer(() -> {
             Timber.d("Conferindo SIGAA conectado");
-            return Observable.just(mDataManager.getSIGAAConectado());
+            return Observable.just(mDataManager.getPrefSincronizarSIGAAA() && mDataManager.getSIGAAConectado());
         })
                 .flatMapCompletable(conectado -> {
                     if (conectado) {
@@ -160,7 +160,7 @@ public class SyncService extends Service {
                                         return mDataManager.inserirDisciplinas(mDataManager.getUsuarioSIGAA().getDisciplinasAtuais());
                                     } else {
                                         Toast.makeText(this, R.string.erro_servico_sigaa_dados_invalidos, Toast.LENGTH_SHORT).show();
-                                        mDataManager.setSIGAAConectado(false); //Desativa a sincronização do SIGAA
+                                        mDataManager.setSIGAAConectado(false); // Desativa a sincronização do SIGAA até o usuário relogar manualmente
                                         return Completable.complete();
                                     }
                                 });

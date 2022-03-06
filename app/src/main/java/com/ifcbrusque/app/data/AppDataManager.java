@@ -464,6 +464,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public boolean getPrefSincronizarSIGAAA() {
+        return mPreferencesHelper.getPrefSincronizarSIGAAA();
+    }
+
+    @Override
+    public void setPrefSincronizarSIGAA(boolean b) {
+        mPreferencesHelper.setPrefSincronizarSIGAA(b);
+    }
+
+    @Override
     public Usuario getUsuarioSIGAA() {
         return mNetworkHelper.getUsuarioSIGAA();
     }

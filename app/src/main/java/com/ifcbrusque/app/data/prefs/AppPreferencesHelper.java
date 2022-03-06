@@ -170,4 +170,14 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public boolean getPrefNotificarQuestionariosAlterados() {
         return pref.getBoolean(PREF_NOTIFICAR_QUESTIONARIOS_ALTERADOS, true);
     }
+
+    @Override
+    public boolean getPrefSincronizarSIGAAA() {
+        return pref.getBoolean(PREF_SINCRONIZAR_SIGAA, false);
+    }
+
+    @Override
+    public void setPrefSincronizarSIGAA(boolean b) {
+        pref.edit().putBoolean(PREF_SINCRONIZAR_SIGAA, b).apply();
+    }
 }
