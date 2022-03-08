@@ -2,6 +2,7 @@ package com.ifcbrusque.app.ui.login;
 
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
+import com.ifcbrusque.app.data.db.Converters;
 import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
@@ -38,6 +39,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getDataManager().setPrimeiraInicializacao(false);
                                     getDataManager().setSIGAAConectado(true);
                                     getDataManager().setPrefSincronizarSIGAA(true);
+                                    getDataManager().setDataUltimaSincronizacaoCompleta(Converters.fromTimestamp((long) 0));
 
                                     getMvpView().sair(true);
                                 });
