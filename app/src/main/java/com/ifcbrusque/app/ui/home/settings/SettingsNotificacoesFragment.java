@@ -28,7 +28,7 @@ public class SettingsNotificacoesFragment extends BasePreferenceFragment {
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.notificacoes);
-        ImageButton ibFiltro = getActivity().findViewById(R.id.ibCategorias);
+        ImageButton ibFiltro = getActivity().findViewById(R.id.image_button_filtros);
         ibFiltro.setVisibility(View.GONE);
     }
 

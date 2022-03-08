@@ -74,7 +74,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     @Override
     protected void setUp() {
         //Ativar botão de voltar
-        Toolbar toolbar = findViewById(R.id.toolbarNoticia);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

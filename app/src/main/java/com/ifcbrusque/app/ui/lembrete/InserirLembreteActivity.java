@@ -81,7 +81,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
     @Override
     protected void setUp() {
-        Toolbar toolbar = findViewById(R.id.toolbarInserirLembrete);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

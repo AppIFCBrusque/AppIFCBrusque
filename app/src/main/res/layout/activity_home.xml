@@ -6,39 +6,14 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarHome"
-        style="@style/Theme.IFCBrusque.Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/ibCategorias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginHorizontal="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:tint="?attr/colorOnSecondary"
-            android:visibility="gone"
-            app:srcCompat="@drawable/outline_filter_list_black_24"
-            tools:layout_editor_absoluteX="371dp"
-            tools:layout_editor_absoluteY="16dp"
-            tools:visibility="visible" />
-
-    </androidx.appcompat.widget.Toolbar>
+    <include layout="@layout/toolbar" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="1px"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarHome">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/pbHorizontalHome"
@@ -77,7 +52,7 @@
         app:layout_constraintBottom_toTopOf="@id/nav_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarHome"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:navGraph="@navigation/mobile_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

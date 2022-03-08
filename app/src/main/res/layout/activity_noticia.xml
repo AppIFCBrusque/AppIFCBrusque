@@ -7,17 +7,12 @@
     android:orientation="vertical"
     tools:context=".ui.noticia.NoticiaActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarNoticia"
-        style="@style/Theme.IFCBrusque.Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp" />
+    <include layout="@layout/toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbarNoticia"
+        android:layout_below="@id/toolbar"
         android:background="?attr/backgroundColor"
         android:clipToPadding="false"
         android:fillViewport="true"

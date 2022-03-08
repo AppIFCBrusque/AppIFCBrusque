@@ -122,7 +122,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void setUp() {
         // Configuração da toolbar
-        Toolbar toolbar = findViewById(R.id.toolbarHome);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Configuração do bottom navigation view

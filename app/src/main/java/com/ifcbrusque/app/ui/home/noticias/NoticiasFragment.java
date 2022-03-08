@@ -63,7 +63,7 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle(R.string.title_noticias);
-        ImageButton ibFiltros = getBaseActivity().findViewById(R.id.ibCategorias);
+        ImageButton ibFiltros = getBaseActivity().findViewById(R.id.image_button_filtros);
         ibFiltros.setVisibility(View.GONE);
     }
 

@@ -130,7 +130,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle(R.string.title_home);
 
-        mIbFiltros = getBaseActivity().findViewById(R.id.ibCategorias);
+        mIbFiltros = getBaseActivity().findViewById(R.id.image_button_filtros);
         
         mIbFiltros.setVisibility(View.VISIBLE);
 

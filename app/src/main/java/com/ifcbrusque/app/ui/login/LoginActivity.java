@@ -67,10 +67,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     @Override
     protected void setUp() {
-        Toolbar toolbar = findViewById(R.id.toolbarLogin);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
+        toolbar.setElevation(0);
         setSupportActionBar(toolbar);
-
 
         mProgressBar = findViewById(R.id.pbHorizontalLogin);
         mEtUsuario = findViewById(R.id.etUsuario);

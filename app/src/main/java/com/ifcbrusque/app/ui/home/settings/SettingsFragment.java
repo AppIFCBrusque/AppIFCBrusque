@@ -18,7 +18,7 @@ public class SettingsFragment extends BasePreferenceFragment {
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle(R.string.configuracoes);
-        ImageButton ibFiltro = getActivity().findViewById(R.id.ibCategorias);
+        ImageButton ibFiltro = getActivity().findViewById(R.id.image_button_filtros);
         ibFiltro.setVisibility(View.GONE);
     }
 
