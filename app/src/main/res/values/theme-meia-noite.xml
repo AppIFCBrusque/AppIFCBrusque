@@ -22,6 +22,7 @@
 
         <!-- Temas -->
         <item name="alertDialogTheme">@style/Theme.IFCBrusque.Noite.AlertDialog</item>
+        <item name="android:alertDialogTheme">@style/Theme.IFCBrusque.Noite.AlertDialog</item>
         <item name="android:timePickerStyle">@style/Theme.IFCBrusque.Noite.TimePicker</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
@@ -32,7 +33,14 @@
         <item name="drawableTint">@color/primary_meia_noite</item>
         <item name="android:background">@color/surface_meia_noite</item>
         <item name="android:textColor">@color/on_surface_meia_noite</item>
+        <item name="android:textColorPrimary">@color/on_surface_meia_noite</item>
         <item name="textColorAlertDialogListItem">@color/on_surface_meia_noite</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Theme.IFCBrusque.Noite.AlertDialog.Button</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Theme.IFCBrusque.Noite.AlertDialog.Button</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.Noite.AlertDialog.Button" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/verde</item>
     </style>
 
     <style name="Theme.IFCBrusque.Noite.TimePicker" parent="@android:style/Widget.Material.TimePicker">

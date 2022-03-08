@@ -22,6 +22,7 @@
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="alertDialogTheme">@style/Theme.IFCBrusque.Dia.AlertDialog</item>
+        <item name="android:alertDialogTheme">@style/Theme.IFCBrusque.Dia.AlertDialog</item>
         <item name="bottomSheetDialogTheme">@style/Theme.IFCBrusque.BottomSheetDialog</item>
         <item name="android:windowAnimationStyle">@style/Theme.IFCBrusque.WindowAnimation</item>
         <item name="preferenceTheme">@style/Theme.IFCBrusque.Preferences</item>
@@ -33,7 +34,14 @@
         <item name="drawableTint">@color/primary_dia</item>
         <item name="android:background">@color/surface_dia</item>
         <item name="android:textColor">@color/on_surface_dia</item>
+        <item name="android:textColorPrimary">@color/on_surface_dia</item>
         <item name="textColorAlertDialogListItem">@color/on_surface_dia</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Theme.IFCBrusque.Dia.AlertDialog.Button</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Theme.IFCBrusque.Dia.AlertDialog.Button</item>
+    </style>
+
+    <style name="Theme.IFCBrusque.Dia.AlertDialog.Button" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/verde</item>
     </style>
 
     <!-- Splash screen -->
