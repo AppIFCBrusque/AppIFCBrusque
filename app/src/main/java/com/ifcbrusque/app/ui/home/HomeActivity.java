@@ -68,7 +68,7 @@ public class HomeActivity extends BaseActivity {
 
         switch (itemId) {
             default:
-            case R.id.navigation_home:
+            case R.id.navigation_lembretes:
                 fragment = new LembretesFragment();
                 break;
 
@@ -126,11 +126,15 @@ public class HomeActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         // Configuração do bottom navigation view
-        int idAbaInicial = getIntent().getExtras().getInt(EXTRAS_ID_ABA_INICIAL, R.id.navigation_home);
+        int idAbaInicial = getIntent().getExtras().getInt(EXTRAS_ID_ABA_INICIAL, R.id.navigation_lembretes);
 
         mBottomNavigationView = findViewById(R.id.nav_view);
-        mBottomNavigationView.setOnItemSelectedListener(item -> onSelectedNavigationItemChanged(item.getItemId()));
         mBottomNavigationView.setSelectedItemId(idAbaInicial);
-        onSelectedNavigationItemChanged(idAbaInicial);
+        mBottomNavigationView.setOnItemSelectedListener(item -> onSelectedNavigationItemChanged(item.getItemId()));
+
+        if (idAbaInicial != R.id.navigation_lembretes) {
+            // O LembretesFragment já é carregado toda vez que o HomeActivity inicia por ser definido como o fragmento inicial no mobile_navigation.xml, então não é necessário chamar o método aqui
+            onSelectedNavigationItemChanged(idAbaInicial);
+        }
     }
 }

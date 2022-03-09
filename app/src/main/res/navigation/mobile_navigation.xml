@@ -2,10 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_lembretes">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_lembretes"
         android:name="com.ifcbrusque.app.ui.home.lembretes.LembretesFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />

@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     public void abrirHome() {
-        startActivity(HomeActivity.getStartIntent(this, R.id.navigation_home));
+        startActivity(HomeActivity.getStartIntent(this, R.id.navigation_lembretes));
     }
 
     @Override
