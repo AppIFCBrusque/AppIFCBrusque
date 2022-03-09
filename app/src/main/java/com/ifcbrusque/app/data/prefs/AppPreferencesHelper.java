@@ -190,4 +190,14 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public void setPrefSincronizarSIGAA(boolean b) {
         pref.edit().putBoolean(PREF_SINCRONIZAR_SIGAA, b).apply();
     }
+
+    @Override
+    public boolean getPrefSincronizarNoticiasCampus() {
+        return pref.getBoolean(PREF_SINCRONIZAR_NOTICIAS_CAMPUS, true);
+    }
+
+    @Override
+    public void setPrefSincronizarNoticiasCampus(boolean b) {
+        pref.edit().putBoolean(PREF_SINCRONIZAR_NOTICIAS_CAMPUS, b);
+    }
 }

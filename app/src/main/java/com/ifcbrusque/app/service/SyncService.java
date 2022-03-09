@@ -103,42 +103,46 @@ public class SyncService extends Service {
                 .subscribe(
                         () -> {
                             Timber.d("Sincronização finalizada");
-                            //TODO: Atualizar a agenda
                             stopSelf();
                         },
                         erro -> lidarComErro(erro)));
     }
 
     private Completable carregarNoticias() {
-        return Observable.defer(() -> {
-            Timber.d("Carregando notícias");
-            mTotalTarefas++;
+        return Observable.defer(() -> Observable.just(mDataManager.getPrefSincronizarNoticiasCampus()))
+                .flatMapCompletable(sincronizar -> {
+                    if (sincronizar) {
+                        Timber.d("Carregando notícias");
+                        mTotalTarefas++;
 
-            mDataManager.notificarSincronizacaoNoticias(this, mTarefaAtual, mTotalTarefas);
+                        mDataManager.notificarSincronizacaoNoticias(this, mTarefaAtual, mTotalTarefas);
 
-            return mDataManager.getPaginaNoticias(1);
-        })
-                .flatMap(previewsPaginaInicial -> mDataManager.armazenarPreviewsNovos(previewsPaginaInicial, true))
-                .flatMapCompletable(previewsNovos -> {
-                            mTarefaAtual++;
-                            mDataManager.setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
+                        return mDataManager.getPaginaNoticias(1)
+                                .flatMap(previewsPaginaInicial -> mDataManager.armazenarPreviewsNovos(previewsPaginaInicial, true))
+                                .flatMapCompletable(previewsNovos -> {
+                                            mTarefaAtual++;
+                                            mDataManager.setDataUltimaSincronizacaoAutomaticaNoticias(new Date());
 
-                            Timber.d("Notícias novas: %s", previewsNovos.size());
-                            if (!mPrimeiraSincronizacaoNoticias) {
-                                //Notificar
-                                if (previewsNovos.size() > 0) {
-                                    for (Preview p : previewsNovos) {
-                                        int idNotificacao = mDataManager.getNovoIdNotificacao();
-                                        mDataManager.notificarNoticia(p, idNotificacao);
-                                    }
-                                }
-                            } else {
-                                mDataManager.setPrimeiraSincronizacaoNoticias(false);
-                            }
+                                            Timber.d("Notícias novas: %s", previewsNovos.size());
+                                            if (!mPrimeiraSincronizacaoNoticias) {
+                                                // Notificar
+                                                if (previewsNovos.size() > 0) {
+                                                    for (Preview p : previewsNovos) {
+                                                        int idNotificacao = mDataManager.getNovoIdNotificacao();
+                                                        mDataManager.notificarNoticia(p, idNotificacao);
+                                                    }
+                                                }
+                                            } else {
+                                                mDataManager.setPrimeiraSincronizacaoNoticias(false);
+                                            }
 
-                            return Completable.complete();
-                        }
-                );
+                                            return Completable.complete();
+                                        }
+                                );
+                    } else {
+                        return Completable.complete();
+                    }
+                });
     }
 
     private Completable conferirSIGAAConectado() {

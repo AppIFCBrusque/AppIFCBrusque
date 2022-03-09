@@ -66,4 +66,8 @@ public interface PreferencesHelper {
     boolean getPrefSincronizarSIGAAA();
 
     void setPrefSincronizarSIGAA(boolean b);
+
+    boolean getPrefSincronizarNoticiasCampus();
+
+    void setPrefSincronizarNoticiasCampus(boolean b);
 }

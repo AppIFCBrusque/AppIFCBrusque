@@ -17,6 +17,7 @@ import com.ifcbrusque.app.ui.home.HomeActivity;
 import com.ifcbrusque.app.ui.login.LoginActivity;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_SINCRONIZAR_NOTICIAS_CAMPUS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_SINCRONIZAR_SIGAA;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_CONECTADO;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_LOGIN;
@@ -57,6 +58,10 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
         mSharedPreferences = getPreferenceManager().getSharedPreferences();
 
         mSwitchSincronizarSIGAA = inserirSwitch(PREF_SINCRONIZAR_SIGAA, R.string.sincronizar_sigaa, R.string.sincronizar_sigaa_descricao, false, null);
+        mSwitchSincronizarSIGAA.setOnPreferenceChangeListener((preference, newValue) -> {
+            mPreferenceContaConectada.setVisible((boolean) newValue);
+            return true;
+        });
 
         // Preference que mostra a conta conectada
         if (mSharedPreferences.getBoolean(SIGAA_CONECTADO, false)) {
@@ -74,13 +79,9 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
             }
             return true;
         });
-
         mPreferenceContaConectada.setVisible(mSwitchSincronizarSIGAA.isChecked());
 
-        mSwitchSincronizarSIGAA.setOnPreferenceChangeListener((preference, newValue) -> {
-            mPreferenceContaConectada.setVisible((boolean) newValue);
-            return true;
-        });
+        inserirSwitch(PREF_SINCRONIZAR_NOTICIAS_CAMPUS, R.string.sincronizar_noticias, R.string.sincronizar_noticias_descricao, true, null);
     }
 
     private void mostrarDialogoDeslogar() {

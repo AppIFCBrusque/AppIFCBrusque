@@ -48,4 +48,6 @@ public class PreferenceValues {
     public static final String PREF_NOTIFICAR_QUESTIONARIOS_ALTERADOS = "PREF_NOTIFICAR_QUESTIONARIOS_ALTERADOS";
 
     public static final String PREF_SINCRONIZAR_SIGAA = "PREF_SINCRONIZAR_SIGAA";
+
+    public static final String PREF_SINCRONIZAR_NOTICIAS_CAMPUS = "PREF_SINCRONIZAR_NOTICIAS_CAMPUS";
 }

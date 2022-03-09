@@ -484,6 +484,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public boolean getPrefSincronizarNoticiasCampus() {
+        return mPreferencesHelper.getPrefSincronizarNoticiasCampus();
+    }
+
+    @Override
+    public void setPrefSincronizarNoticiasCampus(boolean b) {
+        mPreferencesHelper.setPrefSincronizarNoticiasCampus(b);
+    }
+
+    @Override
     public Usuario getUsuarioSIGAA() {
         return mNetworkHelper.getUsuarioSIGAA();
     }
