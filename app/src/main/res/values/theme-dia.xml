@@ -46,6 +46,7 @@
 
     <!-- Splash screen -->
     <style name="Theme.IFCBrusque.SplashTheme" parent="Theme.IFCBrusque">
+        <item name="android:textColor">@color/on_surface_dia</item>
         <item name="colorSecondary">@color/verde</item>
         <item name="colorControlNormal">@color/branco</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
