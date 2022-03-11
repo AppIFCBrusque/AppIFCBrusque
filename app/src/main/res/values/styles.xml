@@ -34,7 +34,7 @@
     </style>
 
     <style name="Theme.IFCBrusque.FloatingActionButton">
-        <item name="backgroundTint">@drawable/fab_background_tint</item>
+        <item name="backgroundTint">@color/background_tint_fab</item>
         <item name="tint">@color/branco</item>
     </style>
 

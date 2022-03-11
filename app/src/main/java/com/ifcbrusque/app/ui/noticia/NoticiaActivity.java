@@ -158,7 +158,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     public void carregarImagemGrande(String url) {
         if (url.equals("") || url.length() == 0) {
             //Sem imagem
-            mImg.setImageResource(R.drawable.splash_background);
+            mImg.setImageResource(R.drawable.background_splash);
         } else {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
