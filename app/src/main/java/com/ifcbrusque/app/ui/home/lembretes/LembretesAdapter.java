@@ -258,19 +258,7 @@ public class LembretesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.mTvDisciplina.setText(lembrete.getNomeDisciplina());
 
                 //Tipo
-                switch (lembrete.getTipo()) {
-                    case Lembrete.LEMBRETE_AVALIACAO:
-                        itemHolder.mTvTipo.setText(R.string.avaliacao);
-                        break;
-
-                    case Lembrete.LEMBRETE_TAREFA:
-                        itemHolder.mTvTipo.setText(R.string.tarefa);
-                        break;
-
-                    case Lembrete.LEMBRETE_QUESTIONARIO:
-                        itemHolder.mTvTipo.setText(R.string.questionario);
-                        break;
-                }
+                itemHolder.mTvTipo.setText(Lembrete.getIdDaStringTipo(lembrete.getTipo()));
 
                 itemHolder.mTvDisciplina.setVisibility(View.VISIBLE);
                 itemHolder.mTvTipo.setVisibility(View.VISIBLE);

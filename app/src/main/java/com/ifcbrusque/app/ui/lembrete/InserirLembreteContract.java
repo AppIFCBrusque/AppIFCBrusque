@@ -51,6 +51,14 @@ public interface InserirLembreteContract {
 
         void exibirBotaoArquivo();
 
+        void setTextoTipoLembrete(int stringId);
+
+        void exibirTipoLembrete();
+
+        void setTextoDisciplina(String disciplina);
+
+        void exibirDisciplina();
+
         void abrirNavegador(String url);
 
         void fecharActivity(boolean atualizarRecyclerView);

@@ -58,7 +58,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
     TextInputLayout mTiTitulo, mTiDescricao, mTiAnotacoes;
     Button mBtnArquivo, mBtnDatePicker, mBtnTimePicker, mBtnRepeticao;
-    TextView mTvArquivo;
+    TextView mTvTipo, mTvDisciplina, mTvArquivo;
     FloatingActionButton mFabSalvar;
 
     BottomSheetDialog mBottomSheetDialog;
@@ -87,6 +87,8 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
 
         mClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
+        mTvTipo = findViewById(R.id.inserir_lembrete_tipo);
+        mTvDisciplina = findViewById(R.id.inserir_lembrete_disciplina);
         mTvArquivo = findViewById(R.id.inserir_lembrete_texto_arquivo);
         mTiTitulo = findViewById(R.id.tiTitulo);
         mTiDescricao = findViewById(R.id.tiDescricao);
@@ -330,6 +332,26 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     public void exibirBotaoArquivo() {
         mTvArquivo.setVisibility(View.VISIBLE);
         mBtnArquivo.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setTextoTipoLembrete(int stringId) {
+        mTvTipo.setText(stringId);
+    }
+
+    @Override
+    public void exibirTipoLembrete() {
+        mTvTipo.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setTextoDisciplina(String disciplina) {
+        mTvDisciplina.setText(disciplina);
+    }
+
+    @Override
+    public void exibirDisciplina() {
+        mTvDisciplina.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -69,6 +69,20 @@ public class Lembrete {
         }
     }
 
+    public static int getIdDaStringTipo(int tipo) {
+        switch (tipo) {
+            default:
+            case Lembrete.LEMBRETE_AVALIACAO:
+                return R.string.avaliacao;
+
+            case Lembrete.LEMBRETE_TAREFA:
+                return R.string.tarefa;
+
+            case Lembrete.LEMBRETE_QUESTIONARIO:
+                return R.string.questionario;
+        }
+    }
+
     private int estado;
     public final static int ESTADO_INCOMPLETO = 1;
     public final static int ESTADO_COMPLETO = 2;

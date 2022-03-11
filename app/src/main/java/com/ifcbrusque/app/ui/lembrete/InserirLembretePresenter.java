@@ -69,6 +69,10 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         return Completable.complete();
                     } else {
                         //Lembrete do SIGAA
+                        getMvpView().setTextoTipoLembrete(Lembrete.getIdDaStringTipo(lembrete.getTipo()));
+                        getMvpView().setTextoDisciplina(lembrete.getNomeDisciplina());
+                        getMvpView().exibirTipoLembrete();
+                        getMvpView().exibirDisciplina();
                         //Impedir o usuário de editar as informações do lembrete e mostrar o campo de anotações
                         getMvpView().desativarTitulo();
                         getMvpView().desativarDescricao();
@@ -76,6 +80,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                         getMvpView().desativarBotaoData();
                         getMvpView().desativarBotaoHora();
                         getMvpView().desativarBotaoRepeticao();
+
 
                         //Carregar o objeto associado
                         switch (lembrete.getTipo()) {
