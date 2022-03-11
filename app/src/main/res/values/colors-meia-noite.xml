@@ -5,7 +5,7 @@
     <color name="secondary_meia_noite">@color/preto</color>
     <color name="on_secondary_meia_noite">@color/branco</color>
     <color name="surface_meia_noite">@color/preto_medio</color>
-    <color name="on_surface_meia_noite">@color/branco</color>
+    <!-- on_surface_meia_noite em res/color -->
     <color name="background_meia_noite">@color/preto</color>
     <color name="on_background_meia_noite">@color/branco</color>
     <color name="ripple_color_meia_noite">@color/preto_medio</color>
