@@ -60,7 +60,7 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
 
         mCheckBoxSincronizarSIGAA = inserirCheckBoxPreference(PREF_SINCRONIZAR_SIGAA, R.string.sincronizar_sigaa, R.string.sincronizar_sigaa_descricao, false, null);
         mCheckBoxSincronizarSIGAA.setOnPreferenceChangeListener((preference, newValue) -> {
-            mPreferenceContaConectada.setVisible((boolean) newValue);
+            mPreferenceContaConectada.setEnabled((boolean) newValue);
             return true;
         });
 
@@ -80,7 +80,7 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
             }
             return true;
         });
-        mPreferenceContaConectada.setVisible(mCheckBoxSincronizarSIGAA.isChecked());
+        mPreferenceContaConectada.setEnabled(mCheckBoxSincronizarSIGAA.isChecked());
 
         inserirCheckBoxPreference(PREF_SINCRONIZAR_NOTICIAS_CAMPUS, R.string.sincronizar_noticias, R.string.sincronizar_noticias_descricao, true, null);
     }
