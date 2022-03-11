@@ -26,6 +26,7 @@
         <item name="bottomSheetDialogTheme">@style/Theme.IFCBrusque.BottomSheetDialog</item>
         <item name="android:windowAnimationStyle">@style/Theme.IFCBrusque.WindowAnimation</item>
         <item name="preferenceTheme">@style/Theme.IFCBrusque.Preferences</item>
+        <item name="checkboxStyle">@style/Widget.Material3.CompoundButton.CheckBox</item>
     </style>
 
     <!-- Alert dialog -->
