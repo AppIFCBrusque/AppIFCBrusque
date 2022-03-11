@@ -15,8 +15,8 @@
         <item name="colorControlNormal">@color/on_surface_meia_noite</item>
         <item name="android:textColor">@color/on_surface_meia_noite</item>
         <item name="android:textColorPrimary">@color/on_surface_meia_noite</item>
-        <item name="android:textColorSecondary">@color/on_surface_meia_noite</item>
-        <item name="android:textColorTertiary">@color/on_surface_meia_noite</item>
+        <item name="android:textColorSecondary">@color/on_surface_secondary_meia_noite</item>
+        <item name="android:textColorTertiary">@color/on_surface_secondary_meia_noite</item>
         <item name="colorControlHighlight">@color/ripple_color_meia_noite</item>
         <item name="drawableTint">@color/on_surface_meia_noite</item>
 
