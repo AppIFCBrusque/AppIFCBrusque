@@ -95,25 +95,25 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
         return inserirPreference(key, getString(titulo), getString(sumario), preferenceCategory);
     }
 
-    public SwitchPreference inserirSwitch(String key, int titulo, int sumario, boolean checado, PreferenceCategory preferenceCategory) {
-        SwitchPreference switchPreference = new SwitchPreference(getContext());
+    public CheckBoxPreference inserirCheckBoxPreference(String key, int titulo, int sumario, boolean checado, PreferenceCategory preferenceCategory) {
+        CheckBoxPreference checkBoxPreference = new CheckBoxPreference(getContext());
 
-        switchPreference.setKey(key);
-        switchPreference.setTitle(titulo);
-        switchPreference.setChecked(checado);
-        switchPreference.setIconSpaceReserved(false);
+        checkBoxPreference.setKey(key);
+        checkBoxPreference.setTitle(titulo);
+        checkBoxPreference.setChecked(checado);
+        checkBoxPreference.setIconSpaceReserved(false);
 
         if (sumario != 0) {
-            switchPreference.setSummary(sumario);
+            checkBoxPreference.setSummary(sumario);
         }
 
         if (preferenceCategory == null) {
-            getPreferenceScreen().addPreference(switchPreference);
+            getPreferenceScreen().addPreference(checkBoxPreference);
         } else {
-            preferenceCategory.addPreference(switchPreference);
+            preferenceCategory.addPreference(checkBoxPreference);
         }
 
-        return switchPreference;
+        return checkBoxPreference;
     }
 
     public ListPreference inserirListPreference(String key, int titleResId, String idTemaAtual, @ArrayRes int entriesResId, @ArrayRes int entryValuesResId, PreferenceCategory preferenceCategory) {

@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
 
@@ -28,7 +29,7 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
     private AlertDialog mAlertDialog;
     private SharedPreferences mSharedPreferences;
 
-    private SwitchPreference mSwitchSincronizarSIGAA;
+    private CheckBoxPreference mCheckBoxSincronizarSIGAA;
     private Preference mPreferenceContaConectada;
 
     @Override
@@ -57,8 +58,8 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
     protected void setUp() {
         mSharedPreferences = getPreferenceManager().getSharedPreferences();
 
-        mSwitchSincronizarSIGAA = inserirSwitch(PREF_SINCRONIZAR_SIGAA, R.string.sincronizar_sigaa, R.string.sincronizar_sigaa_descricao, false, null);
-        mSwitchSincronizarSIGAA.setOnPreferenceChangeListener((preference, newValue) -> {
+        mCheckBoxSincronizarSIGAA = inserirCheckBoxPreference(PREF_SINCRONIZAR_SIGAA, R.string.sincronizar_sigaa, R.string.sincronizar_sigaa_descricao, false, null);
+        mCheckBoxSincronizarSIGAA.setOnPreferenceChangeListener((preference, newValue) -> {
             mPreferenceContaConectada.setVisible((boolean) newValue);
             return true;
         });
@@ -79,9 +80,9 @@ public class SettingsSincronizacaoFragment extends BasePreferenceFragment {
             }
             return true;
         });
-        mPreferenceContaConectada.setVisible(mSwitchSincronizarSIGAA.isChecked());
+        mPreferenceContaConectada.setVisible(mCheckBoxSincronizarSIGAA.isChecked());
 
-        inserirSwitch(PREF_SINCRONIZAR_NOTICIAS_CAMPUS, R.string.sincronizar_noticias, R.string.sincronizar_noticias_descricao, true, null);
+        inserirCheckBoxPreference(PREF_SINCRONIZAR_NOTICIAS_CAMPUS, R.string.sincronizar_noticias, R.string.sincronizar_noticias_descricao, true, null);
     }
 
     private void mostrarDialogoDeslogar() {
