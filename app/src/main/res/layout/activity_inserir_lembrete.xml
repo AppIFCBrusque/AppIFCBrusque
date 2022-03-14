@@ -183,6 +183,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvRepeticao" />
 
+            <TextView
+                android:id="@+id/texto_envio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="@string/envio"
+                android:textAppearance="@style/TextAppearance.Secundario"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/tiDescricao"
+                app:layout_constraintTop_toBottomOf="@id/btRepeticao"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/botao_envio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:minHeight="56dp"
+                android:text="@string/online"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/texto_envio"
+                tools:visibility="visible" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -93,6 +93,12 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                                                 getMvpView().exibirBotaoArquivo();
                                             }
 
+                                            if (!mTarefa.isEnviavel()) {
+                                                getMvpView().desativarEnvio();
+                                            }
+
+                                            getMvpView().exibirEnvio();
+
                                             return Completable.complete();
                                         });
 
@@ -175,6 +181,12 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
     @Override
     public void onBotaoSalvarClick() {
         salvarLembrete();
+    }
+
+    @Override
+    public void onBotaoEnvioClick() {
+        String uri = String.format("https://sig.ifc.edu.br/sigaa/logar.do?dispatch=logOn&user.login=%s&user.senha=%s", getDataManager().getLoginSIGAA(), getDataManager().getSenhaSIGAA());
+        getMvpView().abrirNavegador(uri);
     }
 
     /**

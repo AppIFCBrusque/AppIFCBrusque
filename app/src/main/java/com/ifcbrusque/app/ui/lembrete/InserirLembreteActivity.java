@@ -57,8 +57,8 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     InserirLembreteContract.InserirLembretePresenter<InserirLembreteContract.InserirLembreteView> mPresenter;
 
     TextInputLayout mTiTitulo, mTiDescricao, mTiAnotacoes;
-    Button mBtnArquivo, mBtnDatePicker, mBtnTimePicker, mBtnRepeticao;
-    TextView mTvTipo, mTvDisciplina, mTvArquivo;
+    Button mBtnArquivo, mBtnDatePicker, mBtnTimePicker, mBtnRepeticao, mBtnEnvio;
+    TextView mTvTipo, mTvDisciplina, mTvArquivo, mTvEnvio;
     FloatingActionButton mFabSalvar;
 
     BottomSheetDialog mBottomSheetDialog;
@@ -90,6 +90,7 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mTvTipo = findViewById(R.id.inserir_lembrete_tipo);
         mTvDisciplina = findViewById(R.id.inserir_lembrete_disciplina);
         mTvArquivo = findViewById(R.id.inserir_lembrete_texto_arquivo);
+        mTvEnvio = findViewById(R.id.texto_envio);
         mTiTitulo = findViewById(R.id.tiTitulo);
         mTiDescricao = findViewById(R.id.tiDescricao);
         mTiAnotacoes = findViewById(R.id.input_anotacoes);
@@ -97,12 +98,14 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
         mBtnDatePicker = findViewById(R.id.btData);
         mBtnTimePicker = findViewById(R.id.btHora);
         mBtnRepeticao = findViewById(R.id.btRepeticao);
+        mBtnEnvio = findViewById(R.id.botao_envio);
         mFabSalvar = findViewById(R.id.fabInserir);
 
         mBtnArquivo.setOnClickListener(v -> mPresenter.onBotaoArquivoClick());
         mBtnDatePicker.setOnClickListener(v -> mPresenter.onBotaoDataClick());
         mBtnTimePicker.setOnClickListener(v -> mPresenter.onBotaoTempoClick());
         mBtnRepeticao.setOnClickListener(v -> mPresenter.onBotaoRepeticaoClick());
+        mBtnEnvio.setOnClickListener(v -> mPresenter.onBotaoEnvioClick());
         mFabSalvar.setOnClickListener(v -> mPresenter.onBotaoSalvarClick());
         mTiTitulo.getEditText().addTextChangedListener(mPresenter.onTextoTituloChanged());
 
@@ -352,6 +355,18 @@ public class InserirLembreteActivity extends BaseActivity implements InserirLemb
     @Override
     public void exibirDisciplina() {
         mTvDisciplina.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void exibirEnvio() {
+        mTvEnvio.setVisibility(View.VISIBLE);
+        mBtnEnvio.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void desativarEnvio() {
+        mBtnEnvio.setText(R.string.indisponivel);
+        mBtnEnvio.setEnabled(false);
     }
 
     @Override

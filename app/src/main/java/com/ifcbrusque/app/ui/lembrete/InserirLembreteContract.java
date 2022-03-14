@@ -59,6 +59,10 @@ public interface InserirLembreteContract {
 
         void exibirDisciplina();
 
+        void exibirEnvio();
+
+        void desativarEnvio();
+
         void abrirNavegador(String url);
 
         void fecharActivity(boolean atualizarRecyclerView);
@@ -76,6 +80,8 @@ public interface InserirLembreteContract {
         void onBotaoRepeticaoClick();
 
         void onBotaoSalvarClick();
+
+        void onBotaoEnvioClick();
 
         void onDataSelecionada(int ano, int mes, int dia);
 

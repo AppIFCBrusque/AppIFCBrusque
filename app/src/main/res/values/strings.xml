@@ -63,6 +63,10 @@
     <string name="arquivo">Arquivo</string>
     <string name="baixar_arquivo">Baixar arquivo</string>
 
+    <string name="envio">Envio</string>
+    <string name="online">Online</string>
+    <string name="indisponivel">Indisponível</string>
+
     <!-- CONFIGURAÇÕES -->
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="configuracoes">Configurações</string>
