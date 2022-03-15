@@ -6,6 +6,7 @@ import com.ifcbrusque.app.data.db.DbHelper;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.data.network.NetworkHelper;
 import com.ifcbrusque.app.data.notification.NotificationHelper;
@@ -216,6 +217,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<Integer> atualizarQuestionario(Questionario questionario) {
         return mDbHelper.atualizarQuestionario(questionario);
+    }
+
+    @Override
+    public Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(long id) {
+        return mDbHelper.getQuestionarioArmazenavel(id);
+    }
+
+    @Override
+    public Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(Lembrete lembrete) {
+        return mDbHelper.getQuestionarioArmazenavel(lembrete);
     }
 
     @Override

@@ -6,10 +6,12 @@ import android.text.TextWatcher;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
+import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -21,6 +23,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
 
     //Objeto armazenado associado ao lembrete
     private TarefaArmazenavel mTarefa;
+    private QuestionarioArmazenavel mQuestionario;
 
     private final Calendar mCalendar = Calendar.getInstance();
 
@@ -94,6 +97,20 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                                             }
 
                                             if (!mTarefa.isEnviavel()) {
+                                                getMvpView().desativarEnvio();
+                                            }
+
+                                            getMvpView().exibirEnvio();
+
+                                            return Completable.complete();
+                                        });
+
+                            case Lembrete.LEMBRETE_QUESTIONARIO:
+                                return getDataManager().getQuestionarioArmazenavel(lembrete)
+                                        .flatMapCompletable(questionarioArmazenavel -> {
+                                            mQuestionario = questionarioArmazenavel;
+
+                                            if (new Date().after(mQuestionario.getDataFim())) {
                                                 getMvpView().desativarEnvio();
                                             }
 

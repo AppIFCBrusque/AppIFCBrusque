@@ -25,6 +25,9 @@ public interface QuestionarioDao {
     @Query("DELETE FROM questionario_table")
     void deleteAll();
 
+    @Query("SELECT * FROM questionario_table WHERE id_no_sigaa = :id")
+    QuestionarioArmazenavel getQuestionario(long id);
+
     @Query("SELECT * FROM questionario_table WHERE disciplina_front_end_id_turma = :frontEndIdTurma")
     List<QuestionarioArmazenavel> getQuestionarios(String frontEndIdTurma);
 

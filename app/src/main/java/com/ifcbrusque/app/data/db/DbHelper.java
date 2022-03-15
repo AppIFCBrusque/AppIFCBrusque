@@ -3,6 +3,7 @@ package com.ifcbrusque.app.data.db;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
 import com.ifcbrusque.app.data.db.model.Preview;
+import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.stacked.sigaa_ifc.Avaliacao;
 import com.stacked.sigaa_ifc.Disciplina;
@@ -85,6 +86,10 @@ public interface DbHelper {
     Completable deletarQuestionario(Questionario questionario);
 
     Observable<Integer> atualizarQuestionario(Questionario questionario);
+
+    Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(long id);
+
+    Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(Lembrete lembrete);
 
     Completable deletarTudoSIGAA();
 }

@@ -535,6 +535,18 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(long id) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.questionarioDao().getQuestionario(id)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(Lembrete lembrete) {
+        return getQuestionarioArmazenavel(Long.parseLong(lembrete.getIdObjetoAssociado()));
+    }
+
+    @Override
     public Completable deletarTudoSIGAA() {
         return Completable.fromRunnable(() -> {
             mAppDatabase.avaliacaoDao().deleteAll();
