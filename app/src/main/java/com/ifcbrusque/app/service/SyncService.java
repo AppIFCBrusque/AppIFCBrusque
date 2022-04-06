@@ -17,7 +17,7 @@ import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 import com.ifcbrusque.app.di.module.ServiceModule;
-import com.stacked.sigaa_ifc.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -31,7 +31,6 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
-
 import timber.log.Timber;
 
 /*
@@ -39,6 +38,20 @@ Serviço utilizado para obter informações da internet (notícias, SIGAA) no fu
  */
 public class SyncService extends Service {
     public static final String EXTRA_SINCRONIZACAO_RAPIDA = "EXTRA_SINCRONIZACAO_RAPIDA";
+    /**
+     * Utilizado para notificar as activities quando carrega algum resultado
+     */
+    final public static int OBSERVABLE_ATUALIZAR_RV_PREVIEWS = 1;
+    final public static int OBSERVABLE_ATUALIZAR_RV_LEMBRETES = 2;
+    static final PublishSubject<Integer> data = PublishSubject.create();
+    final int mTarefasPorDisciplina = 3;
+    @Inject
+    DataManager mDataManager;
+    @Inject
+    CompositeDisposable mCompositeDisposable;
+    boolean mPrimeiraSincronizacaoNoticias = true;
+    int mTarefaAtual = 0;
+    int mTotalTarefas = 0;
 
     public static Intent getStartIntent(Context context, boolean sincronizacaoRapida) {
         Intent intent = new Intent(context, SyncService.class);
@@ -46,10 +59,9 @@ public class SyncService extends Service {
         return intent;
     }
 
-    @Inject
-    DataManager mDataManager;
-    @Inject
-    CompositeDisposable mCompositeDisposable;
+    public static Observable<Integer> getObservable() {
+        return data;
+    }
 
     @Override
     public void onCreate() {
@@ -84,13 +96,6 @@ public class SyncService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-    boolean mPrimeiraSincronizacaoNoticias = true;
-
-    int mTarefaAtual = 0;
-    int mTotalTarefas = 0;
-
-    final int mTarefasPorDisciplina = 3;
 
     private void sincronizar() {
         mDataManager.notificarSincronizacao(this);
@@ -150,6 +155,7 @@ public class SyncService extends Service {
                         }
                 );
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private Completable conferirSIGAAConectado() {
         return Observable.defer(() -> {
@@ -165,9 +171,9 @@ public class SyncService extends Service {
                         return mDataManager.logarSIGAA(login, senha)
                                 .flatMapCompletable(logado -> {
                                     if (logado) {
-                                        mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasAtuais().size() * mTarefasPorDisciplina;
+                                        mTotalTarefas += mDataManager.getUsuarioSIGAA().getDisciplinasPeriodoAtual().size() * mTarefasPorDisciplina;
                                         Timber.d("SIGAA logado");
-                                        return mDataManager.inserirDisciplinas(mDataManager.getUsuarioSIGAA().getDisciplinasAtuais());
+                                        return mDataManager.inserirDisciplinas(mDataManager.getUsuarioSIGAA().getDisciplinasPeriodoAtual());
                                     } else {
                                         Toast.makeText(this, R.string.erro_servico_sigaa_dados_invalidos, Toast.LENGTH_SHORT).show();
                                         mDataManager.setSIGAAConectado(false); // Desativa a sincronização do SIGAA até o usuário relogar manualmente
@@ -203,19 +209,16 @@ public class SyncService extends Service {
 
                                                                 //O colunasAtualizadas não está funcionando para conferir o número de colunas atualizadas (sempre retorna 1)
                                                                 //Por causa disso, eu estou conferindo se algum parâmetro do lembrete é diferente da tarefa no SIGAA
-                                                                boolean notificar = false;
-                                                                if (!avaliacaoNoSIGAA.getDescricao().equals(lembreteArmazenado.getTitulo()) || avaliacaoNoSIGAA.getData().getTime() != lembreteArmazenado.getDataLembrete().getTime()) {
-                                                                    notificar = true;
-                                                                }
+                                                                boolean notificar = !avaliacaoNoSIGAA.getDescricao().equals(lembreteArmazenado.getTitulo()) || avaliacaoNoSIGAA.getDia().getTime() != lembreteArmazenado.getDataLembrete().getTime();
 
                                                                 //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
 
-                                                                if (avaliacaoNoSIGAA.getData().before(new Date())) {
+                                                                if (avaliacaoNoSIGAA.getDia().before(new Date())) {
                                                                     //Definir como completo caso a data tenha passado
                                                                     lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
                                                                 } else {
                                                                     //Ainda não passou a data da avaliação
-                                                                    if (lembreteArmazenado.getDataLembrete().before(avaliacaoNoSIGAA.getData())) {
+                                                                    if (lembreteArmazenado.getDataLembrete().before(avaliacaoNoSIGAA.getDia())) {
                                                                         //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                         lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
                                                                         mDataManager.agendarNotificacaoLembrete(lembreteArmazenado);
@@ -223,7 +226,7 @@ public class SyncService extends Service {
                                                                 }
 
                                                                 lembreteArmazenado.setTitulo(avaliacaoNoSIGAA.getDescricao());
-                                                                lembreteArmazenado.setDataLembrete(avaliacaoNoSIGAA.getData());
+                                                                lembreteArmazenado.setDataLembrete(avaliacaoNoSIGAA.getDia());
 
                                                                 if (notificar) {
                                                                     mDataManager.notificarAvaliacaoAlterada(avaliacaoNoSIGAA, lembreteArmazenado, mDataManager.getNovoIdNotificacao());
@@ -241,7 +244,7 @@ public class SyncService extends Service {
                                         Timber.d("Avaliação nova: %s", avaliacaoNoSIGAA.getDescricao());
                                         return mDataManager.inserirAvaliacao(avaliacaoNoSIGAA)
                                                 .flatMap(avaliacaoNova -> {
-                                                    if (avaliacaoNova.getData().after(new Date())) {
+                                                    if (avaliacaoNova.getDia().after(new Date())) {
                                                         //Criar um lembrete
                                                         Lembrete lembrete = new Lembrete(avaliacaoNova, mDataManager.getNovoIdNotificacao());
                                                         return mDataManager.inserirLembrete(lembrete)
@@ -284,10 +287,7 @@ public class SyncService extends Service {
 
                                                                 //O colunasAtualizadas não está funcionando para conferir o número de colunas atualizadas (sempre retorna 1)
                                                                 //Por causa disso, eu estou conferindo se algum parâmetro do lembrete é diferente da tarefa no SIGAA
-                                                                boolean notificar = false;
-                                                                if (!tarefaNoSIGAA.getTitulo().equals(lembreteArmazenado.getTitulo()) || !tarefaNoSIGAA.getDescricao().equals(lembreteArmazenado.getDescricao()) || tarefaNoSIGAA.getFim().getTime() != lembreteArmazenado.getDataLembrete().getTime()) {
-                                                                    notificar = true;
-                                                                }
+                                                                boolean notificar = !tarefaNoSIGAA.getTitulo().equals(lembreteArmazenado.getTitulo()) || !tarefaNoSIGAA.getDescricao().equals(lembreteArmazenado.getDescricao()) || tarefaNoSIGAA.getDataFim().getTime() != lembreteArmazenado.getDataLembrete().getTime();
 
                                                                 //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
 
@@ -296,12 +296,12 @@ public class SyncService extends Service {
                                                                     lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
                                                                     mDataManager.desagendarNotificacaoLembrete(lembreteArmazenado);
                                                                 } else {
-                                                                    if (tarefaNoSIGAA.getFim().before(new Date())) {
+                                                                    if (tarefaNoSIGAA.getDataFim().before(new Date())) {
                                                                         //Definir como completo caso a data tenha passado
                                                                         lembreteArmazenado.setEstado(Lembrete.ESTADO_COMPLETO);
                                                                     } else {
                                                                         //Ainda não passou a data da tarefa
-                                                                        if (lembreteArmazenado.getDataLembrete().before(tarefaNoSIGAA.getFim())) {
+                                                                        if (lembreteArmazenado.getDataLembrete().before(tarefaNoSIGAA.getDataFim())) {
                                                                             //Caso a data foi prorrogada e não tenha sido enviado, definir como incompleto
                                                                             lembreteArmazenado.setEstado(Lembrete.ESTADO_INCOMPLETO);
                                                                             mDataManager.agendarNotificacaoLembrete(lembreteArmazenado);
@@ -311,7 +311,7 @@ public class SyncService extends Service {
 
                                                                 lembreteArmazenado.setTitulo(tarefaNoSIGAA.getTitulo());
                                                                 lembreteArmazenado.setDescricao(tarefaNoSIGAA.getDescricao());
-                                                                lembreteArmazenado.setDataLembrete(tarefaNoSIGAA.getFim());
+                                                                lembreteArmazenado.setDataLembrete(tarefaNoSIGAA.getDataFim());
 
                                                                 if (notificar) {
                                                                     mDataManager.notificarTarefaAlterada(tarefaNoSIGAA, lembreteArmazenado, mDataManager.getNovoIdNotificacao());
@@ -329,7 +329,7 @@ public class SyncService extends Service {
                                         Timber.d("Tarefa nova: %s", tarefaNoSIGAA.getTitulo());
                                         return mDataManager.inserirTarefa(tarefaNoSIGAA)
                                                 .flatMap(tarefaNova -> {
-                                                    if (tarefaNova.getFim().after(new Date())) {
+                                                    if (tarefaNova.getDataFim().after(new Date())) {
                                                         //Criar um lembrete
                                                         Lembrete lembrete = new Lembrete(tarefaNova, mDataManager.getNovoIdNotificacao());
                                                         return mDataManager.inserirLembrete(lembrete)
@@ -372,10 +372,7 @@ public class SyncService extends Service {
 
                                                                 //O colunasAtualizadas não está funcionando para conferir o número de colunas atualizadas (sempre retorna 1)
                                                                 //Por causa disso, eu estou conferindo se algum parâmetro do lembrete é diferente da tarefa no SIGAA
-                                                                boolean notificar = false;
-                                                                if (!questionarioNoSIGAA.getTitulo().equals(lembreteArmazenado.getTitulo()) || questionarioNoSIGAA.getDataFim().getTime() != lembreteArmazenado.getDataLembrete().getTime()) {
-                                                                    notificar = true;
-                                                                }
+                                                                boolean notificar = !questionarioNoSIGAA.getTitulo().equals(lembreteArmazenado.getTitulo()) || questionarioNoSIGAA.getDataFim().getTime() != lembreteArmazenado.getDataLembrete().getTime();
 
                                                                 //Atualizar o lembrete para as informações no SIGAA, mas manter o estado de completo definido pelo usuário
 
@@ -449,7 +446,7 @@ public class SyncService extends Service {
                 .flatMap(conectado -> {
                     //Iniciar sincronização do SIGAA
                     if (mDataManager.getSIGAAConectado()) {
-                        return Observable.fromArray(mDataManager.getUsuarioSIGAA().getDisciplinasAtuais());
+                        return Observable.fromArray(mDataManager.getUsuarioSIGAA().getDisciplinasPeriodoAtual());
                     } else {
                         return Observable.fromArray(new ArrayList<Disciplina>()); //Não vai ter disciplinas para processar
                     }
@@ -464,17 +461,5 @@ public class SyncService extends Service {
         if (e.getClass() == NoInternetException.class || e.getClass() == UnknownHostException.class || e.getClass() == IOException.class || e.getClass() == SocketTimeoutException.class) {
             stopSelf();
         }
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Utilizado para notificar as activities quando carrega algum resultado
-     */
-    final public static int OBSERVABLE_ATUALIZAR_RV_PREVIEWS = 1;
-    final public static int OBSERVABLE_ATUALIZAR_RV_LEMBRETES = 2;
-
-    static final PublishSubject<Integer> data = PublishSubject.create();
-
-    public static Observable<Integer> getObservable() {
-        return data;
     }
 }

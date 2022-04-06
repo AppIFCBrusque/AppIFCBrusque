@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Tarefa;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Tarefa;
 
 import java.util.Date;
 
@@ -16,23 +16,22 @@ public class TarefaArmazenavel {
     @PrimaryKey()
     @ColumnInfo(name = "id_no_sigaa")
     private String idNoSIGAA = "";
-
     private String titulo, descricao;
-    @ColumnInfo(name = "url_download")
-    private String urlDownload;
+    @ColumnInfo(name = "url_arquivo")
+    private String urlArquivo;
     @ColumnInfo(name = "data_inicio")
     private Date dataInicio;
     @ColumnInfo(name = "data_fim")
     private Date dataFim;
     private int envios;
-    private boolean enviavel, enviada, corrigida;
+    private boolean enviavel, enviada, corrigida, individual;
+    private String jId;
+    @ColumnInfo(name = "j_id_enviar")
+    private String jIdEnviar;
+    @ColumnInfo(name = "j_id_visualizar")
+    private String jIdVisualizar;
     @ColumnInfo(name = "disciplina_front_end_id_turma")
     private String disciplinaFrontEndIdTurma;
-    private String j_id;
-    @ColumnInfo(name = "j_id_enviar")
-    private String j_idEnviar;
-    @ColumnInfo(name = "j_id_visualizar")
-    private String j_idVisualizar;
 
     public TarefaArmazenavel() {
 
@@ -42,17 +41,18 @@ public class TarefaArmazenavel {
         idNoSIGAA = tarefa.getId();
         titulo = tarefa.getTitulo();
         descricao = tarefa.getDescricao();
-        urlDownload = tarefa.getUrlArquivo();
-        dataInicio = tarefa.getInicio();
-        dataFim = tarefa.getFim();
+        urlArquivo = tarefa.getUrlArquivo();
+        dataInicio = tarefa.getDataInicio();
+        dataFim = tarefa.getDataFim();
         envios = tarefa.getEnvios();
         enviavel = tarefa.isEnviavel();
         enviada = tarefa.isEnviada();
         corrigida = tarefa.isCorrigida();
-        disciplinaFrontEndIdTurma = tarefa.getDisciplina().getPostArgs()[2];
-        j_id = tarefa.getJ_Id();
-        j_idEnviar = tarefa.getJ_IdEnviar();
-        j_idVisualizar = tarefa.getJ_idVisualizar();
+        individual = tarefa.isIndividual();
+        disciplinaFrontEndIdTurma = tarefa.getDisciplina().getFrontEndIdTurma();
+        jId = tarefa.getJId();
+        jIdEnviar = tarefa.getJIdEnviar();
+        jIdVisualizar = tarefa.getJIdVisualizar();
     }
 
     public String getIdNoSIGAA() {
@@ -79,12 +79,12 @@ public class TarefaArmazenavel {
         this.descricao = descricao;
     }
 
-    public String getUrlDownload() {
-        return urlDownload;
+    public String getUrlArquivo() {
+        return urlArquivo;
     }
 
-    public void setUrlDownload(String urlDownload) {
-        this.urlDownload = urlDownload;
+    public void setUrlArquivo(String urlArquivo) {
+        this.urlArquivo = urlArquivo;
     }
 
     public Date getDataInicio() {
@@ -135,6 +135,14 @@ public class TarefaArmazenavel {
         this.corrigida = corrigida;
     }
 
+    public boolean isIndividual() {
+        return individual;
+    }
+
+    public void setIndividual(boolean individual) {
+        this.individual = individual;
+    }
+
     public String getDisciplinaFrontEndIdTurma() {
         return disciplinaFrontEndIdTurma;
     }
@@ -143,38 +151,32 @@ public class TarefaArmazenavel {
         this.disciplinaFrontEndIdTurma = disciplinaFrontEndIdTurma;
     }
 
-    public String getJ_id() {
-        return j_id;
+    public String getJId() {
+        return jId;
     }
 
-    public void setJ_id(String j_id) {
-        this.j_id = j_id;
+    public void setJId(String jId) {
+        this.jId = jId;
     }
 
-    public String getJ_idEnviar() {
-        return j_idEnviar;
+    public String getJIdEnviar() {
+        return jIdEnviar;
     }
 
-    public void setJ_idEnviar(String j_idEnviar) {
-        this.j_idEnviar = j_idEnviar;
+    public void setJIdEnviar(String jIdEnviar) {
+        this.jIdEnviar = jIdEnviar;
     }
 
-    public String getJ_idVisualizar() {
-        return j_idVisualizar;
+    public String getJIdVisualizar() {
+        return jIdVisualizar;
     }
 
-    public void setJ_idVisualizar(String j_idVisualizar) {
-        this.j_idVisualizar = j_idVisualizar;
+    public void setJIdVisualizar(String jIdVisualizar) {
+        this.jIdVisualizar = jIdVisualizar;
     }
 
     public Tarefa getTarefa(Disciplina disciplina) {
-        Tarefa t = new Tarefa(disciplina, titulo, descricao, dataInicio, dataFim, envios, enviavel, enviada, corrigida);
-        t.setUrlArquivo(urlDownload);
-        t.setId(idNoSIGAA);
-        t.setJ_Id(j_id);
-        t.setIdEnvio(j_idEnviar);
-        t.setIdVisualizacao(j_idVisualizar);
-        return t;
+        return new Tarefa(idNoSIGAA, titulo, descricao, urlArquivo, dataInicio, dataFim, envios, enviavel, enviada, corrigida, individual, jId, jIdEnviar, jIdVisualizar, disciplina);
     }
 
     public Tarefa getTarefa(DisciplinaArmazenavel disciplinaArmazenavel) {

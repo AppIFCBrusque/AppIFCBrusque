@@ -92,7 +92,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
                                         .flatMapCompletable(tarefaArmazenavel -> {
                                             mTarefa = tarefaArmazenavel;
 
-                                            if (mTarefa.getUrlDownload().length() > 0) {
+                                            if (mTarefa.getUrlArquivo().length() > 0) {
                                                 getMvpView().exibirBotaoArquivo();
                                             }
 
@@ -177,7 +177,7 @@ public class InserirLembretePresenter<V extends InserirLembreteContract.InserirL
 
     @Override
     public void onBotaoArquivoClick() {
-        getMvpView().abrirNavegador(mTarefa.getUrlDownload());
+        getMvpView().abrirNavegador(mTarefa.getUrlArquivo());
     }
 
     @Override

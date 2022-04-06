@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.stacked.sigaa_ifc.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
 
 @Entity(tableName = "disciplina_table")
 public class DisciplinaArmazenavel {
@@ -17,11 +17,9 @@ public class DisciplinaArmazenavel {
     @ColumnInfo(name = "front_end_id_turma")
     private String frontEndIdTurma = "";
     @ColumnInfo(name = "form_acessar_turma_virtual")
-    private String form_acessarTurmaVirtual;
-    @ColumnInfo(name = "form_acessar_turma_virtual_full")
-    private String form_acessarTurmaVirtual_full;
-    @ColumnInfo(name = "pagina_todas_turmas_virtuais")
-    private boolean paginaTodasTurmasVirtuais;
+    private String formAcessarTurmaVirtual;
+    @ColumnInfo(name = "form_acessar_turma_virtual_completo")
+    private String formAcessarTurmaVirtualCompleto;
 
     public DisciplinaArmazenavel() {
 
@@ -31,10 +29,9 @@ public class DisciplinaArmazenavel {
         idNoSIGAA = disciplina.getId();
         nome = disciplina.getNome();
         periodo = disciplina.getPeriodo();
-        paginaTodasTurmasVirtuais = disciplina.isRetiradoDaPaginaTodasTurmasVirtuais();
-        form_acessarTurmaVirtual = disciplina.getPostArgs()[0];
-        form_acessarTurmaVirtual_full = disciplina.getPostArgs()[1];
-        frontEndIdTurma = disciplina.getPostArgs()[2];
+        formAcessarTurmaVirtual = disciplina.getFormAcessarTurmaVirtual();
+        formAcessarTurmaVirtualCompleto = disciplina.getFormAcessarTurmaVirtualCompleto();
+        frontEndIdTurma = disciplina.getFrontEndIdTurma();
     }
 
     public String getIdNoSIGAA() {
@@ -69,31 +66,23 @@ public class DisciplinaArmazenavel {
         this.frontEndIdTurma = frontEndIdTurma;
     }
 
-    public String getForm_acessarTurmaVirtual() {
-        return form_acessarTurmaVirtual;
+    public String getFormAcessarTurmaVirtual() {
+        return formAcessarTurmaVirtual;
     }
 
-    public void setForm_acessarTurmaVirtual(String form_acessarTurmaVirtual) {
-        this.form_acessarTurmaVirtual = form_acessarTurmaVirtual;
+    public void setFormAcessarTurmaVirtual(String formAcessarTurmaVirtual) {
+        this.formAcessarTurmaVirtual = formAcessarTurmaVirtual;
     }
 
-    public String getForm_acessarTurmaVirtual_full() {
-        return form_acessarTurmaVirtual_full;
+    public String getFormAcessarTurmaVirtualCompleto() {
+        return formAcessarTurmaVirtualCompleto;
     }
 
-    public void setForm_acessarTurmaVirtual_full(String form_acessarTurmaVirtual_full) {
-        this.form_acessarTurmaVirtual_full = form_acessarTurmaVirtual_full;
-    }
-
-    public boolean isPaginaTodasTurmasVirtuais() {
-        return paginaTodasTurmasVirtuais;
-    }
-
-    public void setPaginaTodasTurmasVirtuais(boolean paginaTodasTurmasVirtuais) {
-        this.paginaTodasTurmasVirtuais = paginaTodasTurmasVirtuais;
+    public void setFormAcessarTurmaVirtualCompleto(String formAcessarTurmaVirtualCompleto) {
+        this.formAcessarTurmaVirtualCompleto = formAcessarTurmaVirtualCompleto;
     }
 
     public Disciplina getDisciplina() {
-        return new Disciplina(paginaTodasTurmasVirtuais, periodo, nome, form_acessarTurmaVirtual, form_acessarTurmaVirtual_full, frontEndIdTurma);
+        return new Disciplina(idNoSIGAA, nome, periodo, formAcessarTurmaVirtual, formAcessarTurmaVirtualCompleto, frontEndIdTurma);
     }
 }

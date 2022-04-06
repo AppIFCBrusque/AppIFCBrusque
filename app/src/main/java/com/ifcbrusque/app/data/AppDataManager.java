@@ -12,12 +12,12 @@ import com.ifcbrusque.app.data.network.NetworkHelper;
 import com.ifcbrusque.app.data.notification.NotificationHelper;
 import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.service.SyncService;
-import com.stacked.sigaa_ifc.Avaliacao;
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Nota;
-import com.stacked.sigaa_ifc.Questionario;
-import com.stacked.sigaa_ifc.Tarefa;
-import com.stacked.sigaa_ifc.Usuario;
+import com.imawa.sigaaforkotlin.entities.Avaliacao;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Nota;
+import com.imawa.sigaaforkotlin.entities.Questionario;
+import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.imawa.sigaaforkotlin.entities.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -395,18 +395,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
-        mPreferencesHelper.setDataUltimaSincronizacaoAutomaticaNoticias(data);
-    }
-
-    @Override
     public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
         return mPreferencesHelper.getDataUltimaSincronizacaoAutomaticaNoticias();
     }
 
     @Override
-    public void setDataUltimaSincronizacaoCompleta(Date data) {
-        mPreferencesHelper.setDataUltimaSincronizacaoCompleta(data);
+    public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
+        mPreferencesHelper.setDataUltimaSincronizacaoAutomaticaNoticias(data);
     }
 
     @Override
@@ -415,13 +410,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setUltimaPaginaAcessadaNoticias(int pagina) {
-        mPreferencesHelper.setUltimaPaginaAcessadaNoticias(pagina);
+    public void setDataUltimaSincronizacaoCompleta(Date data) {
+        mPreferencesHelper.setDataUltimaSincronizacaoCompleta(data);
     }
 
     @Override
     public int getUltimaPaginaAcessadaNoticias() {
         return mPreferencesHelper.getUltimaPaginaAcessadaNoticias();
+    }
+
+    @Override
+    public void setUltimaPaginaAcessadaNoticias(int pagina) {
+        mPreferencesHelper.setUltimaPaginaAcessadaNoticias(pagina);
     }
 
     @Override

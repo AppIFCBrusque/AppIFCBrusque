@@ -3,13 +3,13 @@ package com.ifcbrusque.app.data.network.sigaa;
 import android.content.Context;
 
 import com.ifcbrusque.app.di.ApplicationContext;
-import com.stacked.sigaa_ifc.Avaliacao;
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Nota;
-import com.stacked.sigaa_ifc.Questionario;
-import com.stacked.sigaa_ifc.Sessao;
-import com.stacked.sigaa_ifc.Tarefa;
-import com.stacked.sigaa_ifc.Usuario;
+import com.imawa.sigaaforkotlin.SIGAA;
+import com.imawa.sigaaforkotlin.entities.Avaliacao;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Nota;
+import com.imawa.sigaaforkotlin.entities.Questionario;
+import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.imawa.sigaaforkotlin.entities.Usuario;
 
 import java.util.ArrayList;
 
@@ -21,29 +21,28 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class AppSIGAAHelper implements SIGAAHelper {
-    private final Sessao mSessao;
+    private final SIGAA mSIGAA;
 
     @Inject
     public AppSIGAAHelper(@ApplicationContext Context context) {
-        mSessao = new Sessao(context);
-        //TODO: Utilizar o mesmo cliente? Precisaria arrumar os interceptors
+        mSIGAA = new SIGAA(context);
     }
 
     @Override
     public Usuario getUsuarioSIGAA() {
-        return mSessao.getUsuario();
+        return mSIGAA.getUsuario();
     }
 
     @Override
     public Observable<Boolean> logarSIGAA(String usuario, String senha) {
-        return Observable.defer(() -> Observable.just(mSessao.login(usuario, senha)))
+        return Observable.defer(() -> Observable.just(mSIGAA.login(usuario, senha)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
-        return Observable.defer(() -> Observable.just(mSessao.disciplinaPegarNotas(disciplina)))
+        return Observable.defer(() -> Observable.just(mSIGAA.getNotas(disciplina)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -52,7 +51,7 @@ public class AppSIGAAHelper implements SIGAAHelper {
     public Observable<ArrayList<Avaliacao>> getAvaliacoesDisciplinaSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> {
             Timber.d("%s | Acessando a página de avaliações", disciplina.getNome());
-            return Observable.just(mSessao.disciplinaPegarAvaliacoes(disciplina));
+            return Observable.just(mSIGAA.getAvaliacoes(disciplina));
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -62,7 +61,7 @@ public class AppSIGAAHelper implements SIGAAHelper {
     public Observable<ArrayList<Tarefa>> getTarefasDisciplinaSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> {
             Timber.d("%s | Acessando a página de tarefas", disciplina.getNome());
-            return Observable.just(mSessao.disciplinaPegarTarefas(disciplina));
+            return Observable.just(mSIGAA.getTarefas(disciplina));
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -72,7 +71,7 @@ public class AppSIGAAHelper implements SIGAAHelper {
     public Observable<ArrayList<Questionario>> getQuestionariosDisciplinaSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> {
             Timber.d("%s | Acessando a página de questionários", disciplina.getNome());
-            return Observable.just(mSessao.disciplinaPegarQuestionarios(disciplina));
+            return Observable.just(mSIGAA.getQuestionarios(disciplina));
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

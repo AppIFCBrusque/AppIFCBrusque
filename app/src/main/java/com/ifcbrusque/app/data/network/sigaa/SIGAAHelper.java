@@ -1,11 +1,11 @@
 package com.ifcbrusque.app.data.network.sigaa;
 
-import com.stacked.sigaa_ifc.Avaliacao;
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Nota;
-import com.stacked.sigaa_ifc.Questionario;
-import com.stacked.sigaa_ifc.Tarefa;
-import com.stacked.sigaa_ifc.Usuario;
+import com.imawa.sigaaforkotlin.entities.Avaliacao;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Nota;
+import com.imawa.sigaaforkotlin.entities.Questionario;
+import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.imawa.sigaaforkotlin.entities.Usuario;
 
 import java.util.ArrayList;
 

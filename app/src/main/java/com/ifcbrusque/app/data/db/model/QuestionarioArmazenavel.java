@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Questionario;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Questionario;
 
 import java.util.Date;
 
@@ -17,11 +17,11 @@ public class QuestionarioArmazenavel {
     @ColumnInfo(name = "id_no_sigaa")
     private long idNoSIGAA;
     private String titulo;
-    private boolean enviado;
     @ColumnInfo(name = "data_inicio")
     private Date dataInicio;
     @ColumnInfo(name = "data_fim")
     private Date dataFim;
+    private boolean enviado;
     @ColumnInfo(name = "disciplina_front_end_id_turma")
     private String disciplinaFrontEndIdTurma;
 
@@ -35,7 +35,7 @@ public class QuestionarioArmazenavel {
         enviado = questionario.isEnviado();
         dataInicio = questionario.getDataInicio();
         dataFim = questionario.getDataFim();
-        disciplinaFrontEndIdTurma = questionario.getDisciplina().getPostArgs()[2];
+        disciplinaFrontEndIdTurma = questionario.getDisciplina().getFrontEndIdTurma();
     }
 
     public long getIdNoSIGAA() {
@@ -54,14 +54,6 @@ public class QuestionarioArmazenavel {
         this.titulo = titulo;
     }
 
-    public boolean isEnviado() {
-        return enviado;
-    }
-
-    public void setEnviado(boolean enviado) {
-        this.enviado = enviado;
-    }
-
     public Date getDataInicio() {
         return dataInicio;
     }
@@ -78,6 +70,14 @@ public class QuestionarioArmazenavel {
         this.dataFim = dataFim;
     }
 
+    public boolean isEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(boolean enviado) {
+        this.enviado = enviado;
+    }
+
     public String getDisciplinaFrontEndIdTurma() {
         return disciplinaFrontEndIdTurma;
     }
@@ -87,7 +87,7 @@ public class QuestionarioArmazenavel {
     }
 
     public Questionario getQuestionario(Disciplina disciplina) {
-        return new Questionario(idNoSIGAA, titulo, enviado, dataInicio, dataFim, disciplina);
+        return new Questionario(idNoSIGAA, titulo, dataInicio, dataFim, enviado, disciplina);
     }
 
     public Questionario getQuestionario(DisciplinaArmazenavel disciplina) {

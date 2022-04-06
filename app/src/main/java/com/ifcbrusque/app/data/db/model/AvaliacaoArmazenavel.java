@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.stacked.sigaa_ifc.Avaliacao;
-import com.stacked.sigaa_ifc.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Avaliacao;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
 
 import java.util.Date;
 
@@ -17,7 +17,8 @@ public class AvaliacaoArmazenavel {
     @ColumnInfo(name = "id_no_sigaa")
     private long idNoSIGAA = 0;
     private String descricao;
-    private Date data;
+    private Date dia;
+    private String hora;
     @ColumnInfo(name = "disciplina_front_end_id_turma")
     private String disciplinaFrontEndIdTurma;
 
@@ -28,8 +29,9 @@ public class AvaliacaoArmazenavel {
     public AvaliacaoArmazenavel(Avaliacao avaliacao) {
         idNoSIGAA = avaliacao.getId();
         descricao = avaliacao.getDescricao();
-        data = avaliacao.getData();
-        disciplinaFrontEndIdTurma = avaliacao.getDisciplina().getPostArgs()[2];
+        dia = avaliacao.getDia();
+        hora = avaliacao.getHora();
+        disciplinaFrontEndIdTurma = avaliacao.getDisciplina().getFrontEndIdTurma();
     }
 
     public long getIdNoSIGAA() {
@@ -48,12 +50,20 @@ public class AvaliacaoArmazenavel {
         this.descricao = descricao;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDia() {
+        return dia;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDia(Date dia) {
+        this.dia = dia;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
     }
 
     public String getDisciplinaFrontEndIdTurma() {
@@ -65,7 +75,7 @@ public class AvaliacaoArmazenavel {
     }
 
     public Avaliacao getAvaliacao(Disciplina disciplina) {
-        return new Avaliacao(idNoSIGAA, disciplina, data, descricao);
+        return new Avaliacao(idNoSIGAA, descricao, dia, hora, disciplina);
     }
 
     public Avaliacao getAvaliacao(DisciplinaArmazenavel disciplina) {

@@ -1,5 +1,12 @@
 package com.ifcbrusque.app.data.notification;
 
+import static android.content.Context.ALARM_SERVICE;
+import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO;
+import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
+import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
+import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_TITULO;
+import static com.ifcbrusque.app.utils.AppConstants.NOTF_CHANNEL_ID;
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -14,22 +21,22 @@ import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 
 import com.ifcbrusque.app.R;
+import com.ifcbrusque.app.data.db.Converters;
+import com.ifcbrusque.app.data.db.model.Lembrete;
+import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.prefs.AppPreferencesHelper;
 import com.ifcbrusque.app.data.prefs.PreferencesHelper;
 import com.ifcbrusque.app.di.ApplicationContext;
 import com.ifcbrusque.app.receiver.NotificationReceiver;
 import com.ifcbrusque.app.receiver.SyncReceiver;
+import com.ifcbrusque.app.service.SyncService;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.ui.noticia.NoticiaActivity;
-import com.ifcbrusque.app.data.db.Converters;
-import com.ifcbrusque.app.data.db.model.Lembrete;
-import com.ifcbrusque.app.data.db.model.Preview;
-import com.ifcbrusque.app.service.SyncService;
+import com.imawa.sigaaforkotlin.entities.Avaliacao;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Questionario;
+import com.imawa.sigaaforkotlin.entities.Tarefa;
 import com.squareup.picasso.Picasso;
-import com.stacked.sigaa_ifc.Avaliacao;
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Questionario;
-import com.stacked.sigaa_ifc.Tarefa;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -44,13 +51,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static android.content.Context.ALARM_SERVICE;
-import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_DESCRICAO;
-import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID;
-import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_ID_NOTIFICACAO;
-import static com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity.EXTRAS_LEMBRETE_TITULO;
-import static com.ifcbrusque.app.utils.AppConstants.NOTF_CHANNEL_ID;
-
 /*
 Classe com funções relacionadas às notificações
  */
@@ -59,17 +59,15 @@ public class AppNotificationHelper implements NotificationHelper {
     public static final int NOTF_COR = R.color.verde;
 
     public static final int NOTF_SINCRONIZACAO_ID = 1;
-
-    private final Context mContext;
-    private final NotificationManager mNotificationManager;
-    private final AlarmManager mAlarmManager;
-    private final PreferencesHelper mPreferencesHelper;
-
     public static final int ICONE_LEMBRETE = R.drawable.ic_notifications_black_24dp;
     public static final int ICONE_SINCRONIZACAO = R.drawable.outline_sync_black_24;
     public static final int ICONE_NOTICIAS = R.drawable.outline_feed_black_24;
     public static final int ICONE_SIGAA = R.drawable.ic_notifications_black_24dp;
     public static final int ICONE_CANCELAR = R.drawable.outline_clear_black_24;
+    private final Context mContext;
+    private final NotificationManager mNotificationManager;
+    private final AlarmManager mAlarmManager;
+    private final PreferencesHelper mPreferencesHelper;
 
     @Inject
     public AppNotificationHelper(@ApplicationContext Context context) {

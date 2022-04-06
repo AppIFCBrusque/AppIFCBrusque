@@ -10,10 +10,10 @@ import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.di.ApplicationContext;
-import com.stacked.sigaa_ifc.Avaliacao;
-import com.stacked.sigaa_ifc.Disciplina;
-import com.stacked.sigaa_ifc.Questionario;
-import com.stacked.sigaa_ifc.Tarefa;
+import com.imawa.sigaaforkotlin.entities.Avaliacao;
+import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.imawa.sigaaforkotlin.entities.Questionario;
+import com.imawa.sigaaforkotlin.entities.Tarefa;
 
 import java.util.ArrayList;
 import java.util.Calendar;
