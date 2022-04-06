@@ -94,7 +94,7 @@
     <string name="sincronizar_sigaa_nao_conectado_descricao">Clique aqui para fazer o login</string>
     <string name="sincronizar_sigaa_conectado_como">Conectado como %s</string>
     <string name="sincronizar_sigaa_conectado_como_descricao">Clique aqui deslogar</string>
-    <string name="sincronizar_sigaa_conectado_deslogar_mensagem">Você tem certeza que deslogar do SIGAA?</string>
+    <string name="sincronizar_sigaa_conectado_deslogar_mensagem">Você tem certeza que deseja deslogar do SIGAA?</string>
     <string name="sincronizar_sigaa_conectado_deslogar">Deslogar</string>
     <string name="sincronizar_noticias">Sincronizar com a página do campus</string>
     <string name="sincronizar_noticias_descricao">Automaticamente obter as novas notícias do campus no plano de fundo</string>
