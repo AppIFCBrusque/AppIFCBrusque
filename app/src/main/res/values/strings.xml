@@ -112,7 +112,7 @@
     <string name="questionario_alterado">Questionário alterado em %s</string>
 
     <!-- SIGAA  -->
-    <string name="sigaa">SIGAA</string>
+    <string name="title_sigaa">SIGAA</string>
     <string name="sigaa_usuario">Usuário</string>
     <string name="sigaa_senha">Senha</string>
     <string name="sigaa_entrar">Entrar</string>
