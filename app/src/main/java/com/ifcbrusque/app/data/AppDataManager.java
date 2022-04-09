@@ -395,6 +395,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public String getUrlAvatarSIGAA() {
+        return mPreferencesHelper.getUrlAvatarSIGAA();
+    }
+
+    @Override
+    public void setUrlAvatarSIGAA(String urlAvatarSIGAA) {
+        mPreferencesHelper.setUrlAvatarSIGAA(urlAvatarSIGAA);
+    }
+
+    @Override
     public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
         return mPreferencesHelper.getDataUltimaSincronizacaoAutomaticaNoticias();
     }

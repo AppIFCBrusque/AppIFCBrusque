@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-
 import timber.log.Timber;
 
 public class LoginPresenter<V extends LoginContract.LoginView> extends BasePresenter<V> implements LoginContract.LoginPresenter<V> {
@@ -36,6 +35,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getDataManager().setLoginSIGAA(usuario);
                                     getDataManager().setSenhaSIGAA(senha);
                                     getDataManager().setNomeDoUsuarioSIGAA(getDataManager().getUsuarioSIGAA().getNome());
+                                    getDataManager().setUrlAvatarSIGAA(getDataManager().getUsuarioSIGAA().getUrlAvatar());
                                     getDataManager().setPrimeiraInicializacao(false);
                                     getDataManager().setSIGAAConectado(true);
                                     getDataManager().setPrefSincronizarSIGAA(true);
@@ -44,7 +44,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getMvpView().sair(true);
                                 });
                     } else {
-                        //Credenciais incorretas
+                        // Credenciais incorretas
                         getMvpView().setMensagemErro(R.string.sigaa_dados_invalidos);
                         getMvpView().mostrarMensagemErro();
                         getMvpView().ativarBotaoEntrar();
@@ -52,16 +52,16 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                     }
                 })
                 .subscribe(() -> {
-                    ///
+                    //
                 }, erro -> {
                     Timber.d("Erro no login");
                     getMvpView().esconderLoading();
 
                     if (erro.getClass() == NoInternetException.class) {
-                        //Sem internet
+                        // Sem internet
                         getMvpView().onError(R.string.erro_sem_internet);
                     } else {
-                        //Erro com o SIGAA
+                        // Erro com o SIGAA
                         getMvpView().setMensagemErro(R.string.sigaa_erro_conexao);
                         getMvpView().mostrarMensagemErro();
                     }

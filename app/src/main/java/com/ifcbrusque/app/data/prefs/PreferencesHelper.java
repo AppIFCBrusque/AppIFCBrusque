@@ -27,17 +27,21 @@ public interface PreferencesHelper {
 
     void setNomeDoUsuarioSIGAA(String s);
 
-    void setDataUltimaSincronizacaoAutomaticaNoticias(Date data);
+    String getUrlAvatarSIGAA();
+
+    void setUrlAvatarSIGAA(String urlAvatarSIGAA);
 
     Date getDataUltimaSincronizacaoAutomaticaNoticias();
 
-    void setDataUltimaSincronizacaoCompleta(Date data);
+    void setDataUltimaSincronizacaoAutomaticaNoticias(Date data);
 
     Date getDataUltimaSincronizacaoCompleta();
 
-    void setUltimaPaginaAcessadaNoticias(int pagina);
+    void setDataUltimaSincronizacaoCompleta(Date data);
 
     int getUltimaPaginaAcessadaNoticias();
+
+    void setUltimaPaginaAcessadaNoticias(int pagina);
 
     int getNovoIdNotificacao();
 

@@ -1,5 +1,30 @@
 package com.ifcbrusque.app.data.prefs;
 
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.HOME_ULTIMA_CATEGORIA_ACESSADA_ID;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.NOTICIAS_ULTIMA_PAGINA_ACESSADA;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.NOTICIAS_ULTIMA_SINCRONIZACAO;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.NOTIFICACOES_ULTIMO_ID;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_AVALIACOES_ALTERADAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_AVALIACOES_NOVAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_LEMBRETES;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_NOTICIAS_DO_CAMPUS_NOVAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_QUESTIONARIOS_ALTERADOS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_QUESTIONARIOS_NOVOS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_TAREFAS_ALTERADAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_NOTIFICAR_TAREFAS_NOVAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_SINCRONIZAR_NOTICIAS_CAMPUS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_SINCRONIZAR_SIGAA;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_TEMA;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PRIMEIRA_INICIALIZACAO;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.PRIMEIRA_SINCRONIZACAO_NOTICIAS;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_CONECTADO;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_LOGIN;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_NOME_DO_USUARIO;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_SENHA;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_URL_AVATAR;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SYNC_ULTIMA_DATA;
+import static com.ifcbrusque.app.utils.AppConstants.PREF_NAME;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -11,9 +36,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import static com.ifcbrusque.app.data.prefs.PreferenceValues.*;
-import static com.ifcbrusque.app.utils.AppConstants.PREF_NAME;
 
 /*
 Classe com funções para utilizar o SharedPreferences
@@ -88,14 +110,29 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public String getUrlAvatarSIGAA() {
+        return pref.getString(SIGAA_URL_AVATAR, "");
+    }
+
+    @Override
+    public void setUrlAvatarSIGAA(String urlAvatarSIGAA) {
+        pref.edit().putString(SIGAA_URL_AVATAR, urlAvatarSIGAA).apply();
+    }
+
+    @Override
+    public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
+        return Converters.fromTimestamp(pref.getLong(NOTICIAS_ULTIMA_SINCRONIZACAO, 0));
+    }
+
+    @Override
     public void setDataUltimaSincronizacaoAutomaticaNoticias(Date data) {
         long _data = Converters.dateToTimestamp(data);
         pref.edit().putLong(NOTICIAS_ULTIMA_SINCRONIZACAO, _data).apply();
     }
 
     @Override
-    public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
-        return Converters.fromTimestamp(pref.getLong(NOTICIAS_ULTIMA_SINCRONIZACAO, 0));
+    public Date getDataUltimaSincronizacaoCompleta() {
+        return Converters.fromTimestamp(pref.getLong(SYNC_ULTIMA_DATA, 0));
     }
 
     @Override
@@ -105,18 +142,13 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public Date getDataUltimaSincronizacaoCompleta() {
-        return Converters.fromTimestamp(pref.getLong(SYNC_ULTIMA_DATA, 0));
+    public int getUltimaPaginaAcessadaNoticias() {
+        return pref.getInt(NOTICIAS_ULTIMA_PAGINA_ACESSADA, 1);
     }
 
     @Override
     public void setUltimaPaginaAcessadaNoticias(int pagina) {
         pref.edit().putInt(NOTICIAS_ULTIMA_PAGINA_ACESSADA, pagina).apply();
-    }
-
-    @Override
-    public int getUltimaPaginaAcessadaNoticias() {
-        return pref.getInt(NOTICIAS_ULTIMA_PAGINA_ACESSADA, 1);
     }
 
     @Override
