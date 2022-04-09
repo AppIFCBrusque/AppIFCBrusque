@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/noticia_data"
+                android:layout_marginHorizontal="16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/Theme.IFCBrusque.ImageViewNoticia" />
