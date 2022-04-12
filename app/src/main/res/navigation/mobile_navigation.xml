@@ -11,6 +11,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_sigaa"
+        android:name="com.ifcbrusque.app.ui.home.sigaa.SIGAAFragment"
+        android:label="@string/title_sigaa"
+        tools:layout="@layout/fragment_sigaa" />
+
+    <fragment
         android:id="@+id/navigation_noticias"
         android:name="com.ifcbrusque.app.ui.home.noticias.NoticiasFragment"
         android:label="@string/title_noticias"
