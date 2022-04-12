@@ -76,6 +76,7 @@ public class SIGAAFragment extends BaseFragment implements SIGAAContract.SIGAAVi
         mPicasso.load(url)
                 .fit()
                 .centerCrop()
+                .placeholder(R.drawable.no_picture)
                 .into(mIvAvatarSIGAA);
     }
 }
