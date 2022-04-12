@@ -28,7 +28,7 @@
             android:scaleType="centerCrop"
             android:tint="@null"
             app:shapeAppearanceOverlay="@style/Theme.IFCBrusque.ImageViewNoticia"
-            tools:srcCompat="@color/verde" />
+            tools:srcCompat="@drawable/no_picture" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,12 +56,36 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/sigaa_menu_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/sigaa_menu"
+        android:textAppearance="@style/TextAppearance.TituloItemLista"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sigaa_relative_layout" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/sigaa_flexbox_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        app:flexDirection="row"
+        app:flexWrap="wrap"
+        app:justifyContent="space_between"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sigaa_menu_titulo">
+
+        <include
+            android:id="@+id/sigaa_item_menu"
+            layout="@layout/item_menu_sigaa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_flexGrow="1" />
+
+    </com.google.android.flexbox.FlexboxLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

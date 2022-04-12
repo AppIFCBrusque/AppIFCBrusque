@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.cardview.widget.CardView;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.component.ActivityComponent;
@@ -57,6 +60,19 @@ public class SIGAAFragment extends BaseFragment implements SIGAAContract.SIGAAVi
         mTvNome = getView().findViewById(R.id.sigaa_nome);
         mTvCurso = getView().findViewById(R.id.sigaa_curso);
         mIvAvatarSIGAA = getView().findViewById(R.id.sigaa_avatar);
+
+        // Adicionar itens do menu
+        FlexboxLayout flexboxLayout = getView().findViewById(R.id.sigaa_flexbox_layout);
+
+        CardView itemMenu = getView().findViewById(R.id.sigaa_item_menu); // View utilizada como base
+
+        CardView noticiasCardView = (CardView) LayoutInflater.from(getContext()).inflate(R.layout.item_menu_sigaa, null);
+        noticiasCardView.setId(View.generateViewId());
+        ((TextView) noticiasCardView.findViewById(R.id.item_menu_titulo)).setText(R.string.title_noticias);
+        ((ImageView) noticiasCardView.findViewById(R.id.item_menu_imagem)).setImageDrawable(getContext().getDrawable(R.drawable.outline_announcement_black_24));
+        flexboxLayout.addView(noticiasCardView, itemMenu.getLayoutParams());
+
+        flexboxLayout.removeView(itemMenu); // Remover a view base
 
         mPresenter.onViewPronta();
     }
