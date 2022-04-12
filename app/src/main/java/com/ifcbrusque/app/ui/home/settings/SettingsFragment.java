@@ -17,6 +17,7 @@ public class SettingsFragment extends BasePreferenceFragment {
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setElevation(4 * getResources().getDisplayMetrics().density);
         actionBar.setTitle(R.string.configuracoes);
         ImageButton ibFiltro = getActivity().findViewById(R.id.image_button_filtros);
         ibFiltro.setVisibility(View.GONE);

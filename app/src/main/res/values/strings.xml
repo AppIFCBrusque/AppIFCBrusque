@@ -120,4 +120,7 @@
     <string name="sigaa_mensagem_conexao">Você pode conectar a sua conta do SIGAA para utilizar as funções do sistema por meio do aplicativo</string>
     <string name="sigaa_dados_invalidos">Usuário e/ou senha inválidos</string>
     <string name="sigaa_erro_conexao">Não foi possível se conectar ao SIGAA. Tente novamente mais tarde</string>
+
+    <string name="sigaa_nome">Nome</string>
+    <string name="sigaa_curso">Curso</string>
 </resources>

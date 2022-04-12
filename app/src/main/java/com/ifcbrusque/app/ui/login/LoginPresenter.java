@@ -36,6 +36,7 @@ public class LoginPresenter<V extends LoginContract.LoginView> extends BasePrese
                                     getDataManager().setSenhaSIGAA(senha);
                                     getDataManager().setNomeDoUsuarioSIGAA(getDataManager().getUsuarioSIGAA().getNome());
                                     getDataManager().setUrlAvatarSIGAA(getDataManager().getUsuarioSIGAA().getUrlAvatar());
+                                    getDataManager().setCursoSIGAA(getDataManager().getUsuarioSIGAA().getCurso());
                                     getDataManager().setPrimeiraInicializacao(false);
                                     getDataManager().setSIGAAConectado(true);
                                     getDataManager().setPrefSincronizarSIGAA(true);

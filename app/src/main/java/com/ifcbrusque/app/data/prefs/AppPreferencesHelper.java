@@ -18,6 +18,7 @@ import static com.ifcbrusque.app.data.prefs.PreferenceValues.PREF_TEMA;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PRIMEIRA_INICIALIZACAO;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.PRIMEIRA_SINCRONIZACAO_NOTICIAS;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_CONECTADO;
+import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_CURSO;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_LOGIN;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_NOME_DO_USUARIO;
 import static com.ifcbrusque.app.data.prefs.PreferenceValues.SIGAA_SENHA;
@@ -117,6 +118,16 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public void setUrlAvatarSIGAA(String urlAvatarSIGAA) {
         pref.edit().putString(SIGAA_URL_AVATAR, urlAvatarSIGAA).apply();
+    }
+
+    @Override
+    public String getCursoSIGAA() {
+        return pref.getString(SIGAA_CURSO, "");
+    }
+
+    @Override
+    public void setCursoSIGAA(String curso) {
+        pref.edit().putString(SIGAA_CURSO, curso).apply();
     }
 
     @Override

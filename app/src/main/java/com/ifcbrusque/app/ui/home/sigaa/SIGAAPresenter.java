@@ -12,4 +12,11 @@ public class SIGAAPresenter<V extends SIGAAContract.SIGAAView> extends BasePrese
     public SIGAAPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
     }
+
+    @Override
+    public void onViewPronta() {
+        getMvpView().setNomeText(getDataManager().getNomeDoUsuarioSIGAA());
+        getMvpView().setCursoText(getDataManager().getCursoSIGAA());
+        getMvpView().setAvatarSIGAA(getDataManager().getUrlAvatarSIGAA());
+    }
 }

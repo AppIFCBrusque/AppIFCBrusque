@@ -31,6 +31,10 @@ public interface PreferencesHelper {
 
     void setUrlAvatarSIGAA(String urlAvatarSIGAA);
 
+    String getCursoSIGAA();
+
+    void setCursoSIGAA(String curso);
+
     Date getDataUltimaSincronizacaoAutomaticaNoticias();
 
     void setDataUltimaSincronizacaoAutomaticaNoticias(Date data);

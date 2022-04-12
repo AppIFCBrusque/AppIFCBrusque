@@ -405,6 +405,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public String getCursoSIGAA() {
+        return mPreferencesHelper.getCursoSIGAA();
+    }
+
+    @Override
+    public void setCursoSIGAA(String curso) {
+        mPreferencesHelper.setCursoSIGAA(curso);
+    }
+
+    @Override
     public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
         return mPreferencesHelper.getDataUltimaSincronizacaoAutomaticaNoticias();
     }

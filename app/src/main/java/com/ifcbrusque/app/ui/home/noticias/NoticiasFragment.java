@@ -62,6 +62,7 @@ public class NoticiasFragment extends BaseFragment implements NoticiasContract.N
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setElevation(4 * getResources().getDisplayMetrics().density);
         actionBar.setTitle(R.string.title_noticias);
         ImageButton ibFiltros = getBaseActivity().findViewById(R.id.image_button_filtros);
         ibFiltros.setVisibility(View.GONE);

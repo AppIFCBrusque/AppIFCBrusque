@@ -12,6 +12,7 @@ public class PreferenceValues {
     public static final String SIGAA_SENHA = "SIGAA_PASS";
     public static final String SIGAA_NOME_DO_USUARIO = "SIGAA_NOME_DO_USUARIO";
     public static final String SIGAA_URL_AVATAR = "SIGAA_URL_AVATAR";
+    public static final String SIGAA_CURSO = "SIGAA_CURSO";
     public static final String NOTICIAS_ULTIMA_SINCRONIZACAO = "NOTICIAS_ULTIMA_SINCRONIZACAO";
     public static final String NOTICIAS_ULTIMA_PAGINA_ACESSADA = "NOTICIAS_ULTIMA_PAGINA_ACESSADA";
     public static final String NOTIFICACOES_ULTIMO_ID = "NOTIFICACOES_ULTIMO_ID";
