@@ -6,6 +6,7 @@ import com.ifcbrusque.app.data.db.model.AvaliacaoArmazenavel;
 import com.ifcbrusque.app.data.db.model.DisciplinaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
+import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
@@ -547,10 +548,25 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.noticiaSIGAADao().getAll()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable insertNoticiasArmazenaveis(List<NoticiaArmazenavel> noticiasArmazenaveis) {
+        return Completable.fromRunnable(() -> mAppDatabase.noticiaSIGAADao().insertAll(noticiasArmazenaveis))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Completable deletarTudoSIGAA() {
         return Completable.fromRunnable(() -> {
             mAppDatabase.avaliacaoDao().deleteAll();
             mAppDatabase.questionarioDao().deleteAll();
+            mAppDatabase.noticiaDao().deleteAll();
             mAppDatabase.tarefaDao().deleteAll();
             mAppDatabase.disciplinaDao().deleteAll();
             mAppDatabase.lembreteDao().deleteAllLembretesSIGAA();

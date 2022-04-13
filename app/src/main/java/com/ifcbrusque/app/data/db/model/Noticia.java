@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
+/**
+ * Classe para armazenar uma notícia do campus
+ */
 @Entity(tableName = "noticia_table")
 public class Noticia {
     @PrimaryKey(autoGenerate = true)
