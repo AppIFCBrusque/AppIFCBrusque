@@ -18,7 +18,9 @@ public class NoticiaArmazenavel {
     @PrimaryKey()
     @ColumnInfo(name = "id_no_sigaa")
     private int idNoSIGAA = 0;
-    private String titulo, texto;
+    private String titulo;
+    @ColumnInfo(name = "html_conteudo")
+    private String htmlConteudo;
     @ColumnInfo(name = "j_id_jsp")
     private String jIdJsp;
     @ColumnInfo(name = "j_id_jsp_completo")
@@ -36,7 +38,7 @@ public class NoticiaArmazenavel {
     public NoticiaArmazenavel(Noticia noticia) {
         this.idNoSIGAA = noticia.getId();
         this.titulo = noticia.getTitulo();
-        this.texto = noticia.getTexto();
+        this.htmlConteudo = noticia.getHtmlConteudo();
         this.jIdJsp = noticia.getJIdJsp();
         this.jIdJspCompleto = noticia.getJIdJspCompleto();
         this.disciplinaNome = noticia.getDisciplina().getNome();
@@ -92,12 +94,12 @@ public class NoticiaArmazenavel {
         this.jIdJspCompleto = jIdJspCompleto;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getHtmlConteudo() {
+        return htmlConteudo;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setHtmlConteudo(String htmlConteudo) {
+        this.htmlConteudo = htmlConteudo;
     }
 
     public String getTitulo() {
