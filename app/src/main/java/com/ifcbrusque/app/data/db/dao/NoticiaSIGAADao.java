@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface NoticiaSIGAADao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<NoticiaArmazenavel> noticiasArmazenaveis);
 
     @Query("DELETE FROM noticia_sigaa_table")

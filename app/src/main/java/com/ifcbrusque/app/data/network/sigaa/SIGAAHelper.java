@@ -3,6 +3,7 @@ package com.ifcbrusque.app.data.network.sigaa;
 import com.imawa.sigaaforkotlin.entities.Avaliacao;
 import com.imawa.sigaaforkotlin.entities.Disciplina;
 import com.imawa.sigaaforkotlin.entities.Nota;
+import com.imawa.sigaaforkotlin.entities.Noticia;
 import com.imawa.sigaaforkotlin.entities.Questionario;
 import com.imawa.sigaaforkotlin.entities.Tarefa;
 import com.imawa.sigaaforkotlin.entities.Usuario;
@@ -15,6 +16,8 @@ public interface SIGAAHelper {
     Usuario getUsuarioSIGAA();
 
     Observable<Boolean> logarSIGAA(String usuario, String senha);
+
+    Observable<ArrayList<Noticia>> getNoticiasSIGAA(Disciplina disciplina);
 
     Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina);
 

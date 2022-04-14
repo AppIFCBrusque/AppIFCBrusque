@@ -7,6 +7,7 @@ import com.imawa.sigaaforkotlin.SIGAA;
 import com.imawa.sigaaforkotlin.entities.Avaliacao;
 import com.imawa.sigaaforkotlin.entities.Disciplina;
 import com.imawa.sigaaforkotlin.entities.Nota;
+import com.imawa.sigaaforkotlin.entities.Noticia;
 import com.imawa.sigaaforkotlin.entities.Questionario;
 import com.imawa.sigaaforkotlin.entities.Tarefa;
 import com.imawa.sigaaforkotlin.entities.Usuario;
@@ -36,6 +37,13 @@ public class AppSIGAAHelper implements SIGAAHelper {
     @Override
     public Observable<Boolean> logarSIGAA(String usuario, String senha) {
         return Observable.defer(() -> Observable.just(mSIGAA.login(usuario, senha)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<ArrayList<Noticia>> getNoticiasSIGAA(Disciplina disciplina) {
+        return Observable.defer(() -> Observable.just(mSIGAA.getNoticias(disciplina)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

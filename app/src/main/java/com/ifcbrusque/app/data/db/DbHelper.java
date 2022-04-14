@@ -94,7 +94,7 @@ public interface DbHelper {
 
     Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis();
 
-    Completable insertNoticiasArmazenaveis(List<NoticiaArmazenavel> noticiasArmazenaveis);
+    Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias);
 
     Completable deletarTudoSIGAA();
 }

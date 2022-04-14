@@ -15,9 +15,9 @@ import java.util.Date;
 @Entity(tableName = "noticia_sigaa_table")
 public class NoticiaArmazenavel {
     @NonNull
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "id_no_sigaa")
-    private int idNoSIGAA;
+    private int idNoSIGAA = 0;
     private String titulo, texto;
     @ColumnInfo(name = "j_id_jsp")
     private String jIdJsp;
@@ -65,19 +65,19 @@ public class NoticiaArmazenavel {
         this.disciplinaFrontEndIdTurma = disciplinaFrontEndIdTurma;
     }
 
-    public String getjIdJsp() {
+    public String getJIdJsp() {
         return jIdJsp;
     }
 
-    public void setjIdJsp(String jIdJsp) {
+    public void setJIdJsp(String jIdJsp) {
         this.jIdJsp = jIdJsp;
     }
 
-    public String getjIdJspCompleto() {
+    public String getJIdJspCompleto() {
         return jIdJspCompleto;
     }
 
-    public void setjIdJspCompleto(String jIdJspCompleto) {
+    public void setJIdJspCompleto(String jIdJspCompleto) {
         this.jIdJspCompleto = jIdJspCompleto;
     }
 

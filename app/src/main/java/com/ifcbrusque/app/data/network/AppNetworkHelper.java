@@ -51,6 +51,11 @@ public class AppNetworkHelper implements NetworkHelper {
     }
 
     @Override
+    public Observable<ArrayList<com.imawa.sigaaforkotlin.entities.Noticia>> getNoticiasSIGAA(Disciplina disciplina) {
+        return mSIGAAHelper.getNoticiasSIGAA(disciplina);
+    }
+
+    @Override
     public Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina) {
         return mSIGAAHelper.getNotasDisciplinaSIGAA(disciplina);
     }

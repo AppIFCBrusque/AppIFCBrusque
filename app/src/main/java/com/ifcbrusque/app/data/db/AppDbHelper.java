@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -555,8 +556,20 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Completable insertNoticiasArmazenaveis(List<NoticiaArmazenavel> noticiasArmazenaveis) {
-        return Completable.fromRunnable(() -> mAppDatabase.noticiaSIGAADao().insertAll(noticiasArmazenaveis))
+    public Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.noticiaSIGAADao().getAll()))
+                .map(noticiasArmazenadas -> {
+                    List<NoticiaArmazenavel> noticiasArmazenaveis = noticias.stream().map(NoticiaArmazenavel::new).collect(Collectors.toList());
+
+                    // Remover as já armazenadas
+                    noticiasArmazenaveis.removeIf(noticiaArmazenavel -> noticiasArmazenadas.stream().anyMatch(a -> a.getIdNoSIGAA() == noticiaArmazenavel.getIdNoSIGAA()));
+
+                    if (noticiasArmazenaveis.size() > 0) {
+                        mAppDatabase.noticiaSIGAADao().insertAll(noticiasArmazenaveis);
+                    }
+
+                    return noticiasArmazenaveis;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

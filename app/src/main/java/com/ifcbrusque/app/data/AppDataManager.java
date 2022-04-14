@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.ifcbrusque.app.data.db.DbHelper;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
+import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
@@ -227,6 +228,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(Lembrete lembrete) {
         return mDbHelper.getQuestionarioArmazenavel(lembrete);
+    }
+
+    @Override
+    public Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis() {
+        return mDbHelper.getAllNoticiasArmazenaveis();
+    }
+
+    @Override
+    public Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias) {
+        return mDbHelper.insertNoticiasSIGAA(noticias);
     }
 
     @Override
@@ -532,6 +543,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<Boolean> logarSIGAA(String usuario, String senha) {
         return mNetworkHelper.logarSIGAA(usuario, senha);
+    }
+
+    @Override
+    public Observable<ArrayList<com.imawa.sigaaforkotlin.entities.Noticia>> getNoticiasSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getNoticiasSIGAA(disciplina);
     }
 
     @Override
