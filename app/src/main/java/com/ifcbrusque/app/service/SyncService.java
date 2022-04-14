@@ -12,6 +12,7 @@ import com.ifcbrusque.app.App;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.DataManager;
 import com.ifcbrusque.app.data.db.model.Lembrete;
+import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.di.component.DaggerServiceComponent;
@@ -44,7 +45,7 @@ public class SyncService extends Service {
     final public static int OBSERVABLE_ATUALIZAR_RV_PREVIEWS = 1;
     final public static int OBSERVABLE_ATUALIZAR_RV_LEMBRETES = 2;
     static final PublishSubject<Integer> data = PublishSubject.create();
-    final int mTarefasPorDisciplina = 3;
+    final int mTarefasPorDisciplina = 4;
     @Inject
     DataManager mDataManager;
     @Inject
@@ -266,6 +267,21 @@ public class SyncService extends Service {
                                 .toList()
                                 .toObservable()))
                 .flatMap(listaAvaliacoes -> {
+                    mTarefaAtual++;
+                    mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
+                    return mDataManager.getNoticiasSIGAA(disciplina);
+                })
+                /*
+                Notícias
+                 */
+                .flatMap(noticias -> mDataManager.insertNoticiasSIGAA(noticias))
+                .flatMap(noticiasNovas -> {
+                    // TODO: Notificar se não for a primeira sincronização do SIGAA
+                    for (NoticiaArmazenavel noticiaArmazenavel : noticiasNovas) {
+                        Timber.d("Notícia nova: %s", noticiaArmazenavel.getTitulo());
+                    }
+
+                    // Ir para o próximo passo
                     mTarefaAtual++;
                     mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
                     return mDataManager.getTarefasDisciplinaSIGAA(disciplina);

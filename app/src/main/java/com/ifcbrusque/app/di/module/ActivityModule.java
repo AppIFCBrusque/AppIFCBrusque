@@ -1,13 +1,10 @@
 package com.ifcbrusque.app.di.module;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.di.ActivityContext;
 import com.ifcbrusque.app.di.PerActivity;
@@ -17,6 +14,11 @@ import com.ifcbrusque.app.ui.home.lembretes.LembretesPresenter;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasAdapter;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasContract;
 import com.ifcbrusque.app.ui.home.noticias.NoticiasPresenter;
+import com.ifcbrusque.app.ui.home.sigaa.SIGAAContract;
+import com.ifcbrusque.app.ui.home.sigaa.SIGAAPresenter;
+import com.ifcbrusque.app.ui.home.sigaa.noticias.NoticiasSIGAAAdapter;
+import com.ifcbrusque.app.ui.home.sigaa.noticias.NoticiasSIGAAContract;
+import com.ifcbrusque.app.ui.home.sigaa.noticias.NoticiasSIGAAPresenter;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteContract;
 import com.ifcbrusque.app.ui.lembrete.InserirLembretePresenter;
 import com.ifcbrusque.app.ui.login.LoginContract;
@@ -75,6 +77,17 @@ public class ActivityModule {
     }
 
     @Provides
+    SIGAAContract.SIGAAPresenter<SIGAAContract.SIGAAView> provideSIGAAPresenter(SIGAAPresenter<SIGAAContract.SIGAAView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    NoticiasSIGAAContract.NoticiasSIGAAPresenter<NoticiasSIGAAContract.NoticiasSIGAAView> provideNoticiasSIGAAPresenter(NoticiasSIGAAPresenter<NoticiasSIGAAContract.NoticiasSIGAAView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     NoticiasContract.NoticiasPresenter<NoticiasContract.NoticiasView> provideNoticiasPresenter(NoticiasPresenter<NoticiasContract.NoticiasView> presenter) {
         return presenter;
     }
@@ -94,6 +107,11 @@ public class ActivityModule {
     @Provides
     LembretesAdapter provideLembretesAdapter() {
         return new LembretesAdapter(mActivity, new ArrayList<>(), Lembrete.ESTADO_INCOMPLETO);
+    }
+
+    @Provides
+    NoticiasSIGAAAdapter provideNoticiasSIGAAAdapter() {
+        return new NoticiasSIGAAAdapter(mActivity);
     }
 
     @Provides

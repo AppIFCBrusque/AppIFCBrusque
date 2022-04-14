@@ -361,7 +361,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.avaliacao_nova), avaliacao.getDisciplina().getNome()))
                 .setContentText(avaliacao.getDescricao())
-                .setSubText(mContext.getText(R.string.sigaa))
+                .setSubText(mContext.getText(R.string.title_sigaa))
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(avaliacao.getDescricao()));
@@ -381,7 +381,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.avaliacao_alterada), avaliacao.getDisciplina().getNome()))
                 .setContentText(avaliacao.getDescricao())
-                .setSubText(mContext.getText(R.string.sigaa))
+                .setSubText(mContext.getText(R.string.title_sigaa))
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(avaliacao.getDescricao()));
@@ -401,7 +401,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.tarefa_nova), tarefa.getDisciplina().getNome()))
                 .setContentText(tarefa.getTitulo())
-                .setSubText(mContext.getText(R.string.sigaa))
+                .setSubText(mContext.getText(R.string.title_sigaa))
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(tarefa.getDescricao()));
@@ -421,7 +421,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.tarefa_alterada), tarefa.getDisciplina().getNome()))
                 .setContentText(tarefa.getTitulo())
-                .setSubText(mContext.getText(R.string.sigaa))
+                .setSubText(mContext.getText(R.string.title_sigaa))
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(tarefa.getDescricao()));
@@ -441,7 +441,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.questionario_novo), questionario.getDisciplina().getNome()))
                 .setContentText(questionario.getTitulo())
-                .setSubText(mContext.getText(R.string.sigaa))
+                .setSubText(mContext.getText(R.string.title_sigaa))
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(questionario.getTitulo()));
@@ -461,7 +461,7 @@ public class AppNotificationHelper implements NotificationHelper {
                 .setSmallIcon(ICONE_SIGAA)
                 .setContentTitle(String.format(mContext.getString(R.string.questionario_alterado), questionario.getDisciplina().getNome()))
                 .setContentText(questionario.getTitulo())
-                .setSubText(mContext.getText(R.string.sigaa))
+                .setSubText(mContext.getText(R.string.title_sigaa))
                 .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(questionario.getTitulo()));

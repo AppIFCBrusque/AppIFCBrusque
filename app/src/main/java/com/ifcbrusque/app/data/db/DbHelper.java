@@ -2,6 +2,7 @@ package com.ifcbrusque.app.data.db;
 
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
+import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
@@ -90,6 +91,10 @@ public interface DbHelper {
     Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(long id);
 
     Observable<QuestionarioArmazenavel> getQuestionarioArmazenavel(Lembrete lembrete);
+
+    Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis();
+
+    Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias);
 
     Completable deletarTudoSIGAA();
 }

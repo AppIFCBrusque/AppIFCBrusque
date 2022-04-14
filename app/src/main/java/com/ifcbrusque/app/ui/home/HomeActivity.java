@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.ui.base.BaseActivity;
@@ -13,12 +16,11 @@ import com.ifcbrusque.app.ui.home.noticias.NoticiasFragment;
 import com.ifcbrusque.app.ui.home.settings.SettingsAparenciaFragment;
 import com.ifcbrusque.app.ui.home.settings.SettingsFragment;
 import com.ifcbrusque.app.ui.home.settings.SettingsSincronizacaoFragment;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
+import com.ifcbrusque.app.ui.home.sigaa.SIGAAFragment;
 
 public class HomeActivity extends BaseActivity {
     public static final String EXTRAS_ID_ABA_INICIAL = "EXTRAS_ID_ABA_INICIAL";
+    private BottomNavigationView mBottomNavigationView;
 
     public static Intent getStartIntent(Context context, int idAbaInicial) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -27,8 +29,6 @@ public class HomeActivity extends BaseActivity {
 
         return intent;
     }
-
-    private BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,10 @@ public class HomeActivity extends BaseActivity {
             default:
             case R.id.navigation_lembretes:
                 fragment = new LembretesFragment();
+                break;
+
+            case R.id.navigation_sigaa:
+                fragment = new SIGAAFragment();
                 break;
 
             case R.id.navigation_noticias:

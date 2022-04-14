@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.ifcbrusque.app.data.db.DbHelper;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
+import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
@@ -230,6 +231,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis() {
+        return mDbHelper.getAllNoticiasArmazenaveis();
+    }
+
+    @Override
+    public Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias) {
+        return mDbHelper.insertNoticiasSIGAA(noticias);
+    }
+
+    @Override
     public Completable deletarTudoSIGAA() {
         return mDbHelper.deletarTudoSIGAA();
     }
@@ -395,6 +406,26 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public String getUrlAvatarSIGAA() {
+        return mPreferencesHelper.getUrlAvatarSIGAA();
+    }
+
+    @Override
+    public void setUrlAvatarSIGAA(String urlAvatarSIGAA) {
+        mPreferencesHelper.setUrlAvatarSIGAA(urlAvatarSIGAA);
+    }
+
+    @Override
+    public String getCursoSIGAA() {
+        return mPreferencesHelper.getCursoSIGAA();
+    }
+
+    @Override
+    public void setCursoSIGAA(String curso) {
+        mPreferencesHelper.setCursoSIGAA(curso);
+    }
+
+    @Override
     public Date getDataUltimaSincronizacaoAutomaticaNoticias() {
         return mPreferencesHelper.getDataUltimaSincronizacaoAutomaticaNoticias();
     }
@@ -512,6 +543,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<Boolean> logarSIGAA(String usuario, String senha) {
         return mNetworkHelper.logarSIGAA(usuario, senha);
+    }
+
+    @Override
+    public Observable<ArrayList<Disciplina>> getAllDisciplinasSIGAA() {
+        return mNetworkHelper.getAllDisciplinasSIGAA();
+    }
+
+    @Override
+    public Observable<ArrayList<com.imawa.sigaaforkotlin.entities.Noticia>> getNoticiasSIGAA(Disciplina disciplina) {
+        return mNetworkHelper.getNoticiasSIGAA(disciplina);
     }
 
     @Override

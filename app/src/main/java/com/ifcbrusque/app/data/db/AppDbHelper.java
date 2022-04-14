@@ -6,6 +6,7 @@ import com.ifcbrusque.app.data.db.model.AvaliacaoArmazenavel;
 import com.ifcbrusque.app.data.db.model.DisciplinaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Noticia;
+import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -547,10 +549,37 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis() {
+        return Observable.defer(() -> Observable.just(mAppDatabase.noticiaSIGAADao().getAll()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias) {
+        return Observable.defer(() -> Observable.just(mAppDatabase.noticiaSIGAADao().getAll()))
+                .map(noticiasArmazenadas -> {
+                    List<NoticiaArmazenavel> noticiasArmazenaveis = noticias.stream().map(NoticiaArmazenavel::new).collect(Collectors.toList());
+
+                    // Remover as já armazenadas
+                    noticiasArmazenaveis.removeIf(noticiaArmazenavel -> noticiasArmazenadas.stream().anyMatch(a -> a.getIdNoSIGAA() == noticiaArmazenavel.getIdNoSIGAA()));
+
+                    if (noticiasArmazenaveis.size() > 0) {
+                        mAppDatabase.noticiaSIGAADao().insertAll(noticiasArmazenaveis);
+                    }
+
+                    return noticiasArmazenaveis;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Completable deletarTudoSIGAA() {
         return Completable.fromRunnable(() -> {
             mAppDatabase.avaliacaoDao().deleteAll();
             mAppDatabase.questionarioDao().deleteAll();
+            mAppDatabase.noticiaDao().deleteAll();
             mAppDatabase.tarefaDao().deleteAll();
             mAppDatabase.disciplinaDao().deleteAll();
             mAppDatabase.lembreteDao().deleteAllLembretesSIGAA();

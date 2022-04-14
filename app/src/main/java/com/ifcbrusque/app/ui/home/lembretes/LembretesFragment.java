@@ -128,6 +128,7 @@ public class LembretesFragment extends BaseFragment implements LembretesContract
         // Configuração da toolbar
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setElevation(4 * getResources().getDisplayMetrics().density);
         actionBar.setTitle(R.string.title_home);
 
         mIbFiltros = getBaseActivity().findViewById(R.id.image_button_filtros);

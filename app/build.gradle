@@ -77,4 +77,7 @@ dependencies {
 
     //Imagens
     implementation "com.squareup.picasso:picasso:2.71828"
+
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
