@@ -17,6 +17,8 @@ public interface SIGAAHelper {
 
     Observable<Boolean> logarSIGAA(String usuario, String senha);
 
+    Observable<ArrayList<Disciplina>> getAllDisciplinasSIGAA();
+
     Observable<ArrayList<Noticia>> getNoticiasSIGAA(Disciplina disciplina);
 
     Observable<ArrayList<Nota>> getNotasDisciplinaSIGAA(Disciplina disciplina);

@@ -546,6 +546,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<ArrayList<Disciplina>> getAllDisciplinasSIGAA() {
+        return mNetworkHelper.getAllDisciplinasSIGAA();
+    }
+
+    @Override
     public Observable<ArrayList<com.imawa.sigaaforkotlin.entities.Noticia>> getNoticiasSIGAA(Disciplina disciplina) {
         return mNetworkHelper.getNoticiasSIGAA(disciplina);
     }

@@ -42,6 +42,13 @@ public class AppSIGAAHelper implements SIGAAHelper {
     }
 
     @Override
+    public Observable<ArrayList<Disciplina>> getAllDisciplinasSIGAA() {
+        return Observable.defer(() -> Observable.just(mSIGAA.getAllDisciplinas()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Observable<ArrayList<Noticia>> getNoticiasSIGAA(Disciplina disciplina) {
         return Observable.defer(() -> Observable.just(mSIGAA.getNoticias(disciplina)))
                 .subscribeOn(Schedulers.io())
