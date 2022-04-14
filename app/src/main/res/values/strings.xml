@@ -42,6 +42,7 @@
     <string name="categoria_lembretes_incompletos">Incompletos</string>
 
     <string name="secao_atrasado">Atrasado</string>
+    <string name="secao_ontem">Ontem</string>
     <string name="secao_hoje">Hoje</string>
     <string name="secao_amanha">Amanhã</string>
     <string name="secao_em_dias">Em %s dias</string>

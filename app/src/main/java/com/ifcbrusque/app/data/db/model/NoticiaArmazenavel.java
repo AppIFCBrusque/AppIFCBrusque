@@ -23,6 +23,8 @@ public class NoticiaArmazenavel {
     private String jIdJsp;
     @ColumnInfo(name = "j_id_jsp_completo")
     private String jIdJspCompleto;
+    @ColumnInfo(name = "disciplina_nome")
+    private String disciplinaNome;
     @ColumnInfo(name = "disciplina_front_end_id_turma")
     private String disciplinaFrontEndIdTurma;
     private Date data;
@@ -37,6 +39,7 @@ public class NoticiaArmazenavel {
         this.texto = noticia.getTexto();
         this.jIdJsp = noticia.getJIdJsp();
         this.jIdJspCompleto = noticia.getJIdJspCompleto();
+        this.disciplinaNome = noticia.getDisciplina().getNome();
         this.disciplinaFrontEndIdTurma = noticia.getDisciplina().getFrontEndIdTurma();
         this.data = noticia.getData();
     }
@@ -55,6 +58,14 @@ public class NoticiaArmazenavel {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getDisciplinaNome() {
+        return disciplinaNome;
+    }
+
+    public void setDisciplinaNome(String disciplinaNome) {
+        this.disciplinaNome = disciplinaNome;
     }
 
     public String getDisciplinaFrontEndIdTurma() {

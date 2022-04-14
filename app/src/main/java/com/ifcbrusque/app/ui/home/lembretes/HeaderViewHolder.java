@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ifcbrusque.app.R;
 
 public class HeaderViewHolder extends RecyclerView.ViewHolder {
-    final TextView mTitulo;
+    public final TextView mTitulo;
 
     public HeaderViewHolder(@NonNull View itemView) {
         super(itemView);

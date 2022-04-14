@@ -18,6 +18,7 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.di.component.ActivityComponent;
 import com.ifcbrusque.app.ui.base.BaseFragment;
 import com.ifcbrusque.app.ui.home.HomeActivity;
+import com.ifcbrusque.app.ui.home.sigaa.noticias.NoticiasSIGAAActivity;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -70,6 +71,7 @@ public class SIGAAFragment extends BaseFragment implements SIGAAContract.SIGAAVi
         noticiasCardView.setId(View.generateViewId());
         ((TextView) noticiasCardView.findViewById(R.id.item_menu_titulo)).setText(R.string.title_noticias);
         ((ImageView) noticiasCardView.findViewById(R.id.item_menu_imagem)).setImageDrawable(getContext().getDrawable(R.drawable.outline_announcement_black_24));
+        noticiasCardView.setOnClickListener(v -> startActivity(NoticiasSIGAAActivity.getStartIntent(getContext())));
         flexboxLayout.addView(noticiasCardView, itemMenu.getLayoutParams());
 
         flexboxLayout.removeView(itemMenu); // Remover a view base
