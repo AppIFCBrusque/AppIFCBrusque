@@ -32,11 +32,11 @@ import com.ifcbrusque.app.receiver.SyncReceiver;
 import com.ifcbrusque.app.service.SyncService;
 import com.ifcbrusque.app.ui.lembrete.InserirLembreteActivity;
 import com.ifcbrusque.app.ui.noticia.NoticiaActivity;
-import com.imawa.sigaaforkotlin.entities.Avaliacao;
-import com.imawa.sigaaforkotlin.entities.Disciplina;
-import com.imawa.sigaaforkotlin.entities.Questionario;
-import com.imawa.sigaaforkotlin.entities.Tarefa;
 import com.squareup.picasso.Picasso;
+import com.winterhazel.sigaaforkotlin.entities.Avaliacao;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Questionario;
+import com.winterhazel.sigaaforkotlin.entities.Tarefa;
 
 import java.util.Calendar;
 import java.util.Date;

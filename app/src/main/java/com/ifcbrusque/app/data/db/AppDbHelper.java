@@ -11,10 +11,10 @@ import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
 import com.ifcbrusque.app.di.ApplicationContext;
-import com.imawa.sigaaforkotlin.entities.Avaliacao;
-import com.imawa.sigaaforkotlin.entities.Disciplina;
-import com.imawa.sigaaforkotlin.entities.Questionario;
-import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.winterhazel.sigaaforkotlin.entities.Avaliacao;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Questionario;
+import com.winterhazel.sigaaforkotlin.entities.Tarefa;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -556,7 +556,7 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias) {
+    public Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.winterhazel.sigaaforkotlin.entities.Noticia> noticias) {
         return Observable.defer(() -> Observable.just(mAppDatabase.noticiaSIGAADao().getAll()))
                 .map(noticiasArmazenadas -> {
                     List<NoticiaArmazenavel> noticiasArmazenaveis = noticias.stream().map(NoticiaArmazenavel::new).collect(Collectors.toList());

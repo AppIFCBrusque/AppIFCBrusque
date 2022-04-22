@@ -1,12 +1,12 @@
 package com.ifcbrusque.app.data.network.sigaa;
 
-import com.imawa.sigaaforkotlin.entities.Avaliacao;
-import com.imawa.sigaaforkotlin.entities.Disciplina;
-import com.imawa.sigaaforkotlin.entities.Nota;
-import com.imawa.sigaaforkotlin.entities.Noticia;
-import com.imawa.sigaaforkotlin.entities.Questionario;
-import com.imawa.sigaaforkotlin.entities.Tarefa;
-import com.imawa.sigaaforkotlin.entities.Usuario;
+import com.winterhazel.sigaaforkotlin.entities.Avaliacao;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Nota;
+import com.winterhazel.sigaaforkotlin.entities.Noticia;
+import com.winterhazel.sigaaforkotlin.entities.Questionario;
+import com.winterhazel.sigaaforkotlin.entities.Tarefa;
+import com.winterhazel.sigaaforkotlin.entities.Usuario;
 
 import java.util.ArrayList;
 

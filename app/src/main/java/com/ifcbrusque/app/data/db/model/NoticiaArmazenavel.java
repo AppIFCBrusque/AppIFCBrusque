@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.imawa.sigaaforkotlin.entities.Noticia;
+import com.winterhazel.sigaaforkotlin.entities.Noticia;
 
 import java.util.Date;
 

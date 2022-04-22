@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
 
 @Entity(tableName = "disciplina_table")
 public class DisciplinaArmazenavel {

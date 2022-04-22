@@ -5,10 +5,10 @@ import android.os.Bundle;
 import com.ifcbrusque.app.data.db.model.Lembrete;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.service.SyncService;
-import com.imawa.sigaaforkotlin.entities.Avaliacao;
-import com.imawa.sigaaforkotlin.entities.Disciplina;
-import com.imawa.sigaaforkotlin.entities.Questionario;
-import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.winterhazel.sigaaforkotlin.entities.Avaliacao;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Questionario;
+import com.winterhazel.sigaaforkotlin.entities.Tarefa;
 
 import java.util.List;
 

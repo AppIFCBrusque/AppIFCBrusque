@@ -18,7 +18,7 @@ import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 import com.ifcbrusque.app.di.module.ServiceModule;
-import com.imawa.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;

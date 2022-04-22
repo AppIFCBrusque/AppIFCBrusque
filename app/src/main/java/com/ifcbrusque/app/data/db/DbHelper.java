@@ -6,10 +6,10 @@ import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.db.model.QuestionarioArmazenavel;
 import com.ifcbrusque.app.data.db.model.TarefaArmazenavel;
-import com.imawa.sigaaforkotlin.entities.Avaliacao;
-import com.imawa.sigaaforkotlin.entities.Disciplina;
-import com.imawa.sigaaforkotlin.entities.Questionario;
-import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.winterhazel.sigaaforkotlin.entities.Avaliacao;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.entities.Questionario;
+import com.winterhazel.sigaaforkotlin.entities.Tarefa;
 
 import java.util.List;
 
@@ -94,7 +94,7 @@ public interface DbHelper {
 
     Observable<List<NoticiaArmazenavel>> getAllNoticiasArmazenaveis();
 
-    Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.imawa.sigaaforkotlin.entities.Noticia> noticias);
+    Observable<List<NoticiaArmazenavel>> insertNoticiasSIGAA(List<com.winterhazel.sigaaforkotlin.entities.Noticia> noticias);
 
     Completable deletarTudoSIGAA();
 }

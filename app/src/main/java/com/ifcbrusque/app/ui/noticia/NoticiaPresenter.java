@@ -1,5 +1,13 @@
 package com.ifcbrusque.app.ui.noticia;
 
+import static com.ifcbrusque.app.data.db.Converters.fromTimestamp;
+import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_DATA;
+import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_HTML_CONTEUDO;
+import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_NOME_DISCIPLINA;
+import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_TITULO;
+import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_URL;
+import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.NOTICIA_URL_IMAGEM_PREVIEW;
+
 import android.os.Bundle;
 
 import com.ifcbrusque.app.R;
@@ -10,25 +18,15 @@ import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.data.network.noticias.PgNoticiasParser;
 import com.ifcbrusque.app.ui.base.BasePresenter;
 
-import java.text.SimpleDateFormat;
-
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-
-import static com.ifcbrusque.app.ui.noticia.NoticiaActivity.*;
-import static com.ifcbrusque.app.data.db.Converters.*;
-import static com.ifcbrusque.app.utils.AppConstants.FORMATO_DATA;
 
 public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends BasePresenter<V> implements NoticiaContract.NoticiaPresenter<V> {
     @Inject
     public NoticiaPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    Funções utilizadas somente por este presenter
-     */
 
     /**
      * Utilizado para carregar uma notícia (do banco de dados ou da internet), armazenar e mostrar na view
@@ -60,25 +58,39 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
     }
 
     private void exibirNoticiaNaView(Preview preview, Noticia noticia) {
-        getMvpView().carregarImagemGrande(preview.getUrlImagemPreview());
+        if (preview.getUrlImagemPreview().length() > 0) {
+            getMvpView().loadImage(preview.getUrlImagemPreview());
+        } else {
+            getMvpView().hideImageView();
+        }
 
         getMvpView().setTitulo(noticia.getTitulo());
         getMvpView().setData(noticia.getDataFormatada());
-
-        getMvpView().carregarHtmlWebView(PgNoticiasParser.formatarCorpoNoticia(preview, noticia.getHtmlConteudo()), getDataManager().getPrefTema());
-
-        getMvpView().mostrarView();
+        getMvpView().loadHtmlWebView(PgNoticiasParser.formatarCorpoNoticia(preview, noticia.getHtmlConteudo()), getDataManager().getPrefTema());
+        getMvpView().showView();
     }
 
     @Override
     public void onViewPronta(Bundle bundle) {
-        //Criar o Preview a partir das informações no bundle
-        Preview preview = new Preview(bundle.getString(NOTICIA_TITULO),
-                "",
-                bundle.getString(NOTICIA_URL_IMAGEM_PREVIEW),
-                bundle.getString(NOTICIA_URL),
-                fromTimestamp(bundle.getLong(NOTICIA_DATA)));
+        String url = bundle.getString(NOTICIA_URL_IMAGEM_PREVIEW);
 
-        carregarNoticiaArmazenada(preview);
+        if (url.length() > 0) {
+            // Notícia do campus
+            Preview preview = new Preview(bundle.getString(NOTICIA_TITULO),
+                    "",
+                    bundle.getString(NOTICIA_URL_IMAGEM_PREVIEW),
+                    bundle.getString(NOTICIA_URL),
+                    fromTimestamp(bundle.getLong(NOTICIA_DATA)));
+
+            carregarNoticiaArmazenada(preview);
+        } else {
+            // Notícia do SIGAA
+            getMvpView().setTitulo(bundle.getString(NOTICIA_TITULO));
+            getMvpView().setData(bundle.getString(NOTICIA_DATA));
+            getMvpView().setDisciplina(bundle.getString(NOTICIA_NOME_DISCIPLINA));
+            getMvpView().showDisciplina();
+            getMvpView().hideImageView();
+            getMvpView().loadHtmlWebView(bundle.getString(NOTICIA_HTML_CONTEUDO), getDataManager().getPrefTema());
+        }
     }
 }

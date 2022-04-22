@@ -5,9 +5,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.ifcbrusque.app.R;
-import com.imawa.sigaaforkotlin.entities.Avaliacao;
-import com.imawa.sigaaforkotlin.entities.Questionario;
-import com.imawa.sigaaforkotlin.entities.Tarefa;
+import com.winterhazel.sigaaforkotlin.entities.Avaliacao;
+import com.winterhazel.sigaaforkotlin.entities.Questionario;
+import com.winterhazel.sigaaforkotlin.entities.Tarefa;
 
 import java.util.Date;
 
@@ -44,6 +44,7 @@ public class Lembrete {
     @ColumnInfo(name = "tempo_repeticao_personalizada")
     private long tempoRepeticaoPersonalizada;
     private int estado;
+
     public Lembrete(int tipo, String nomeDisciplina, String idObjetoAssociado, String titulo, String descricao, String anotacoes, Date dataLembrete, int tipoRepeticao, long tempoRepeticaoPersonalizada, int estado, long idNotificacao) {
         this.tipo = tipo;
         this.nomeDisciplina = nomeDisciplina;
@@ -57,6 +58,7 @@ public class Lembrete {
         this.estado = estado;
         this.idNotificacao = idNotificacao;
     }
+
     public Lembrete(Avaliacao a, long idNotificacao) {
         this(LEMBRETE_AVALIACAO, a.getDisciplina().getNome(), Long.toString(a.getId()), a.getDescricao(), "", "", a.getDia(), REPETICAO_SEM, 0, ESTADO_INCOMPLETO, idNotificacao);
     }
