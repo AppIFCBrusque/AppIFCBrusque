@@ -19,6 +19,7 @@ import com.ifcbrusque.app.di.component.DaggerServiceComponent;
 import com.ifcbrusque.app.di.component.ServiceComponent;
 import com.ifcbrusque.app.di.module.ServiceModule;
 import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+import com.winterhazel.sigaaforkotlin.network.SIGAAException;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -474,7 +475,7 @@ public class SyncService extends Service {
     private void onError(Throwable e) {
         Timber.d("Erro durante a sincronização: %s | %s", e.getClass(), e.getMessage());
 
-        if (e.getClass() == NoInternetException.class || e.getClass() == UnknownHostException.class || e.getClass() == IOException.class || e.getClass() == SocketTimeoutException.class) {
+        if (e.getClass() == NoInternetException.class || e.getClass() == UnknownHostException.class || e.getClass() == IOException.class || e.getClass() == SocketTimeoutException.class || e.getClass() == SIGAAException.class) {
             stopSelf();
         }
     }
