@@ -455,7 +455,8 @@ public class SyncService extends Service {
                     mTarefaAtual++;
                     mDataManager.notificarSincronizacaoSIGAA(this, disciplina, mTarefaAtual, mTotalTarefas);
                     return Completable.complete();
-                });
+                })
+                .onErrorComplete(); // TODO: Temporário
     }
 
     private Completable carregarSIGAA() {
