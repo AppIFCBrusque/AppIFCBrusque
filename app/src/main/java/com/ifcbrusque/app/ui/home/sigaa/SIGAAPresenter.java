@@ -18,5 +18,7 @@ public class SIGAAPresenter<V extends SIGAAContract.SIGAAView> extends BasePrese
         getMvpView().setNomeText(getDataManager().getNomeDoUsuarioSIGAA());
         getMvpView().setCursoText(getDataManager().getCursoSIGAA());
         getMvpView().setAvatarSIGAA(getDataManager().getUrlAvatarSIGAA());
+        // Carregar as disciplinas
+        getCompositeDisposable().add(getDataManager().getAllDisciplinas().subscribe(disciplinas -> getMvpView().addMenuItems(disciplinas)));
     }
 }

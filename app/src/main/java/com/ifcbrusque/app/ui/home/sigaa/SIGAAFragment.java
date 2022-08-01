@@ -20,6 +20,9 @@ import com.ifcbrusque.app.ui.base.BaseFragment;
 import com.ifcbrusque.app.ui.home.HomeActivity;
 import com.ifcbrusque.app.ui.home.sigaa.noticias.NoticiasSIGAAActivity;
 import com.squareup.picasso.Picasso;
+import com.winterhazel.sigaaforkotlin.entities.Disciplina;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,11 +64,17 @@ public class SIGAAFragment extends BaseFragment implements SIGAAContract.SIGAAVi
         mTvNome = getView().findViewById(R.id.sigaa_nome);
         mTvCurso = getView().findViewById(R.id.sigaa_curso);
         mIvAvatarSIGAA = getView().findViewById(R.id.sigaa_avatar);
+        mPresenter.onViewPronta();
+    }
 
+    @Override
+    public void addMenuItems(List<Disciplina> disciplinas) {
         // Adicionar itens do menu
         FlexboxLayout flexboxLayout = getView().findViewById(R.id.sigaa_flexbox_layout);
 
+        TextView tvMenu = getView().findViewById(R.id.sigaa_menu_titulo);
         CardView itemMenu = getView().findViewById(R.id.sigaa_item_menu); // View utilizada como base
+        CardView itemDisciplina = getView().findViewById(R.id.sigaa_item_disciplina); // View utilizada como base
 
         CardView noticiasCardView = (CardView) LayoutInflater.from(getContext()).inflate(R.layout.item_menu_sigaa, null);
         noticiasCardView.setId(View.generateViewId());
@@ -74,9 +83,23 @@ public class SIGAAFragment extends BaseFragment implements SIGAAContract.SIGAAVi
         noticiasCardView.setOnClickListener(v -> startActivity(NoticiasSIGAAActivity.getStartIntent(getContext())));
         flexboxLayout.addView(noticiasCardView, itemMenu.getLayoutParams());
 
-        flexboxLayout.removeView(itemMenu); // Remover a view base
+        // Adicionar disciplinas
+        TextView tvDisciplinas = new TextView(getContext());
+        tvDisciplinas.setId(View.generateViewId());
+        tvDisciplinas.setText(R.string.sigaa_disciplinas);
+        tvDisciplinas.setTextAppearance(R.style.TextAppearance_TituloItemLista);
+        flexboxLayout.addView(tvDisciplinas, tvMenu.getLayoutParams());
 
-        mPresenter.onViewPronta();
+        for (Disciplina disciplina : disciplinas) {
+            CardView disciplinaCardView = (CardView) LayoutInflater.from(getContext()).inflate(R.layout.item_disciplina_sigaa, null);
+            disciplinaCardView.setId(View.generateViewId());
+            ((TextView) disciplinaCardView.findViewById(R.id.item_menu_titulo)).setText(disciplina.getNome());
+            // noticiasCardView.setOnClickListener(v -> startActivity(NoticiasSIGAAActivity.getStartIntent(getContext())));
+            flexboxLayout.addView(disciplinaCardView, itemDisciplina.getLayoutParams());
+        }
+
+        flexboxLayout.removeView(itemMenu); // Remover a view base
+        flexboxLayout.removeView(itemDisciplina);
     }
 
     @Override

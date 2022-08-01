@@ -13,7 +13,7 @@
     app:cardPreventCornerOverlap="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="64dp"
+        android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="center"
         android:layout_margin="8dp"
@@ -23,24 +23,26 @@
             android:id="@+id/item_menu_imagem"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:layout_constraintBottom_toTopOf="@id/item_menu_titulo"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/outline_announcement_black_24"
+            app:srcCompat="@drawable/outline_school_black_24"
             app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:id="@+id/item_menu_titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
             android:text="Título"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.TituloItemLista"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/item_menu_imagem"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_menu_imagem" />
+            app:layout_constraintStart_toEndOf="@id/item_menu_imagem"
+            app:layout_constraintTop_toTopOf="@id/item_menu_imagem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
