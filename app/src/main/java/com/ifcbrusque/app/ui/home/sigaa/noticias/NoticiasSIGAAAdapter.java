@@ -34,6 +34,11 @@ public class NoticiasSIGAAAdapter extends RecyclerView.Adapter<RecyclerView.View
         mContext = context;
     }
 
+
+    public List<Object> getDados() {
+        return mDados;
+    }
+    
     /**
      * Ordena a lista de notícias pela data com a mais nova no topo e a mais velha no fim
      */
@@ -45,7 +50,7 @@ public class NoticiasSIGAAAdapter extends RecyclerView.Adapter<RecyclerView.View
     /**
      * Retorna uma lista com as notícias e os cabeçalhos
      */
-    private List<Object> getDados(List<NoticiaArmazenavel> noticiasArmazenaveis) {
+    private List<Object> addHeadersToData(List<NoticiaArmazenavel> noticiasArmazenaveis) {
         List<Object> dados = new ArrayList<>();
 
         Calendar hoje = Calendar.getInstance();
@@ -93,7 +98,7 @@ public class NoticiasSIGAAAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setNoticiasSIGAA(List<NoticiaArmazenavel> noticiasArmazenaveis) {
         mDados.clear();
-        mDados.addAll(getDados(noticiasArmazenaveis));
+        mDados.addAll(addHeadersToData(noticiasArmazenaveis));
         notifyDataSetChanged();
     }
 

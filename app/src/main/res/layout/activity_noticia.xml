@@ -36,13 +36,26 @@
                 android:textAppearance="@style/TextAppearance.TituloPagina" />
 
             <TextView
-                android:id="@+id/noticia_data"
+                android:id="@+id/noticia_disciplina"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/noticia_titulo"
+                android:drawableLeft="@drawable/outline_school_black_20"
+                android:drawablePadding="4dp"
                 android:paddingHorizontal="16dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="16dp"
+                android:text="@string/disciplina"
+                android:textAppearance="@style/TextAppearance.Secundario"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/noticia_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/noticia_disciplina"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="2dp"
                 android:text="00/00/00"
                 android:textAppearance="@style/TextAppearance.Secundario" />
 
@@ -52,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/noticia_data"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/Theme.IFCBrusque.ImageViewNoticia" />

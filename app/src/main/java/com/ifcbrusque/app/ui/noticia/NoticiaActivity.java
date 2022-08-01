@@ -39,7 +39,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
     Picasso mPicasso;
     private WebView mWebView;
     private ShapeableImageView mImageView;
-    private TextView mTvTitulo, mTvData;
+    private TextView mTvTitulo, mTvData, mTvDisciplina;
     private RelativeLayout mRelativeLayout;
 
     /**
@@ -95,6 +95,7 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
         mImageView = findViewById(R.id.noticia_imagem_grande);
         mTvTitulo = findViewById(R.id.noticia_titulo);
         mTvData = findViewById(R.id.noticia_data);
+        mTvDisciplina = findViewById(R.id.noticia_disciplina);
         mRelativeLayout = findViewById(R.id.noticia_relative_layout);
 
         mWebView.setVerticalScrollBarEnabled(false);
@@ -143,10 +144,17 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
                 break;
         }
 
-        String style = "<style>body { background-color: " + backgroundColor + "; } .entry-content, span { color: " + textColor + " ; }</style>";
+        String style = "<style>body, div { background-color: " + backgroundColor + " !important; padding: 0px !important; } .entry-content, span, div { color: " + textColor + " !important; }</style>";
 
-        int posInicioHead = html.indexOf("<head>") + 6;
-        String htmlComTema = html.substring(0, posInicioHead) + style + html.substring(posInicioHead);
+        int posInicioHead = html.indexOf("<head>");
+        String htmlComTema;
+
+        if (posInicioHead != -1) {
+            htmlComTema = html.substring(0, posInicioHead + 6) + style + html.substring(posInicioHead + 6);
+        } else {
+            // Head ainda não existe
+            htmlComTema = "<head>" + style + "</head>" + html;
+        }
 
         return htmlComTema;
     }
@@ -174,12 +182,12 @@ public class NoticiaActivity extends BaseActivity implements NoticiaContract.Not
 
     @Override
     public void setDisciplina(String disciplina) {
-        // TODO
+        mTvDisciplina.setText(disciplina);
     }
 
     @Override
     public void showDisciplina() {
-        // TODO
+        mTvDisciplina.setVisibility(View.VISIBLE);
     }
 
     @Override

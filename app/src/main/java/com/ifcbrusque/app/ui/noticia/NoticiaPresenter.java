@@ -17,6 +17,9 @@ import com.ifcbrusque.app.data.db.model.Preview;
 import com.ifcbrusque.app.data.network.model.NoInternetException;
 import com.ifcbrusque.app.data.network.noticias.PgNoticiasParser;
 import com.ifcbrusque.app.ui.base.BasePresenter;
+import com.ifcbrusque.app.utils.CommonUtils;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -90,11 +93,13 @@ public class NoticiaPresenter<V extends NoticiaContract.NoticiaView> extends Bas
             // Notícia do SIGAA
             Timber.i("Notícia do SIGAA");
             getMvpView().setTitulo(bundle.getString(NOTICIA_TITULO));
-            getMvpView().setData(bundle.getString(NOTICIA_DATA));
+            Date data = fromTimestamp(bundle.getLong(NOTICIA_DATA));
+            getMvpView().setData(CommonUtils.formatDate(data));
             getMvpView().setDisciplina(bundle.getString(NOTICIA_NOME_DISCIPLINA));
             getMvpView().showDisciplina();
             getMvpView().hideImageView();
             getMvpView().loadHtmlWebView(bundle.getString(NOTICIA_HTML_CONTEUDO), getDataManager().getPrefTema());
+            getMvpView().showView();
         }
     }
 }

@@ -13,6 +13,7 @@ import com.ifcbrusque.app.R;
 import com.ifcbrusque.app.data.db.model.NoticiaArmazenavel;
 import com.ifcbrusque.app.ui.base.BaseActivity;
 import com.ifcbrusque.app.ui.home.lembretes.StickyHeaderDecoration;
+import com.ifcbrusque.app.ui.noticia.NoticiaActivity;
 
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class NoticiasSIGAAActivity extends BaseActivity implements NoticiasSIGAA
         mRecyclerView.addItemDecoration(new StickyHeaderDecoration(mNoticiasSIGAAAdapter));
 
         NoticiaSIGAAItemListener itemListener = position -> {
-            // TODO
+            startActivity(NoticiaActivity.getStartIntent(this, (NoticiaArmazenavel) mNoticiasSIGAAAdapter.getDados().get(position)));
         };
         mNoticiasSIGAAAdapter.setItemListener(itemListener);
 

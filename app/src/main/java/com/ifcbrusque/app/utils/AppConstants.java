@@ -7,4 +7,5 @@ public final class AppConstants {
     public static final String NOTF_CHANNEL_ID = "ifcbrusque_notificacoes";
 
     public static final String FORMATO_DATA = "dd/MM/yyyy HH:mm";
+    public static final String FORMATO_DATA_EXTENSO = "EEEE, dd 'de' MMMM 'de' yyyy";
 }
